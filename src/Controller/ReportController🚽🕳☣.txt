@@ -1,0 +1,160 @@
+//            stmnt = con.prepareStatement(" SELECT `Code`, `revenueItem`, `revenueAmount`, `revenueDate` FROM `daily_entries` WHERE `revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ");
+
+
+//        if(rowDate.size() ==1){
+//            DAY1.setText(rowDate.get(0));
+//        }
+//        else if(rowDate.size() == 2) {
+//            DAY1.setText(rowDate.get(0));
+//            DAY2.setText(rowDate.get(1));
+//        }else if(rowDate.size() == 3)
+//        
+//        }
+//        if(rowDate.get(2) != null && ){
+//            
+//        }else {
+//            DAY3.setText("DAY");
+//        }
+//        if(rowDate.get(3) != null && rowDate.size() <= 4){
+//            
+//        }else {
+//            DAY4.setText("DAY");
+//        }
+//        if(rowDate.get(4) != null && rowDate.size() <= 5){
+//            
+//        }else {
+//            DAY5.setText("DAY");
+//        }
+//         if(rowDate.get(5) != null && rowDate.size() <= 6){
+//            
+//        }else {
+//            DAY6.setText("DAY");
+//        }
+//          if(rowDate.get(6) != null && rowDate.size() <= 7){
+//            
+//        }else {
+//            DAY7.setText("DAY");
+//        }
+ 
+
+
+
+
+//       ArrayList<Map<String, ArrayList<String>>> due = new ArrayList<>();
+//       due.add(AmountDate);
+       
+
+//       Map<String, ArrayList<Map<String, ArrayList<String>>>> forEntry = new HashMap<>();
+//
+//       ObservableList<String> dateList = FXCollections.observableArrayList();//List to store revenue Amounts on their respective dates
+//       rowDate.forEach((rowDates) -> {
+//           AmountDate.put(rowDates, new ArrayList());
+//           dateList.add(rowDates);
+//        });
+//       System.out.println(AmountDate);
+//       ArrayList<Map<String, ArrayList<String>>> due = new ArrayList<>();
+//       due.add(AmountDate);
+//       
+//       Item.forEach((Items) -> {
+//           forEntry.put(Items, due);
+//        });
+//       System.out.println(forEntry);
+       
+//       while(rt.next()){
+//          for(Map.Entry<String, ArrayList<Map<String, ArrayList<String>>>> pair :
+//                  forEntry.entrySet()){
+//              String piar = pair.getKey();
+//              for(Map.Entry<String, ArrayList<String>> dates: AmountDate.entrySet()){
+//                  String detas = dates.getKey();
+//                  if ((piar == null ? rt.getObject(1).toString() == null : piar.equals(rt.getObject(1).toString())) && (detas == null ? rt.getObject(3).toString() == null : detas.equals(rt.getObject(3).toString()))){
+//                      AmountDate.get(detas).add(rt.getObject(2).toString());
+//                      if(!forEntry.get(piar).contains(AmountDate)){
+//                       forEntry.get(piar).add(AmountDate);
+//                      }else{
+//                          int ind = pair.getValue().indexOf(AmountDate);
+//                          forEntry.get(piar).get(ind).get(detas).add(rt.getObject(2).toString());
+//                      };
+//                  }
+//              }
+//              
+//          };
+//       }
+//       System.out.println(AmountDate+"\n"+ forEntry);
+
+
+//                       forEntry.get(rt.getObject(1).toString()).get(rt.getObject(3).toString()).add(rt.getObject(2).toString());
+
+//                   if(rt.getObject(1).toString() == null ? Items == null : rt.getObject(1).toString().equals(Items)){AmountDate.get(rowDates).add(rt.getObject(2).toString()); 
+                   
+                   ;
+                 //} 
+
+//       while(rt.next()){
+//          row =rt.getRow();
+//          
+//           for(String rowDates : rowDate){
+//               for(String Items : Item){
+//                   if ((Items == null ? rt.getObject(1).toString() == null : Items.equals(rt.getObject(1).toString())) && (rowDates == null ? rt.getObject(3).toString() == null : rowDates.equals(rt.getObject(3).toString())) ){
+//                   if(rt.getObject(1).toString() == null ? Items == null : rt.getObject(1).toString().equals(Items)){AmountDate.get(rowDates).add(rt.getObject(2).toString()); 
+//                   
+//                   forEntry.get(Items).add(AmountDate);}               
+//                   
+//               }
+//           }
+//       }
+//       }
+//       ObservableList<String> itemi = FXCollections.observableArrayList();
+//       Item.forEach((Itemi) -> {
+//            String ite = forEntry.get(Itemi).get(0).get();
+////       itemi.add(ite);
+//               });
+       
+// for(String Items : Item){
+//System.out.println(Items);}   
+
+
+
+//             `revenueDate` = '"+rowDate.get(i)+"'
+//            stmnt = con.prepareStatement(" SELECT `Code`, `revenueItem`, `revenueAmount`, `revenueDate` FROM `daily_entries` WHERE   `revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ");
+//            ResultSet rs = stmnt.executeQuery();
+//            ResultSetMetaData meta = rs.getMetaData();
+//            int col = meta.getColumnCount();
+//            Map<String, ArrayList<List<String>>> Code = new HashMap<>();
+//            Map<String, ArrayList<List<String>>> Item = new HashMap<>();
+//            Map<String, ArrayList<List<String>>> Amount = new HashMap<>();
+//            Map<String, Object> data = new HashMap<>();
+
+
+
+//            for(String rowDates : rowDate){
+//                Code.put("Code", new ArrayList<>());
+//                Item.put("Item", new ArrayList<>());
+//                Amount.put("Amount", new ArrayList<>());
+                
+//            }
+//            List<String> code = null;
+//            List<String> item = null;
+//            List<String> amount = null;
+//            
+//            while(rs.next()){
+//                
+//                for(int j=1; j<=col; j++){ 
+//                    for (String rowDate1 : rowDate) {
+//                    //rs.getObject(4);
+//                 if(rs.getObject(4).toString() == null ? rowDate1 == null : rs.getObject(4).toString().equals(rowDate1)){
+//                       code = Arrays.asList(rs.getObject(1).toString());
+//                        Code.get("Code").add(code);
+//                       item = Arrays.asList(rs.getObject(2).toString());
+//                        Item.get("Item").add(item);
+//                       amount =Arrays.asList(rs.getObject(3).toString());
+//                        Amount.get("Amount").add(amount);
+//                        data.put(rowDate1, Code);
+//                        data.put(rowDate1, Item);
+//                        data.put(rowDate1, Amount);
+//                        data.get(rowDate1).add(rs.getObject(2).toString());
+//                        data.get(rowDate1).add(rs.getObject(3).toString());
+//                  }
+//                }
+//            }
+//        }
+//            System.out.println(data+""+""+col);

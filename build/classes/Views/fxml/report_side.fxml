@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="569.0" prefWidth="215.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="BASELINE_CENTER" layoutY="10.0" prefHeight="721.0" prefWidth="215.0" style="-fx-background-color: transparent;">
+         <children>
+            <Line endX="59.29289245605469" startX="-100.0" />
+            <Text fill="#055b30" strokeType="OUTSIDE" strokeWidth="0.0" text="Revenue Reports">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+               <children>
+                  <Button fx:id="btnViewReport" mnemonicParsing="false" onAction="#Show_report" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Daily Report" />
+               </children>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+               <children>
+                  <Button fx:id="btnWeeklyReport" mnemonicParsing="false" onAction="#showWeeklyReport" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Weekly Report" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+               <children>
+                  <Button fx:id="btnMonthlyReport" mnemonicParsing="false" onAction="#showMonthlyReport" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Monthly Report" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+               <children>
+                  <Button fx:id="btnQuarterlyReport" mnemonicParsing="false" onAction="#showQuarterlyReport" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Quarterly Report" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+               <children>
+                  <Button fx:id="btnYearlyReport" mnemonicParsing="false" onAction="#showYearlyReport" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Yearly Report" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="146.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+               <children>
+                  <Button fx:id="btnPaymentDetails" mnemonicParsing="false" onAction="#showPaymentDetails" prefHeight="43.0" prefWidth="146.0" style="-fx-background-color: transparent;" text="Payment Details" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="146.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+               <children>
+                  <Button fx:id="btnRevenueTarget" mnemonicParsing="false" onAction="#showRevenueTarget" prefHeight="43.0" prefWidth="146.0" style="-fx-background-color: transparent;" text="Revenue Target Analysis" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="Master" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="207.0" prefWidth="189.0">
+               <children>
+                  <VBox alignment="CENTER" style="-fx-background-color: transparent;">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Line endX="47.00859069824219" fill="#096535" startX="-97.2843017578125" stroke="#09650f" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.5" />
+                              <Text fill="#055b30" strokeType="OUTSIDE" strokeWidth="0.0" text="Master Reports" wrappingWidth="143.208984375">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+                           <children>
+                              <Button fx:id="btnRevenueItemsMaster" mnemonicParsing="false" onAction="#showRevenueItemsMaster" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Revenue Item Basis">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="137.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+                           <children>
+                              <Button fx:id="btnRevenueCenters" mnemonicParsing="false" onAction="#showRevenueCenters" prefHeight="43.0" prefWidth="144.0" style="-fx-background-color: transparent;" text="Revenue Centers Basis" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+                           <children>
+                              <Button fx:id="btnCollectionPayment" mnemonicParsing="false" onAction="#showCollectionPayment" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Collection Payment" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+                           <children>
+                              <Button fx:id="btnRevenueItemsQuarterly" mnemonicParsing="false" onAction="#showRevenueItemsQuarterly" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Quarterly Item Basis">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="140.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+                           <children>
+                              <Button fx:id="btnRevenueCenters1" mnemonicParsing="false" onAction="#showQuarterlyCenters" prefHeight="43.0" prefWidth="139.0" style="-fx-background-color: transparent;" text="Quarterly Centers Basis" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets top="70.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

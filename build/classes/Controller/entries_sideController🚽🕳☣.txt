@@ -1,0 +1,61 @@
+//         FXMLLoader loadsgre = new FXMLLoader();
+//        loadsgre.setLocation(getClass().getResource( "/Views/fxml/entries_side.fxml"));
+//        loadsgre.setController(this);
+//         try {
+//         loadsgre.load();            
+//     } catch (IOException exception) {
+//         throw new RuntimeException(exception);
+//     }
+
+
+
+
+//     private final ObjectProperty<Node> node = new SimpleObjectProperty<>();
+//
+//    public ObjectProperty<Node> nodeProperty() {
+//        return node ;
+//    }
+
+
+
+
+REVENUE_REPORT
+
+//        appController appcontroller = (appController)firstLoader.getController();
+//        Parent root = null; 
+//        appController app = new appController();
+//        stage.setScene(new Scene(app));
+
+
+
+APP_CONTROLLER
+
+//          FXMLLoader firstLoader = new FXMLLoader(getClass().getResource("/Views/fxml/app.fxml"));
+//          firstLoader.setRoot(this);
+//        firstLoader.setController(this);
+//         
+//          try {
+//         firstLoader.load();            
+//     } catch (IOException exception) {
+//         throw new RuntimeException(exception);
+//         }
+
+//    public appController(Parent root) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+    
+//    public ObjectProperty<Node> displayedViewProperty() {
+//        return sborder_pane.centerProperty;
+//    }
+
+//    public static void moveToCenter(URL ui, BorderPane borderpane){
+//try {
+//        Parent root = FXMLLoader.load(ui);
+//        borderpane.setCenter(root);
+//    } catch (IOException ex) {
+//        Logger.getLogger(ChangeScenes.class.getName()).log(Level.SEVERE, null, ex);
+//    }
+//}   
+          //        entries_sideController entries = loadsgre.<entries_sideController>getController();
+//        entries.nodeProperty().set(centerPane);
+

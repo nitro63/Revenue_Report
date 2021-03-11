@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="monthlyTemplate" alignment="CENTER" prefHeight="518.0" prefWidth="950.0" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="67.0" prefWidth="1030.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <ComboBox fx:id="cmbReportCent" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="167.0" promptText="Revenue Center" />
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="cmbReportYear" onAction="#SelectedYear" prefHeight="25.0" prefWidth="167.0" promptText="Year" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <HBox alignment="CENTER" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="btnShowReport" mnemonicParsing="false" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text="Show Report" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <ScrollPane hbarPolicy="ALWAYS" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+         <content>
+            <TableView fx:id="monthlyTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="1460.0">
+               <columns>
+                  <TableColumn fx:id="revenueCenter" maxWidth="865.0000076293945" prefWidth="848.0000076293945" text="REVENUE CENTER">
+                     <columns>
+                        <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
+                        <TableColumn fx:id="year" prefWidth="618.0" text="YEAR: #">
+                           <columns>
+                              <TableColumn fx:id="january" prefWidth="100.0" text="January" />
+                              <TableColumn fx:id="february" prefWidth="100.0" text="February" />
+                              <TableColumn fx:id="march" prefWidth="100.0" text="March" />
+                              <TableColumn fx:id="april" prefWidth="100.0" text="April" />
+                              <TableColumn fx:id="may" prefWidth="100.0" text="May" />
+                              <TableColumn fx:id="june" prefWidth="100.0" text="June" />
+                              <TableColumn fx:id="july" prefWidth="100.0" text="July" />
+                              <TableColumn fx:id="august" prefWidth="100.0" text="August" />
+                              <TableColumn fx:id="september" prefWidth="100.0" text="September" />
+                              <TableColumn fx:id="october" prefWidth="100.0" text="October" />
+                              <TableColumn fx:id="november" prefWidth="100.0" text="November" />
+                              <TableColumn fx:id="december" prefWidth="100.0" text="December" />
+                              <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
+                           </columns>
+                        </TableColumn>
+                     </columns>
+                  </TableColumn>
+               </columns>
+            </TableView>
+         </content>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </VBox.margin>
+      </ScrollPane>
+   </children>
+</VBox>

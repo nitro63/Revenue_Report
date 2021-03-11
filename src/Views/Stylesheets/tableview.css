@@ -1,0 +1,139 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 15-Jan-2021, 19:23:50
+    Author     : NiTrO
+*/
+.root{
+    -fx-background-color:  #f0f6f8;
+}
+.table-view{
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+}
+.table-view .column-header-background,
+.table-view .column-header-background .filler{
+    -fx-background-color: linear-gradient(to top, #27b52b, #0ee014);
+    -fx-background-radius: 7px 7px 7px 7px;
+    -fx-border-radius: 7 7 0 7;
+    -fx-background-insets: 0;
+}
+.table-view .column-header{
+    -fx-background-color: transparent;
+}
+.table-view .column-header-background .filler{
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-background-color: transparent;
+}
+.table-view .corner{
+    -fx-background-color: red;
+}
+.table-view .table-column{
+    -fx-border-width: 0 0.2 0.02;
+    -fx-border-color: black;
+    -fx-text-background-color: #ffffff;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+.table-row-cell:even {
+    -fx-text-fill: #f5faf6;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(to right, #2cf131, #92f795);
+    -fx-background-insets: 0, 1 0 1 0;
+    -fx-padding: 0.0em;
+}
+.table-row-cell:odd{
+    -fx-text-fill: #9a9696;
+    -fx-font-size: 15;
+    -fx-background-color: linear-gradient(to left, #19e81f, #19e81f);
+    -fx-background-insets: 0, 1 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+
+
+
+/*.table-view{*/
+/*    -fx-background-color: #f0f6f8;*/
+/*    -fx-background-radius: 15;*/
+/*    -fx-border-color: #93f9b911;*/
+/*    -fx-border-radius: 15;*/
+/*}*/
+
+/*.table-view .column-header-background{*/
+/*    -fx-text-fill: #125D32;*/
+/*    -fx-background-color: #91ECAF;*/
+/*    -fx-background-radius: 5;*/
+/*    -fx-background-insets: 1.5 1;*/
+/*    -fx-padding: 0 0 10 0;*/
+/*    -fx-effect: dropshadow(two-pass-box, #0fc649,15,0.0,0.1,3);*/
+/*}*/
+/*.table-cell{*/
+/*    -fx-border-color: #93f9b911;*/
+/*    -fx-border-width: 0 0.7 ;*/
+/*    -fx-alignment: CENTER;*/
+/*    !*-fx-text-fill: #5d5a5a;*!*/
+/*    -fx-font-weight: 200;*/
+/*}*/
+
+/*.table-view .column-header, .table-view .filler{*/
+/*    -fx-size: 40;*/
+/*    -fx-border-width: 0 0 0 0;*/
+/*    -fx-background-color: transparent;*/
+/*}*/
+/*.table-view .column-header-background column-header{*/
+/*    -fx-text-background-color: #f0f6f8;*/
+/*}*/
+/*.table-view .table-cell{*/
+/*    -fx-border-color: black;*/
+/*    -fx-padding: 2 0 2 3px;*/
+/*}*/
+/*.table-row-cell:hover {*/
+/*    -fx-background-color: #93f9b911;*/
+/*    -fx-text-background-color: red;*/
+/*}*/
+/*.table-row-cell:odd{*/
+/*    -fx-text-fill: #9a9696;*/
+/*    -fx-font-size: 15;*/
+/*    -fx-background-color: #19e81f;*/
+/*    -fx-background-insets: 0, 1 0 1 0;*/
+/*    -fx-padding: 0.0em;*/
+/*}*/
+/*.table-row-cell:even{*/
+/*    -fx-text-fill: #f5faf6;*/
+/*    -fx-font-size: 15;*/
+/*    -fx-background-color: #92f795;*/
+/*    -fx-background-insets: 0, 1 0 1 0;*/
+/*    -fx-padding: 0.0em;*/
+/*}*/
+
+.fromdown{
+    -fx-background-color: #f0f6f8,
+            #93f9b911,
+    #125d32,
+    #05f807,
+    #5ef35c,
+    #73f371,
+    #088308,
+    #06d606,
+            #91ECAF,
+            #0fc649,
+            #93f9b911,
+    #5adb14,
+            #f0f6f8,
+            #93f9b911,
+            #9a9696,
+            #19e81f,
+    #f5faf6,
+            #92f795,
+            #14d607,
+            #09ca65,
+            #06520a,
+            #04c13a,
+            #4CF540;
+}

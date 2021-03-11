@@ -1,0 +1,31 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-Jan-2021, 19:23:50
+    Author     : NiTrO
+*/
+
+.table-view{
+    -fx-background-color: grey;
+    -fx-background-radius: 30;    
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #E4E4E4;
+    -fx-background-radius: 30;
+    -fx-background-insets: 0 0 10 0;
+    -fx-padding: 0 0 10 0;
+    -fx-effect: dropshadow(two-pass-box, #BCBCBC,15,0.0,0.1,3);
+}
+.table-cell{
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header, .table-view .filler{
+    -fx-size: 40;
+    -fx-border-width: 0 0 10 0;
+    -fx-background-color: transparent;
+}

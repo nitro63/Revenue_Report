@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="masterCenterTemplate" alignment="CENTER" prefHeight="518.0" prefWidth="950.0" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="67.0" prefWidth="1030.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="55.0" prefWidth="124.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="cmbMasterCentersYear" onAction="#SelectedYear" prefHeight="25.0" prefWidth="167.0" promptText="Year" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="btnShowReport" mnemonicParsing="false" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text="Show Report" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <TableView fx:id="revenueCentersTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="1460.0">
+         <columns>
+            <TableColumn fx:id="revenueCenters" maxWidth="865.0000076293945" prefWidth="848.0000076293945" text="REVENUE CENTERS">
+               <columns>
+                  <TableColumn fx:id="revenueCenter" prefWidth="126.0" text="REVENUE CENTER" />
+                  <TableColumn fx:id="year" prefWidth="618.0" text="YEAR: #">
+                     <columns>
+                        <TableColumn fx:id="january" prefWidth="100.0" text="January" />
+                        <TableColumn fx:id="february" prefWidth="100.0" text="February" />
+                        <TableColumn fx:id="march" prefWidth="100.0" text="March" />
+                        <TableColumn fx:id="april" prefWidth="100.0" text="April" />
+                        <TableColumn fx:id="may" prefWidth="100.0" text="May" />
+                        <TableColumn fx:id="june" prefWidth="100.0" text="June" />
+                        <TableColumn fx:id="july" prefWidth="100.0" text="July" />
+                        <TableColumn fx:id="august" prefWidth="100.0" text="August" />
+                        <TableColumn fx:id="september" prefWidth="100.0" text="September" />
+                        <TableColumn fx:id="october" prefWidth="100.0" text="October" />
+                        <TableColumn fx:id="november" prefWidth="100.0" text="November" />
+                        <TableColumn fx:id="december" prefWidth="100.0" text="December" />
+                        <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
+                     </columns>
+                  </TableColumn>
+               </columns>
+            </TableColumn>
+         </columns>
+      </TableView>
+   </children>
+</VBox>

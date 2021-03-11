@@ -1,0 +1,22 @@
+
+//                  float totalAmoun;
+//       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+Item+"' AND `revenueWeek` = '"+week+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'");
+//       ResultSet Rs = stmnt.executeQuery();
+//       ResultSetMetaData Meta= Rs.getMetaData();
+//       int row = 0 ;        
+//       int Col = Meta.getColumnCount();
+//       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+//       while(Rs.next()){//looping through the retrieved revenueItems result set
+//           for(int j=1; j<=Col; j++){
+//               if(j == 1){
+//           String revitem =Rs.getObject(j).toString();
+//           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
+//               }
+//           }
+//       }
+//          System.out.println(Amount);
+//        totalAmoun = 0;
+//        for(int i = 0; i < Amount.size(); i++){
+//            totalAmoun += Amount.get(i);
+//        }
+//        weekSum = totalAmoun;

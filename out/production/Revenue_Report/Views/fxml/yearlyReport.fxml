@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="yearlyTemplate" alignment="CENTER" prefHeight="518.0" prefWidth="950.0" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="67.0" prefWidth="1030.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <ComboBox fx:id="cmbReportCent" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="167.0" promptText="Revenue Center" />
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="From :  " />
+                  <ComboBox fx:id="cmbReportYear1" onAction="#SelectedYear" prefHeight="25.0" prefWidth="167.0" promptText="Year" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="To :  " />
+                  <ComboBox fx:id="cmbReportYear2" prefHeight="25.0" prefWidth="167.0" promptText="Year" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="btnShowReport" mnemonicParsing="false" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text="Show Report" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <TableView fx:id="yearlyTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="738.0" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn fx:id="revenueCenter" maxWidth="865.0000076293945" prefWidth="848.0000076293945" text="REVENUE CENTER">
+               <columns>
+                  <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
+                  <TableColumn fx:id="yearRange" prefWidth="618.0" text="FROM: # TO: #">
+                     <columns>
+                        <TableColumn fx:id="year1" prefWidth="100.0" text="YEAR" />
+                        <TableColumn fx:id="year2" prefWidth="100.0" text="YEAR" />
+                        <TableColumn fx:id="year3" prefWidth="100.0" text="YEAR" />
+                        <TableColumn fx:id="year4" prefWidth="100.0" text="YEAR" />
+                        <TableColumn fx:id="year5" prefWidth="100.0" text="YEAR" />
+                        <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
+                     </columns>
+                  </TableColumn>
+               </columns>
+            </TableColumn>
+         </columns>
+      </TableView>
+   </children>
+</VBox>

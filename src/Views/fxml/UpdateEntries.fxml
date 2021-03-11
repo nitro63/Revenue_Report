@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="661.0" prefWidth="1125.0" style="-fx-background-color: #f0f6f8;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UpdateEntriesController">
+   <children>
+      <Separator layoutX="306.0" layoutY="34.0" orientation="VERTICAL" prefHeight="553.0" prefWidth="0.0" style="-fx-background-color: #263238;" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="34.0" />
+      <TableView fx:id="tblValueBookStocks" layoutX="331.0" layoutY="46.0" prefHeight="530.0" prefWidth="771.0" visible="false" AnchorPane.leftAnchor="331.0" AnchorPane.rightAnchor="23.0">
+         <columns>
+            <TableColumn fx:id="colStckMonth" editable="false" prefWidth="66.0" text="MONTH" />
+            <TableColumn fx:id="colStckDATE" editable="false" minWidth="0.0" prefWidth="68.0" text="DATE" />
+            <TableColumn fx:id="colStckTypeVB" editable="false" prefWidth="109.0">
+               <graphic>
+                  <Label text="TYPE OF VALUE BOOK" textAlignment="CENTER" wrapText="true" />
+               </graphic></TableColumn>
+            <TableColumn editable="false" prefWidth="134.0" text="SERIAL NUMBER">
+               <columns>
+                  <TableColumn fx:id="colSerialFrom" prefWidth="75.0" text="FROM" />
+                  <TableColumn fx:id="colSerialTo" prefWidth="75.0" text="TO" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="colStckQuantity" editable="false" minWidth="18.0" prefWidth="85.0">
+               <graphic>
+                  <Label prefHeight="45.0" prefWidth="100.0" text="QUANTITY(Books/ Booklets)" wrapText="true" />
+               </graphic></TableColumn>
+            <TableColumn fx:id="colStckAmtVal" editable="false" minWidth="-1.0" prefWidth="110.0">
+               <graphic>
+                  <Label prefHeight="34.0" prefWidth="77.0" text="AMOUNT (VALUE)" textAlignment="CENTER" wrapText="true" />
+               </graphic></TableColumn>
+            <TableColumn fx:id="colStckPurAmt" editable="false" prefWidth="116.0">
+               <graphic>
+                  <Label text="PURCHASE AMOUNT" textAlignment="CENTER" wrapText="true" />
+               </graphic></TableColumn>
+         </columns>
+         <effect>
+            <DropShadow />
+         </effect>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <TableView fx:id="tblTargetEntries" layoutX="454.0" layoutY="55.0" prefHeight="510.0" prefWidth="575.0" visible="false" AnchorPane.leftAnchor="454.0" AnchorPane.rightAnchor="96.0">
+         <columns>
+            <TableColumn fx:id="colTargCenter" editable="false" prefWidth="230.0" text="REVENUE CENTER" />
+            <TableColumn fx:id="colTargAmount" editable="false" prefWidth="204.0" text="AMOUNT" />
+            <TableColumn fx:id="colTargYear" editable="false" prefWidth="140.0" text="YEAR" />
+         </columns>
+         <effect>
+            <DropShadow height="62.51" radius="32.2375" width="68.44" />
+         </effect>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <TableView fx:id="tblCollectionEntries" layoutX="363.0" layoutY="55.0" prefHeight="510.0" prefWidth="706.0" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="56.0">
+         <columns>
+            <TableColumn fx:id="colColCenter" editable="false" prefWidth="73.22222900390625" text="Center" />
+            <TableColumn fx:id="colItemCode" editable="false" prefWidth="82.975341796875" text="Code" />
+            <TableColumn fx:id="colRevItem" editable="false" prefWidth="102.75579833984375" text="Revenue Item" />
+            <TableColumn fx:id="colRevAmt" editable="false" prefWidth="110.671875" text="Amount " />
+            <TableColumn fx:id="colRevDate" editable="false" minWidth="0.0" prefWidth="95.99993896484375" text="Date" />
+            <TableColumn fx:id="colRevWeek" editable="false" prefWidth="56.0" text="Week" />
+            <TableColumn fx:id="colRevMonth" editable="false" prefWidth="105.9305419921875" text="Month" />
+            <TableColumn fx:id="colRevQuarter" prefWidth="64.0" text="Quarter" />
+            <TableColumn fx:id="colRevYear" editable="false" prefWidth="69.0" text="Year" />
+         </columns>
+         <effect>
+            <DropShadow color="#5b5a5a" height="68.44" radius="29.2725" spread="0.26" width="50.65" />
+         </effect>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <TableView fx:id="tblPaymentEntries" layoutX="327.0" layoutY="55.0" prefHeight="510.0" prefWidth="759.0" visible="false" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="39.0">
+         <columns>
+            <TableColumn fx:id="colPayCenter" editable="false" prefWidth="127.0" text="CENTER" />
+            <TableColumn fx:id="colPayGCR" editable="false" prefWidth="119.0" text="GCR NO." />
+            <TableColumn fx:id="colPayAmount" editable="false" prefWidth="119.0" text="AMOUNT" />
+            <TableColumn fx:id="colPayDATE" editable="false" minWidth="0.0" prefWidth="110.0" text="DATE" />
+            <TableColumn fx:id="colColPayMonth" editable="false" prefWidth="134.0" text="MONTH" />
+            <TableColumn fx:id="colPayYear" editable="false" prefWidth="102.0" text="YEAR" />
+            <TableColumn fx:id="colPayType" editable="false" prefWidth="184.0" text="PAYMENT TYPE" />
+         </columns>
+         <effect>
+            <DropShadow />
+         </effect>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label fx:id="lblTitle" layoutX="641.0" text="NAN NAN NAN" AnchorPane.leftAnchor="641.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblChequeDetails" layoutX="360.0" layoutY="55.0" prefHeight="490.0" prefWidth="714.0" visible="false" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="51.0">
+         <columns>
+            <TableColumn fx:id="colChqGCR" editable="false" prefWidth="103.0" text="GCR" />
+            <TableColumn fx:id="colPayChqDate" editable="false" prefWidth="103.0" text="DATE" />
+            <TableColumn fx:id="colChqDate" editable="false" prefWidth="153.0" text="CHEQUE DATE" />
+            <TableColumn fx:id="colChqNmb" editable="false" prefWidth="209.0" text="CHEQUE NUMBER" />
+            <TableColumn fx:id="colBank" editable="false" prefWidth="87.5" text="BANK" />
+            <TableColumn fx:id="colChqAmount" editable="false" prefWidth="163.0" text="AMOUNT" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+         <effect>
+            <DropShadow />
+         </effect>
+      </TableView>
+      <AnchorPane fx:id="paneValueBooks" layoutX="17.0" layoutY="155.0" prefHeight="364.0" prefWidth="283.0" visible="false" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="825.0" AnchorPane.topAnchor="155.0">
+         <children>
+            <AnchorPane layoutX="72.0" layoutY="15.0">
+               <children>
+                  <JFXDatePicker fx:id="entDatePck" defaultColor="#038d1a" editable="false" layoutY="8.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Date" />
+                  <Label fx:id="lblStockDateWarn" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="51.0" layoutY="91.0">
+               <children>
+                  <JFXComboBox fx:id="cmbTypeOfValueBook" focusColor="#0d832d" layoutY="8.0" prefHeight="25.0" prefWidth="160.0" promptText="TYPE OF VALUE BOOK" unFocusColor="#06c329" />
+                  <Label fx:id="lblValueBookWarn" layoutX="24.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="75.0" layoutY="149.0">
+               <children>
+                  <JFXTextField fx:id="txtUnitAmount" alignment="CENTER" focusColor="#0d832d" layoutY="8.0" onKeyTyped="#onlyAmount" prefHeight="25.0" prefWidth="111.0" promptText="Amount Per Book" unFocusColor="#05ae24">
+                     <tooltip>
+                        <Tooltip autoHide="true" contentDisplay="BOTTOM" opacity="0.8" style="-fx-background-color: #263238;" text="Purchase Amount per Value Book " textAlignment="CENTER" />
+                     </tooltip>
+                  </JFXTextField>
+                  <Label fx:id="lblUnitAmountWarn" layoutX="20.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="14.0" layoutY="233.0" maxHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="232.0" style="-fx-border-width: 1.5 1 0 1; -fx-border-color: #1ea82e#0d822c;">
+               <children>
+                  <Label alignment="CENTER" layoutX="40.0" layoutY="-9.0" prefHeight="19.0" prefWidth="142.0" style="-fx-background-color: #0d832d; -fx-font-size: 13;" text="SERIAL NUMBER RANGE" textFill="#fefff2" />
+                  <JFXTextField fx:id="txtSerialFrom" alignment="CENTER" focusColor="#0d822c" layoutY="20.0" onKeyTyped="#onlyNumbers" prefHeight="25.0" prefWidth="111.0" promptText="From" unFocusColor="#09d32e" AnchorPane.bottomAnchor="0.0" />
+                  <JFXTextField fx:id="txtSerialTo" alignment="CENTER" focusColor="#0d832d" layoutX="121.0" layoutY="32.0" onKeyTyped="#onlyNumbers" prefHeight="25.0" prefWidth="111.0" promptText="To" unFocusColor="#06c329" AnchorPane.bottomAnchor="0.0" />
+                  <Label fx:id="lblFromWarn" layoutY="4.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblToWarn" layoutX="136.0" layoutY="6.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="259.0" layoutY="234.0" prefHeight="44.0" prefWidth="3.0">
+               <children>
+                  <AnchorPane layoutY="13.0" prefHeight="19.0" prefWidth="21.0" style="-fx-background-color: #a5dcf1; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 2;">
+                     <children>
+                        <Label alignment="CENTER" layoutX="6.0" layoutY="-1.0" prefHeight="19.0" prefWidth="10.0" text="?">
+                           <tooltip>
+                              <Tooltip contentDisplay="CENTER" minWidth="-Infinity" prefWidth="300.0" text="Enter the range of the serials of  value books bought (i.e the first serial of the first book/booklet in the first section and the last serial of the last book in the last section.)  Note it should all be in the same range if not then enter them separately because the range determines the Number of Books bought." textAlignment="CENTER" wrapText="true" />
+                           </tooltip>
+                           <font>
+                              <Font name="Arial Black" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <JFXButton fx:id="btnReload" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" layoutX="119.0" layoutY="587.0" onAction="#reloadAll" prefHeight="59.0" prefWidth="61.0" ripplerFill="#09b51a" style="-fx-background-color: #75e480;" AnchorPane.bottomAnchor="15.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <FontAwesomeIconView fill="#263238" glyphName="REFRESH" size="30" />
+         </graphic>
+         <font>
+            <Font size="15.0" />
+         </font>
+         <tooltip>
+            <Tooltip text="Reload All Entries" />
+         </tooltip>
+      </JFXButton>
+      <AnchorPane layoutX="14.0" layoutY="34.0">
+         <children>
+            <JFXComboBox fx:id="cmbEntryType" focusColor="#078d24" labelFloat="true" prefHeight="25.0" prefWidth="118.0" promptText="Select Entry Type" unFocusColor="#0aab27" />
+            <JFXComboBox fx:id="cmbEntryYear" focusColor="#078d24" labelFloat="true" layoutX="144.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Year" unFocusColor="#0aab27" />
+            <JFXComboBox fx:id="cmbEntryMonth" focusColor="#078d24" labelFloat="true" layoutY="47.0" prefHeight="25.0" prefWidth="111.0" promptText="Select Month" style="-fx-background-radius: 10; -fx-border-radius: 10;" unFocusColor="#0aab27" />
+            <JFXButton fx:id="btnGetEntries" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="156.0" layoutY="46.0" onAction="#showEntries" prefHeight="31.0" prefWidth="99.0" ripplerFill="#013c05" style="-fx-background-radius: 10 10 10 10;" text="Get Entries">
+               <effect>
+                  <DropShadow height="68.44" radius="35.945" width="77.34" />
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="paneTarget" layoutX="16.0" layoutY="167.0" prefHeight="268.0" prefWidth="268.0" visible="false">
+         <children>
+            <AnchorPane layoutX="85.0" layoutY="94.0">
+               <children>
+                  <Spinner fx:id="spnTargYear" prefHeight="30.0" prefWidth="111.0" />
+                  <Label fx:id="lblYear" layoutX="30.0" layoutY="6.0" text="Year" />
+                  <Label fx:id="lblTargYearWarn" layoutX="9.0" layoutY="-8.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <JFXTextField fx:id="txtTargetAmount" alignment="CENTER" focusColor="#0d832d" labelFloat="true" layoutX="75.0" layoutY="201.0" onKeyTyped="#onlyAmount" prefHeight="25.0" prefWidth="118.0" promptText="Amount" unFocusColor="#0aab27" />
+            <Label fx:id="lblTargetWarn" layoutX="88.0" layoutY="193.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="9.0" layoutY="510.0" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="835.0">
+         <children>
+            <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" text="Clear" />
+            <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="211.0" layoutY="11.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" text="Update" />
+            <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="117.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" text="Delete" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="paneRevenueCollection" layoutX="25.0" layoutY="188.0" prefHeight="286.0" prefWidth="268.0" visible="false">
+         <children>
+            <JFXDatePicker fx:id="entDatePckRevCol" defaultColor="#05801c" editable="false" layoutX="76.0" layoutY="25.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Date" />
+            <JFXComboBox fx:id="cmbRevenueItem" focusColor="#0d832d" labelFloat="true" layoutX="55.0" layoutY="97.0" prefHeight="25.0" prefWidth="160.0" promptText="REVENUE ITEM" unFocusColor="#07a120" />
+            <JFXTextField fx:id="txtRevenueAmount" alignment="CENTER" focusColor="#0d832d" labelFloat="true" layoutX="76.0" layoutY="176.0" onKeyTyped="#onlyAmount" prefHeight="25.0" prefWidth="111.0" promptText="Amount" unFocusColor="#058d1e" />
+            <Label fx:id="lblDatePckRevWarn" layoutX="66.0" layoutY="17.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRevItemWarn" layoutX="76.0" layoutY="80.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRevAmountWarn" layoutX="89.0" layoutY="168.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="panePayment" layoutX="8.0" layoutY="130.0" prefHeight="380.0" prefWidth="292.0" visible="false">
+         <children>
+            <AnchorPane layoutX="71.0" layoutY="242.0">
+               <children>
+                  <Spinner fx:id="spnPaymentYear" layoutX="-5.0" prefHeight="30.0" prefWidth="111.0" />
+                  <Label fx:id="lblYearPayment" layoutX="24.0" layoutY="6.0" text="YEAR" />
+               </children>
+            </AnchorPane>
+            <JFXTextField fx:id="txtPaymentAmount" alignment="CENTER" focusColor="#0d832d" labelFloat="true" layoutX="67.0" layoutY="124.0" onKeyTyped="#onlyAmount" prefHeight="25.0" prefWidth="118.0" promptText="AMOUNT" unFocusColor="#0aab27" />
+            <JFXDatePicker fx:id="entDatePckPayment" defaultColor="#08b527" editable="false" layoutX="72.0" layoutY="14.0" prefHeight="25.0" prefWidth="118.0" promptText="SELECT DATE" />
+            <JFXTextField fx:id="txtPaymentGCR" alignment="CENTER" focusColor="#0d832d" labelFloat="true" layoutX="70.0" layoutY="68.0" onKeyTyped="#onlyNumbers" prefHeight="25.0" prefWidth="111.0" promptText="GCR" unFocusColor="#0aab27" />
+            <JFXComboBox fx:id="cmbCollectionMonth" focusColor="#0d832d" layoutX="67.0" layoutY="182.0" prefHeight="25.0" prefWidth="160.0" promptText="MONTH OF COLLECTION" unFocusColor="#06a423" />
+            <JFXComboBox fx:id="cmbPaymentType" focusColor="#0d832d" layoutX="69.0" layoutY="307.0" prefHeight="25.0" prefWidth="111.0" promptText="PAYMENT TYPE" unFocusColor="#059420" />
+            <Label fx:id="lblDatePayWarn" layoutX="78.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPayGCRWarn" layoutX="78.0" layoutY="58.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPayAmtWarn" layoutX="75.0" layoutY="112.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblColMonthWarn" layoutX="78.0" layoutY="170.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPayYearWarn" layoutX="75.0" layoutY="228.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPayTpeWarn" layoutX="75.0" layoutY="290.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="paneCheque" layoutX="31.0" layoutY="149.0" prefHeight="337.0" prefWidth="246.0" visible="false">
+         <children>
+            <JFXComboBox fx:id="cmbGCR" focusColor="#0ac31f" layoutX="55.0" layoutY="21.0" prefHeight="25.0" prefWidth="92.0" promptText="GCR" unFocusColor="#11da4a" />
+            <JFXDatePicker fx:id="dtpckChequeDate" defaultColor="#0fc649" editable="false" layoutX="54.0" layoutY="84.0" prefHeight="25.0" prefWidth="116.0" promptText="MM/DD/YYYY" />
+            <JFXTextField fx:id="txtChqNmb" focusColor="#0ed75e" layoutX="54.0" layoutY="149.0" onKeyTyped="#onlyNumbers" promptText="Cheque Number" unFocusColor="#11c939" />
+            <JFXTextField fx:id="txtBankName" focusColor="#17c651" layoutX="54.0" layoutY="211.0" promptText="Bank" unFocusColor="#17d72d" />
+            <JFXTextField fx:id="txtChqAmount" focusColor="#13e428" layoutX="54.0" layoutY="273.0" onKeyTyped="#onlyAmount" promptText="Amount" unFocusColor="#0fb51a" />
+            <Label fx:id="lblGCRChqWarn" layoutX="55.0" layoutY="13.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblChequeDateWarn" layoutX="55.0" layoutY="68.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblChqNmbWarn" layoutX="55.0" layoutY="141.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblBankNameWarn" layoutX="55.0" layoutY="203.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblChqAmtWarn" layoutX="55.0" layoutY="265.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="paneNothing" layoutX="419.0" layoutY="70.0" prefHeight="482.0" prefWidth="645.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="419.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="70.0">
+         <children>
+            <Label layoutX="20.0" layoutY="198.0" prefHeight="122.0" prefWidth="643.0" rotate="-33.7" text="NAN NAN NAN" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="83.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="paneUpdateNothing" layoutX="22.0" layoutY="145.0" prefHeight="364.0" prefWidth="262.0">
+         <children>
+            <Label layoutX="-10.0" layoutY="106.0" prefHeight="122.0" prefWidth="292.0" rotate="-53.1" text="SELECT AN ENTRY TYPE TO EDIT" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+   <stylesheets>
+      <URL value="@../Stylesheets/updateEntries.css" />
+      <URL value="@../Stylesheets/tableview.css" />
+   </stylesheets>
+</AnchorPane>
