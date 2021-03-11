@@ -103,7 +103,7 @@ public class Payment_EntriesController implements Initializable {
         String Date, Item, Code, Month, Amount, Week, Year, RevCent, GCR, Type;
     ObservableList<String> regGcr = FXCollections.observableArrayList();
     Map<String, ArrayList<String>> monthGCR = new HashMap<>();
-    Map<String, > dateGCR = new HashMap<>();
+    Map<String, Map<String, ArrayList<String>>> dateGCR = new HashMap<>();
     int count;
     @FXML
     private TextField txtEntGCR;
@@ -305,8 +305,7 @@ public class Payment_EntriesController implements Initializable {
                     count++;
                     if(dateGCR.isEmpty() || !dateGCR.containsKey(Date)){
                         dateGCR.put(Date, new HashMap<>());
-                        dateGCR.get(Date).put(monthGCR);
-                                monthGCR.put(Month, new ArrayList<>());
+                        dateGCR.get(Date).put(Month, new ArrayList<>());
                         monthGCR.get(Month).add(txtEntGCR.getText());
                         regGcr.add(txtEntGCR.getText());
                     }else if(dateGCR.containsKey(Date) && !dateGCR.get(Date).containsKey(Month)){
