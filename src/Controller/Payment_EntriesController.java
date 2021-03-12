@@ -85,7 +85,7 @@ public class Payment_EntriesController implements Initializable {
     
     entries_sideController app;
     
-    private final GetRevCenter GetCenter;
+    public final GetRevCenter GetCenter;
    
         
         ObservableList<String> registerItem = FXCollections.observableArrayList(); 
@@ -306,15 +306,21 @@ public class Payment_EntriesController implements Initializable {
                     if(dateGCR.isEmpty() || !dateGCR.containsKey(Date)){
                         dateGCR.put(Date, new HashMap<>());
                         dateGCR.get(Date).put(Month, new ArrayList<>());
-                        monthGCR.get(Month).add(txtEntGCR.getText());
+                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
                         regGcr.add(txtEntGCR.getText());
                     }else if(dateGCR.containsKey(Date) && !dateGCR.get(Date).containsKey(Month)){
                         dateGCR.get(Date).put(Month, new ArrayList<>());
-                        monthGCR.get(Month).add(txtEntGCR.getText());
-                            regGcr.add(txtEntGCR.getText());
-                    }else if (dateGCR.containsKey(Date) && dateGCR.get(Date).containsKey(Month) && !dateGCR.get(Date).get(Month).contains(txtEntGCR.getText())){
-                        monthGCR.get(Month).add(txtEntGCR.getText());
+                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
                         regGcr.add(txtEntGCR.getText());
+                    }else if (dateGCR.containsKey(Date) && dateGCR.get(Date).containsKey(Month) && !dateGCR.get(Date).get(Month).contains(txtEntGCR.getText())){
+                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
+                        regGcr.add(txtEntGCR.getText());
+                    }
+                    if(monthGCR.isEmpty() || !monthGCR.containsKey(Month)){
+                        monthGCR.put(Month, new ArrayList<>());
+                        monthGCR.get(Month).add(txtEntGCR.getText());
+                    }else if(monthGCR.containsKey(Month) && !monthGCR.get(Month).contains(txtEntGCR.getText())){
+                        monthGCR.get(Month).add(txtEntGCR.getText());
                     }
                 }
                 System.out.println(dateGCR);
@@ -456,8 +462,8 @@ public class Payment_EntriesController implements Initializable {
                         // normally, you would just use the default alert positioning,
                         // but for this simple sample the main stage is small,
                         // so explicitly position the alert so that the main window can still be seen.
-                        closeConfirmation.setX(stg.getX());
-                        closeConfirmation.setY(stg.getY());
+                        closeConfirmation.setX(stg.getX()*2);
+                        closeConfirmation.setY(stg.getY()*2);
 
                         Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
                         if (!ButtonType.OK.equals(closeResponse.get())) {

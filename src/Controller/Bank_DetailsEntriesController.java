@@ -82,6 +82,9 @@ public class Bank_DetailsEntriesController implements Initializable {
     private TableColumn<GetBankDetails, String> colGCR;
 
     @FXML
+    private TableColumn<GetBankDetails, String> colMonth;
+
+    @FXML
     private TableColumn<GetBankDetails, String> colDate;
 
     @FXML
@@ -186,6 +189,8 @@ public class Bank_DetailsEntriesController implements Initializable {
         }else{
             stage.close();
             colEnt.regGcr.clear();
+            colEnt.monthGCR.clear();
+            colEnt.dateGCR.clear();
             colEnt.count = 0;
         }
 
@@ -193,6 +198,8 @@ public class Bank_DetailsEntriesController implements Initializable {
 
     @FXML
     void SaveToDatabase(ActionEvent event) throws SQLException {
+        Node node =(Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
         getData = new GetBankDetails();
         Alert saveConfirmation = new Alert(
                 Alert.AlertType.CONFIRMATION,
@@ -221,6 +228,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                 getData = tblCollectEnt.getItems().get(i);
                 int acGCR = Integer.parseInt(getData.getGCR());
                 int acChqNmb = Integer.parseInt(getData.getChequeNumber());
+                String acMonth = getData.getMonth();
                 String amount = getData.getAmount();
                 Matcher m = colEnt.p.matcher(amount);
                 amount = m.replaceAll("");
@@ -228,10 +236,19 @@ public class Bank_DetailsEntriesController implements Initializable {
                 String acDATE =getData.getDate();
                 String acChqDate =getData.getChequeDate();
                 String acBank =getData.getBank();
-                stmnt = con.prepareStatement("INSERT INTO `cheque_details`(`gcr`, `date`, `cheque_date`, `cheque_number`, `bank`, `amount`) VALUES ('"+acGCR+"', '"+acDATE+"' ,'"+acChqDate+"', '"+acChqNmb+"', '"+acBank+"', '"+acAMOUNT+"')");
+                String center = colEnt.GetCenter.getRevCenter();
+                System.out.println(center);
+                stmnt = con.prepareStatement("INSERT INTO `cheque_details`(`revCenter`, `gcr`,`month`, `date`, `cheque_date`, `cheque_number`, `bank`, `amount`) VALUES ('"+center+"','"+acGCR+"', '"+acMonth+"','"+acDATE+"' ,'"+acChqDate+"', '"+acChqNmb+"', '"+acBank+"', '"+acAMOUNT+"')");
                 stmnt.executeUpdate();
             }
         }
+        tblCollectEnt.getItems().clear();
+        colEnt.regGcr.clear();
+        colEnt.monthGCR.clear();
+        colEnt.dateGCR.clear();
+        colEnt.count = 0;
+        stage.close();
+
     }
 
     @FXML
@@ -291,6 +308,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                     Condition =false;
                 }else{
                     colGCR.setCellValueFactory(data -> data.getValue().GCRProperty());
+                    colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
                     colDate.setCellValueFactory(data -> data.getValue().dateProperty());
                     colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
                     colChqNmb.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
@@ -305,7 +323,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                         txtAmount.clear();
                         Condition =false;
                     }else{
-                        getReport = new GetBankDetails(GCR,Date, chqDate, chqNumber, Bank, Amount);
+                        getReport = new GetBankDetails(GCR, Month, Date, chqDate, chqNumber, Bank, Amount);
                         tblCollectEnt.getItems().add(getReport);
                         Condition = false;
                         clearEnt();

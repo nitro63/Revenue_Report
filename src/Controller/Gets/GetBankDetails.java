@@ -4,11 +4,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetBankDetails {
-    StringProperty GCR, Date, chequeDate, chequeNumber, Bank, Amount;
+    StringProperty GCR, Date, chequeDate, chequeNumber, Bank, Amount, Month;
     public GetBankDetails(){
     }
-    public GetBankDetails(String GCR, String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
+    public GetBankDetails(String GCR, String Month, String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
         this.GCR = new SimpleStringProperty(GCR);
+        this.Month = new SimpleStringProperty(Month);
         this.Date = new SimpleStringProperty(Date);
         this.chequeDate = new SimpleStringProperty(chequeDate);
         this.chequeNumber = new SimpleStringProperty(chequeNumber);
@@ -18,6 +19,18 @@ public class GetBankDetails {
 
     public String getGCR() {
         return GCR.get();
+    }
+
+    public String getMonth() {
+        return Month.get();
+    }
+
+    public StringProperty monthProperty() {
+        return Month;
+    }
+
+    public void setMonth(String month) {
+        this.Month.set(month);
     }
 
     public StringProperty GCRProperty() {
