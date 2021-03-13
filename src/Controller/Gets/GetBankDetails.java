@@ -4,17 +4,30 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetBankDetails {
-    StringProperty GCR, Date, chequeDate, chequeNumber, Bank, Amount, Month;
+    StringProperty GCR, Date,Year, chequeDate, chequeNumber, Bank, Amount, Month;
     public GetBankDetails(){
     }
-    public GetBankDetails(String GCR, String Month, String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
+    public GetBankDetails(String GCR, String Year, String Month, String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
         this.GCR = new SimpleStringProperty(GCR);
+        this.Year = new SimpleStringProperty(Year);
         this.Month = new SimpleStringProperty(Month);
         this.Date = new SimpleStringProperty(Date);
         this.chequeDate = new SimpleStringProperty(chequeDate);
         this.chequeNumber = new SimpleStringProperty(chequeNumber);
         this.Bank = new SimpleStringProperty(Bank);
         this.Amount = new SimpleStringProperty(Amount);
+    }
+
+    public String getYear() {
+        return Year.get();
+    }
+
+    public StringProperty yearProperty() {
+        return Year;
+    }
+
+    public void setYear(String year) {
+        this.Year.set(year);
     }
 
     public String getGCR() {

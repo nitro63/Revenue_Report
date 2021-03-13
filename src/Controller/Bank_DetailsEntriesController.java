@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 
 import Controller.Gets.GetBankDetails;
@@ -22,6 +23,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,6 +84,9 @@ public class Bank_DetailsEntriesController implements Initializable {
     private TableColumn<GetBankDetails, String> colGCR;
 
     @FXML
+    private TableColumn<GetBankDetails, String> colYear;
+
+    @FXML
     private TableColumn<GetBankDetails, String> colMonth;
 
     @FXML
@@ -133,16 +138,19 @@ public class Bank_DetailsEntriesController implements Initializable {
         this.stage = stage;
     }
 
-    String GCR, Date, chqDate, chqNumber, Bank, Amount, Month;
-    int count;
+    String GCR, Date, chqDate, chqNumber, Bank, Amount, Month, Year;
+    ObservableList<String> GCRs = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        for (Entry<String, ArrayList<String>> gcr: colEnt.regGcr.entrySet()) {
+            GCRs.addAll(gcr.getValue());
+        }
         cmbGCR.getItems().clear();
-        cmbGCR.setItems(colEnt.regGcr);
+        cmbGCR.setItems(GCRs);
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblCollectEnt.setOnMouseClicked(event -> {
             lblDeleteWarn.setVisible(false);
@@ -273,6 +281,13 @@ public class Bank_DetailsEntriesController implements Initializable {
                 }
 
         }
+
+        for(Map.Entry<String, ArrayList<String>>GCRdate :colEnt.regGcr.entrySet()){
+            if (GCRdate.getValue().contains(GCR)) {
+                Year = GCRdate.getKey();
+            }
+
+        }
         System.out.println(Date+"\n"+colEnt.dateGCR);
         LocalDate date = dtpckChequeDate.getValue();
 
@@ -308,6 +323,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                     Condition =false;
                 }else{
                     colGCR.setCellValueFactory(data -> data.getValue().GCRProperty());
+                    colYear.setCellValueFactory(data -> data.getValue().yearProperty());
                     colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
                     colDate.setCellValueFactory(data -> data.getValue().dateProperty());
                     colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
@@ -323,7 +339,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                         txtAmount.clear();
                         Condition =false;
                     }else{
-                        getReport = new GetBankDetails(GCR, Month, Date, chqDate, chqNumber, Bank, Amount);
+                        getReport = new GetBankDetails(GCR, Year, Month, Date, chqDate, chqNumber, Bank, Amount);
                         tblCollectEnt.getItems().add(getReport);
                         Condition = false;
                         clearEnt();

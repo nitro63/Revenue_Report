@@ -101,7 +101,7 @@ public class Payment_EntriesController implements Initializable {
 //    public  Stage stg;
         
         String Date, Item, Code, Month, Amount, Week, Year, RevCent, GCR, Type;
-    ObservableList<String> regGcr = FXCollections.observableArrayList();
+    Map<String, ArrayList<String>> regGcr = new HashMap<>();
     Map<String, ArrayList<String>> monthGCR = new HashMap<>();
     Map<String, Map<String, ArrayList<String>>> dateGCR = new HashMap<>();
     int count;
@@ -307,20 +307,23 @@ public class Payment_EntriesController implements Initializable {
                         dateGCR.put(Date, new HashMap<>());
                         dateGCR.get(Date).put(Month, new ArrayList<>());
                         dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                        regGcr.add(txtEntGCR.getText());
                     }else if(dateGCR.containsKey(Date) && !dateGCR.get(Date).containsKey(Month)){
                         dateGCR.get(Date).put(Month, new ArrayList<>());
                         dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                        regGcr.add(txtEntGCR.getText());
                     }else if (dateGCR.containsKey(Date) && dateGCR.get(Date).containsKey(Month) && !dateGCR.get(Date).get(Month).contains(txtEntGCR.getText())){
                         dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                        regGcr.add(txtEntGCR.getText());
                     }
                     if(monthGCR.isEmpty() || !monthGCR.containsKey(Month)){
                         monthGCR.put(Month, new ArrayList<>());
                         monthGCR.get(Month).add(txtEntGCR.getText());
                     }else if(monthGCR.containsKey(Month) && !monthGCR.get(Month).contains(txtEntGCR.getText())){
                         monthGCR.get(Month).add(txtEntGCR.getText());
+                    }
+                    if(regGcr.isEmpty() || !regGcr.containsKey(Year)){
+                        regGcr.put(Year, new ArrayList<>());
+                        regGcr.get(Year).add(txtEntGCR.getText());
+                    }else if(regGcr.containsKey(Year) && !regGcr.get(Year).contains(txtEntGCR.getText())){
+                        regGcr.get(Year).add(txtEntGCR.getText());
                     }
                 }
                 System.out.println(dateGCR);
