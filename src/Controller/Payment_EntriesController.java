@@ -149,7 +149,6 @@ public class Payment_EntriesController implements Initializable {
         tblCollection.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);tblCollection.setOnMouseClicked(e ->{
             lblDeleteWarn.setVisible(false);
         });
-        System.out.println(spnColYear.getStyleClass().getClass());
     }  
         
     @FXML
@@ -326,7 +325,6 @@ public class Payment_EntriesController implements Initializable {
                         regGcr.get(Year).add(txtEntGCR.getText());
                     }
                 }
-                System.out.println(dateGCR);
         colAMOUNT.setCellValueFactory(data -> data.getValue().AmountProperty());
         colDATE.setCellValueFactory(data -> data.getValue().DateProperty());
         colGCR.setCellValueFactory(data -> data.getValue().GCRProperty());
@@ -386,7 +384,10 @@ public class Payment_EntriesController implements Initializable {
         ResultSet rs;
         ResultSetMetaData rm;
         
-        for(int h = 0; h<tblCollection.getItems().size(); h++){
+        for(int h = 0; h<=tblCollection.getItems().size(); h++){
+            if( h==tblCollection.getItems().size()){
+                tblCollection.getItems().clear();
+            }else {
             getData = tblCollection.getItems().get(h);
             int acGCR = Integer.parseInt(getData.getGCR());
             String amount = getData.getAmount();
@@ -427,9 +428,11 @@ public class Payment_EntriesController implements Initializable {
 //                stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`, `Amount`, `Date`, `Month`, `Year`) VALUES ('"+acCENTER+"', '"+acGCR+"' ,'"+acAMOUNT+"', '"+acDATE+"', '"+acMonth+"', '"+acYEAR+"')");
 //                stmnt.executeUpdate();
 //            }
-            
-                stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`, `Amount`, `Date`, `Month`, `Year`, `payment_type`) VALUES ('"+acCENTER+"', '"+acGCR+"' ,'"+acAMOUNT+"', '"+acDATE+"', '"+acMonth+"', '"+acYEAR+"', '"+acType+"')");
+
+
+                stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`, `Amount`, `Date`, `Month`, `Year`, `payment_type`) VALUES ('" + acCENTER + "', '" + acGCR + "' ,'" + acAMOUNT + "', '" + acDATE + "', '" + acMonth + "', '" + acYEAR + "', '" + acType + "')");
                 stmnt.executeUpdate();
+            }
         }
         if(!regGcr.isEmpty()){
             Main st =new Main();
@@ -458,7 +461,11 @@ public class Payment_EntriesController implements Initializable {
                                 ButtonType.OK
                         );
                         exitButton.setText("Exit");
-                        closeConfirmation.setHeaderText("Confirm Exit");
+                        if(!bnkDtls.getTableView().getItems().isEmpty()) {
+                            closeConfirmation.setHeaderText("You will loose all unsaved data \n If you have unsaved data please click 'Cancel' to abort exit" + "\n" + "Confirm Exit");
+                        }else{
+                            closeConfirmation.setHeaderText("Confirm Exit");
+                        }
                         closeConfirmation.initModality(Modality.APPLICATION_MODAL);
                         closeConfirmation.initOwner(stg);
 
@@ -470,10 +477,11 @@ public class Payment_EntriesController implements Initializable {
 
                         Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
                         if (!ButtonType.OK.equals(closeResponse.get())) {
-                            event.consume();
+                            we.consume();
                         }else{
                             regGcr.clear();
                             count = 0;
+
                         }
                     }
                 });
@@ -482,8 +490,7 @@ public class Payment_EntriesController implements Initializable {
                 e.printStackTrace();
             }
         }
-        System.out.println(regGcr+"  "+app.RevenueCenters+" "+count);
-        tblCollection.getItems().clear();
+
         
     }
 

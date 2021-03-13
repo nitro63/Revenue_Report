@@ -291,7 +291,10 @@ public class valueBooksEntriesController implements Initializable {
         getData = new GetValueBooksEntries();
         ResultSet rs;
         ResultSetMetaData rm;
-        for(int f = 0; f<tblValueBookStocks.getItems().size(); f++){
+        for(int f = 0; f<=tblValueBookStocks.getItems().size(); f++) {
+            if (f == tblValueBookStocks.getItems().size()) {
+                tblValueBookStocks.getItems().clear();
+            }else {
             getData = tblValueBookStocks.getItems().get(f);
             Month = getData.getMonth();
             Date = getData.getDate();
@@ -303,11 +306,11 @@ public class valueBooksEntriesController implements Initializable {
             float acAmount = Float.parseFloat(getData.getValAmount());
             float acPurAmount = Float.parseFloat(getData.getPurAmount());
             String remarks = "Initial Entry";
-            stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks`) VALUES ('"+revCent+"', '"+acYear+"', '"+Month+"', '"+Date+"', '"+typeOfValBk+"', '"+acFirstSerial+"','"+acLastSerial+"', '"+acQuantity+"', '"+acAmount+"', '"+acPurAmount+"','"+remarks+"')");
+            stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" + Month + "', '" + Date + "', '" + typeOfValBk + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount + "', '" + acPurAmount + "','" + remarks + "')");
             stmnt.executeUpdate();
         }
-        tblValueBookStocks.getItems().clear();
     }
+}
 
     public void CancelEntries(ActionEvent actionEvent) {
         tblValueBookStocks.getItems().clear();

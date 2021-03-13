@@ -47,8 +47,6 @@ public class BankDetailsReportController implements Initializable {
     @FXML
     private TableColumn<GetBankDetails, String> colAmount;
     @FXML
-    private TableColumn<GetBankDetails, String> colRemarks;
-    @FXML
     private Label lblMonth;
     @FXML
     private JFXComboBox<String> cmbRevCenter;

@@ -32,6 +32,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import org.apache.commons.lang3.StringUtils;
 import revenue_report.DBConnection;
@@ -129,6 +130,9 @@ public class Bank_DetailsEntriesController implements Initializable {
     public Bank_DetailsEntriesController() throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
     }
+    public TableView getTableView(){
+        return tblCollectEnt;
+    }
 
     public void setAppController(Payment_EntriesController app){
         this.colEnt = app;
@@ -187,7 +191,11 @@ public class Bank_DetailsEntriesController implements Initializable {
         );
         exitButton.setText("Exit");
         closeConfirmation.setTitle("Abort Entries");
-        closeConfirmation.setHeaderText("Confirm Exit");
+        if(!tblCollectEnt.getItems().isEmpty()) {
+            closeConfirmation.setHeaderText("You will loose all unsaved data \n If you have unsaved data please click 'Cancel' to abort exit" + "\n" + "Confirm Exit");
+        }else{
+            closeConfirmation.setHeaderText("Confirm Exit");
+        }
         closeConfirmation.initModality(Modality.APPLICATION_MODAL);
         closeConfirmation.initOwner(stage);
 
@@ -225,8 +233,8 @@ public class Bank_DetailsEntriesController implements Initializable {
         // normally, you would just use the default alert positioning,
         // but for this simple sample the main stage is small,
         // so explicitly position the alert so that the main window can still be seen.
-        saveConfirmation.setX(stage.getX());
-        saveConfirmation.setY(stage.getY());
+        saveConfirmation.setX(stage.getX()*2.5);
+        saveConfirmation.setY(stage.getY()*2.5);
 
         Optional<ButtonType> saveResponse = saveConfirmation.showAndWait();
         if (!ButtonType.OK.equals(saveResponse.get())) {
@@ -245,8 +253,8 @@ public class Bank_DetailsEntriesController implements Initializable {
                 String acChqDate =getData.getChequeDate();
                 String acBank =getData.getBank();
                 String center = colEnt.GetCenter.getRevCenter();
-                System.out.println(center);
-                stmnt = con.prepareStatement("INSERT INTO `cheque_details`(`revCenter`, `gcr`,`month`, `date`, `cheque_date`, `cheque_number`, `bank`, `amount`) VALUES ('"+center+"','"+acGCR+"', '"+acMonth+"','"+acDATE+"' ,'"+acChqDate+"', '"+acChqNmb+"', '"+acBank+"', '"+acAMOUNT+"')");
+                String year = getData.getYear();
+                stmnt = con.prepareStatement("INSERT INTO `cheque_details`(`revCenter`, `gcr`, `year`, `month`, `date`, `cheque_date`, `cheque_number`, `bank`, `amount`) VALUES ('"+center+"','"+acGCR+"', '"+year+"', '"+acMonth+"','"+acDATE+"' ,'"+acChqDate+"', '"+acChqNmb+"', '"+acBank+"', '"+acAMOUNT+"')");
                 stmnt.executeUpdate();
             }
         }
@@ -273,7 +281,6 @@ public class Bank_DetailsEntriesController implements Initializable {
                 Month = GcRdate.getKey();
             }
         }
-        System.out.println(Month+"\n"+colEnt.monthGCR);
         chqNumber = txtChqNmb.getText();
         for(Map.Entry<String, Map<String, ArrayList<String>>>GCRdate :colEnt.dateGCR.entrySet()){
                 if (GCRdate.getValue().containsKey(Month)) {
@@ -288,7 +295,6 @@ public class Bank_DetailsEntriesController implements Initializable {
             }
 
         }
-        System.out.println(Date+"\n"+colEnt.dateGCR);
         LocalDate date = dtpckChequeDate.getValue();
 
         if(GCR == null){
@@ -347,8 +353,6 @@ public class Bank_DetailsEntriesController implements Initializable {
                 }
             }
         }
-
-        System.out.println(Date);
     }
     void clearEnt(){
         txtAmount.clear();
