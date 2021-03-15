@@ -286,18 +286,6 @@ public class UpdateEntriesController implements Initializable {
         txtTargetAmount.setOnMouseClicked(e -> {
             lblTargetWarn.setVisible(false);
         });
-        if (!targetCondition){
-            paneTarget.setVisible(false);
-            tblTargetEntries.setVisible(false);
-        }
-        if (!bankCondition){
-            paneCheque.setVisible(false);
-            tblChequeDetails.setVisible(false);
-        }
-        if (!collectionCondition){
-            paneRevenueCollection.setVisible(false);
-            tblCollectionEntries.setVisible(false);
-        }
         ObservableList<String> entryType = FXCollections.observableArrayList("Bank Details", "Payments",
                 "Revenue Collection", "Revenue Target", "Value Books Stock");
         cmbEntryType.getItems().addAll(entryType);
@@ -414,6 +402,28 @@ public class UpdateEntriesController implements Initializable {
     private void reloadAll(ActionEvent event) {
     }
 
+    void toggleViews(){
+
+        if (!targetCondition){
+            paneTarget.setVisible(false);
+            tblTargetEntries.setVisible(false);
+        }else {
+            paneTarget.setVisible(true);
+            tblTargetEntries.setVisible(true);
+        }
+        if (!bankCondition){
+            paneCheque.setVisible(false);
+            tblChequeDetails.setVisible(false);
+        }else {
+            paneCheque.setVisible(true);
+            tblChequeDetails.setVisible(true);
+        }
+        if (!collectionCondition){
+            paneRevenueCollection.setVisible(false);
+            tblCollectionEntries.setVisible(false);
+        }
+    }
+
     @FXML
     private void showEntries(ActionEvent event) throws SQLException {
         if (cmbEntryType.getSelectionModel().isEmpty()){
@@ -429,11 +439,16 @@ public class UpdateEntriesController implements Initializable {
                     getTargetEntries();
                     break;
                 case "Bank Details":
+                    if (cmbEntryYear.getSelectionModel().isEmpty()){
+                        lblGetYearWarn.setVisible(true);
+                    }else{
                     targetCondition = false;
                     bankCondition = true;
                     valueBookCondition = false;
                     paymentCondition = false;
                     collectionCondition = false;
+                    getBankDetails();
+                    }
                     break;
 
             }
@@ -455,10 +470,7 @@ public class UpdateEntriesController implements Initializable {
     void getTargetEntries() throws SQLException {
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
-        if (targetCondition){
-            paneTarget.setVisible(true);
-            tblTargetEntries.setVisible(true);
-        }
+        toggleViews();
         lblTitle.setText("Target Entries");
         ResultSet rs;
         ResultSetMetaData rm;
@@ -486,10 +498,7 @@ public class UpdateEntriesController implements Initializable {
     void getBankDetails() throws SQLException {
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
-        if (bankCondition){
-            paneCheque.setVisible(true);
-            tblChequeDetails.setVisible(true);
-        }
+        toggleViews();
         lblTitle.setText("Cheque Details");
         ResultSet rs;
         ResultSetMetaData rm;
@@ -501,9 +510,7 @@ public class UpdateEntriesController implements Initializable {
         colChqGCR.setCellValueFactory(d -> d.getValue().GCRProperty());
         colChqNmb.setCellValueFactory(d -> d.getValue().chequeNumberProperty());
         colPayChqDate.setCellValueFactory(d -> d.getValue().dateProperty());
-        if (cmbEntryYear.getSelectionModel().isEmpty()){
-            stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE `revCenter` = '"+revCenter+"'");
-        }else if (!cmbEntryYear.getSelectionModel().isEmpty() && cmbEntryMonth.getSelectionModel().isEmpty()){
+        if (cmbEntryMonth.getSelectionModel().isEmpty()){
             stmnt = con.prepareStatement("SELECT * FROM  `cheque_details` WHERE `revCenter` = '"+revCenter+"' AND " +
                     "`year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"'");
         }else{
@@ -512,7 +519,50 @@ public class UpdateEntriesController implements Initializable {
         }
         rs = stmnt.executeQuery();
         while(rs.next()) {
-                getBankReport = new GetBankDetails(GCR, Year, Month, date, chqDate, chqNumber, Bank, Amount);
+            GCR = rs.getString("gcr");
+            date = rs.getString("date");
+            chqDate = rs.getString("cheque_date");
+            chqNumber = rs.getString("cheque_number");
+            Bank = rs.getString("bank");
+            Amount = getFunctions.getAmount(rs.getString("amount"));
+            getBankReport = new GetBankDetails(GCR, date, chqDate, chqNumber, Bank, Amount);
+            tblChequeDetails.getItems().add(getBankReport);
+        }
+    }
+
+    void getValueBooks() throws SQLException {
+        paneNothing.setVisible(false);
+        paneUpdateNothing.setVisible(false);
+        toggleViews();
+        lblTitle.setText("Value Books Stock Record");
+        ResultSet rs;
+        String Year, Month = "", Date = "", typeOfValBk = "", firstSerial = "", lastSerial = "", Quantity = "",
+                valAmount = "", cumuAmount = "", purAmount = "", remarks = "",
+                month = cmbEntryMonth.getSelectionModel().getSelectedItem();
+        float cumuAmounts = 0;
+        if (cmbEntryMonth.getSelectionModel().isEmpty()){
+            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `revCenter` = '"+revCenter+"'" +
+                    " AND `year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"'");
+        }else{
+            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `revCenter` = '"+revCenter+"'" +
+                    " AND `year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"' AND `month` = '"+month+"'");
+        }
+        rs = stmnt.executeQuery();
+        while (rs.next()){
+            Month = rs.getString("month");
+            Date = rs.getString("date");
+            firstSerial = rs.getString("first_serial");
+            lastSerial = rs.getString("last_serial");
+            Quantity = rs.getString("quantity");
+            typeOfValBk = rs.getString("value_book");
+            valAmount = getFunctions.getAmount(rs.getString("amount"));
+            purAmount = getFunctions.getAmount(rs.getString("purchase_amount"));
+            cumuAmounts += rs.getFloat("amount");
+            cumuAmount = getFunctions.getAmount(Float.toString(cumuAmounts));
+            remarks = rs.getString("remarks");
+            getValueReport = new GetValueBooksEntries(Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity,
+                    valAmount, cumuAmount, purAmount, remarks);
+            tblValueBookStocks.getItems().add(getValueReport);
         }
     }
 

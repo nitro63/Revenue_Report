@@ -8,7 +8,7 @@ public class GetValueBooksEntries {
 
     public GetValueBooksEntries(){   }
 
-    public GetValueBooksEntries(String Year, String month, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount) {
+    public GetValueBooksEntries(String Year, String month, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
         this.Year = new SimpleStringProperty(Year);
         this.Month = new SimpleStringProperty(month);
         this.Date = new SimpleStringProperty(date);
@@ -19,6 +19,20 @@ public class GetValueBooksEntries {
         this.valAmount = new SimpleStringProperty(valAmount);
         this.cumuAmount = new SimpleStringProperty(cumuAmount);
         this.purAmount = new SimpleStringProperty(purAmount);
+        this.remarks = new SimpleStringProperty(remarks);
+    }
+
+    public GetValueBooksEntries(String month, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
+        this.Month = new SimpleStringProperty(month);
+        this.Date = new SimpleStringProperty(date);
+        this.valueBook = new SimpleStringProperty(valueBook);
+        this.firstSerial = new SimpleStringProperty(firstSerial);
+        this.lastSerial = new SimpleStringProperty(lastSerial);
+        this.Quantity = new SimpleStringProperty(quantity);
+        this.valAmount = new SimpleStringProperty(valAmount);
+        this.cumuAmount = new SimpleStringProperty(cumuAmount);
+        this.purAmount = new SimpleStringProperty(purAmount);
+        this.remarks = new SimpleStringProperty(remarks);
     }
     public GetValueBooksEntries(String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
         this.Date = new SimpleStringProperty(date);

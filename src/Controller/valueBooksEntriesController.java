@@ -86,6 +86,8 @@ public class valueBooksEntriesController implements Initializable {
 
     @FXML
     private TableColumn<GetValueBooksEntries, String> colPurchAmount;
+    @FXML
+    private TableColumn<GetValueBooksEntries, String> colRemarks;
 
     @FXML
     private JFXButton btnDelete;
@@ -121,6 +123,8 @@ public class valueBooksEntriesController implements Initializable {
     Map<String, ArrayList<String>> regValSerial = new HashMap<>();
     ObservableList<String> valueBookType = FXCollections.observableArrayList("GCR", "Car-Park(GH₵ 1.00)", "Car-Park(GH₵ 2.00)","Market-tolls(GH₵ 1.00)");
     String revCent, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount;
+
+    String remarks = "Initial Entry";
 
     public valueBooksEntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -224,6 +228,7 @@ public class valueBooksEntriesController implements Initializable {
                     colAmtVal.setCellValueFactory(data -> data.getValue().valAmountProperty());
                     colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
                     colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
+                    colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
                     int serialChecker = Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial) +1;
                     int quantity = ((serialChecker + 1)/ 100);
                     if(serialChecker / 100 != 1){
@@ -255,7 +260,7 @@ public class valueBooksEntriesController implements Initializable {
                             Condition = false;
 
                         } else {
-                            addEntries = new GetValueBooksEntries(Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount);
+                            addEntries = new GetValueBooksEntries(Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks);
                             tblValueBookStocks.getItems().add(addEntries);
                             if (!regValSerial.containsKey(typeOfValBk)) {
                                 regValSerial.put(typeOfValBk, new ArrayList<>());
@@ -305,7 +310,6 @@ public class valueBooksEntriesController implements Initializable {
             int acQuantity = Integer.parseInt(getData.getQuantity());
             float acAmount = Float.parseFloat(getData.getValAmount());
             float acPurAmount = Float.parseFloat(getData.getPurAmount());
-            String remarks = "Initial Entry";
             stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" + Month + "', '" + Date + "', '" + typeOfValBk + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount + "', '" + acPurAmount + "','" + remarks + "')");
             stmnt.executeUpdate();
         }
