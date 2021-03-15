@@ -46,6 +46,11 @@
                <graphic>
                   <Label text="PURCHASE AMOUNT" textAlignment="CENTER" wrapText="true" />
                </graphic></TableColumn>
+            <TableColumn fx:id="colRemarks" maxWidth="100.0" minWidth="80.0" prefWidth="100.0">
+               <graphic>
+                  <Label prefHeight="24.0" prefWidth="78.0" text="REMARKS" textAlignment="CENTER" wrapText="true" />
+               </graphic>
+            </TableColumn>
          </columns>
          <effect>
             <DropShadow />

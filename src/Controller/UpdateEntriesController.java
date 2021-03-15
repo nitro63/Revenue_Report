@@ -36,25 +36,27 @@ import revenue_report.DBConnection;
 public class UpdateEntriesController implements Initializable {
 
     @FXML
-    private TableView<GetValueBooksEntries> tblValueBookStocks;
+    private TableView<GetValueBooksReport> tblValueBookStocks;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colStckMonth;
+    private TableColumn<GetValueBooksReport, String> colStckMonth;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colStckDATE;
+    private TableColumn<GetValueBooksReport, String> colStckDATE;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colStckTypeVB;
+    private TableColumn<GetValueBooksReport, String> colStckTypeVB;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colSerialFrom;
+    private TableColumn<GetValueBooksReport, String> colSerialFrom;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colSerialTo;
+    private TableColumn<GetValueBooksReport, String> colSerialTo;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colStckQuantity;
+    private TableColumn<GetValueBooksReport, String> colStckQuantity;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colStckAmtVal;
+    private TableColumn<GetValueBooksReport, String> colStckAmtVal;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colStckCumuAmt;
+    private TableColumn<GetValueBooksReport, String> colStckCumuAmt;
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colStckPurAmt;
+    private TableColumn<GetValueBooksReport, String> colStckPurAmt;
+    @FXML
+    private TableColumn<GetValueBooksReport, String> colStckRemarks;
     @FXML
     private TableView<GetTargetEnt> tblTargetEntries;
     @FXML
@@ -242,7 +244,7 @@ public class UpdateEntriesController implements Initializable {
 
     GetEntries getCollectionData, getCollectionReport;
     GetBankDetails getBankData, getBankReport;
-    GetValueBooksEntries getValueData, getValueReport;
+    GetValueBooksReport getValueData, getValueReport;
     GetCollectEnt getPaymentData, getPaymentReport;
     GetTargetEnt getTargetData, getTargetReport;
     GetFunctions getFunctions = new GetFunctions();
@@ -421,6 +423,23 @@ public class UpdateEntriesController implements Initializable {
         if (!collectionCondition){
             paneRevenueCollection.setVisible(false);
             tblCollectionEntries.setVisible(false);
+        }else{
+            paneRevenueCollection.setVisible(true);
+            tblCollectionEntries.setVisible(true);
+        }
+        if (!valueBookCondition){
+            paneValueBooks.setVisible(false);
+            tblValueBookStocks.setVisible(false);
+        }else {
+            paneValueBooks.setVisible(true);
+            tblValueBookStocks.setVisible(true);
+        }
+        if (!paymentCondition){
+            panePayment.setVisible(false);
+            tblPaymentEntries.setVisible(false);
+        }else {
+            panePayment.setVisible(true);
+            tblPaymentEntries.setVisible(true);
         }
     }
 
@@ -448,6 +467,18 @@ public class UpdateEntriesController implements Initializable {
                     paymentCondition = false;
                     collectionCondition = false;
                     getBankDetails();
+                    }
+                    break;
+                case "Value Books Stock":
+                    if (cmbEntryYear.getSelectionModel().isEmpty()){
+                        lblGetYearWarn.setVisible(true);
+                    }else{
+                        targetCondition = false;
+                        bankCondition = false;
+                        valueBookCondition = true;
+                        paymentCondition = false;
+                        collectionCondition = false;
+                        getValueBooks();
                     }
                     break;
 
@@ -540,6 +571,15 @@ public class UpdateEntriesController implements Initializable {
                 valAmount = "", cumuAmount = "", purAmount = "", remarks = "",
                 month = cmbEntryMonth.getSelectionModel().getSelectedItem();
         float cumuAmounts = 0;
+        colStckAmtVal.setCellValueFactory(d -> d.getValue().valAmountProperty());
+        colStckDATE.setCellValueFactory(d -> d.getValue().dateProperty());
+        colSerialFrom.setCellValueFactory(d -> d.getValue().firstSerialProperty());
+        colSerialTo.setCellValueFactory(d -> d.getValue().lastSerialProperty());
+        colStckMonth.setCellValueFactory(d -> d.getValue().monthProperty());
+        colStckPurAmt.setCellValueFactory(d -> d.getValue().purAmountProperty());
+        colStckQuantity.setCellValueFactory(d -> d.getValue().quantityProperty());
+        colStckTypeVB.setCellValueFactory(d -> d.getValue().valueBookProperty());
+        colStckRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
             stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `revCenter` = '"+revCenter+"'" +
                     " AND `year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"'");
@@ -560,8 +600,8 @@ public class UpdateEntriesController implements Initializable {
             cumuAmounts += rs.getFloat("amount");
             cumuAmount = getFunctions.getAmount(Float.toString(cumuAmounts));
             remarks = rs.getString("remarks");
-            getValueReport = new GetValueBooksEntries(Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity,
-                    valAmount, cumuAmount, purAmount, remarks);
+            getValueReport = new GetValueBooksReport(Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity,
+                    valAmount, purAmount, remarks);
             tblValueBookStocks.getItems().add(getValueReport);
         }
     }
