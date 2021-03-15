@@ -203,7 +203,22 @@ public class entries_sideController  implements Initializable {
     }
 
     @FXML
-    void showEntriesUpdate(ActionEvent event) {
+    void showEntriesUpdate(ActionEvent event) throws SQLException, ClassNotFoundException, IOException {
+        if(cmbRevCent.getSelectionModel().getSelectedItem() == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Select Revenue Center");
+            alert.showAndWait();
+        }else{
+            FXMLLoader loadEntries = new FXMLLoader();
+            loadEntries.setLocation(getClass().getResource("/Views/fxml/UpdateEntries.fxml"));
+            loadEntries.setController(new UpdateEntriesController(GetCenter));
+            UpdateEntriesController valController = (UpdateEntriesController)loadEntries.getController();
+            valController.setappController(this);
+            AnchorPane root = loadEntries.load();
+            app.getCenterPane().getChildren().clear();
+            app.getCenterPane().getChildren().add(root);
+        }
     }
 
     @FXML

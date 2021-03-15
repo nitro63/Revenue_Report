@@ -460,11 +460,16 @@ public class Payment_EntriesController implements Initializable {
                         Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
                                 ButtonType.OK
                         );
-                        exitButton.setText("Exit");
+                        Button cancelButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                                ButtonType.CANCEL
+                        );
+                        exitButton.setText("Yes");
+                        cancelButton.setText("No");
+                        closeConfirmation.setHeaderText("Confirm Exit");
                         if(!bnkDtls.getTableView().getItems().isEmpty()) {
-                            closeConfirmation.setHeaderText("You will loose all unsaved data \n If you have unsaved data please click 'Cancel' to abort exit" + "\n" + "Confirm Exit");
+                            closeConfirmation.setContentText("Are you sure you want to exit without saving cheque details? ");
                         }else{
-                            closeConfirmation.setHeaderText("Confirm Exit");
+                            closeConfirmation.setContentText("Are you sure you want to Exit");
                         }
                         closeConfirmation.initModality(Modality.APPLICATION_MODAL);
                         closeConfirmation.initOwner(stg);

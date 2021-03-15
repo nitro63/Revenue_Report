@@ -17,35 +17,30 @@
       </Label>
       <TableView fx:id="tblBankDetails" layoutX="32.0" layoutY="91.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="904.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="91.0">
          <columns>
-            <TableColumn fx:id="colDate" prefWidth="126.0" text="DATE" />
-            <TableColumn fx:id="colGCRNumber" maxWidth="160.0" minWidth="99.0" prefWidth="102.0">
+            <TableColumn fx:id="colDate" maxWidth="1500.0" prefWidth="126.0" text="DATE" />
+            <TableColumn fx:id="colGCRNumber" maxWidth="400.0" minWidth="99.0" prefWidth="126.0">
                <graphic>
-                  <Label prefHeight="57.0" prefWidth="94.0" text="GCR NUMBER" textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="57.0" prefWidth="122.0" text="GCR NUMBER" textAlignment="CENTER" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colChqDate" prefWidth="75.0">
+            <TableColumn fx:id="colChqDate" maxWidth="1600.0" prefWidth="142.0">
                <graphic>
-                  <Label text="CHEQUE DATE" textAlignment="CENTER" wrapText="true" />
+                  <Label text="CHEQUE DATE" textAlignment="CENTER" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colChqNumber" prefWidth="75.0">
+            <TableColumn fx:id="colChqNumber" maxWidth="1600.0" prefWidth="75.0">
                <graphic>
-                  <Label text="CHEQUE NUMBER" textAlignment="CENTER" wrapText="true" />
+                  <Label text="CHEQUE NUMBER" textAlignment="CENTER" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colBank" maxWidth="1170.0" minWidth="100.0" prefWidth="132.0">
+            <TableColumn fx:id="colBank" maxWidth="500.0" minWidth="100.0" prefWidth="132.0">
                <graphic>
-                  <Label prefHeight="58.0" prefWidth="113.0" text="BANK" textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="58.0" prefWidth="76.0" text="BANK" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colAmount" prefWidth="69.0">
+            <TableColumn fx:id="colAmount" maxWidth="1800.0" prefWidth="69.0">
                <graphic>
                   <Label prefHeight="54.0" prefWidth="94.0" text="AMOUNT " textAlignment="CENTER" wrapText="true" />
-               </graphic>
-            </TableColumn>
-            <TableColumn fx:id="colRemarks" maxWidth="100.0" minWidth="80.0" prefWidth="100.0">
-               <graphic>
-                  <Label prefHeight="24.0" prefWidth="78.0" text="REMARKS" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
          </columns>

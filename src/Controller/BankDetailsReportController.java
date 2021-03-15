@@ -141,7 +141,7 @@ public class BankDetailsReportController implements Initializable {
     }
 
     @FXML
-    private void showReport(ActionEvent event) {
+    private void showReport(ActionEvent event) throws SQLException {
         if (cmbRevCenter.getSelectionModel().isEmpty()) {
             lblRevenueCenterWarn.setVisible(true);
         } else if (cmbYear.getSelectionModel().isEmpty()) {
@@ -149,7 +149,37 @@ public class BankDetailsReportController implements Initializable {
         } else if (cmbMonth.getSelectionModel().isEmpty()) {
             lblMonthWarn.setVisible(true);
         } else {
+            lblRevenueCenter.setText(cmbRevCenter.getSelectionModel().getSelectedItem());
+            lblYear.setText(cmbYear.getSelectionModel().getSelectedItem());
+            lblMonth.setText(cmbMonth.getSelectionModel().getSelectedItem());
+            tblBankDetails.getItems().clear();
+            String Date = "", GCR = "", Amount = "", bankName = "", chqNumber = "", chqDate = "";
 
+
+            stmnt = con.prepareStatement("SELECT `gcr`, `date`, `cheque_date`, `cheque_number`, `bank`, `amount` FROM" +
+                    " `cheque_details` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' AND " +
+                    "`year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '"+cmbMonth.
+                    getSelectionModel().getSelectedItem()+"'");
+            ResultSet rs = stmnt.executeQuery();
+            ResultSetMetaData rm = rs.getMetaData();
+            int col = rm.getColumnCount();
+
+            colDate.setCellValueFactory(data -> data.getValue().dateProperty());
+            colGCRNumber.setCellValueFactory(data -> data.getValue().GCRProperty());
+            colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
+            colChqNumber.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
+            colBank.setCellValueFactory(data -> data.getValue().bankProperty());
+            colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
+            while(rs.next()){
+                Date = rs.getString("date");
+                GCR = rs.getString("gcr");
+                Amount = getFunctions.getAmount(rs.getString("amount"));
+                chqNumber = rs.getString("cheque_number");
+                chqDate = rs.getString("cheque_date");
+                bankName = rs.getString("bank");
+                getReport = new GetBankDetails(GCR, Date, chqDate, chqNumber, bankName, Amount);
+                tblBankDetails.getItems().add(getReport);
+            }
         }
     }
 

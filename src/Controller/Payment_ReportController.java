@@ -135,6 +135,7 @@ public class Payment_ReportController implements Initializable {
     }
     
     private void getMonths() throws SQLException{
+        System.out.println(year);
         stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries` WHERE  `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();

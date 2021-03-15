@@ -36,6 +36,8 @@ public class report_sideController implements Initializable {
     @FXML
     private Button btnYearlyReport;
     @FXML
+    private Button btnBankDetails;
+    @FXML
     private Button btnRevenueTarget;
     @FXML
     private Button btnRevenueItemsMaster;
@@ -71,6 +73,15 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/Report.fxml"));
         loader.setController(new ReportController());
+        app.getCenterPane().getChildren().clear();
+        app.getCenterPane().getChildren().add(loader.load());
+    }
+
+    @FXML
+    void showBankDetails(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Views/fxml/BankDetailsReport.fxml"));
+        loader.setController(new BankDetailsReportController());
         app.getCenterPane().getChildren().clear();
         app.getCenterPane().getChildren().add(loader.load());
     }

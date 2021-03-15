@@ -17,6 +17,14 @@ public class GetBankDetails {
         this.Bank = new SimpleStringProperty(Bank);
         this.Amount = new SimpleStringProperty(Amount);
     }
+    public GetBankDetails(String GCR,  String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
+        this.GCR = new SimpleStringProperty(GCR);
+        this.Date = new SimpleStringProperty(Date);
+        this.chequeDate = new SimpleStringProperty(chequeDate);
+        this.chequeNumber = new SimpleStringProperty(chequeNumber);
+        this.Bank = new SimpleStringProperty(Bank);
+        this.Amount = new SimpleStringProperty(Amount);
+    }
 
     public String getYear() {
         return Year.get();

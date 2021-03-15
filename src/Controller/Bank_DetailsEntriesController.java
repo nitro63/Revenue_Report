@@ -189,12 +189,17 @@ public class Bank_DetailsEntriesController implements Initializable {
         Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
                 ButtonType.OK
         );
-        exitButton.setText("Exit");
+        Button cancelButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                ButtonType.CANCEL
+        );
+        exitButton.setText("Yes");
+        cancelButton.setText("No");
         closeConfirmation.setTitle("Abort Entries");
+        closeConfirmation.setHeaderText("Confirm Exit");
         if(!tblCollectEnt.getItems().isEmpty()) {
-            closeConfirmation.setHeaderText("You will loose all unsaved data \n If you have unsaved data please click 'Cancel' to abort exit" + "\n" + "Confirm Exit");
+            closeConfirmation.setContentText("Are you sure you want to exit without saving cheque details? ");
         }else{
-            closeConfirmation.setHeaderText("Confirm Exit");
+            closeConfirmation.setContentText("Are you sure you want to Exit");
         }
         closeConfirmation.initModality(Modality.APPLICATION_MODAL);
         closeConfirmation.initOwner(stage);
@@ -226,6 +231,7 @@ public class Bank_DetailsEntriesController implements Initializable {
         );
         saveButton.setText("Save");
         saveConfirmation.setHeaderText("Confirm Save");
+        saveConfirmation.setContentText("Are you sure you want to confirm and Exit?");
         saveConfirmation.initModality(Modality.APPLICATION_MODAL);
         saveConfirmation.initOwner(stage);
         saveConfirmation.initStyle(StageStyle.UTILITY);
@@ -241,30 +247,36 @@ public class Bank_DetailsEntriesController implements Initializable {
             event.consume();
         }else{
             for(int i = 0; i < tblCollectEnt.getItems().size(); i++){
-                getData = tblCollectEnt.getItems().get(i);
-                int acGCR = Integer.parseInt(getData.getGCR());
-                int acChqNmb = Integer.parseInt(getData.getChequeNumber());
-                String acMonth = getData.getMonth();
-                String amount = getData.getAmount();
-                Matcher m = colEnt.p.matcher(amount);
-                amount = m.replaceAll("");
-                float acAMOUNT =Float.parseFloat(amount);
-                String acDATE =getData.getDate();
-                String acChqDate =getData.getChequeDate();
-                String acBank =getData.getBank();
-                String center = colEnt.GetCenter.getRevCenter();
-                String year = getData.getYear();
-                stmnt = con.prepareStatement("INSERT INTO `cheque_details`(`revCenter`, `gcr`, `year`, `month`, `date`, `cheque_date`, `cheque_number`, `bank`, `amount`) VALUES ('"+center+"','"+acGCR+"', '"+year+"', '"+acMonth+"','"+acDATE+"' ,'"+acChqDate+"', '"+acChqNmb+"', '"+acBank+"', '"+acAMOUNT+"')");
-                stmnt.executeUpdate();
+                if(i == tblCollectEnt.getItems().size()){
+                    tblCollectEnt.getItems().clear();
+                    colEnt.regGcr.clear();
+                    colEnt.monthGCR.clear();
+                    colEnt.dateGCR.clear();
+                    colEnt.count = 0;
+                    stage.close();
+                }else {
+                    getData = tblCollectEnt.getItems().get(i);
+                    int acGCR = Integer.parseInt(getData.getGCR());
+                    int acChqNmb = Integer.parseInt(getData.getChequeNumber());
+                    String acMonth = getData.getMonth();
+                    String amount = getData.getAmount();
+                    Matcher m = colEnt.p.matcher(amount);
+                    amount = m.replaceAll("");
+                    float acAMOUNT = Float.parseFloat(amount);
+                    String acDATE = getData.getDate();
+                    String acChqDate = getData.getChequeDate();
+                    String acBank = getData.getBank();
+                    String center = colEnt.GetCenter.getRevCenter();
+                    String year = getData.getYear();
+                    stmnt = con.prepareStatement("INSERT INTO `cheque_details`" +
+                            "(`revCenter`, `gcr`, `year`, `month`, `date`, `cheque_date`, `cheque_number`, `bank`," +
+                            " `amount`) VALUES ('" + center + "','" + acGCR + "', '" + year + "', '" + acMonth + "'," +
+                            "'" + acDATE + "' ,'" + acChqDate + "', '" + acChqNmb + "', '" + acBank + "', '" + acAMOUNT
+                            + "')");
+                    stmnt.executeUpdate();
+                }
             }
         }
-        tblCollectEnt.getItems().clear();
-        colEnt.regGcr.clear();
-        colEnt.monthGCR.clear();
-        colEnt.dateGCR.clear();
-        colEnt.count = 0;
-        stage.close();
-
     }
 
     @FXML

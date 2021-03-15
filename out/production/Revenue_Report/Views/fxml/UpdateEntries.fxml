@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="661.0" prefWidth="1125.0" style="-fx-background-color: #f0f6f8;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UpdateEntriesController">
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="661.0" prefWidth="1125.0" style="-fx-background-color: #f0f6f8;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Separator layoutX="306.0" layoutY="34.0" orientation="VERTICAL" prefHeight="553.0" prefWidth="0.0" style="-fx-background-color: #263238;" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="34.0" />
       <TableView fx:id="tblValueBookStocks" layoutX="331.0" layoutY="46.0" prefHeight="530.0" prefWidth="771.0" visible="false" AnchorPane.leftAnchor="331.0" AnchorPane.rightAnchor="23.0">
@@ -67,7 +67,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TableView fx:id="tblCollectionEntries" layoutX="363.0" layoutY="55.0" prefHeight="510.0" prefWidth="706.0" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="56.0">
+      <TableView fx:id="tblCollectionEntries" layoutX="363.0" layoutY="55.0" prefHeight="510.0" prefWidth="706.0" visible="false" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="56.0">
          <columns>
             <TableColumn fx:id="colColCenter" editable="false" prefWidth="73.22222900390625" text="Center" />
             <TableColumn fx:id="colItemCode" editable="false" prefWidth="82.975341796875" text="Code" />
@@ -195,7 +195,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <JFXButton fx:id="btnReload" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" layoutX="119.0" layoutY="587.0" onAction="#reloadAll" prefHeight="59.0" prefWidth="61.0" ripplerFill="#09b51a" style="-fx-background-color: #75e480;" AnchorPane.bottomAnchor="15.0">
+      <JFXButton fx:id="btnReload" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" graphicTextGap="10.0" layoutX="119.0" layoutY="594.0" onAction="#reloadAll" prefHeight="59.0" prefWidth="61.0" ripplerFill="#09b51a" style="-fx-background-color: #75e480;" AnchorPane.bottomAnchor="8.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -211,8 +211,8 @@
       </JFXButton>
       <AnchorPane layoutX="14.0" layoutY="34.0">
          <children>
-            <JFXComboBox fx:id="cmbEntryType" focusColor="#078d24" labelFloat="true" prefHeight="25.0" prefWidth="118.0" promptText="Select Entry Type" unFocusColor="#0aab27" />
-            <JFXComboBox fx:id="cmbEntryYear" focusColor="#078d24" labelFloat="true" layoutX="144.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Year" unFocusColor="#0aab27" />
+            <JFXComboBox fx:id="cmbEntryType" focusColor="#078d24" labelFloat="true" onAction="#loadEntryYears" prefHeight="25.0" prefWidth="118.0" promptText="Select Entry Type" unFocusColor="#0aab27" />
+            <JFXComboBox fx:id="cmbEntryYear" focusColor="#078d24" labelFloat="true" layoutX="144.0" onAction="#loadEntryMonths" prefHeight="25.0" prefWidth="118.0" promptText="Select Year" unFocusColor="#0aab27" />
             <JFXComboBox fx:id="cmbEntryMonth" focusColor="#078d24" labelFloat="true" layoutY="47.0" prefHeight="25.0" prefWidth="111.0" promptText="Select Month" style="-fx-background-radius: 10; -fx-border-radius: 10;" unFocusColor="#0aab27" />
             <JFXButton fx:id="btnGetEntries" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="156.0" layoutY="46.0" onAction="#showEntries" prefHeight="31.0" prefWidth="99.0" ripplerFill="#013c05" style="-fx-background-radius: 10 10 10 10;" text="Get Entries">
                <effect>
@@ -222,6 +222,46 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </JFXButton>
+            <Label fx:id="lblEntryTypeWarn" layoutX="10.0" layoutY="-3.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblGetYearWarn" layoutX="144.0" layoutY="-3.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblGetMonthWarn" layoutY="39.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="9.0" layoutY="521.0" AnchorPane.bottomAnchor="94.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="835.0">
+         <children>
+            <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" style="-fx-background-radius: 10 10 10 10;" text="Clear">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <effect>
+                  <DropShadow />
+               </effect></JFXButton>
+            <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="211.0" layoutY="11.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" style="-fx-background-radius: 10 10 10 10;" text="Update">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <effect>
+                  <DropShadow />
+               </effect></JFXButton>
+            <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="117.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" style="-fx-background-radius: 10 10 10 10;" text="Delete">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <effect>
+                  <DropShadow />
+               </effect></JFXButton>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="paneTarget" layoutX="16.0" layoutY="167.0" prefHeight="268.0" prefWidth="268.0" visible="false">
@@ -243,13 +283,6 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="9.0" layoutY="510.0" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="835.0">
-         <children>
-            <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" text="Clear" />
-            <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="211.0" layoutY="11.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" text="Update" />
-            <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="117.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" text="Delete" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="paneRevenueCollection" layoutX="25.0" layoutY="188.0" prefHeight="286.0" prefWidth="268.0" visible="false">
