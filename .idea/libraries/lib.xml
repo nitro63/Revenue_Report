@@ -3,6 +3,10 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/dist/lib/commons-lang3-3.11.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/mysql-connector-java-8.0.22.jar!/" />
+      <root url="jar://$PROJECT_DIR$/commons-lang3-3.11/commons-lang3-3.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libraries/controlsfx-8.40.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libraries/fontawesomefx-8.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libraries/jfoenix-8.0.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
