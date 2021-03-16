@@ -255,7 +255,7 @@ public class UpdateEntriesController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
     boolean targetCondition, collectionCondition, paymentCondition, bankCondition, valueBookCondition;
-    String revCenter;
+    String revCenter, entryTypeMonth, entryTypeYear;
 
     public UpdateEntriesController(GetRevCenter getRevCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getRevCenter;
@@ -346,6 +346,7 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     void loadEntryMonths(ActionEvent event) throws SQLException {
+        entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem();
         ObservableList<String> entryMonths = FXCollections.observableArrayList();
         String entryYear = "", entryTypeTable = "", entryMonth = "", acEntryMonth = "";
         switch(cmbEntryType.getSelectionModel().getSelectedItem()){
@@ -601,6 +602,36 @@ public class UpdateEntriesController implements Initializable {
             getValueReport = new GetValueBooksReport(Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity,
                     valAmount, purAmount, remarks);
             tblValueBookStocks.getItems().add(getValueReport);
+        }
+    }
+
+    void getRevenueCollection() throws SQLException {
+        paneNothing.setVisible(false);
+        paneUpdateNothing.setVisible(false);
+        toggleViews();
+        lblTitle.setText("Value Books Stock Record");
+        ResultSet rs;
+        String Code = "", Item = "", Date = "", Month = "", Amount = "", Week = "", Year = "", Qtr = "",
+                entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem(),
+                        entryTypeMonth = cmbEntryMonth.getSelectionModel().getSelectedItem();
+        colItemCode.setCellValueFactory(d -> d.getValue().CodeProperty());
+        colRevItem.setCellValueFactory(d -> d.getValue().ItemProperty());
+        colRevDate.setCellValueFactory(d -> d.getValue().DateProperty());
+        colRevAmt.setCellValueFactory(d -> d.getValue().AmountProperty());
+        colRevMonth.setCellValueFactory(d -> d.getValue().MonthProperty());
+        colRevWeek.setCellValueFactory(d -> d.getValue().WeekProperty());
+        colRevQuarter.setCellValueFactory(d -> d.getValue().QuarterProperty());
+        colRevYear.setCellValueFactory(d -> d.getValue().YearProperty());
+        if (cmbEntryMonth.getSelectionModel().isEmpty()){
+            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"'");
+        }{
+            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"'" +
+                    " AND `revenueMonth` = '"+entryTypeMonth+"'");
+        }
+        rs = stmnt.executeQuery();
+        while (rs.next()){
+            Code = rs.getString("Code");
+            Item = rs.getString("revenueItem");
         }
     }
 
