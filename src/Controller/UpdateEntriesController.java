@@ -597,8 +597,6 @@ public class UpdateEntriesController implements Initializable {
             typeOfValBk = rs.getString("value_book");
             valAmount = getFunctions.getAmount(rs.getString("amount"));
             purAmount = getFunctions.getAmount(rs.getString("purchase_amount"));
-            cumuAmounts += rs.getFloat("amount");
-            cumuAmount = getFunctions.getAmount(Float.toString(cumuAmounts));
             remarks = rs.getString("remarks");
             getValueReport = new GetValueBooksReport(Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity,
                     valAmount, purAmount, remarks);
