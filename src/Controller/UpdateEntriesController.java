@@ -482,6 +482,19 @@ public class UpdateEntriesController implements Initializable {
                         getValueBooks();
                     }
                     break;
+                case "Revenue Collection":
+                    if (cmbEntryYear.getSelectionModel().isEmpty()){
+                        lblGetYearWarn.setVisible(true);
+                    }else{
+                        targetCondition = false;
+                        bankCondition = false;
+                        valueBookCondition = false;
+                        paymentCondition = false;
+                        collectionCondition = true;
+                        getValueBooks();
+                    }
+                    break;
+
 
             }
         }
@@ -632,6 +645,14 @@ public class UpdateEntriesController implements Initializable {
         while (rs.next()){
             Code = rs.getString("Code");
             Item = rs.getString("revenueItem");
+            Date = rs.getString("revenueDate");
+            Month = rs.getString("revenueMonth");
+            Week = rs.getString("revenueWeek");
+            Year = rs.getString("revenueYear");
+            Qtr = rs.getString("revenueYear");
+            Amount = getFunctions.getAmount(rs.getString("revenueAmount"));
+            getCollectionData = new GetEntries(Code, Item, Date, Month, Amount, Week, Year, Qtr);
+            tblCollectionEntries.getItems().add(getCollectionData);
         }
     }
 

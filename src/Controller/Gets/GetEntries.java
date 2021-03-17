@@ -33,6 +33,17 @@ public class GetEntries {
         this.Quarter = new SimpleStringProperty(Quarter);
     }
 
+    public GetEntries(String Code, String Item, String Date, String Month, String Amount, String Week, String Year, String Quarter) {
+        this.Code = new SimpleStringProperty(Code);
+        this.Item = new  SimpleStringProperty(Item);
+        this.Date = new SimpleStringProperty(Date);
+        this.Month =new SimpleStringProperty( Month);
+        this.Amount = new SimpleStringProperty(Amount) ;
+        this.Week = new SimpleStringProperty(Week);
+        this.Year = new SimpleStringProperty(Year);
+        this.Quarter = new SimpleStringProperty(Quarter);
+    }
+
     public StringProperty CodeProperty() {
         return Code;
     }
