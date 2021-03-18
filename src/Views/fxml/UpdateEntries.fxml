@@ -59,9 +59,8 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TableView fx:id="tblTargetEntries" layoutX="454.0" layoutY="55.0" prefHeight="510.0" prefWidth="575.0" visible="false" AnchorPane.leftAnchor="454.0" AnchorPane.rightAnchor="96.0">
+      <TableView fx:id="tblTargetEntries" layoutX="454.0" layoutY="55.0" prefHeight="510.0" prefWidth="575.0" AnchorPane.leftAnchor="454.0" AnchorPane.rightAnchor="96.0">
          <columns>
-            <TableColumn fx:id="colTargCenter" editable="false" prefWidth="230.0" text="REVENUE CENTER" />
             <TableColumn fx:id="colTargAmount" editable="false" prefWidth="204.0" text="AMOUNT" />
             <TableColumn fx:id="colTargYear" editable="false" prefWidth="140.0" text="YEAR" />
          </columns>
@@ -93,7 +92,6 @@
       </TableView>
       <TableView fx:id="tblPaymentEntries" layoutX="327.0" layoutY="55.0" prefHeight="510.0" prefWidth="759.0" visible="false" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="39.0">
          <columns>
-            <TableColumn fx:id="colPayCenter" editable="false" prefWidth="127.0" text="CENTER" />
             <TableColumn fx:id="colPayGCR" editable="false" prefWidth="119.0" text="GCR NO." />
             <TableColumn fx:id="colPayAmount" editable="false" prefWidth="119.0" text="AMOUNT" />
             <TableColumn fx:id="colPayDATE" editable="false" minWidth="0.0" prefWidth="110.0" text="DATE" />

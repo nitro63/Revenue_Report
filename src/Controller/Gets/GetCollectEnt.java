@@ -28,6 +28,15 @@ public class GetCollectEnt {
         this.Year = new SimpleStringProperty(Year);
         this.Type = new SimpleStringProperty(Type);
     }
+
+    public GetCollectEnt(String Amount, String GCR, String Month, String Date, String Year, String Type){
+        this.Amount = new SimpleStringProperty(Amount);
+        this.GCR = new SimpleStringProperty(GCR);
+        this.Month = new SimpleStringProperty(Month);
+        this.Date = new SimpleStringProperty(Date);
+        this.Year = new SimpleStringProperty(Year);
+        this.Type = new SimpleStringProperty(Type);
+    }
     
      
     public StringProperty CenterProperty(){
