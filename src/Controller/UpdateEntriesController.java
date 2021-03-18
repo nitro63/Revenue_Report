@@ -380,13 +380,15 @@ public class UpdateEntriesController implements Initializable {
                 getSelectedItem()+"' GROUP  BY "+entryMonth+"");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();
+        int col = rs.getFetchSize();
         while(rs.next()){
             String Month = rs.getString(acEntryMonth);
+            System.out.println(Month);
             entryMonths.add(Month);
         }
         cmbEntryMonth.getItems().clear();
         cmbEntryMonth.getItems().addAll(entryMonths);
-        System.out.println(entryTypeTable+"\n"+entryMonth+"\n"+entryMonth+"\n"+acEntryMonth);
+        System.out.println(entryTypeTable+"\n"+entryMonths+"\n"+entryMonth+"\n"+acEntryMonth+"\n"+rm+"\n"+col);
     }
 
     @FXML
@@ -525,6 +527,7 @@ public class UpdateEntriesController implements Initializable {
         paneUpdateNothing.setVisible(false);
         toggleViews();
         lblTitle.setText("Revenue Target Entries");
+        tblTargetEntries.getItems().clear();
         ResultSet rs;
         ResultSetMetaData rm;
         String center = "", amount = "", year = "";
@@ -551,6 +554,7 @@ public class UpdateEntriesController implements Initializable {
         paneUpdateNothing.setVisible(false);
         toggleViews();
         lblTitle.setText("Cheque Details");
+        tblChequeDetails.getItems().clear();
         ResultSet rs;
         ResultSetMetaData rm;
         String GCR = "", Year = "", date = "", Month = "", chqDate = "", chqNumber = "", Bank = "", Amount = "",
@@ -586,6 +590,7 @@ public class UpdateEntriesController implements Initializable {
         paneUpdateNothing.setVisible(false);
         toggleViews();
         lblTitle.setText("Value Books Stock Record");
+        tblValueBookStocks.getItems().clear();
         ResultSet rs;
         String Year, Month = "", Date = "", typeOfValBk = "", firstSerial = "", lastSerial = "", Quantity = "",
                 valAmount = "", cumuAmount = "", purAmount = "", remarks = "",
@@ -629,6 +634,7 @@ public class UpdateEntriesController implements Initializable {
         paneUpdateNothing.setVisible(false);
         toggleViews();
         lblTitle.setText("Revenue Entries");
+        tblCollectionEntries.getItems().clear();
         ResultSet rs;
         String Code = "", Item = "", Date = "", Month = "", Amount = "", Week = "", Year = "", Qtr = "",
                 entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem(),
@@ -642,10 +648,11 @@ public class UpdateEntriesController implements Initializable {
         colRevQuarter.setCellValueFactory(d -> d.getValue().QuarterProperty());
         colRevYear.setCellValueFactory(d -> d.getValue().YearProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
-            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"'");
-        }{
+            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"' " +
+                    "AND `revCenter` = '"+revCenter+"'");
+        }else{
             stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"'" +
-                    " AND `revenueMonth` = '"+entryTypeMonth+"'");
+                    " AND `revenueMonth` = '"+entryTypeMonth+"' AND `revCenter` = '"+revCenter+"'");
         }
         rs = stmnt.executeQuery();
         while (rs.next()){
@@ -667,6 +674,7 @@ public class UpdateEntriesController implements Initializable {
         paneNothing.setVisible(false);
         lblTitle.setText("Payment Entries");
         toggleViews();
+        tblPaymentEntries.getItems().clear();
         ResultSet rs;
         String Amount = "", GCR = "", Month = "", Date = "", Year = "", Type = "",
                 entryTypeMonth = cmbEntryMonth.getSelectionModel().getSelectedItem(),
@@ -679,10 +687,10 @@ public class UpdateEntriesController implements Initializable {
         colPayYear.setCellValueFactory(d -> d.getValue().YearProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()) {
             stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE" +
-                    "`Year` = '"+entryTypeYear+"'");
+                    "`Year` = '"+entryTypeYear+"'AND `revCenter` = '"+revCenter+"'");
         }else{
             stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE" +
-                    "`Year` = '"+entryTypeYear+"' AND `Month` = '"+entryTypeMonth+"'");
+                    "`Year` = '"+entryTypeYear+"' AND `Month` = '"+entryTypeMonth+"'AND `revCenter` = '"+revCenter+"'");
         }
         rs = stmnt.executeQuery();
         while (rs.next()){

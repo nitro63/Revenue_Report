@@ -10,50 +10,55 @@ and open the template in the editor.
 .root{
     -fx-background-color:  #f0f6f8;
 }
-.table-view{
-    -fx-border-radius: 30;
-    -fx-background-radius: 30;
-}
-.table-view .column-header-background,
-.table-view .column-header-background .filler{
-    -fx-background-color: linear-gradient(to top, #27b52b, #0ee014);
-    -fx-background-radius: 7px 7px 7px 7px;
-    -fx-border-radius: 7 7 0 7;
-    -fx-background-insets: 0;
-}
-.table-view .column-header{
-    -fx-background-color: transparent;
-}
-.table-view .column-header-background .filler{
-    -fx-background-radius: 30;
-    -fx-border-radius: 30;
-    -fx-background-color: transparent;
-}
-.table-view .corner{
-    -fx-background-color: red;
-}
-.table-view .table-column{
-    -fx-border-width: 0 0.2 0.02;
-    -fx-border-color: black;
-    -fx-text-background-color: #ffffff;
-    -fx-font-size: 15;
-    -fx-font-weight: bold;
-}
-.table-row-cell:even {
-    -fx-text-fill: #f5faf6;
-    -fx-font-size: 15;
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(to right, #2cf131, #92f795);
-    -fx-background-insets: 0, 1 0 1 0;
-    -fx-padding: 0.0em;
-}
-.table-row-cell:odd{
-    -fx-text-fill: #9a9696;
-    -fx-font-size: 15;
-    -fx-background-color: linear-gradient(to left, #19e81f, #19e81f);
-    -fx-background-insets: 0, 1 0 1 0;
-    -fx-padding: 0.0em;
-}
+/*.table-view{*/
+/*    -fx-border-radius: 30;*/
+/*    -fx-background-radius: 30;*/
+/*}*/
+/*.table-view .column-header-background,*/
+/*.table-view .column-header-background .filler{*/
+/*    -fx-background-color: linear-gradient(to top, #27b52b, #0ee014);*/
+/*    -fx-background-radius: 7px 7px 7px 7px;*/
+/*    -fx-border-radius: 7 7 0 7;*/
+/*    -fx-background-insets: 0;*/
+/*}*/
+/*.table-view .column-header{*/
+/*    -fx-background-color: transparent;*/
+/*}*/
+/*.table-view .column-header-background .filler{*/
+/*    -fx-background-radius: 30;*/
+/*    -fx-border-radius: 30;*/
+/*    -fx-background-color: transparent;*/
+/*}*/
+/*.table-row-cell:selected{*/
+/*    -fx-background-color: #031c03;*/
+/*    -fx-background-insets: 0;*/
+/*    -fx-background-radius: 1;*/
+/*}*/
+/*.table-view .corner{*/
+/*    -fx-background-color: red;*/
+/*}*/
+/*.table-view .table-column{*/
+/*    -fx-border-width: 0 0.2 0.02;*/
+/*    -fx-border-color: black;*/
+/*    -fx-text-background-color: #ffffff;*/
+/*    -fx-font-size: 15;*/
+/*    -fx-font-weight: bold;*/
+/*}*/
+/*.table-row-cell:even {*/
+/*    -fx-text-fill: #f5faf6;*/
+/*    -fx-font-size: 15;*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-background-color: linear-gradient(to right, #2cf131, #92f795);*/
+/*    -fx-background-insets: 0, 1 0 1 0;*/
+/*    -fx-padding: 0.0em;*/
+/*}*/
+/*.table-row-cell:odd{*/
+/*    -fx-text-fill: #9a9696;*/
+/*    -fx-font-size: 15;*/
+/*    -fx-background-color: linear-gradient(to left, #19e81f, #19e81f);*/
+/*    -fx-background-insets: 0, 1 0 1 0;*/
+/*    -fx-padding: 0.0em;*/
+/*}*/
 
 
 
