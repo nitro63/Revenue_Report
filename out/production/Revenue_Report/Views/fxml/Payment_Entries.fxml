@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="CollectionEntPane" maxWidth="-Infinity" prefHeight="500.0" prefWidth="911.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="CollectionEntPane" maxWidth="-Infinity" prefHeight="500.0" prefWidth="911.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="924.0" style="-fx-background-color: transparent; -fx-background-radius: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -76,22 +76,20 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <Button fx:id="btnEnter" mnemonicParsing="false" onAction="#saveEntries" prefHeight="37.0" prefWidth="64.0" text="ENTER">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="btnClear" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#clearEntries" prefHeight="37.0" prefWidth="109.0" text="DELETE ENTRIES">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Button>
+                        <AnchorPane prefHeight="90.0" prefWidth="239.0">
+                           <children>
+                              <Button fx:id="btnEnter" layoutY="19.0" mnemonicParsing="false" onAction="#saveEntries" prefHeight="37.0" prefWidth="64.0" text="ENTER" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="154.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="btnClear" alignment="CENTER_RIGHT" layoutX="66.0" layoutY="18.0" mnemonicParsing="false" onAction="#clearEntries" prefHeight="37.0" prefWidth="109.0" text="EDIT ENTRIES" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="18.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </HBox>
                   <TableView fx:id="tblCollection" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="899.0">
@@ -119,24 +117,17 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" onAction="#deleteSelection" prefHeight="35.0" prefWidth="65.0" ripplerFill="#aea6a6" style="-fx-background-color: #212853; -fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Delete">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </JFXButton>
-                        <Button mnemonicParsing="false" onAction="#CancelEntries" text="CANCEL">
-                           <HBox.margin>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="btnSaveEntries" mnemonicParsing="false" onAction="#SaveToDatabase" text="SAVE ENTRIES">
-                           <HBox.margin>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                           </HBox.margin>
-                        </Button>
+                        <AnchorPane>
+                           <children>
+                              <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="65.0" ripplerFill="#aea6a6" text="Delete" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="248.0" AnchorPane.topAnchor="11.0">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </JFXButton>
+                              <Button fx:id="btnClearEntr" layoutX="100.0" layoutY="13.0" mnemonicParsing="false" onAction="#CancelEntries" text="CANCEL" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="152.0" AnchorPane.topAnchor="13.0" />
+                              <Button fx:id="btnSaveEntries" layoutX="202.0" layoutY="13.0" mnemonicParsing="false" onAction="#SaveToDatabase" text="SAVE ENTRIES" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="13.0" />
+                           </children>
+                        </AnchorPane>
                      </children>
                   </HBox>
                </children>

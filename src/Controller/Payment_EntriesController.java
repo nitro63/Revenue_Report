@@ -146,7 +146,8 @@ public class Payment_EntriesController implements Initializable {
         cmbPayType.setItems(paymentType);
         cmbColMonth.setVisibleRowCount(4);
         cmbPayType.setVisibleRowCount(3);
-        tblCollection.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);tblCollection.setOnMouseClicked(e ->{
+        tblCollection.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tblCollection.setOnMouseClicked(e ->{
             lblDeleteWarn.setVisible(false);
         });
     }  

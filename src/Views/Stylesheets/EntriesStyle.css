@@ -48,33 +48,26 @@
     -fx-border-color: #0aab27;
     -fx-border-radius: 0 0 0 0;
 }
-#lblYear{
-    -fx-text-alignment: center;
-    -fx-text-fill: #025B24;
-    -fx-font-weight: bold;
-    -fx-font-size: 13;
-    -fx-background-radius: 15 0 0 15;
-    -fx-border-radius: 15 0 0 15;
-}
 
-#btnGetEntries {
+#btnEnter {
     -fx-background-color: #007d09;
     -fx-text-fill:  #F5F6F7;
     -fx-font-weight: bold;
 }
 
-#btnGetEntries:hover {
+#btnEnter:hover {
     -fx-background-color: #045516;
     -fx-text-fill:  #F5F6F7;
     -fx-font-weight: bold;
 }
 
-#btnGetEntries:pressed:hover {
+#btnEnter:pressed:hover {
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
     -fx-background-color: #0e150c;
 
 }
+
 #btnClear {
     -fx-background-color: #0484bf;
     -fx-text-fill:  #ffffff;
@@ -90,48 +83,88 @@
     -fx-text-fill:  #F5F6F7;
     -fx-font-weight: bold;
 }
-
 #btnDelete {
+    -fx-background-color: #212853;
+    -fx-text-fill:  #ffffff;
+    -fx-font-weight: bold;
+}
+#btnDelete:hover {
+    -fx-background-color: #01415a;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+#btnDelete:hover:pressed {
+    -fx-background-color: #01415a;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+
+#btnClearEntr {
     -fx-background-color: #e72e27;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
-#btnDelete:hover {
+#btnClearEntr:hover {
     -fx-background-color: #bf0505;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
-#btnDelete:hover:pressed {
+#btnClearEntr:hover:pressed {
     -fx-background-color: #9b2526;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
-#btnUpdateEntries{
+#btnSaveEntries{
     -fx-background-color: #007d07;
     -fx-text-fill:  #F5F6F7;
     -fx-font-weight: bold;
 }
-#btnUpdateEntries:hover {
+#btnSaveEntries:hover {
     -fx-background-color:#03531e;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
-#btnUpdateEntries:pressed:hover {
+#btnSaveEntries:pressed:hover {
     -fx-background-color:#0e150c;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
 
-#btnReload{
-    -fx-background-radius: 35 35 35 35;
+.combo-box-base .text{
+    -fx-fill: #03531e;
+    -fx-background-color: none;
+    -fx-padding: 0 0 3 0;
 }
 
-#bunny{
--fx-background-color: #45516,
-#0e150c,
-#73e778,
-#033C10,
- #055B18,
- #d4dfe4a8,
-  #e4f2f2,
-  #1ea82e;}
+.combo-box{
+    -fx-background-color: none;
+    -fx-padding: 0 0 1 0;
+}
+.combo-box-base .text-field{
+    -fx-prompt-text-fill: #73e778;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #007d07;
+}
+.combo-box {
+    -fx-border-width: 0 0 0.9 0;
+    -fx-border-color: #007d07;
+}
+.combo-box-base .arrow-button{
+    -fx-background-color: none;
+}
+.combo-box-base .text-input{
+    -fx-background-color: none;
+}
+.combo-box-base{
+    -fx-background-color: none;
+}
+.combo-box-base .arrow-button .arrow{
+    -fx-background-color: #055B18;
+}
+
+.text-field{
+    -fx-background-color: none;
+    -fx-prompt-text-fill: #007d07;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #007d07;
+}

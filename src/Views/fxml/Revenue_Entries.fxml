@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="DailyEntPane" prefHeight="500.0" prefWidth="1005.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="DailyEntPane" prefHeight="500.0" prefWidth="1005.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="850.0" style="-fx-background-color: transparent; -fx-background-radius: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -52,7 +52,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </TextField>
-                        <Button fx:id="btnEnter" mnemonicParsing="false" onAction="#saveEntries" prefHeight="37.0" prefWidth="64.0" text="ENTER">
+                        <Button fx:id="btnEnter" mnemonicParsing="false" onAction="#saveEntries" prefHeight="41.0" prefWidth="69.0" text="ENTER">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
@@ -60,7 +60,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnClear" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#clearEntries" prefHeight="37.0" prefWidth="109.0" text="DELETE ENTRIES">
+                        <Button fx:id="btnClear" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#clearEntries" prefHeight="41.0" prefWidth="100.0" text="Edit Entries">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
@@ -100,7 +100,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" onAction="#deleteSelection" prefHeight="35.0" prefWidth="65.0" ripplerFill="#aea6a6" style="-fx-background-color: #212853; -fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Delete">
+                        <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" onAction="#deleteSelection" prefHeight="35.0" prefWidth="68.0" ripplerFill="#aea6a6" text="Delete">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -113,7 +113,7 @@
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#CancelEntries" text="CANCEL">
+                        <Button fx:id="btnClearEntr" mnemonicParsing="false" onAction="#CancelEntries" text="CANCEL">
                            <HBox.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </HBox.margin>

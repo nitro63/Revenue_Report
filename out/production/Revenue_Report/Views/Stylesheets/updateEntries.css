@@ -126,12 +126,12 @@
     -fx-background-radius: 35 35 35 35;
 }
 
-
-/*45516
-0e150c
-007d09
-033C10
- #055B18
- #d4dfe4a8
-  #e4f2f2
-  #1ea82e*/
+#bunny{
+-fx-background-color: #45516,
+#0e150c,
+#73e778,
+#033C10,
+ #055B18,
+ #d4dfe4a8,
+  #e4f2f2,
+  #1ea82e;}
