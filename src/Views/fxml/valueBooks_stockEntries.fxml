@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="CollectionEntPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="1049.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="CollectionEntPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="1049.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="66.0" prefHeight="576.0" prefWidth="1049.0" style="-fx-background-color: transparent; -fx-background-radius: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -139,7 +139,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="btnClear" buttonType="RAISED" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#aea6a6" style="-fx-background-color: #263238; -fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Clear">
+                        <JFXButton fx:id="btnClear" buttonType="RAISED" onAction="#clearEntries" prefHeight="35.0" prefWidth="94.0" ripplerFill="#aea6a6" style="-fx-background-color: #263238; -fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Edit Entries">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>

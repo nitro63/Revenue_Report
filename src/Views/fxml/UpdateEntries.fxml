@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="661.0" prefWidth="1125.0" style="-fx-background-color: #f0f6f8;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="661.0" prefWidth="1125.0" style="-fx-background-color: #f0f6f8;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Separator layoutX="306.0" layoutY="34.0" orientation="VERTICAL" prefHeight="553.0" prefWidth="0.0" style="-fx-background-color: #263238;" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="34.0" />
       <TableView fx:id="tblValueBookStocks" layoutX="331.0" layoutY="46.0" prefHeight="530.0" prefWidth="771.0" visible="false" AnchorPane.leftAnchor="331.0" AnchorPane.rightAnchor="23.0">
@@ -59,7 +59,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TableView fx:id="tblTargetEntries" layoutX="454.0" layoutY="55.0" prefHeight="510.0" prefWidth="575.0" AnchorPane.leftAnchor="454.0" AnchorPane.rightAnchor="96.0">
+      <TableView fx:id="tblTargetEntries" layoutX="454.0" layoutY="55.0" prefHeight="510.0" prefWidth="575.0" visible="false" AnchorPane.leftAnchor="454.0" AnchorPane.rightAnchor="96.0">
          <columns>
             <TableColumn fx:id="colTargAmount" editable="false" prefWidth="204.0" text="AMOUNT" />
             <TableColumn fx:id="colTargYear" editable="false" prefWidth="140.0" text="YEAR" />
