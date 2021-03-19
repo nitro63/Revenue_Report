@@ -710,7 +710,6 @@ public class UpdateEntriesController implements Initializable {
     }
 
     void setTargetEntries(){
-
     }
 
 
