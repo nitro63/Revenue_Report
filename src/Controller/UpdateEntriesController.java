@@ -20,10 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import revenue_report.DBConnection;
@@ -284,6 +281,11 @@ public class UpdateEntriesController implements Initializable {
         txtTargetAmount.setOnMouseClicked(e -> {
             lblTargetWarn.setVisible(false);
         });
+        tblCollectionEntries.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tblPaymentEntries.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tblChequeDetails.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tblTargetEntries.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ObservableList<String> entryType = FXCollections.observableArrayList("Bank Details", "Payments Entries",
                 "Revenue Entries", "Revenue Target", "Value Books Stock");
         cmbEntryType.getItems().addAll(entryType);
@@ -704,6 +706,10 @@ public class UpdateEntriesController implements Initializable {
             tblPaymentEntries.getItems().add(getPaymentData);
         }
 
+
+    }
+
+    void setTargetEntries(){
 
     }
 
