@@ -14,7 +14,6 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-import com.mysql.cj.protocol.Resultset;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -145,7 +144,7 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private AnchorPane paneTarget;
     @FXML
-    private Spinner<?> spnTargYear;
+    private Spinner<Integer> spnTargYear;
     @FXML
     private Label lblYear;
     @FXML
@@ -281,6 +280,7 @@ public class UpdateEntriesController implements Initializable {
         txtTargetAmount.setOnMouseClicked(e -> {
             lblTargetWarn.setVisible(false);
         });
+        spnTargYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, 2021));
         tblCollectionEntries.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tblPaymentEntries.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -289,6 +289,11 @@ public class UpdateEntriesController implements Initializable {
         ObservableList<String> entryType = FXCollections.observableArrayList("Bank Details", "Payments Entries",
                 "Revenue Entries", "Revenue Target", "Value Books Stock");
         cmbEntryType.getItems().addAll(entryType);
+        tblTargetEntries.setOnMouseClicked(e ->{
+            if (tblTargetEntries.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
+                setTargetEntries();
+            }
+        });
     }
 
     @FXML
@@ -347,7 +352,7 @@ public class UpdateEntriesController implements Initializable {
         entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem();
         ObservableList<String> entryMonths = FXCollections.observableArrayList();
         String entryYear = "", entryTypeTable = "", entryMonth = "", acEntryMonth = "";
-        switch(cmbEntryType.getSelectionModel().getSelectedItem()){
+        switch (cmbEntryType.getSelectionModel().getSelectedItem()) {
             case "Bank Details":
                 entryTypeTable = "`cheque_details`";
                 entryYear = "`year`";
@@ -377,24 +382,32 @@ public class UpdateEntriesController implements Initializable {
                 entryMonth = "`month`";
                 break;
         }
-        stmnt = con.prepareStatement("SELECT "+entryMonth+" FROM "+entryTypeTable+" WHERE `revCenter` = " +
-                "'"+revCenter+"' AND "+entryYear+" = '"+cmbEntryYear.getSelectionModel().
-                getSelectedItem()+"' GROUP  BY "+entryMonth+"");
-        ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData rm = rs.getMetaData();
-        int col = rs.getFetchSize();
-        while(rs.next()){
-            String Month = rs.getString(acEntryMonth);
-            System.out.println(Month);
-            entryMonths.add(Month);
+        if (cmbEntryType.getSelectionModel().getSelectedItem() == "Revenue Target") {
+        } else {
+            stmnt = con.prepareStatement("SELECT " + entryMonth + " FROM " + entryTypeTable + " WHERE `revCenter` = " +
+                    "'" + revCenter + "' AND " + entryYear + " = '" + cmbEntryYear.getSelectionModel().
+                    getSelectedItem() + "' GROUP  BY " + entryMonth + "");
+            ResultSet rs = stmnt.executeQuery();
+            ResultSetMetaData rm = rs.getMetaData();
+            int col = rs.getFetchSize();
+            while (rs.next()) {
+                String Month = rs.getString(acEntryMonth);
+                System.out.println(Month);
+                entryMonths.add(Month);
+            }
+            cmbEntryMonth.getItems().clear();
+            cmbEntryMonth.getItems().addAll(entryMonths);
+            System.out.println(entryTypeTable + "\n" + entryMonths + "\n" + entryMonth + "\n" + acEntryMonth + "\n" + rm + "\n" + col);
         }
-        cmbEntryMonth.getItems().clear();
-        cmbEntryMonth.getItems().addAll(entryMonths);
-        System.out.println(entryTypeTable+"\n"+entryMonths+"\n"+entryMonth+"\n"+acEntryMonth+"\n"+rm+"\n"+col);
     }
 
     @FXML
     private void onlyAmount(KeyEvent event) {
+        String c = event.getCharacter();
+        if("1234567890.".contains(c)) {}
+        else {
+            event.consume();
+        }
     }
 
     @FXML
@@ -710,6 +723,10 @@ public class UpdateEntriesController implements Initializable {
     }
 
     void setTargetEntries(){
+        GetTargetEnt targ = tblTargetEntries.getSelectionModel().getSelectedItem();
+        Integer year = Integer.parseInt(targ.getYear());
+        spnTargYear.getValueFactory().setValue(year);
+        txtTargetAmount.setText(targ.getAmount());
     }
 
 
