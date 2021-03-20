@@ -16,7 +16,7 @@
 
 <!--fx:controller="Controller.appController"-->
 
-<BorderPane fx:id="border_pane" prefHeight="680.0" prefWidth="1300.0" style="-fx-background-color: #f5f6f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="border_pane" prefHeight="700.0" prefWidth="1300.0" style="-fx-background-color: #f5f6f7;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="569.0" BorderPane.alignment="CENTER">
          <content>

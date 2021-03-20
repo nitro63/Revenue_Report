@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.*;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -52,7 +53,7 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private TableColumn<GetValueBooksReport, String> colStckPurAmt;
     @FXML
-    private TableColumn<GetValueBooksReport, String> colStckRemarks;
+    private TableColumn<GetValueBooksReport, String> colRemarks;
     @FXML
     private TableView<GetTargetEnt> tblTargetEntries;
     @FXML
@@ -112,7 +113,7 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private AnchorPane paneValueBooks;
     @FXML
-    private JFXDatePicker entDatePck;
+    private JFXDatePicker entValDatePck;
     @FXML
     private Label lblStockDateWarn;
     @FXML
@@ -176,7 +177,7 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private AnchorPane panePayment;
     @FXML
-    private Spinner<?> spnPaymentYear;
+    private Spinner<Integer> spnPaymentYear;
     @FXML
     private Label lblYearPayment;
     @FXML
@@ -247,7 +248,7 @@ public class UpdateEntriesController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
     boolean targetCondition, collectionCondition, paymentCondition, bankCondition, valueBookCondition;
-    String revCenter, entryTypeMonth, entryTypeYear;
+    String revCenter, entryTypeMonth, entryTypeYear, oldTargetAmount, newTargetAmount, newTargetYear, oldTargetyear;
 
     public UpdateEntriesController(GetRevCenter getRevCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getRevCenter;
@@ -280,7 +281,9 @@ public class UpdateEntriesController implements Initializable {
         txtTargetAmount.setOnMouseClicked(e -> {
             lblTargetWarn.setVisible(false);
         });
-        spnTargYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, 2021));
+        Calendar cal = Calendar.getInstance();
+        spnTargYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get(Calendar.YEAR)));
+        spnPaymentYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get(Calendar.YEAR)));
         tblCollectionEntries.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tblPaymentEntries.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -298,36 +301,40 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     void loadEntryYears(ActionEvent event) throws SQLException {
+        getYear();
+    }
+
+    void getYear() throws SQLException {
         ObservableList<String> entryYears = FXCollections.observableArrayList();
         String entryYear = "", entryTypeTable = "", acEntryYear = "";
-         switch(cmbEntryType.getSelectionModel().getSelectedItem()){
-             case "Bank Details":
-                 entryTypeTable = "`cheque_details`";
-                 entryYear = "`year`";
-                 acEntryYear = "year";
+        switch(cmbEntryType.getSelectionModel().getSelectedItem()){
+            case "Bank Details":
+                entryTypeTable = "`cheque_details`";
+                entryYear = "`year`";
+                acEntryYear = "year";
 
-                 break;
-             case "Payments Entries":
-                 entryTypeTable = "`collection_payment_entries`";
-                 entryYear = "`Year`";
-                 acEntryYear = "Year";
+                break;
+            case "Payments Entries":
+                entryTypeTable = "`collection_payment_entries`";
+                entryYear = "`Year`";
+                acEntryYear = "Year";
 
-                 break;
-             case "Revenue Entries":
-                 entryTypeTable = "`daily_entries`";
-                 entryYear = "`revenueYear`";
-                 acEntryYear = "revenueYear";
-                 break;
-             case "Revenue Target":
-                 entryTypeTable = "`target_entries`";
-                 entryYear = "`Year`";
-                 acEntryYear = "Year";
-                 break;
-             case "Value Books Stock":
-                 entryTypeTable = "`value_books_stock_record`";
-                 entryYear = "`year`";
-                 acEntryYear = "year";
-                 break;
+                break;
+            case "Revenue Entries":
+                entryTypeTable = "`daily_entries`";
+                entryYear = "`revenueYear`";
+                acEntryYear = "revenueYear";
+                break;
+            case "Revenue Target":
+                entryTypeTable = "`target_entries`";
+                entryYear = "`Year`";
+                acEntryYear = "Year";
+                break;
+            case "Value Books Stock":
+                entryTypeTable = "`value_books_stock_record`";
+                entryYear = "`year`";
+                acEntryYear = "year";
+                break;
         }
         if (cmbEntryType.getSelectionModel().getSelectedItem().equals("Revenue Target")){
             cmbEntryMonth.setDisable(true);
@@ -540,8 +547,13 @@ public class UpdateEntriesController implements Initializable {
     void getTargetEntries() throws SQLException {
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
+        txtTargetAmount.setText(null);
         toggleViews();
         lblTitle.setText("Revenue Target Entries");
+        loadTargetTable();
+    }
+
+    void loadTargetTable() throws SQLException {
         tblTargetEntries.getItems().clear();
         ResultSet rs;
         ResultSetMetaData rm;
@@ -561,19 +573,27 @@ public class UpdateEntriesController implements Initializable {
             year = rs.getString("Year");
             getTargetReport = new GetTargetEnt(center, amount, year);
             tblTargetEntries.getItems().add(getTargetReport);
-        }
-    }
+        }}
 
     void getBankDetails() throws SQLException {
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
+        cmbGCR.getSelectionModel().clearSelection();
+        dtpckChequeDate.setValue(null);
+        txtChqAmount.setText(null);
+        txtBankName.setText(null);
+        txtChqNmb.setText(null);
         toggleViews();
         lblTitle.setText("Cheque Details");
+        loadBankDetailsTable();
+    }
+
+    void loadBankDetailsTable() throws SQLException {
         tblChequeDetails.getItems().clear();
         ResultSet rs;
         ResultSetMetaData rm;
         String GCR = "", Year = "", date = "", Month = "", chqDate = "", chqNumber = "", Bank = "", Amount = "",
-        month = cmbEntryMonth.getSelectionModel().getSelectedItem();
+                month = cmbEntryMonth.getSelectionModel().getSelectedItem();
         colBank.setCellValueFactory(d -> d.getValue().bankProperty());
         colChqAmount.setCellValueFactory(d -> d.getValue().amountProperty());
         colChqDate.setCellValueFactory(d -> d.getValue().chequeDateProperty());
@@ -597,14 +617,22 @@ public class UpdateEntriesController implements Initializable {
             Amount = getFunctions.getAmount(rs.getString("amount"));
             getBankReport = new GetBankDetails(GCR, date, chqDate, chqNumber, Bank, Amount);
             tblChequeDetails.getItems().add(getBankReport);
-        }
-    }
+        }}
 
     void getValueBooks() throws SQLException {
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
+        entValDatePck.setValue(null);
+        cmbTypeOfValueBook.getSelectionModel().clearSelection();
+        txtUnitAmount.setText(null);
+        txtSerialFrom.setText(null);
+        txtSerialTo.setText(null);
         toggleViews();
         lblTitle.setText("Value Books Stock Record");
+        loadValueBooksTable();
+    }
+
+    void loadValueBooksTable() throws SQLException {
         tblValueBookStocks.getItems().clear();
         ResultSet rs;
         String Year, Month = "", Date = "", typeOfValBk = "", firstSerial = "", lastSerial = "", Quantity = "",
@@ -619,7 +647,7 @@ public class UpdateEntriesController implements Initializable {
         colStckPurAmt.setCellValueFactory(d -> d.getValue().purAmountProperty());
         colStckQuantity.setCellValueFactory(d -> d.getValue().quantityProperty());
         colStckTypeVB.setCellValueFactory(d -> d.getValue().valueBookProperty());
-        colStckRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
+        colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
             stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `revCenter` = '"+revCenter+"'" +
                     " AND `year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"'");
@@ -641,19 +669,25 @@ public class UpdateEntriesController implements Initializable {
             getValueReport = new GetValueBooksReport(Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity,
                     valAmount, purAmount, remarks);
             tblValueBookStocks.getItems().add(getValueReport);
-        }
-    }
+        }}
 
     void getRevenueCollection() throws SQLException {
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
+        entDatePckRevCol.setValue(null);
+        cmbRevenueItem.getSelectionModel().clearSelection();
+        txtRevenueAmount.setText(null);
         toggleViews();
         lblTitle.setText("Revenue Entries");
+        loadRevenueCollectionTable();
+    }
+
+    void loadRevenueCollectionTable() throws SQLException {
         tblCollectionEntries.getItems().clear();
         ResultSet rs;
         String Code = "", Item = "", Date = "", Month = "", Amount = "", Week = "", Year = "", Qtr = "",
                 entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem(),
-                        entryTypeMonth = cmbEntryMonth.getSelectionModel().getSelectedItem();
+                entryTypeMonth = cmbEntryMonth.getSelectionModel().getSelectedItem();
         colItemCode.setCellValueFactory(d -> d.getValue().CodeProperty());
         colRevItem.setCellValueFactory(d -> d.getValue().ItemProperty());
         colRevDate.setCellValueFactory(d -> d.getValue().DateProperty());
@@ -687,8 +721,17 @@ public class UpdateEntriesController implements Initializable {
     void getPayment() throws SQLException{
         paneUpdateNothing.setVisible(false);
         paneNothing.setVisible(false);
+        entDatePckPayment.setValue(null);
+        txtPaymentGCR.setText(null);
+        txtPaymentAmount.setText(null);
+        cmbCollectionMonth.getSelectionModel().clearSelection();
+        cmbPaymentType.getSelectionModel().clearSelection();
         lblTitle.setText("Payment Entries");
         toggleViews();
+        loadPaymentTable();
+    }
+
+    void loadPaymentTable() throws SQLException {
         tblPaymentEntries.getItems().clear();
         ResultSet rs;
         String Amount = "", GCR = "", Month = "", Date = "", Year = "", Type = "",
@@ -718,15 +761,19 @@ public class UpdateEntriesController implements Initializable {
             getPaymentData = new GetCollectEnt(Amount, GCR, Month, Date, Year, Type);
             tblPaymentEntries.getItems().add(getPaymentData);
         }
-
-
     }
 
     void setTargetEntries(){
         GetTargetEnt targ = tblTargetEntries.getSelectionModel().getSelectedItem();
         Integer year = Integer.parseInt(targ.getYear());
-        spnTargYear.getValueFactory().setValue(year);
         txtTargetAmount.setText(targ.getAmount());
+        spnTargYear.getValueFactory().setValue(year);
+        oldTargetAmount = txtTargetAmount.getText();
+        oldTargetyear = Integer.toString(spnTargYear.getValue());
+    }
+
+    void updateTarget() throws SQLException {
+        stmnt = con.prepareStatement("");
     }
 
 
