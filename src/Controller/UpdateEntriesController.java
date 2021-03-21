@@ -14,6 +14,8 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,6 +60,8 @@ public class UpdateEntriesController implements Initializable {
     private TableView<GetTargetEnt> tblTargetEntries;
     @FXML
     private TableColumn<GetTargetEnt, String> colTargAmount;
+    @FXML
+    private TableColumn<GetTargetEnt, String> colTargID;
     @FXML
     private TableColumn<GetTargetEnt, String> colTargYear;
     @FXML
@@ -203,6 +207,8 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private Label lblPayTpeWarn;
     @FXML
+    private Label lblControlWarn;
+    @FXML
     private AnchorPane paneCheque;
     @FXML
     private JFXComboBox<String> cmbGCR;
@@ -248,7 +254,12 @@ public class UpdateEntriesController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
     boolean targetCondition, collectionCondition, paymentCondition, bankCondition, valueBookCondition;
-    String revCenter, entryTypeMonth, entryTypeYear, oldTargetAmount, newTargetAmount, newTargetYear, oldTargetyear;
+    String revCenter, entryTypeMonth, entryTypeYear, oldTargetAmount,  oldTargetyear, entry_ID ;
+    float newTargetAmount;
+    int newTargetYear;
+    String regex = "(?<=[\\d])(,)(?=[\\d])";
+    Pattern p = Pattern.compile(regex);
+    Matcher m;
 
     public UpdateEntriesController(GetRevCenter getRevCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getRevCenter;
@@ -295,6 +306,9 @@ public class UpdateEntriesController implements Initializable {
         tblTargetEntries.setOnMouseClicked(e ->{
             if (tblTargetEntries.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
                 setTargetEntries();
+            }
+            if (lblControlWarn.isVisible()){
+                lblControlWarn.setVisible(false);
             }
         });
     }
@@ -537,11 +551,25 @@ public class UpdateEntriesController implements Initializable {
     }
 
     @FXML
-    private void updateEntries(ActionEvent event) {
+    private void updateEntries(ActionEvent event) throws SQLException {
+        if (entry_ID != null) {
+            if (paneTarget.isVisible()) {
+                updateTarget();
+            }
+        }else{
+            lblControlWarn.setVisible(true);
+        }
     }
 
     @FXML
-    private void deleteSelection(ActionEvent event) {
+    private void deleteSelection(ActionEvent event) throws SQLException {
+        if (entry_ID != null) {
+            if (paneTarget.isVisible()) {
+                deleteTarget();
+            }
+        }else{
+            lblControlWarn.setVisible(true);
+        }
     }
 
     void getTargetEntries() throws SQLException {
@@ -560,6 +588,7 @@ public class UpdateEntriesController implements Initializable {
         String center = "", amount = "", year = "";
         colTargAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
         colTargYear.setCellValueFactory(data -> data.getValue().YearProperty());
+        colTargID.setCellValueFactory(data -> data.getValue().IDProperty());
         if (cmbEntryYear.getSelectionModel().isEmpty()) {
             stmnt = con.prepareStatement("SELECT  * FROM `target_entries` WHERE `revCenter` = '" + revCenter + "'");
         } else {
@@ -571,7 +600,7 @@ public class UpdateEntriesController implements Initializable {
         while (rs.next()) {
             amount = getFunctions.getAmount(rs.getString("Amount"));
             year = rs.getString("Year");
-            getTargetReport = new GetTargetEnt(center, amount, year);
+            getTargetReport = new GetTargetEnt(rs.getString("target_ID"), center, amount, year);
             tblTargetEntries.getItems().add(getTargetReport);
         }}
 
@@ -768,12 +797,31 @@ public class UpdateEntriesController implements Initializable {
         Integer year = Integer.parseInt(targ.getYear());
         txtTargetAmount.setText(targ.getAmount());
         spnTargYear.getValueFactory().setValue(year);
-        oldTargetAmount = txtTargetAmount.getText();
+        entry_ID = targ.getID();
+        Matcher m = p.matcher(txtTargetAmount.getText());
+        oldTargetAmount = m.replaceAll("");
         oldTargetyear = Integer.toString(spnTargYear.getValue());
     }
 
+    void deleteTarget() throws SQLException {
+        stmnt = con.prepareStatement("DELETE FROM `target_entries` WHERE `target_ID` = '"+entry_ID+"'");
+        stmnt.executeUpdate();
+        txtTargetAmount.setText(null);
+        entry_ID = null;
+        loadTargetTable();
+    }
+
     void updateTarget() throws SQLException {
-        stmnt = con.prepareStatement("");
+        newTargetYear = spnTargYear.getValue();
+        Matcher m = p.matcher(txtTargetAmount.getText());
+        newTargetAmount = Float.parseFloat(m.replaceAll(""));
+
+        stmnt = con.prepareStatement("UPDATE `target_entries` SET `revCenter`= '"+revCenter+"', " +
+                "`Amount`= '"+newTargetAmount+"',`Year`= '"+newTargetYear+"' WHERE   `target_ID`= '"+entry_ID+"' ");
+        stmnt.executeUpdate();
+        txtTargetAmount.setText(null);
+        entry_ID = null;
+        loadTargetTable();
     }
 
 

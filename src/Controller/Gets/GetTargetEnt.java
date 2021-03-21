@@ -13,13 +13,20 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetTargetEnt {
-    private StringProperty Center, Year, Amount;
+    private StringProperty Center, Year, Amount, ID;
     
     public GetTargetEnt(){
         
     }
     
     public GetTargetEnt( String Center, String Amount, String Year){
+        this.Amount = new SimpleStringProperty(Amount);
+        this.Center = new SimpleStringProperty(Center);
+        this.Year = new SimpleStringProperty(Year);
+    }
+
+    public GetTargetEnt( String ID, String Center, String Amount, String Year){
+        this.ID = new SimpleStringProperty(ID);
         this.Amount = new SimpleStringProperty(Amount);
         this.Center = new SimpleStringProperty(Center);
         this.Year = new SimpleStringProperty(Year);
@@ -37,7 +44,19 @@ public class GetTargetEnt {
     public final void setCenter(String Center){
         CenterProperty().set(Center);
     }
-    
+
+    public String getID() {
+        return ID.get();
+    }
+
+    public StringProperty IDProperty() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID.set(ID);
+    }
+
     public StringProperty YearProperty(){
         return Year;
     }
