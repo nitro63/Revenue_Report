@@ -4,7 +4,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetValueBooksEntries {
-    private StringProperty Year, Month, Date, valueBook, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks;
+
+    private StringProperty Year, Month, Date, valueBook, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks, ID;
 
     public GetValueBooksEntries(){   }
 

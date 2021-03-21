@@ -15,6 +15,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,6 +40,8 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     private TableView<GetValueBooksReport> tblValueBookStocks;
+    @FXML
+    private TableColumn<GetValueBooksReport, String> colStckID;
     @FXML
     private TableColumn<GetValueBooksReport, String> colStckMonth;
     @FXML
@@ -69,7 +73,7 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private TableView<GetEntries> tblCollectionEntries;
     @FXML
-    private TableColumn<GetEntries, String> colColCenter;
+    private TableColumn<GetEntries, String> colColID;
     @FXML
     private TableColumn<GetEntries, String> colItemCode;
     @FXML
@@ -264,6 +268,8 @@ public class UpdateEntriesController implements Initializable {
     Matcher m;
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     LocalDate date;
+    Map<String, String> codeItem = new HashMap<>();
+    ObservableList<String> Item = FXCollections.observableArrayList();
 
     public UpdateEntriesController(GetRevCenter getRevCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getRevCenter;
@@ -284,6 +290,19 @@ public class UpdateEntriesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            stmnt = con.prepareStatement("SELECT * FROM `revenue_items`");
+            ResultSet rs = stmnt.executeQuery();
+            while (rs.next()){
+                Item.add(rs.getString("revenue_item"));
+                codeItem.put(rs.getString("ID"), rs.getString("revenue_item"));
+            }
+            cmbRevenueItem.getItems().clear();
+            cmbRevenueItem.setItems(Item);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         cmbEntryType.setOnMouseClicked(e -> {
             lblEntryTypeWarn.setVisible(false);
         });
@@ -307,6 +326,14 @@ public class UpdateEntriesController implements Initializable {
         ObservableList<String> entryType = FXCollections.observableArrayList("Bank Details", "Payments Entries",
                 "Revenue Entries", "Revenue Target", "Value Books Stock");
         cmbEntryType.getItems().addAll(entryType);
+        tblValueBookStocks.setOnMouseClicked(e -> {
+            if (tblValueBookStocks.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
+                setValueBooksEntries();
+            }
+            if (lblControlWarn.isVisible()){
+                lblControlWarn.setVisible(false);
+            }
+        });
         tblCollectionEntries.setOnMouseClicked(e ->{
             if (tblCollectionEntries.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
                 setRevenueCollection();
@@ -561,6 +588,12 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     private void clearEntries(ActionEvent event) {
+        if (paneTarget.isVisible()) {
+            txtTargetAmount.setText(null);
+            entry_ID = null;
+        }else if (paneRevenueCollection.isVisible()){
+            resetRevenueCollection();
+        }
     }
 
     @FXML
@@ -694,6 +727,7 @@ public class UpdateEntriesController implements Initializable {
         colStckPurAmt.setCellValueFactory(d -> d.getValue().purAmountProperty());
         colStckQuantity.setCellValueFactory(d -> d.getValue().quantityProperty());
         colStckTypeVB.setCellValueFactory(d -> d.getValue().valueBookProperty());
+        colStckID.setCellValueFactory(d -> d.getValue().IDProperty());
         colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
             stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `revCenter` = '"+revCenter+"'" +
@@ -713,8 +747,8 @@ public class UpdateEntriesController implements Initializable {
             valAmount = getFunctions.getAmount(rs.getString("amount"));
             purAmount = getFunctions.getAmount(rs.getString("purchase_amount"));
             remarks = rs.getString("remarks");
-            getValueReport = new GetValueBooksReport(Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity,
-                    valAmount, purAmount, remarks);
+            getValueReport = new GetValueBooksReport(Month, rs.getString("ID"), Date, typeOfValBk, firstSerial,
+                    lastSerial, Quantity, valAmount, purAmount, remarks);
             tblValueBookStocks.getItems().add(getValueReport);
         }}
 
@@ -735,7 +769,7 @@ public class UpdateEntriesController implements Initializable {
         String Code = "", Item = "", Date = "", Month = "", Amount = "", Week = "", Year = "", Qtr = "",
                 entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem(),
                 entryTypeMonth = cmbEntryMonth.getSelectionModel().getSelectedItem();
-        colColCenter.setCellValueFactory(d -> d.getValue().CenterProperty());
+        colColID.setCellValueFactory(d -> d.getValue().CenterProperty());
         colItemCode.setCellValueFactory(d -> d.getValue().CodeProperty());
         colRevItem.setCellValueFactory(d -> d.getValue().ItemProperty());
         colRevDate.setCellValueFactory(d -> d.getValue().DateProperty());
@@ -867,7 +901,7 @@ public class UpdateEntriesController implements Initializable {
         stmnt = con.prepareStatement("UPDATE `daily_entries` SET `revCenter`= '"+revCenter+"', " +
                 "`revenueAmount`= '"+Float.parseFloat(txtRevenueAmount.getText())+"',`revenueYear`= '"+Year+"'," +
                 "`revenueDate` = '"+Date+"', `revenueItem` = '"+cmbRevenueItem.getSelectionModel().getSelectedItem()+"'" +
-                ",`revenueWeek` = '"+Week+"', `revenueMonth` = '"+Month+"', `revenueQauter` = '"+Qtr+"' WHERE   " +
+                ",`revenueWeek` = '"+Week+"', `revenueMonth` = '"+Month+"', `revenueQuarter` = '"+Qtr+"' WHERE   " +
                 "`entries_ID`= '"+entry_ID+"' ");
         stmnt.executeUpdate();
         resetRevenueCollection();
@@ -879,7 +913,16 @@ public class UpdateEntriesController implements Initializable {
         date = null;
         entDatePckRevCol.setValue(null);
         cmbRevenueItem.getSelectionModel().clearSelection();
-        txtRevenueAmount.setText(null);}
+        txtRevenueAmount.setText(null);
+    }
+
+    void setValueBooksEntries(){
+        GetValueBooksReport valueBooks = tblValueBookStocks.getSelectionModel().getSelectedItem();
+        entry_ID = valueBooks.getID();
+        date = LocalDate.parse(valueBooks.getDate(), format);
+        entValDatePck.setValue(date);
+
+    }
 
 
     

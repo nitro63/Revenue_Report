@@ -4,12 +4,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetValueBooksReport {
-    StringProperty Year, Month, Date, valueBook, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks;
+    StringProperty Year, Month, Date, valueBook, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks, ID;
 
     public  GetValueBooksReport(){}
 
-    public GetValueBooksReport(String month, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String purAmount, String remarks) {
+    public GetValueBooksReport(String month, String ID, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String purAmount, String remarks) {
         this.Month = new SimpleStringProperty(month);
+        this.ID = new SimpleStringProperty(ID);
         this.Date = new SimpleStringProperty(date);
         this.valueBook = new SimpleStringProperty(valueBook);
         this.firstSerial = new SimpleStringProperty(firstSerial);
@@ -18,6 +19,17 @@ public class GetValueBooksReport {
         this.valAmount = new SimpleStringProperty(valAmount);
         this.purAmount = new SimpleStringProperty(purAmount);
         this.remarks = new SimpleStringProperty(remarks);
+    }
+    public String getID() {
+        return ID.get();
+    }
+
+    public StringProperty IDProperty() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID.set(ID);
     }
 
     public String getRemarks() {

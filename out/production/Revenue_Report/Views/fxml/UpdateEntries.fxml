@@ -22,6 +22,11 @@
       <Separator layoutX="306.0" layoutY="34.0" orientation="VERTICAL" prefHeight="553.0" prefWidth="0.0" style="-fx-background-color: #263238;" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="34.0" />
       <TableView fx:id="tblValueBookStocks" layoutX="331.0" layoutY="46.0" prefHeight="530.0" prefWidth="771.0" visible="false" AnchorPane.leftAnchor="331.0" AnchorPane.rightAnchor="23.0">
          <columns>
+            <TableColumn fx:id="colStckID" maxWidth="100.0" minWidth="80.0" prefWidth="100.0">
+               <graphic>
+                  <Label prefHeight="24.0" prefWidth="78.0" text="STOCK ID" textAlignment="CENTER" wrapText="true" />
+               </graphic>
+            </TableColumn>
             <TableColumn fx:id="colStckMonth" editable="false" prefWidth="66.0" text="MONTH" />
             <TableColumn fx:id="colStckDATE" editable="false" minWidth="0.0" prefWidth="68.0" text="DATE" />
             <TableColumn fx:id="colStckTypeVB" editable="false" prefWidth="109.0">
@@ -74,7 +79,7 @@
       </TableView>
       <TableView fx:id="tblCollectionEntries" layoutX="363.0" layoutY="55.0" prefHeight="510.0" prefWidth="706.0" visible="false" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="56.0">
          <columns>
-            <TableColumn fx:id="colColCenter" editable="false" prefWidth="73.22222900390625" text="Center" />
+            <TableColumn fx:id="colColCenter" editable="false" prefWidth="73.22222900390625" text="ID" />
             <TableColumn fx:id="colItemCode" editable="false" prefWidth="82.975341796875" text="Code" />
             <TableColumn fx:id="colRevItem" editable="false" prefWidth="102.75579833984375" text="Revenue Item" />
             <TableColumn fx:id="colRevAmt" editable="false" prefWidth="110.671875" text="Amount " />
