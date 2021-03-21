@@ -12,6 +12,8 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -260,6 +262,8 @@ public class UpdateEntriesController implements Initializable {
     String regex = "(?<=[\\d])(,)(?=[\\d])";
     Pattern p = Pattern.compile(regex);
     Matcher m;
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    LocalDate date;
 
     public UpdateEntriesController(GetRevCenter getRevCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getRevCenter;
@@ -303,6 +307,14 @@ public class UpdateEntriesController implements Initializable {
         ObservableList<String> entryType = FXCollections.observableArrayList("Bank Details", "Payments Entries",
                 "Revenue Entries", "Revenue Target", "Value Books Stock");
         cmbEntryType.getItems().addAll(entryType);
+        tblCollectionEntries.setOnMouseClicked(e ->{
+            if (tblCollectionEntries.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
+                setRevenueCollection();
+            }
+            if (lblControlWarn.isVisible()){
+                lblControlWarn.setVisible(false);
+            }
+        });
         tblTargetEntries.setOnMouseClicked(e ->{
             if (tblTargetEntries.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
                 setTargetEntries();
@@ -553,14 +565,11 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     private void updateEntries(ActionEvent event) throws SQLException {
-        if (paneRevenueCollection.isVisible()){
-            System.out.println(entDatePckRevCol.setValue());
-        }
         if (entry_ID != null) {
             if (paneTarget.isVisible()) {
                 updateTarget();
             }else if (paneRevenueCollection.isVisible()){
-                System.out.println(entDatePckRevCol.getValue());
+                updateRevenueCollection();
             }
         }else{
             lblControlWarn.setVisible(true);
@@ -572,6 +581,8 @@ public class UpdateEntriesController implements Initializable {
         if (entry_ID != null) {
             if (paneTarget.isVisible()) {
                 deleteTarget();
+            } else if(paneRevenueCollection.isVisible()){
+                deleteRevenueCollection();
             }
         }else{
             lblControlWarn.setVisible(true);
@@ -724,6 +735,7 @@ public class UpdateEntriesController implements Initializable {
         String Code = "", Item = "", Date = "", Month = "", Amount = "", Week = "", Year = "", Qtr = "",
                 entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem(),
                 entryTypeMonth = cmbEntryMonth.getSelectionModel().getSelectedItem();
+        colColCenter.setCellValueFactory(d -> d.getValue().CenterProperty());
         colItemCode.setCellValueFactory(d -> d.getValue().CodeProperty());
         colRevItem.setCellValueFactory(d -> d.getValue().ItemProperty());
         colRevDate.setCellValueFactory(d -> d.getValue().DateProperty());
@@ -749,7 +761,7 @@ public class UpdateEntriesController implements Initializable {
             Year = rs.getString("revenueYear");
             Qtr = rs.getString("revenueYear");
             Amount = getFunctions.getAmount(rs.getString("revenueAmount"));
-            getCollectionData = new GetEntries(Code, Item, Date, Month, Amount, Week, Year, Qtr);
+            getCollectionData = new GetEntries(Code, rs.getString("entries_ID"), Item, Date, Month, Amount, Week, Year, Qtr);
             tblCollectionEntries.getItems().add(getCollectionData);
         }
     }
@@ -800,14 +812,12 @@ public class UpdateEntriesController implements Initializable {
     }
 
     void setTargetEntries(){
-        GetTargetEnt targ = tblTargetEntries.getSelectionModel().getSelectedItem();
-        Integer year = Integer.parseInt(targ.getYear());
-        txtTargetAmount.setText(targ.getAmount());
+        GetTargetEnt target = tblTargetEntries.getSelectionModel().getSelectedItem();
+        m = p.matcher(target.getAmount());
+        Integer year = Integer.parseInt(target.getYear());
+        txtTargetAmount.setText( m.replaceAll(""));
         spnTargYear.getValueFactory().setValue(year);
-        entry_ID = targ.getID();
-        Matcher m = p.matcher(txtTargetAmount.getText());
-        oldTargetAmount = m.replaceAll("");
-        oldTargetyear = Integer.toString(spnTargYear.getValue());
+        entry_ID = target.getID();
     }
 
     void deleteTarget() throws SQLException {
@@ -830,6 +840,46 @@ public class UpdateEntriesController implements Initializable {
         entry_ID = null;
         loadTargetTable();
     }
+
+    void setRevenueCollection(){
+        GetEntries entries = tblCollectionEntries.getSelectionModel().getSelectedItem();
+        entry_ID = entries.getCenter();
+        date = LocalDate.parse(entries.getDate(), format);
+        entDatePckRevCol.setValue(date);
+        cmbRevenueItem.getSelectionModel().select(entries.getItem());
+        m = p.matcher(entries.getAmount());
+        txtRevenueAmount.setText(m.replaceAll(""));
+    }
+
+    void deleteRevenueCollection() throws SQLException {
+        stmnt = con.prepareStatement("DELETE FROM `daily_entries` WHERE `entries_ID` = '"+entry_ID+"'");
+        stmnt.executeUpdate();
+        resetRevenueCollection();
+        loadRevenueCollectionTable();
+    }
+
+    void updateRevenueCollection() throws SQLException {
+        String Date = getFunctions.getDate(entDatePckRevCol.getValue()),
+        Year = getFunctions.getYear(entDatePckRevCol.getValue()),
+        Qtr = getFunctions.getQuarter(entDatePckRevCol.getValue()),
+        Week = getFunctions.getWeek(entDatePckRevCol.getValue()),
+        Month = getFunctions.getMonth(entDatePckRevCol.getValue());
+        stmnt = con.prepareStatement("UPDATE `daily_entries` SET `revCenter`= '"+revCenter+"', " +
+                "`revenueAmount`= '"+Float.parseFloat(txtRevenueAmount.getText())+"',`revenueYear`= '"+Year+"'," +
+                "`revenueDate` = '"+Date+"', `revenueItem` = '"+cmbRevenueItem.getSelectionModel().getSelectedItem()+"'" +
+                ",`revenueWeek` = '"+Week+"', `revenueMonth` = '"+Month+"', `revenueQauter` = '"+Qtr+"' WHERE   " +
+                "`entries_ID`= '"+entry_ID+"' ");
+        stmnt.executeUpdate();
+        resetRevenueCollection();
+        loadRevenueCollectionTable();
+    }
+
+    void resetRevenueCollection() {
+        entry_ID = null;
+        date = null;
+        entDatePckRevCol.setValue(null);
+        cmbRevenueItem.getSelectionModel().clearSelection();
+        txtRevenueAmount.setText(null);}
 
 
     
