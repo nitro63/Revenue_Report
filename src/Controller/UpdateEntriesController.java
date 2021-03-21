@@ -480,6 +480,7 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     private void showEntries(ActionEvent event) throws SQLException {
+        entry_ID = null;
         if (cmbEntryType.getSelectionModel().isEmpty()){
             lblEntryTypeWarn.setVisible(true);
         }else {
@@ -552,9 +553,14 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     private void updateEntries(ActionEvent event) throws SQLException {
+        if (paneRevenueCollection.isVisible()){
+            System.out.println(entDatePckRevCol.setValue());
+        }
         if (entry_ID != null) {
             if (paneTarget.isVisible()) {
                 updateTarget();
+            }else if (paneRevenueCollection.isVisible()){
+                System.out.println(entDatePckRevCol.getValue());
             }
         }else{
             lblControlWarn.setVisible(true);
@@ -583,6 +589,7 @@ public class UpdateEntriesController implements Initializable {
 
     void loadTargetTable() throws SQLException {
         tblTargetEntries.getItems().clear();
+        txtTargetAmount.setText(null);
         ResultSet rs;
         ResultSetMetaData rm;
         String center = "", amount = "", year = "";
