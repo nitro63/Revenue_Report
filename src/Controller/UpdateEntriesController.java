@@ -265,9 +265,10 @@ public class UpdateEntriesController implements Initializable {
     int newTargetYear;
     String regex = "(?<=[\\d])(,)(?=[\\d])";
     Pattern p = Pattern.compile(regex);
-    Matcher m;
+    Matcher m, match, mac;
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     LocalDate date;
+    Map<Float, String> priceBook = new HashMap<>();
     Map<String, String> codeItem = new HashMap<>();
     ObservableList<String> Item = FXCollections.observableArrayList();
 
@@ -719,6 +720,14 @@ public class UpdateEntriesController implements Initializable {
                 valAmount = "", cumuAmount = "", purAmount = "", remarks = "",
                 month = cmbEntryMonth.getSelectionModel().getSelectedItem();
         float cumuAmounts = 0;
+
+        stmnt = con.prepareStatement("SELECT * FROM `value_books_details`");
+        ResultSet res = stmnt.executeQuery();
+        cmbTypeOfValueBook.getItems().clear();
+        while (res.next()){
+            cmbTypeOfValueBook.getItems().add(res.getString("value_book"));
+            priceBook.put(res.getFloat("price"), res.getString("value_book"));
+        }
         colStckAmtVal.setCellValueFactory(d -> d.getValue().valAmountProperty());
         colStckDATE.setCellValueFactory(d -> d.getValue().dateProperty());
         colSerialFrom.setCellValueFactory(d -> d.getValue().firstSerialProperty());
@@ -919,11 +928,22 @@ public class UpdateEntriesController implements Initializable {
     void setValueBooksEntries(){
         GetValueBooksReport valueBooks = tblValueBookStocks.getSelectionModel().getSelectedItem();
         entry_ID = valueBooks.getID();
+        mac = p.matcher(valueBooks.getPurAmount());
+        float price = Float.parseFloat(m.replaceAll(""));
+        int quantity = Integer.parseInt(valueBooks.getQuantity());
         date = LocalDate.parse(valueBooks.getDate(), format);
         entValDatePck.setValue(date);
+        cmbTypeOfValueBook.getSelectionModel().select(valueBooks.getValueBook());
+        float unitAmount = price / quantity;
+        txtUnitAmount.setText(Float.toString(unitAmount));
+        txtSerialFrom.setText(valueBooks.getFirstSerial());
+        txtSerialTo.setText(valueBooks.getLastSerial());
+
+
 
     }
 
 
     
 }
+

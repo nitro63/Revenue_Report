@@ -231,7 +231,7 @@ public class valueBooksEntriesController implements Initializable {
                     colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
                     int serialChecker = Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial) +1;
                     int quantity = ((serialChecker + 1)/ 100);
-                    if(serialChecker / 100 != 1){
+                    if(serialChecker +1 / 100 != 1){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Warning Dialog");
                         alert.setHeaderText("Please check Serials");

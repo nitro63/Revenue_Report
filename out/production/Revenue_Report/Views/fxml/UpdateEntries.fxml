@@ -79,7 +79,7 @@
       </TableView>
       <TableView fx:id="tblCollectionEntries" layoutX="363.0" layoutY="55.0" prefHeight="510.0" prefWidth="706.0" visible="false" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="56.0">
          <columns>
-            <TableColumn fx:id="colColCenter" editable="false" prefWidth="73.22222900390625" text="ID" />
+            <TableColumn fx:id="colColID" editable="false" prefWidth="73.22222900390625" text="ID" />
             <TableColumn fx:id="colItemCode" editable="false" prefWidth="82.975341796875" text="Code" />
             <TableColumn fx:id="colRevItem" editable="false" prefWidth="102.75579833984375" text="Revenue Item" />
             <TableColumn fx:id="colRevAmt" editable="false" prefWidth="110.671875" text="Amount " />
