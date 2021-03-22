@@ -260,7 +260,7 @@ public class UpdateEntriesController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
     boolean targetCondition, collectionCondition, paymentCondition, bankCondition, valueBookCondition;
-    String revCenter, entryTypeMonth, entryTypeYear, oldTargetAmount,  oldTargetyear, entry_ID ;
+    String revCenter, entryTypeMonth, entryTypeYear, oldTargetAmount,  oldTargetyear, entry_ID;
     float newTargetAmount;
     int newTargetYear;
     String regex = "(?<=[\\d])(,)(?=[\\d])";
@@ -604,6 +604,8 @@ public class UpdateEntriesController implements Initializable {
                 updateTarget();
             }else if (paneRevenueCollection.isVisible()){
                 updateRevenueCollection();
+            }else if (paneValueBooks.isVisible()){
+                updateValueBooksEntries();
             }
         }else{
             lblControlWarn.setVisible(true);
@@ -617,6 +619,8 @@ public class UpdateEntriesController implements Initializable {
                 deleteTarget();
             } else if(paneRevenueCollection.isVisible()){
                 deleteRevenueCollection();
+            } else if (paneValueBooks.isVisible()){
+                deleteValueBooksEntries();
             }
         }else{
             lblControlWarn.setVisible(true);
@@ -725,8 +729,8 @@ public class UpdateEntriesController implements Initializable {
         ResultSet res = stmnt.executeQuery();
         cmbTypeOfValueBook.getItems().clear();
         while (res.next()){
-            cmbTypeOfValueBook.getItems().add(res.getString("value_book"));
-            priceBook.put(res.getFloat("price"), res.getString("value_book"));
+            cmbTypeOfValueBook.getItems().add(res.getString("value_books"));
+            priceBook.put(res.getFloat("price"), res.getString("value_books"));
         }
         colStckAmtVal.setCellValueFactory(d -> d.getValue().valAmountProperty());
         colStckDATE.setCellValueFactory(d -> d.getValue().dateProperty());
@@ -929,7 +933,13 @@ public class UpdateEntriesController implements Initializable {
         GetValueBooksReport valueBooks = tblValueBookStocks.getSelectionModel().getSelectedItem();
         entry_ID = valueBooks.getID();
         mac = p.matcher(valueBooks.getPurAmount());
-        float price = Float.parseFloat(m.replaceAll(""));
+        String amount = "";
+        if (mac.matches()){
+             amount = m.replaceAll("");
+        }else {
+            amount = valueBooks.getPurAmount();
+        }
+        float price = Float.parseFloat(amount);
         int quantity = Integer.parseInt(valueBooks.getQuantity());
         date = LocalDate.parse(valueBooks.getDate(), format);
         entValDatePck.setValue(date);
@@ -938,9 +948,66 @@ public class UpdateEntriesController implements Initializable {
         txtUnitAmount.setText(Float.toString(unitAmount));
         txtSerialFrom.setText(valueBooks.getFirstSerial());
         txtSerialTo.setText(valueBooks.getLastSerial());
+    }
 
+    void deleteValueBooksEntries() throws SQLException {
+        stmnt = con.prepareStatement("DELETE FROM `value_books_stock_record` WHERE `ID` = '"+entry_ID+"' ");
+        stmnt.executeUpdate();
+        loadTargetTable();
+        resetValueBooksTable();
+    }
 
+    void updateValueBooksEntries() throws SQLException {
+        String  lastSerial = txtSerialTo.getText(),
+                firstSerial = txtSerialFrom.getText(),
+                Quantity, typeOfValBk = cmbTypeOfValueBook.getSelectionModel().getSelectedItem(),
+                purAmount, valAmount,
+                Month = getFunctions.getMonth(entValDatePck.getValue()),
+                Date = getFunctions.getDate(entValDatePck.getValue());
+        float amount = 0, cumuamount = 0, puramount = 0;
+        int serialChecker = (Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial)) + 1;
+        int quantity = ((serialChecker) / 100);
+        if ((serialChecker) < 100 || serialChecker % 100 != 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Please check Serials");
+            alert.showAndWait();
+        } else {
+            Quantity = Integer.toString(quantity);
+            for (Map.Entry<Float, String> calValAmount : priceBook.entrySet()){
+                if (calValAmount.getValue().equals(typeOfValBk)){
+                    amount = quantity * calValAmount.getKey() * 100;
+                }
+            }
+            puramount = (Float.parseFloat(txtUnitAmount.getText()) * quantity);
+            purAmount = getFunctions.getAmount(Float.toString(puramount));
+            valAmount = getFunctions.getAmount(Float.toString((amount)));
+            if ("0.00".equals(purAmount)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Please Amount cannot be '0'");
+                alert.showAndWait();
+                txtUnitAmount.clear();
+            } else {
+                stmnt = con.prepareStatement("UPDATE `value_books_details` SET `date` = '"+Date+"'," +
+                        " `month` = '"+Month+"', `value_book` = '"+typeOfValBk+"', `first_serial` = '"+firstSerial+"'," +
+                        "`last_serial` = '"+lastSerial+"', `quantity` = '"+Quantity+"', `amount` = '"+valAmount+"'," +
+                        "`purchase_amount` = '"+purAmount+"', `remarks` = 'Updated'");
+                stmnt.executeUpdate();
+                loadValueBooksTable();
+                resetValueBooksTable();
+            }
+        }
+    }
 
+    void resetValueBooksTable(){
+        entry_ID = null;
+        date = null;
+        entValDatePck.setValue(null);
+        cmbTypeOfValueBook.getSelectionModel().clearSelection();
+        txtUnitAmount.setText(null);
+        txtSerialFrom.setText(null);
+        txtSerialTo.setText(null);
     }
 
 

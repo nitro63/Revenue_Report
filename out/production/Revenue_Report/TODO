@@ -2,3 +2,11 @@ Day Goal
 Finish with Master reports controller and their loading //Done
 Design Revenue Target Analysis and Collection Payment Views
 Tackle Yearly and Quarterly Reports
+
+    March 22nd 2021
+- Error Handling for the following under Update Entries:
+  >  Revenue Entries
+  >  Value Books Entries
+  >  Target Entries
+  > Where there are regrex matchers
+

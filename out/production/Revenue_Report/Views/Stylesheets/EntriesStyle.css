@@ -8,6 +8,9 @@
 .jfx-date-picker .input-line{
     -fx-border-color:  #0fc649;
 }
+.root{
+    -fx-background-color:  #f0f6f8;
+}
 .spinner {
     -fx-prompt-text-fill: black;
     -fx-text-fill: black;

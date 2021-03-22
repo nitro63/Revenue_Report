@@ -23,10 +23,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import revenue_report.DBConnection;
@@ -39,6 +36,12 @@ import revenue_report.DBConnection;
 public class Target_AnalysisController implements Initializable {
 
     @FXML
+    private Label lblMonth;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblRevenueCenter;
+    @FXML
     private VBox monthlyTemplate;
     @FXML
     private ComboBox<String> cmbReportCent;
@@ -50,10 +53,6 @@ public class Target_AnalysisController implements Initializable {
     private Text txtAnnualTarget;
     @FXML
     private TableView<GetTargAnalReport> tblColPayAnalysis;
-    @FXML
-    private TableColumn<?, ?> revenueCenter;
-    @FXML
-    private TableColumn<?, ?> year;
     @FXML
     private TableColumn<GetTargAnalReport, String> colMonth;
     @FXML
@@ -143,8 +142,8 @@ public class Target_AnalysisController implements Initializable {
     }
     
     private void changeNames() {
-        revenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        year.setText("Year: "+ cmbReportYear.getSelectionModel().getSelectedItem());
+        lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem());
     } 
     
     private void setItems() throws SQLException {

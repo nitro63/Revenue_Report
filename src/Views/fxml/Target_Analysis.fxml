@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,9 +15,42 @@
 
 <!--fx:controller="Controller.Target_AnalysisController"-->
 
-<AnchorPane id="AnchorPane" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox fx:id="monthlyTemplate" alignment="CENTER">
+      <Label layoutX="357.0" layoutY="-2.0" text="REVENUE TARGET ANALYSIS">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="486.0" layoutY="76.0">
+         <children>
+            <Label layoutY="2.0" text="YEAR:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblYear" layoutX="57.0" text="NAN">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="104.0" layoutY="76.0">
+         <children>
+            <Label text="REVENUE CENTER:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRevenueCenter" layoutX="168.0" text="NAN">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <VBox fx:id="monthlyTemplate" alignment="CENTER" layoutX="1.0" layoutY="18.0" AnchorPane.topAnchor="15.0">
          <children>
             <HBox alignment="CENTER" prefHeight="67.0" prefWidth="1030.0" VBox.vgrow="ALWAYS">
                <children>
@@ -59,26 +93,18 @@
             </HBox>
             <TableView fx:id="tblColPayAnalysis" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="840.0">
                <columns>
-                  <TableColumn fx:id="revenueCenter" maxWidth="899.0" prefWidth="899.0" text="REVENUE CENTER">
+                  <TableColumn fx:id="colMonth" prefWidth="132.0" text="MONTH" />
+                  <TableColumn fx:id="colTolRev" prefWidth="115.0" text="TOTAL REVENUE" />
+                  <TableColumn prefWidth="143.0" text="CUM. TARGET ACHIEVED">
                      <columns>
-                        <TableColumn fx:id="year" prefWidth="720.0" text="YEAR: #">
-                           <columns>
-                              <TableColumn fx:id="colMonth" prefWidth="132.0" text="MONTHLY ANALYSIS" />
-                              <TableColumn fx:id="colTolRev" prefWidth="115.0" text="TOTAL REVENUE" />
-                              <TableColumn prefWidth="143.0" text="CUMULATIVE ANNUAL TARGET ACHIEVED">
-                                 <columns>
-                                    <TableColumn fx:id="colAmtAchv" prefWidth="97.0" text="AMOUNT(GH)" />
-                                    <TableColumn fx:id="colPercAchv" prefWidth="100.0" text="PERCENTAGE %" />
-                                 </columns>
-                              </TableColumn>
-                              <TableColumn prefWidth="229.0" text="CUMULATIVE ANNUAL TARGET OUTSTANDING">
-                                 <columns>
-                                    <TableColumn fx:id="colAmtOut" prefWidth="97.0" text="AMOUNT(GH)" />
-                                    <TableColumn fx:id="colPercOut" prefWidth="100.0" text="PERCENTAGE %" />
-                                 </columns>
-                              </TableColumn>
-                           </columns>
-                        </TableColumn>
+                        <TableColumn fx:id="colAmtAchv" prefWidth="97.0" text="AMOUNT(GH)" />
+                        <TableColumn fx:id="colPercAchv" prefWidth="100.0" text="PERCENTAGE %" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn prefWidth="229.0" text="CUM. TARGET OUTSTANDING">
+                     <columns>
+                        <TableColumn fx:id="colAmtOut" prefWidth="97.0" text="AMOUNT(GH)" />
+                        <TableColumn fx:id="colPercOut" prefWidth="100.0" text="PERCENTAGE %" />
                      </columns>
                   </TableColumn>
                </columns>

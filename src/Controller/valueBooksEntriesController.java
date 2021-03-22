@@ -229,9 +229,9 @@ public class valueBooksEntriesController implements Initializable {
                     colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
                     colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
                     colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
-                    int serialChecker = Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial) +1;
-                    int quantity = ((serialChecker + 1)/ 100);
-                    if(serialChecker +1 / 100 != 1){
+                    int serialChecker = (Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial))+1 ;
+                    int quantity = ((serialChecker)/ 100);
+                    if((serialChecker)<100 || serialChecker % 100 !=0){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Warning Dialog");
                         alert.setHeaderText("Please check Serials");
