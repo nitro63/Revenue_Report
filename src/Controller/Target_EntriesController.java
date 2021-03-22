@@ -209,8 +209,16 @@ public class Target_EntriesController implements Initializable {
 
     @FXML
     private void clearEntries(ActionEvent event) {
-        txtEntYear.clear();
-        txtEntAmt.clear();
+        GetTargetEnt targ = tblCollectEnt.getSelectionModel().getSelectedItem();
+        if (tblCollectEnt.getSelectionModel().isEmpty()){
+            lblDeleteWarn.setVisible(true);
+        }else {
+            txtEntAmt.setText(targ.getAmount());
+            txtEntYear.setText(targ.getYear());
+            ObservableList<GetTargetEnt> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
+            ArrayList<GetTargetEnt> rows = new ArrayList<>(selectedRows);
+            rows.forEach(row -> tblCollectEnt.getItems().remove(row));
+        }
     }
 
     @FXML

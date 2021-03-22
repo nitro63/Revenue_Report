@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -301,31 +302,6 @@ public class Payment_EntriesController implements Initializable {
                 Condition =false;
             }
             else{
-                if(cmbPayType.getSelectionModel().getSelectedItem().equals("Cheque") || cmbPayType.getSelectionModel().getSelectedItem().equals("Cheque Deposit Slip")){
-                    count++;
-                    if(dateGCR.isEmpty() || !dateGCR.containsKey(Date)){
-                        dateGCR.put(Date, new HashMap<>());
-                        dateGCR.get(Date).put(Month, new ArrayList<>());
-                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                    }else if(dateGCR.containsKey(Date) && !dateGCR.get(Date).containsKey(Month)){
-                        dateGCR.get(Date).put(Month, new ArrayList<>());
-                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                    }else if (dateGCR.containsKey(Date) && dateGCR.get(Date).containsKey(Month) && !dateGCR.get(Date).get(Month).contains(txtEntGCR.getText())){
-                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                    }
-                    if(monthGCR.isEmpty() || !monthGCR.containsKey(Month)){
-                        monthGCR.put(Month, new ArrayList<>());
-                        monthGCR.get(Month).add(txtEntGCR.getText());
-                    }else if(monthGCR.containsKey(Month) && !monthGCR.get(Month).contains(txtEntGCR.getText())){
-                        monthGCR.get(Month).add(txtEntGCR.getText());
-                    }
-                    if(regGcr.isEmpty() || !regGcr.containsKey(Year)){
-                        regGcr.put(Year, new ArrayList<>());
-                        regGcr.get(Year).add(txtEntGCR.getText());
-                    }else if(regGcr.containsKey(Year) && !regGcr.get(Year).contains(txtEntGCR.getText())){
-                        regGcr.get(Year).add(txtEntGCR.getText());
-                    }
-                }
         colAMOUNT.setCellValueFactory(data -> data.getValue().AmountProperty());
         colDATE.setCellValueFactory(data -> data.getValue().DateProperty());
         colGCR.setCellValueFactory(data -> data.getValue().GCRProperty());
@@ -371,11 +347,20 @@ public class Payment_EntriesController implements Initializable {
 
     @FXML
     private void clearEntries(ActionEvent event) {
-        entDatePck.setValue(null);
-        txtEntGCR.clear();
-        txtEntAmt.clear();
-        cmbColMonth.getSelectionModel().clearSelection();
-        cmbPayType.getSelectionModel().clearSelection();
+        if (tblCollection.getSelectionModel().isEmpty()){
+            lblDeleteWarn.setVisible(true);
+        }else{
+            cmbColMonth.getSelectionModel().select(tblCollection.getSelectionModel().getSelectedItem().getMonth());
+            cmbPayType.getSelectionModel().select(tblCollection.getSelectionModel().getSelectedItem().getType());
+            entDatePck.setValue(LocalDate.parse(tblCollection.getSelectionModel().getSelectedItem().getDate(),
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            txtEntAmt.setText(tblCollection.getSelectionModel().getSelectedItem().getAmount());
+            txtEntGCR.setText(tblCollection.getSelectionModel().getSelectedItem().getGCR());
+            registerItem.remove(tblCollection.getSelectionModel().getSelectedItem().getGCR());
+            ObservableList<GetCollectEnt> selectedRows = tblCollection.getSelectionModel().getSelectedItems();
+            ArrayList<GetCollectEnt> rows = new ArrayList<>(selectedRows);
+            rows.forEach(row -> tblCollection.getItems().remove(row));
+        }
     }
 
     @FXML
@@ -400,6 +385,31 @@ public class Payment_EntriesController implements Initializable {
             String acCENTER =getData.getCenter();
             String acType = getData.getType();
             int acYEAR = Integer.parseInt(getData.getYear());
+                if(acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")){
+                    count++;
+                    if(dateGCR.isEmpty() || !dateGCR.containsKey(Date)){
+                        dateGCR.put(Date, new HashMap<>());
+                        dateGCR.get(Date).put(Month, new ArrayList<>());
+                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
+                    }else if(dateGCR.containsKey(Date) && !dateGCR.get(Date).containsKey(Month)){
+                        dateGCR.get(Date).put(Month, new ArrayList<>());
+                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
+                    }else if (dateGCR.containsKey(Date) && dateGCR.get(Date).containsKey(Month) && !dateGCR.get(Date).get(Month).contains(txtEntGCR.getText())){
+                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
+                    }
+                    if(monthGCR.isEmpty() || !monthGCR.containsKey(Month)){
+                        monthGCR.put(Month, new ArrayList<>());
+                        monthGCR.get(Month).add(txtEntGCR.getText());
+                    }else if(monthGCR.containsKey(Month) && !monthGCR.get(Month).contains(txtEntGCR.getText())){
+                        monthGCR.get(Month).add(txtEntGCR.getText());
+                    }
+                    if(regGcr.isEmpty() || !regGcr.containsKey(Year)){
+                        regGcr.put(Year, new ArrayList<>());
+                        regGcr.get(Year).add(txtEntGCR.getText());
+                    }else if(regGcr.containsKey(Year) && !regGcr.get(Year).contains(txtEntGCR.getText())){
+                        regGcr.get(Year).add(txtEntGCR.getText());
+                    }
+                }
 //            stmnt = con.prepareStatement("SELECT `revCenter`, `GCR`  FROM `collection_payment_entries` WHERE `GCR` = '"+acGCR+"' ");
 //            rs = stmnt.executeQuery();
 //            rm = rs.getMetaData();

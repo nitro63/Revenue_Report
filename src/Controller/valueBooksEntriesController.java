@@ -12,10 +12,14 @@ import javafx.scene.input.KeyEvent;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -120,6 +124,9 @@ public class valueBooksEntriesController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
     float amount =0, cumuamount, puramount;
+    String regex = "(?<=[\\d])(,)(?=[\\d])";
+    Pattern p = Pattern.compile(regex);
+    Matcher mac;
     Map<String, ArrayList<String>> regValSerial = new HashMap<>();
     ObservableList<String> valueBookType = FXCollections.observableArrayList("GCR", "Car-Park(GH₵ 1.00)", "Car-Park(GH₵ 2.00)","Market-tolls(GH₵ 1.00)");
     String revCent, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount;
@@ -289,7 +296,37 @@ public class valueBooksEntriesController implements Initializable {
         txtSerialFrom.clear();
     }
 
-    public void clearEntries(ActionEvent actionEvent) {clearEnt(); }
+    public void clearEntries(ActionEvent actionEvent) {
+        GetValueBooksEntries valueBooks = tblValueBookStocks.getSelectionModel().getSelectedItem();
+        if (tblValueBookStocks.getSelectionModel().isEmpty()){
+            lblDeleteWarn.setVisible(true);
+        }else {
+            entDatePck.setValue(LocalDate.parse(valueBooks.getDate(),
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            cmbTypeOfValueBook.getSelectionModel().select(valueBooks.getValueBook());
+                    mac = p.matcher(valueBooks.getPurAmount());
+            String amount = "";
+            if (mac.matches()){
+                amount = mac.replaceAll("");
+            }else {
+                amount = valueBooks.getPurAmount();
+            }
+            float price = Float.parseFloat(amount);
+            int quantity = Integer.parseInt(valueBooks.getQuantity());
+            txtUnitAmount.setText(Float.toString(price / quantity));
+            txtSerialTo.setText(valueBooks.getLastSerial());
+            txtSerialFrom.setText(valueBooks.getFirstSerial());
+            if (regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).contains(txtSerialTo.
+                    getText()) || regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).
+                    contains(txtSerialFrom.getText())){
+                regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).remove(txtSerialFrom.
+                        getText());
+                regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).remove(txtSerialTo.
+                        getText());
+            }
+
+        }
+    }
 
     public void SaveToDatabase(ActionEvent actionEvent) throws SQLException {
         revCent = GetCenter.getRevCenter();

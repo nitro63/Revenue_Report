@@ -13,6 +13,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -281,7 +282,19 @@ public class Bank_DetailsEntriesController implements Initializable {
 
     @FXML
     void clearEntries(ActionEvent event) {
-        clearEnt();
+        if (tblCollectEnt.getSelectionModel().isEmpty()){
+            lblDeleteWarn.setVisible(true);
+        }else{
+            cmbGCR.getSelectionModel().select(tblCollectEnt.getSelectionModel().getSelectedItem().getGCR());
+            dtpckChequeDate.setValue(LocalDate.parse(tblCollectEnt.getSelectionModel().getSelectedItem().getDate(),
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            txtChqNmb.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getChequeNumber());
+            txtAmount.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getAmount());
+            txtBankName.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getBank());
+            ObservableList<GetBankDetails> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
+            ArrayList<GetBankDetails> rows = new ArrayList<>(selectedRows);
+            rows.forEach(row -> tblCollectEnt.getItems().remove(row));
+        }
     }
 
     @FXML

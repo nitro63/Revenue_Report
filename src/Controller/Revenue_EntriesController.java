@@ -15,6 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import Controller.Gets.GetFunctions;
@@ -273,9 +274,18 @@ public class Revenue_EntriesController  implements Initializable {
 
     @FXML
     private void clearEntries(ActionEvent event) {
-        cmbEntRevItem.getSelectionModel().clearSelection();
-        entDatePck.setValue(null);
-        txtEntAmt.clear();
+      GetEntries entries = revTable.getSelectionModel().getSelectedItem();
+      if (revTable.getSelectionModel().isEmpty()){
+          lblDeleteWarn.setVisible(true);
+      }else {
+          entDatePck.setValue(LocalDate.parse(entries.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+          cmbEntRevItem.getSelectionModel().select(entries.getItem());
+          txtEntAmt.setText(entries.getAmount());
+          registerItem.get(entries.getDate()).remove(entries.getItem());
+          ObservableList<GetEntries> selectedRows = revTable.getSelectionModel().getSelectedItems();
+          ArrayList<GetEntries> rows = new ArrayList<>(selectedRows);
+          rows.forEach(row -> revTable.getItems().remove(row));
+      }
     }
 
     @FXML

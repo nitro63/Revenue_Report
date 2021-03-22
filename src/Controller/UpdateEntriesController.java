@@ -935,7 +935,7 @@ public class UpdateEntriesController implements Initializable {
         mac = p.matcher(valueBooks.getPurAmount());
         String amount = "";
         if (mac.matches()){
-             amount = m.replaceAll("");
+             amount = mac.replaceAll("");
         }else {
             amount = valueBooks.getPurAmount();
         }
