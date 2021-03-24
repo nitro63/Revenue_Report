@@ -26,9 +26,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import revenue_report.DBConnection;
 
 /**
@@ -603,7 +607,7 @@ public class UpdateEntriesController implements Initializable {
             if (paneTarget.isVisible()) {
                 updateTarget();
             }else if (paneRevenueCollection.isVisible()){
-                updateRevenueCollection();
+                updateRevenueCollection(event);
             }else if (paneValueBooks.isVisible()){
                 updateValueBooksEntries();
             }
@@ -905,7 +909,7 @@ public class UpdateEntriesController implements Initializable {
         loadRevenueCollectionTable();
     }
 
-    void updateRevenueCollection() throws SQLException {
+    void updateRevenueCollection(ActionEvent e) throws SQLException {
         String Date = getFunctions.getDate(entDatePckRevCol.getValue()),
         Year = getFunctions.getYear(entDatePckRevCol.getValue()),
         Qtr = getFunctions.getQuarter(entDatePckRevCol.getValue()),
@@ -919,6 +923,15 @@ public class UpdateEntriesController implements Initializable {
         stmnt.executeUpdate();
         resetRevenueCollection();
         loadRevenueCollectionTable();
+        JRBeanCollectionDataSource item = new JRBeanCollectionDataSource();
+  /*      Node node =(Node) e.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
+        if (printerJob.showPrintDialog(stage) && printerJob.printPage(tblCollectionEntries))
+        {
+            printerJob.endJob();
+            System.out.println("printed");
+        }*/
     }
 
     void resetRevenueCollection() {
