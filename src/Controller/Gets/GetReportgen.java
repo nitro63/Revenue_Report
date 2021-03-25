@@ -14,8 +14,8 @@ import javafx.beans.property.StringProperty;
  */
 public class GetReportgen {
     
-    private StringProperty RevenueItem, week1, week2, week3, week4, week5, Total_Amount ;
-    private String item, Week1, Week2, Week3, Week4, Week5, totalAmount ;
+    private StringProperty RevenueItem, Week1, Week2, Week3, Week4, Week5, totalAmount ;
+    private String revenueItem, week1, week2, week3, week4, week5, Total_Amount ;
     
     public GetReportgen(){
         
@@ -23,12 +23,12 @@ public class GetReportgen {
     
     
     public GetReportgen(String RevenueItem, String week1, String week2, String week3, String week4, String week5, String Total_Amount){
-       this.week1 = new SimpleStringProperty(week1);
-       this.week2 = new SimpleStringProperty(week2);
-       this.week3 = new SimpleStringProperty(week3);
-       this.week4 = new SimpleStringProperty(week4);
-       this.week5 = new SimpleStringProperty(week5);
-       this.Total_Amount = new SimpleStringProperty(Total_Amount);       
+       this.Week1 = new SimpleStringProperty(week1);
+       this.Week2 = new SimpleStringProperty(week2);
+       this.Week3 = new SimpleStringProperty(week3);
+       this.Week4 = new SimpleStringProperty(week4);
+       this.Week5 = new SimpleStringProperty(week5);
+       this.totalAmount = new SimpleStringProperty(Total_Amount);
        this.RevenueItem = new SimpleStringProperty(RevenueItem);
     }   
     public StringProperty RevenueItemProperty(){
@@ -36,8 +36,8 @@ public class GetReportgen {
    }
    
    public final String getRevenueItem(){
-        item = RevenueItemProperty().get();
-       return item;
+        revenueItem = RevenueItemProperty().get();
+       return revenueItem;
    }
    
    public final void setRevenueItem(String RevenueItem){
@@ -45,12 +45,12 @@ public class GetReportgen {
    }
    
    public StringProperty Total_AmountProperty(){
-       return Total_Amount;
+       return totalAmount;
    }
    
    public final String getTotal_Amount(){
-        totalAmount = Total_AmountProperty().get();
-       return totalAmount;
+        Total_Amount = Total_AmountProperty().get();
+       return Total_Amount;
    }
    
    public final void setRevenueAmount(String Total_Amount){
@@ -58,12 +58,12 @@ public class GetReportgen {
    }
    
    public StringProperty week1Property(){
-       return week1;
+       return Week1;
    }
    
    public final String getweek1(){
-        Week1 = week1Property().get();
-       return Week1;
+        week1 = week1Property().get();
+       return week1;
    }
    
    public final void setweek1(String week1){
@@ -71,12 +71,12 @@ public class GetReportgen {
    }
    
    public StringProperty week2Property(){
-       return week2;
+       return Week2;
    }
    
    public final String getweek2(){
-        Week2 = week2Property().get();
-       return Week2;
+        week2 = week2Property().get();
+       return week2;
    }
    
    public final void setweek2(String week2){
@@ -84,12 +84,12 @@ public class GetReportgen {
    }
    
    public StringProperty week3Property(){
-       return week3;
+       return Week3;
    }
    
    public final String getweek3(){
-        Week3 = week3Property().get();
-       return Week3;
+        week3 = week3Property().get();
+       return week3;
    }
    
    public final void setweek3(String week3){
@@ -97,12 +97,12 @@ public class GetReportgen {
    }
    
    public StringProperty week4Property(){
-       return week4;
+       return Week4;
    }
    
    public final String getweek4(){
-        Week4 = week4Property().get();
-       return Week4;
+        week4 = week4Property().get();
+       return week4;
    }
    
    public final void setweek4(String week4){
@@ -110,12 +110,12 @@ public class GetReportgen {
    }
    
    public StringProperty week5Property(){
-       return week5;
+       return Week5;
    }
    
-   public final String getDay5(){
-        Week5 = week5Property().get();
-       return Week5;
+   public final String getweek5(){
+        week5 = week5Property().get();
+       return week5;
    }
    
    public final void setDay5(String Day5){

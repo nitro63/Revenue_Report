@@ -1,0 +1,8 @@
+#btnPrint{
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-font-size: 13;
+    -fx-border-radius:  1 1 1 1;
+    -fx-background-color: #2cac33;
+    -fx-text-fill: #f6f3f5;
+}

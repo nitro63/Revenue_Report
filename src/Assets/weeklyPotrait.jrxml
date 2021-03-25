@@ -33,16 +33,20 @@
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
-		<field name="item" class="java.lang.String"/>
-		<field name="amount" class="java.lang.String"/>
-		<field name="date" class="java.lang.String"/>
-		<field name="week" class="java.lang.String"/>
-		<field name="month" class="java.lang.String"/>
-		<field name="quarter" class="java.lang.String"/>
-		<field name="year" class="java.lang.String"/>
+		<field name="revenueItem" class="java.lang.String"/>
+		<field name="week1" class="java.lang.String"/>
+		<field name="week2" class="java.lang.String"/>
+		<field name="week3" class="java.lang.String"/>
+		<field name="week4" class="java.lang.String"/>
+		<field name="week5" class="java.lang.String"/>
+		<field name="total_Amount" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="logo" class="java.net.URL"/>
 	<parameter name="CollectionBean" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="center" class="java.lang.String"/>
+	<parameter name="month" class="java.lang.String"/>
+	<parameter name="year" class="java.lang.String"/>
+	<parameter name="timeStamp" class="java.util.Date"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -50,7 +54,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="104" splitType="Stretch">
+		<band height="130" splitType="Stretch">
 			<staticText>
 				<reportElement x="102" y="0" width="400" height="30" uuid="d20600c7-1e7e-4510-a899-35d5d359d14c"/>
 				<box>
@@ -69,23 +73,73 @@
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="102" y="32" width="400" height="29" uuid="e97dd7b4-7e23-4690-aa8e-1d8cc3da61be"/>
+				<reportElement x="110" y="33" width="350" height="29" uuid="e97dd7b4-7e23-4690-aa8e-1d8cc3da61be"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FINANCE DEPARTMENT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="213" y="62" width="180" height="30" uuid="cf4aa4b2-b3ab-4a64-b3a4-994b2fc080f5"/>
+				<reportElement x="195" y="62" width="180" height="30" uuid="cf4aa4b2-b3ab-4a64-b3a4-994b2fc080f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[REVENUE UNIT]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="158" y="100" width="240" height="30" uuid="eb2fb5e3-54cb-4c63-83fa-efa52f64fcfe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[WEEKLY REVENUE REPORT ]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="77" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="10" width="130" height="17" uuid="2aae4935-2705-446b-b7e7-d0d902103e5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[REVENUE CENTER:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="false">
+				<reportElement x="142" y="10" width="196" height="17" uuid="cef96b98-d4ab-47db-8b05-caae511fea7a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="12.6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{center}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="41" width="140" height="20" uuid="97d4e06f-56ad-42fb-ab99-d387c7dfbcf8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[REPORTING MONTH:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="false">
+				<reportElement x="150" y="41" width="150" height="19" uuid="73fc5da2-8a66-4f3b-96f2-31e90a706a15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="12.6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{month}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="362" y="36" width="124" height="20" uuid="1ae35719-a247-4b27-953f-3cc37aa3923b"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[REPORTING YEAR:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="484" y="33" width="60" height="20" uuid="a7a5665b-dd4b-4c1b-8772-f0cba6031c92"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12.6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year}]]></textFieldExpression>
+			</textField>
+		</band>
 	</columnHeader>
 	<detail>
 		<band height="538" splitType="Stretch">
@@ -117,7 +171,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{revenueItem}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -138,7 +192,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{week1}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -159,7 +213,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{week2}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -180,7 +234,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{week}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{week3}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -201,7 +255,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{month}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{week4}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -222,7 +276,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{quarter}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{week5}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -243,15 +297,37 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{total_Amount}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<textField>
+				<reportElement x="240" y="500" width="90" height="20" uuid="e8e5919a-2a80-4885-a17b-e19a828b59fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement x="257" y="20" width="221" height="20" uuid="c448eada-3915-4c7c-ac9a-1c7d485a3afb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Generated from the Revenue Monitroing System @]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="473" y="20" width="73" height="20" uuid="bfc6ab3c-38f5-4f25-bd75-230590a301fd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="rtf">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{timeStamp}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 </jasperReport>

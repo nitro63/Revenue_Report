@@ -20,3 +20,34 @@
 //            totalAmoun += Amount.get(i);
 //        }
 //        weekSum = totalAmoun;
+
+
+
+        List<GetEntries> items = new ArrayList<GetEntries>();
+        for (int j = 0; j< tblCollectionEntries.getItems().size(); j++){
+            getCollectionReport = new GetEntries();
+            getCollectionReport = tblCollectionEntries.getItems().get(j);
+            items.add(getCollectionReport);
+        }
+        URL url = this.getClass().getResource("/Assets/kmalogo.png");
+        System.out.println(items+"\n"+url);
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+
+        /* Map to hold Jasper report Parameters */
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("CollectionBean", itemsJRBean);
+        parameters.put("logo", url);
+
+        //read jrxml file and creating jasperdesign object
+        InputStream input = new FileInputStream(new File("J:\\Project\\Intelli\\copy\\5698\\Revenue_Report\\src\\Assets\\Test2_A4.jrxml"));
+
+        JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+        /*compiling jrxml with help of JasperReport class*/
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+        /* Using jasperReport object to generate PDF */
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+        /*call jasper engine to display report in jasperviewer window*/
+        JasperViewer.viewReport(jasperPrint, false);
