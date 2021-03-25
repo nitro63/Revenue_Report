@@ -33,13 +33,13 @@
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
-		<field name="revenueItem" class="java.lang.String"/>
-		<field name="week1" class="java.lang.String"/>
-		<field name="week2" class="java.lang.String"/>
-		<field name="week3" class="java.lang.String"/>
-		<field name="week4" class="java.lang.String"/>
-		<field name="week5" class="java.lang.String"/>
-		<field name="Total_Amount" class="java.lang.String"/>
+		<field name="item" class="java.lang.String"/>
+		<field name="amount" class="java.lang.String"/>
+		<field name="date" class="java.lang.String"/>
+		<field name="week" class="java.lang.String"/>
+		<field name="month" class="java.lang.String"/>
+		<field name="quarter" class="java.lang.String"/>
+		<field name="year" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="logo" class="java.net.URL"/>
 	<parameter name="CollectionBean" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
@@ -117,7 +117,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Item}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -138,7 +138,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Amount}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -159,7 +159,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Date}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -180,7 +180,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Week}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{week}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -201,7 +201,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Month}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{month}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -222,7 +222,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Quarter}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{quarter}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -243,7 +243,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Year}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

@@ -13,6 +13,7 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetEntries {
+    private String code, center, item, date, month, amount, week, year, quarter;
    private  StringProperty Code, Center, Item, Date, Month, Amount, Week, Year, Quarter;
 //   private float Amount;
 //    int Week;
@@ -49,7 +50,8 @@ public class GetEntries {
     }
     
     public final String getCode() {
-        return CodeProperty().get();
+       code = CodeProperty().get();
+        return code;
     }
 
     public final void setCode(String Code) {
@@ -61,7 +63,8 @@ public class GetEntries {
     }
     
     public final String getCenter() {
-        return CenterProperty().get();
+       center = CenterProperty().get();
+        return center;
     }
 
     public final void setCenter(String Center) {
@@ -72,7 +75,8 @@ public class GetEntries {
     }
     
     public final String getQuarter() {
-        return QuarterProperty().get();
+       quarter = QuarterProperty().get();
+        return quarter;
     }
 
     public final void setQuarter(String Quarter) {
@@ -84,7 +88,8 @@ public class GetEntries {
     }
     
     public final String getYear() {
-        return YearProperty().get();
+       year = YearProperty().get();
+        return year;
     }
 
     public final void setYear(String Year) {
@@ -96,7 +101,8 @@ public class GetEntries {
     }
     
     public final String getItem(){
-        return ItemProperty().get();
+       item = ItemProperty().get();
+        return item;
     }
 
     public final void setItem(String Item) {
@@ -108,7 +114,8 @@ public class GetEntries {
     }
 
     public final String getDate(){
-        return DateProperty().get();
+       date = DateProperty().get();
+        return date;
     }
     public final void setDate(String Date) {
         DateProperty().set(Date);
@@ -119,7 +126,8 @@ public class GetEntries {
     }
     
     public final String getMonth(){
-        return MonthProperty().get();
+       month = MonthProperty().get();
+        return month;
     }
 
     public final void setMonth(String Month) {
@@ -131,7 +139,8 @@ public class GetEntries {
     }
     
     public final String getAmount(){
-        return AmountProperty().get();
+       amount = AmountProperty().get();
+        return amount;
     }
 
     public final void setAmount(String Amount) {
@@ -143,7 +152,8 @@ public class GetEntries {
     }
     
     public final String getWeek(){
-        return WeekProperty().get();
+       week = WeekProperty().get();
+        return week;
     }
 
     public final void setWeek(String Week) {
