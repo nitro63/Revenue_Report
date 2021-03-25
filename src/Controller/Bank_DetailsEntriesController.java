@@ -247,7 +247,7 @@ public class Bank_DetailsEntriesController implements Initializable {
         if (!ButtonType.OK.equals(saveResponse.get())) {
             event.consume();
         }else{
-            for(int i = 0; i < tblCollectEnt.getItems().size(); i++){
+            for(int i = 0; i <= tblCollectEnt.getItems().size(); i++){
                 if(i == tblCollectEnt.getItems().size()){
                     tblCollectEnt.getItems().clear();
                     colEnt.regGcr.clear();

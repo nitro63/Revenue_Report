@@ -10,14 +10,16 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,8 +33,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import org.apache.commons.collections.map.ReferenceMap;
+import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 
 /**
@@ -523,7 +529,7 @@ public class UpdateEntriesController implements Initializable {
     }
 
     @FXML
-    private void showEntries(ActionEvent event) throws SQLException {
+    private void showEntries(ActionEvent event) throws SQLException, FileNotFoundException, JRException {
         entry_ID = null;
         if (cmbEntryType.getSelectionModel().isEmpty()){
             lblEntryTypeWarn.setVisible(true);
@@ -602,7 +608,7 @@ public class UpdateEntriesController implements Initializable {
     }
 
     @FXML
-    private void updateEntries(ActionEvent event) throws SQLException {
+    private void updateEntries(ActionEvent event) throws SQLException, FileNotFoundException, JRException {
         if (entry_ID != null) {
             if (paneTarget.isVisible()) {
                 updateTarget();
@@ -617,7 +623,7 @@ public class UpdateEntriesController implements Initializable {
     }
 
     @FXML
-    private void deleteSelection(ActionEvent event) throws SQLException {
+    private void deleteSelection(ActionEvent event) throws SQLException, FileNotFoundException, JRException {
         if (entry_ID != null) {
             if (paneTarget.isVisible()) {
                 deleteTarget();
@@ -769,7 +775,7 @@ public class UpdateEntriesController implements Initializable {
             tblValueBookStocks.getItems().add(getValueReport);
         }}
 
-    void getRevenueCollection() throws SQLException {
+    void getRevenueCollection() throws SQLException, FileNotFoundException, JRException {
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
         entDatePckRevCol.setValue(null);
@@ -780,7 +786,7 @@ public class UpdateEntriesController implements Initializable {
         loadRevenueCollectionTable();
     }
 
-    void loadRevenueCollectionTable() throws SQLException {
+    void loadRevenueCollectionTable() throws SQLException, FileNotFoundException, JRException {
         tblCollectionEntries.getItems().clear();
         ResultSet rs;
         String Code = "", Item = "", Date = "", Month = "", Amount = "", Week = "", Year = "", Qtr = "",
@@ -815,6 +821,33 @@ public class UpdateEntriesController implements Initializable {
             getCollectionData = new GetEntries(Code, rs.getString("entries_ID"), Item, Date, Month, Amount, Week, Year, Qtr);
             tblCollectionEntries.getItems().add(getCollectionData);
         }
+
+        List<GetEntries> items = new ArrayList<GetEntries>();
+        for (int j = 0; j< tblCollectionEntries.getItems().size(); j++){
+            getCollectionReport = new GetEntries();
+            getCollectionReport = tblCollectionEntries.getItems().get(j);
+            items.add(getCollectionReport);
+        }
+        System.out.println(items);
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+
+        /* Map to hold Jasper report Parameters */
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("CollectionBean", itemsJRBean);
+
+        //read jrxml file and creating jasperdesign object
+        InputStream input = new FileInputStream(new File("J:\\Project\\Intelli\\copy\\5698\\Revenue_Report\\src\\Assets\\Test2_A4.jrxml"));
+
+        JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+        /*compiling jrxml with help of JasperReport class*/
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+        /* Using jasperReport object to generate PDF */
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+        /*call jasper engine to display report in jasperviewer window*/
+        JasperViewer.viewReport(jasperPrint);
     }
 
     void getPayment() throws SQLException{
@@ -902,14 +935,14 @@ public class UpdateEntriesController implements Initializable {
         txtRevenueAmount.setText(m.replaceAll(""));
     }
 
-    void deleteRevenueCollection() throws SQLException {
+    void deleteRevenueCollection() throws SQLException, FileNotFoundException, JRException {
         stmnt = con.prepareStatement("DELETE FROM `daily_entries` WHERE `entries_ID` = '"+entry_ID+"'");
         stmnt.executeUpdate();
         resetRevenueCollection();
         loadRevenueCollectionTable();
     }
 
-    void updateRevenueCollection(ActionEvent e) throws SQLException {
+    void updateRevenueCollection(ActionEvent e) throws SQLException, FileNotFoundException, JRException {
         String Date = getFunctions.getDate(entDatePckRevCol.getValue()),
         Year = getFunctions.getYear(entDatePckRevCol.getValue()),
         Qtr = getFunctions.getQuarter(entDatePckRevCol.getValue()),
@@ -923,7 +956,7 @@ public class UpdateEntriesController implements Initializable {
         stmnt.executeUpdate();
         resetRevenueCollection();
         loadRevenueCollectionTable();
-        JRBeanCollectionDataSource item = new JRBeanCollectionDataSource();
+
   /*      Node node =(Node) e.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         PrinterJob printerJob = PrinterJob.createPrinterJob();

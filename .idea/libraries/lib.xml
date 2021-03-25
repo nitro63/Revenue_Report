@@ -13,8 +13,16 @@
       <root url="jar://$PROJECT_DIR$/Libraries/commons-logging-1.1.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/Libraries/itext-2.1.7.js8.jar!/" />
       <root url="jar://$PROJECT_DIR$/Libraries/jasperreports-6.16.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4-tests.jar!/" />
     </CLASSES>
-    <JAVADOC />
-    <SOURCES />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/commons-collections-3.2.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4-test-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
