@@ -828,9 +828,9 @@ public class UpdateEntriesController implements Initializable {
             getCollectionReport = tblCollectionEntries.getItems().get(j);
             items.add(getCollectionReport);
         }
-        System.out.println(items);
+        URL url = this.getClass().getResource("/Assets/kmalogo.png");
+        System.out.println(items+"\n"+url);
         JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
-        URL url = this.getClass().getClassLoader().getResource("/Assets/kmalogo.png");
 
         /* Map to hold Jasper report Parameters */
         Map<String, Object> parameters = new HashMap<String, Object>();
@@ -838,7 +838,7 @@ public class UpdateEntriesController implements Initializable {
         parameters.put("logo", url);
 
         //read jrxml file and creating jasperdesign object
-        InputStream input = new FileInputStream(new File("\\Assets\\Test2_A4.jrxml"));
+        InputStream input = new FileInputStream(new File("J:\\Project\\Intelli\\copy\\5698\\Revenue_Report\\src\\Assets\\Test2_A4.jrxml"));
 
         JasperDesign jasperDesign = JRXmlLoader.load(input);
 

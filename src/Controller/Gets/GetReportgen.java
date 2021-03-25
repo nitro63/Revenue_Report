@@ -14,8 +14,8 @@ import javafx.beans.property.StringProperty;
  */
 public class GetReportgen {
     
-    private StringProperty RevenueItem;
-    private StringProperty week1, week2, week3, week4, week5, Total_Amount ;
+    private StringProperty RevenueItem, week1, week2, week3, week4, week5, Total_Amount ;
+    private String item, Week1, Week2, Week3, Week4, Week5, totalAmount ;
     
     public GetReportgen(){
         
@@ -36,7 +36,8 @@ public class GetReportgen {
    }
    
    public final String getRevenueItem(){
-       return RevenueItemProperty().get();
+        item = RevenueItemProperty().get();
+       return item;
    }
    
    public final void setRevenueItem(String RevenueItem){
@@ -48,7 +49,8 @@ public class GetReportgen {
    }
    
    public final String getTotal_Amount(){
-       return Total_AmountProperty().get();
+        totalAmount = Total_AmountProperty().get();
+       return totalAmount;
    }
    
    public final void setRevenueAmount(String Total_Amount){
@@ -60,7 +62,8 @@ public class GetReportgen {
    }
    
    public final String getweek1(){
-       return week1Property().get();
+        Week1 = week1Property().get();
+       return Week1;
    }
    
    public final void setweek1(String week1){
@@ -72,7 +75,8 @@ public class GetReportgen {
    }
    
    public final String getweek2(){
-       return week2Property().get();
+        Week2 = week2Property().get();
+       return Week2;
    }
    
    public final void setweek2(String week2){
@@ -84,7 +88,8 @@ public class GetReportgen {
    }
    
    public final String getweek3(){
-       return week3Property().get();
+        Week3 = week3Property().get();
+       return Week3;
    }
    
    public final void setweek3(String week3){
@@ -96,7 +101,8 @@ public class GetReportgen {
    }
    
    public final String getweek4(){
-       return week4Property().get();
+        Week4 = week4Property().get();
+       return Week4;
    }
    
    public final void setweek4(String week4){
@@ -108,7 +114,8 @@ public class GetReportgen {
    }
    
    public final String getDay5(){
-       return week5Property().get();
+        Week5 = week5Property().get();
+       return Week5;
    }
    
    public final void setDay5(String Day5){
