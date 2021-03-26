@@ -154,11 +154,11 @@
 					<datasetRun subDataset="masterItems" uuid="bf9e6466-2496-48ce-b282-49be47da6267">
 						<dataSourceExpression><![CDATA[$P{CollectionBean}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="80" uuid="788b08a1-6656-4d3a-9360-9aa18bd569e4">
+					<jr:column width="70" uuid="788b08a1-6656-4d3a-9360-9aa18bd569e4">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="80" height="40" uuid="8853aa43-ae64-47bc-98e6-d590c41cc337"/>
+								<reportElement x="0" y="0" width="70" height="40" uuid="8853aa43-ae64-47bc-98e6-d590c41cc337"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
@@ -167,7 +167,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField textAdjust="ScaleFont">
-								<reportElement x="0" y="0" width="80" height="30" uuid="936417d1-48b3-479a-bc42-69e4b08ad20c"/>
+								<reportElement x="0" y="0" width="70" height="30" uuid="936417d1-48b3-479a-bc42-69e4b08ad20c"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -175,11 +175,11 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="50" uuid="deb0032e-1f4a-4743-851d-b7a7c7855144">
+					<jr:column width="60" uuid="deb0032e-1f4a-4743-851d-b7a7c7855144">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 						<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="50" height="40" uuid="30b1715e-4f00-4abd-a997-8ffbb701f2f1">
+								<reportElement x="0" y="0" width="60" height="40" uuid="30b1715e-4f00-4abd-a997-8ffbb701f2f1">
 									<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 									<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 								</reportElement>
@@ -191,7 +191,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField textAdjust="ScaleFont">
-								<reportElement x="0" y="0" width="50" height="30" uuid="322040e1-745f-4f72-8aa4-025f751d8f32"/>
+								<reportElement x="0" y="0" width="60" height="30" uuid="322040e1-745f-4f72-8aa4-025f751d8f32"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
