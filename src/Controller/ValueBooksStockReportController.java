@@ -35,6 +35,8 @@ public class ValueBooksStockReportController implements Initializable {
     @FXML
     private TableView<GetValueBooksEntries> tblValBookStocksRep;
     @FXML
+    private JFXButton btnPrint;
+    @FXML
     private TableColumn<GetValueBooksEntries, String> colDate;
     @FXML
     private TableColumn<GetValueBooksEntries, String> colValueBook;
@@ -195,6 +197,11 @@ public class ValueBooksStockReportController implements Initializable {
                 tblValBookStocksRep.getItems().add(getReport);
             }
         }
+    }
+
+    @FXML
+    void printReport(ActionEvent event) {
+
     }
 }
 

@@ -5,6 +5,10 @@
  */
 package Controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,12 +17,12 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Controller.Gets.GetReportgen;
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +30,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 import Controller.Gets.GetItemsReport;
 
@@ -38,6 +47,8 @@ public class MasterItemsController implements Initializable {
 
     @FXML
     private VBox masterItemsTemplate;
+    @FXML
+    private JFXButton btnPrint;
     @FXML
     private ComboBox<String> cmbMasterItemsYear;
     @FXML
@@ -198,7 +209,7 @@ public class MasterItemsController implements Initializable {
                   catch (SQLException ex) {
                       Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
                   }
-          NumberFormat formatter = new DecimalFormat("#,###.00");
+          NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
            String jan1 = "0.00", feb1 = "0.00", apr1 = "0.00", mai1 = "0.00", jun1 = "0.00", jul1 = "0.00", aug1 = "0.00", sep1 = "0.00",
@@ -314,6 +325,48 @@ public class MasterItemsController implements Initializable {
         revenueItemsTable.getItems().clear();
         changeNames();
         setItems();
+        }
+    }
+
+    @FXML
+    void printReport(ActionEvent event) throws JRException, FileNotFoundException {
+        if (revenueItemsTable.getItems().isEmpty()){
+            event.consume();
+        }else {
+            Date date = new Date();
+            List<GetItemsReport> items = new ArrayList<GetItemsReport>();
+            for (int j = 0; j < revenueItemsTable.getItems().size(); j++) {
+                GetItemsReport getdata = new GetItemsReport();
+                getdata = revenueItemsTable.getItems().get(j);
+                items.add(getdata);
+            }
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                    file = this.getClass().getResource("/Assets/masterItemsPotrait.jrxml");
+
+            System.out.println(items + "\n" + url);
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            String year = cmbMasterItemsYear.getSelectionModel().getSelectedItem();
+
+            /* Map to hold Jasper report Parameters */
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url);
+            parameters.put("year", year);
+            parameters.put("timeStamp", date);
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(new File(file.getPath()));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
         }
     }
     

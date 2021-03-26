@@ -20,6 +20,8 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +44,8 @@ public class ReportController implements Initializable {
 
     @FXML
     private TableView<GetReport> WEEKLY_TABLE;
-   
+    @FXML
+    private JFXButton btnPrint;
     @FXML
     private TableColumn<GetReport, String> REVENUE_ITEM;
     @FXML
@@ -312,7 +315,7 @@ public class ReportController implements Initializable {
        System.out.println(Item+"  "+col+"  "+ row+" "+ forEntry + " ");
        //Items.getValue().entrySet()
          final String Day1= DAY1.getText();
-         NumberFormat formatter = new DecimalFormat("#,###.00");
+         NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
            String da1 = "0.00", da2 = "0.00", da3 = "0.00", da4 = "0.00", da5 = "0.00", da6 = "0.00", da7 = "0.00", totalAmount = "0.00";
@@ -376,6 +379,11 @@ public class ReportController implements Initializable {
         changeNames();
         getWeekly();
         setItems();
+    }
+
+    @FXML
+    void printReport(ActionEvent event) {
+
     }
 
     

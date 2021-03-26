@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,6 +40,8 @@ public class MasterCentersController implements Initializable {
 
     @FXML
     private VBox masterCenterTemplate;
+    @FXML
+    private JFXButton btnPrint;
     @FXML
     private ComboBox<String> cmbMasterCentersYear;
     @FXML
@@ -201,7 +205,7 @@ public class MasterCentersController implements Initializable {
                   catch (SQLException ex) {
                       Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
                   }
-          NumberFormat formatter = new DecimalFormat("#,###.00");
+          NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
            String jan1 = "0.00", feb1 = "0.00", apr1 = "0.00", mai1 = "0.00", jun1 = "0.00", jul1 = "0.00", aug1 = "0.00", sep1 = "0.00",
@@ -318,6 +322,11 @@ public class MasterCentersController implements Initializable {
         changeNames();
         setItems();
         }
+    }
+
+    @FXML
+    void printReport(ActionEvent event) {
+
     }
     
 }

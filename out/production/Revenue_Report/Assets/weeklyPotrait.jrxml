@@ -323,7 +323,9 @@
 			</staticText>
 			<textField textAdjust="ScaleFont">
 				<reportElement x="473" y="20" width="73" height="20" uuid="bfc6ab3c-38f5-4f25-bd75-230590a301fd"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font isItalic="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{timeStamp}]]></textFieldExpression>
 			</textField>
 		</band>

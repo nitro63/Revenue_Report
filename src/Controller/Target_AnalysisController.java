@@ -18,6 +18,8 @@ import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,6 +41,8 @@ public class Target_AnalysisController implements Initializable {
     private Label lblMonth;
     @FXML
     private Label lblYear;
+    @FXML
+    private JFXButton btnPrint;
     @FXML
     private Label lblRevenueCenter;
     @FXML
@@ -253,6 +257,11 @@ public class Target_AnalysisController implements Initializable {
         tblColPayAnalysis.getItems().clear();
         changeNames();
         setItems();
+    }
+
+    @FXML
+    void printReport(ActionEvent event) {
+
     }
     
 }

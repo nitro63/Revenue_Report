@@ -78,15 +78,6 @@ public class report_sideController implements Initializable {
     }
 
     @FXML
-    void showBankDetails(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Views/fxml/BankDetailsReport.fxml"));
-        loader.setController(new BankDetailsReportController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
-    }
-
-    @FXML
     private void showWeeklyReport(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/weeklyReport.fxml"));

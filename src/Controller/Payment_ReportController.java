@@ -6,6 +6,8 @@
 package Controller;
 
 import Controller.Gets.GetPaymentDetails;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,17 +19,26 @@ import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import revenue_report.DBConnection;
+import revenue_report.Main;
 
 /**
  * FXML Controller class
@@ -38,6 +49,10 @@ public class Payment_ReportController implements Initializable {
 
     @FXML
     private VBox monthlyTemplate;
+    @FXML
+    private JFXButton btnPrint;
+    @FXML
+    private JFXButton btnBankDetails;
     @FXML
     private ComboBox<String> cmbReportCent;
     @FXML
@@ -75,6 +90,7 @@ public class Payment_ReportController implements Initializable {
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
     int Year;
+
     
     public Payment_ReportController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -219,5 +235,34 @@ public class Payment_ReportController implements Initializable {
         changeNames();
         setItems();
     }
-    
+
+    @FXML
+    void printReport(ActionEvent event) {
+
+    }
+
+    @FXML
+    void showBankDetails(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        if (tblPaymentDetails.getItems().isEmpty()){
+            event.consume();
+        }else {
+            Main st = new Main();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/Views/fxml/BankDetailsReport.fxml"));
+            loader.setController(new BankDetailsReportController());
+            BankDetailsReportController bnkDtls = (BankDetailsReportController) loader.getController();
+            bnkDtls.setAppController(this);
+            Parent root = loader.load();
+            Scene s = new Scene(root);
+            Stage stg = new Stage();
+            bnkDtls.setStage(stg);
+            stg.initModality(Modality.APPLICATION_MODAL);
+            stg.initOwner(st.stage);
+            stg.initStyle(StageStyle.UTILITY);
+            stg.setScene(s);
+            stg.show();
+        }
+    }
+
+
 }

@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,6 +44,8 @@ public class YearlyReportController implements Initializable {
 
     @FXML
     private ComboBox<String> cmbReportCent;
+    @FXML
+    private JFXButton btnPrint;
     @FXML
     private ComboBox<String> cmbReportYear1;
     @FXML
@@ -263,7 +267,7 @@ public class YearlyReportController implements Initializable {
                   catch (SQLException ex) {
                       Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
                   }
-          NumberFormat formatter = new DecimalFormat("#,###.00");
+          NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
            String yer1 = "0.00", yer2 = "0.00", yer3 = "0.00", yer4 = "0.00", yer5 = "0.00", totalAmnt = "0.00";
@@ -343,6 +347,11 @@ public class YearlyReportController implements Initializable {
         getYears();
         changeNames();
         setItems();
+    }
+
+    @FXML
+    void printReport(ActionEvent event) {
+
     }
     
 }

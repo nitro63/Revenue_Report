@@ -291,7 +291,7 @@ public class weeklyReportController implements Initializable {
                   catch (SQLException ex) {
                       Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
                   }
-          NumberFormat formatter = new DecimalFormat("#,###.00");
+          NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
            String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", totalAmnt = "0.00";

@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import revenue_report.DBConnection;
 
 /**
@@ -34,6 +35,8 @@ public class BankDetailsReportController implements Initializable {
 
     @FXML
     private TableView<GetBankDetails> tblBankDetails;
+    @FXML
+    private JFXButton btnPrint;
     @FXML
     private TableColumn<GetBankDetails, String> colDate;
     @FXML
@@ -68,11 +71,20 @@ public class BankDetailsReportController implements Initializable {
     private Label lblMonthWarn;
     GetBankDetails getReport;
     GetFunctions getFunctions = new GetFunctions();
+    Payment_ReportController payRep;
     private final Connection con;
     private PreparedStatement stmnt;
     ObservableList<String> rowCent = FXCollections.observableArrayList();
     ObservableList<String> rowMonths =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
+
+    public void setAppController(Payment_ReportController app){
+        this.payRep = app;
+    }
+    Stage stage =  new Stage()/*anchBankDetails.getScene().getWindow()*/;
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
 
     public BankDetailsReportController() throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -181,6 +193,11 @@ public class BankDetailsReportController implements Initializable {
                 tblBankDetails.getItems().add(getReport);
             }
         }
+    }
+
+    @FXML
+    void printReport(ActionEvent event) {
+
     }
 
 }

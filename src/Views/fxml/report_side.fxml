@@ -9,9 +9,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="823.0" prefWidth="215.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="753.0" prefWidth="215.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="18.0" layoutY="-2.0" prefHeight="463.0" prefWidth="173.0">
+      <AnchorPane layoutX="18.0" layoutY="-2.0" prefHeight="461.0" prefWidth="173.0">
          <children>
             <Line endX="59.29289245605469" layoutX="101.0" layoutY="13.0" startX="-100.0" />
             <Text fill="#055b30" layoutX="5.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Revenue Reports">
@@ -44,31 +44,26 @@
                   <Button fx:id="btnYearlyReport" mnemonicParsing="false" onAction="#showYearlyReport" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Yearly " />
                </children>
             </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="39.0" layoutY="314.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="92.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
-               <children>
-                  <Button fx:id="btnBankDetails" mnemonicParsing="false" onAction="#showBankDetails" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: transparent;" text="Bank Details" />
-               </children>
-            </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="14.0" layoutY="419.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="146.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+            <HBox alignment="BASELINE_CENTER" layoutX="14.0" layoutY="373.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="146.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
                <children>
                   <Button fx:id="btnRevenueTarget" mnemonicParsing="false" onAction="#showRevenueTarget" prefHeight="43.0" prefWidth="146.0" style="-fx-background-color: transparent;" text="Revenue Target Analysis" />
                </children>
             </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="7.0" layoutY="473.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="160.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+            <HBox alignment="BASELINE_CENTER" layoutX="7.0" layoutY="426.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="160.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
                <children>
                   <Button fx:id="btnValueBooksReport" mnemonicParsing="false" onAction="#showValueBooksReport" prefHeight="43.0" prefWidth="158.0" style="-fx-background-color: transparent;" text="Value Books Stock Report" textAlignment="CENTER" />
                </children>
             </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="25.0" layoutY="366.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="115.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
+            <HBox alignment="BASELINE_CENTER" layoutX="25.0" layoutY="318.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="115.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
                <children>
                   <Button fx:id="btnPaymentDetails" mnemonicParsing="false" onAction="#showPaymentDetails" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: transparent;" text="Payment Details" />
                </children>
             </HBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneMaster" layoutX="32.0" layoutY="530.0">
+      <AnchorPane fx:id="paneMaster" layoutX="32.0" layoutY="493.0">
          <children>
-            <VBox>
+            <VBox layoutY="5.0">
                <children>
                   <Line endX="47.00859069824219" fill="#096535" startX="-97.2843017578125" stroke="#09650f" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.5" />
                   <Text fill="#055b30" strokeType="OUTSIDE" strokeWidth="0.0" text="Master Reports" wrappingWidth="143.208984375">
