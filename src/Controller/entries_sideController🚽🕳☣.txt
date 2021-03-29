@@ -121,3 +121,37 @@ APP_CONTROLLER
           //        entries_sideController entries = loadsgre.<entries_sideController>getController();
 //        entries.nodeProperty().set(centerPane);
 
+
+
+
+
+
+
+
+org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

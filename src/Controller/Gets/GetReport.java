@@ -14,8 +14,8 @@ import javafx.beans.property.StringProperty;
  */
 public class GetReport {
     
-    private StringProperty RevenueItem;
-    private StringProperty Day1, Day2, Day3, Day4, Day5, Day6, Day7, Total_Amount ;
+    private String revenueItem, day1, day2, day3, day4, day5, day6, day7, total_Amount ;
+    private StringProperty RevenueItem, Day1, Day2, Day3, Day4, Day5, Day6, Day7, Total_Amount ;
     
     public GetReport(){
         
@@ -30,7 +30,7 @@ public class GetReport {
        this.Day5 = new SimpleStringProperty(Day5);
        this.Day6 = new SimpleStringProperty(Day6);
        this.Day7 = new SimpleStringProperty(Day7);
-       this.Total_Amount = new SimpleStringProperty(Total_Amount);       
+       this.Total_Amount = new SimpleStringProperty(Total_Amount);
        this.RevenueItem = new SimpleStringProperty(RevenueItem);
    }
    
@@ -41,7 +41,8 @@ public class GetReport {
    }
    
    public final String getRevenueItem(){
-       return RevenueItemProperty().get();
+        revenueItem = RevenueItemProperty().get();
+       return revenueItem;
    }
    
    public final void setRevenueItem(String RevenueItem){
@@ -53,7 +54,8 @@ public class GetReport {
    }
    
    public final String getTotal_Amount(){
-       return Total_AmountProperty().get();
+        total_Amount = Total_AmountProperty().get();
+       return total_Amount;
    }
    
    public final void setRevenueAmount(String Total_Amount){
@@ -61,11 +63,13 @@ public class GetReport {
    }
    
    public StringProperty DAY1Property(){
+
        return Day1;
    }
    
    public final String getDay1(){
-       return DAY1Property().get();
+        day1 = DAY1Property().get();
+       return day1;
    }
    
    public final void setDay1(String Day1){
@@ -77,7 +81,8 @@ public class GetReport {
    }
    
    public final String getDay2(){
-       return DAY2Property().get();
+        day2 = DAY2Property().get();
+       return day2;
    }
    
    public final void setDay2(String Day2){
@@ -89,7 +94,8 @@ public class GetReport {
    }
    
    public final String getDay3(){
-       return DAY3Property().get();
+        day3 = DAY3Property().get();
+       return day3;
    }
    
    public final void setDay3(String Day3){
@@ -101,7 +107,8 @@ public class GetReport {
    }
    
    public final String getDay4(){
-       return DAY4Property().get();
+        day4 = DAY4Property().get();
+       return day4;
    }
    
    public final void setDay4(String Day4){
@@ -113,7 +120,8 @@ public class GetReport {
    }
    
    public final String getDay5(){
-       return DAY5Property().get();
+        day5 = DAY5Property().get();
+       return day5;
    }
    
    public final void setDay5(String Day5){
@@ -125,7 +133,8 @@ public class GetReport {
    }
    
    public final String getDay6(){
-       return DAY6Property().get();
+        day6 = DAY6Property().get();
+       return day6;
    }
    
    public final void setDay6(String Day6){
@@ -137,7 +146,8 @@ public class GetReport {
    }
    
    public final String getDay7(){
-       return DAY7Property().get();
+        day7 = DAY7Property().get();
+       return day7;
    }
    
    public final void setDay7(String Day7){

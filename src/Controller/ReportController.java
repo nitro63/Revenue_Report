@@ -5,6 +5,10 @@
  */
 package Controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,14 +17,12 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Controller.Gets.GetItemsReport;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +34,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 import Controller.Gets.GetReport;
 
@@ -382,7 +389,45 @@ public class ReportController implements Initializable {
     }
 
     @FXML
-    void printReport(ActionEvent event) {
+    void printReport(ActionEvent event) throws FileNotFoundException, JRException {
+        if (WEEKLY_TABLE.getItems().isEmpty()){
+            event.consume();
+        }else {
+            Date date = new Date();
+            List<GetReport> items = new ArrayList<GetReport>();
+            for (int j = 0; j < WEEKLY_TABLE.getItems().size(); j++) {
+                GetReport getdata = new GetReport();
+                getdata = WEEKLY_TABLE.getItems().get(j);
+                items.add(getdata);
+            }
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                    file = this.getClass().getResource("/Assets/dailyPotrait.jrxml");
+
+            System.out.println(items + "\n" + url);
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            String month = cmbReportMonth.getSelectionModel().getSelectedItem();
+
+            /* Map to hold Jasper report Parameters */
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url);
+            parameters.put("month", month);
+            parameters.put("timeStamp", date);
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(new File(file.getPath()));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
+        }
 
     }
 
