@@ -133,6 +133,80 @@ org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launch
 
 
 
+<!--						<datasetParameter name = "DAY1">-->
+<!--								<datasetParameterExpression>-->
+<!--									[CDATA[$P{DAY1}]]-->
+<!--								</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "DAY2">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{DAY2}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "DAY3">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{DAY3}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "DAY4">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{DAY4}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "DAY5">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{DAY5}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "DAY6">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{DAY6}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "DAY7">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{DAY7}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "day1">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{day1}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "day2">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{day2}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "day3">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{day3}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "day4">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{day4}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "day5">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{day5}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "day6">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{day6}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+<!--						<datasetParameter name = "day7">-->
+<!--							<datasetParameterExpression>-->
+<!--								[CDATA[$P{day7}]]-->
+<!--							</datasetParameterExpression>-->
+<!--						</datasetParameter>-->
+
+
+
+
 
 
 

@@ -69,7 +69,7 @@
                            <children>
                               <VBox alignment="CENTER" fillWidth="false" prefHeight="26.0" prefWidth="519.0" style="-fx-background-radius: 5; -fx-background-color: #d4dfe4a8;">
                                  <children>
-                                    <Text fill="#055b18" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: monteserat;" text="FINANCE DEPARTMENT" textAlignment="CENTER" wrappingWidth="232.0">
+                                    <Text fill="#055b18" strokeType="OUTSIDE" strokeWidth="0.0" text="FINANCE DEPARTMENT" textAlignment="CENTER" wrappingWidth="232.0">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="18.0" />
                                        </font>

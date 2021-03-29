@@ -17,6 +17,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -29,10 +32,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -50,6 +50,12 @@ import Controller.Gets.GetReport;
 public class ReportController implements Initializable {
 
     @FXML
+    private Label lblMonth;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblRevenueCenter;
+    @FXML
     private TableView<GetReport> WEEKLY_TABLE;
     @FXML
     private JFXButton btnPrint;
@@ -58,33 +64,45 @@ public class ReportController implements Initializable {
     @FXML
     private TableColumn <GetReport, String> DAY1;
     @FXML
+    private Label lblDay1;
+    @FXML
     private TableColumn<GetReport, String> DAY2;
+    @FXML
+    private Label lblDay2;
     @FXML
     private TableColumn<GetReport, String> DAY3;
     @FXML
+    private Label lblDay3;
+    @FXML
     private TableColumn<GetReport, String> DAY4;
+    @FXML
+    private Label lblDay4;
     @FXML
     private TableColumn<GetReport, String> DAY5;
     @FXML
+    private Label lblDay5;
+    @FXML
     private TableColumn<GetReport, String> DAY6;
     @FXML
+    private Label lblDay6;
+    @FXML
     private TableColumn<GetReport, String> DAY7;
+    @FXML
+    private Label lblDay7;
     @FXML
     private VBox weekly_Template;
     @FXML
     private TableColumn<GetReport, String> Total_amt;
     @FXML
+    private Label lblWeek;
+    @FXML
     private ComboBox<String> cmbReportCent;
+    @FXML
+    private ComboBox<String> cmbReportYear;
     @FXML
     private ComboBox<String> cmbReportMonth;
     @FXML
     private ComboBox<String> cmbReportWeek;
-    @FXML
-    private TableColumn<?, ?> REVENUECENTER;
-    @FXML
-    private TableColumn<?, ?> MONTH;
-    @FXML
-    private TableColumn<?, ?> WEEK;
     /**
      * initialises the controller class.
      * @param url
@@ -96,6 +114,7 @@ public class ReportController implements Initializable {
     ObservableList<String> rowDate =FXCollections.observableArrayList();
     ObservableList<String> rowCent =FXCollections.observableArrayList();
     ObservableList<String> rowMonth =FXCollections.observableArrayList();
+    ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowWeek =FXCollections.observableArrayList();
     @FXML
     private Button btnShowReport;
@@ -137,9 +156,25 @@ public class ReportController implements Initializable {
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);
     }
+    private void getReportYear() throws SQLException{
+        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE " +
+                "`revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        ResultSet rs = stmnt.executeQuery();
+        ResultSetMetaData meta = rs.getMetaData();
+        int colum = meta.getColumnCount();
+        rowYear.clear();
+        while(rs.next()){
+            rowYear.add(rs.getString("revenueYear"));
+        }
+        cmbReportYear.getItems().clear();
+        cmbReportYear.getItems().setAll(rowYear);
+        cmbReportYear.setVisibleRowCount(5);
+    }
     
     private void getReportMonth() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueMonth`");
+        stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE " +
+                "`revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND " +
+                "`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -159,7 +194,10 @@ public class ReportController implements Initializable {
     }
     
     private void getReportWeek() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueWeek`");
+        stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE " +
+                "`revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND " +
+                "`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND" +
+                " `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueWeek`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -181,14 +219,42 @@ public class ReportController implements Initializable {
     }
     
     private void changeNames() {
-        REVENUECENTER.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        MONTH.setText(cmbReportMonth.getSelectionModel().getSelectedItem());
-        String wk = "WEEK " + cmbReportWeek.getSelectionModel().getSelectedItem();
-        WEEK.setText(wk);
+        lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
+        lblMonth.setText(cmbReportMonth.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem());
+        lblWeek.setText(cmbReportWeek.getSelectionModel().getSelectedItem());
+    }
+
+    public String getDate(int day, int month, int year, int week){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.WEEK_OF_MONTH, week);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+        calendar.set(Calendar.DAY_OF_WEEK, day);
+
+        return df.format(calendar.getTime());
+    }
+
+    public String getDay(int day, int month, int year, int week){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.WEEK_OF_MONTH, week);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        SimpleDateFormat df = new SimpleDateFormat("EEEE");
+        calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+        calendar.set(Calendar.DAY_OF_WEEK, day);
+
+        return df.format(calendar.getTime());
     }
 
     
-    private void getWeekly() throws SQLException{
+    private void getWeekly() throws SQLException, ParseException {
         stmnt = con.prepareStatement(" SELECT `revenueDate` FROM `daily_entries` WHERE   `revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueDate`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
@@ -197,66 +263,79 @@ public class ReportController implements Initializable {
         while(rs.next()){
             for(int i=1; i<=col; i++){
                 if(i == 1){
-                    
+
                     rowDate.add(rs.getObject(i).toString());
-                    
+
                 }
             }
         }
-        DAY1.setText("DAY");
-        DAY2.setText("DAY");
-        DAY3.setText("DAY");
-        DAY4.setText("DAY");
-        DAY5.setText("DAY");
-        DAY6.setText("DAY");
-        DAY7.setText("DAY");
-        System.out.println(rowDate.size());
-        int rowSize = rowDate.size();
-        switch(rowSize){
-            case 1:
-                DAY1.setText(rowDate.get(0));
-                break;
-            case 2: 
-                DAY1.setText(rowDate.get(0));
-                DAY2.setText(rowDate.get(1));
-                break;
-            case 3:
-                DAY1.setText(rowDate.get(0));
-                DAY2.setText(rowDate.get(1));
-                DAY3.setText(rowDate.get(2));
-                break;
-            case 4:
-                DAY1.setText(rowDate.get(0));
-                DAY2.setText(rowDate.get(1));
-                DAY3.setText(rowDate.get(2));
-                DAY4.setText(rowDate.get(3));
-                break;
-            case 5:
-                DAY1.setText(rowDate.get(0));
-                DAY2.setText(rowDate.get(1));
-                DAY3.setText(rowDate.get(2));
-                DAY4.setText(rowDate.get(3));
-                DAY5.setText(rowDate.get(4));
-                break;
-            case 6:
-                DAY1.setText(rowDate.get(0));
-                DAY2.setText(rowDate.get(1));
-                DAY3.setText(rowDate.get(2));
-                DAY4.setText(rowDate.get(3));
-                DAY5.setText(rowDate.get(4));
-                DAY6.setText(rowDate.get(5));
-                break;
-            case 7:
-                DAY1.setText(rowDate.get(0));
-                DAY2.setText(rowDate.get(1));
-                DAY3.setText(rowDate.get(2));
-                DAY4.setText(rowDate.get(3));
-                DAY5.setText(rowDate.get(4));
-                DAY6.setText(rowDate.get(5));
-                DAY7.setText(rowDate.get(6));
-                break;
-                
-        }
+        Date mon = new SimpleDateFormat("MMMM").parse(cmbReportMonth.getSelectionModel().getSelectedItem());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(mon);
+        int monthNum = cal.get(Calendar.MONTH);
+        int yearNum = Integer.parseInt(cmbReportYear.getSelectionModel().getSelectedItem());
+        int weekNum = Integer.parseInt(cmbReportWeek.getSelectionModel().getSelectedItem());
+        DAY1.setText(getDate(2, monthNum, yearNum, weekNum));
+        DAY2.setText(getDate(3, monthNum, yearNum, weekNum));
+        DAY3.setText(getDate(4, monthNum, yearNum, weekNum));
+        DAY4.setText(getDate(5, monthNum, yearNum, weekNum));
+        DAY5.setText(getDate(6, monthNum, yearNum, weekNum));
+        DAY6.setText(getDate(7, monthNum, yearNum, weekNum));
+        DAY7.setText(getDate(1, monthNum, yearNum, weekNum));
+        lblDay1.setText(getDay(2, monthNum, yearNum, weekNum));
+        lblDay2.setText(getDay(3, monthNum, yearNum, weekNum));
+        lblDay3.setText(getDay(4, monthNum, yearNum, weekNum));
+        lblDay4.setText(getDay(5, monthNum, yearNum, weekNum));
+        lblDay5.setText(getDay(6, monthNum, yearNum, weekNum));
+        lblDay6.setText(getDay(7, monthNum, yearNum, weekNum));
+        lblDay7.setText(getDay(1, monthNum, yearNum, weekNum));
+//        System.out.println(rowDate.size());
+//        int rowSize = rowDate.size();
+//        switch(rowSize){
+//            case 1:
+//                DAY1.setText(rowDate.get(0));
+//                break;
+//            case 2:
+//                DAY1.setText(rowDate.get(0));
+//                DAY2.setText(rowDate.get(1));
+//                break;
+//            case 3:
+//                DAY1.setText(rowDate.get(0));
+//                DAY2.setText(rowDate.get(1));
+//                DAY3.setText(rowDate.get(2));
+//                break;
+//            case 4:
+//                DAY1.setText(rowDate.get(0));
+//                DAY2.setText(rowDate.get(1));
+//                DAY3.setText(rowDate.get(2));
+//                DAY4.setText(rowDate.get(3));
+//                break;
+//            case 5:
+//                DAY1.setText(rowDate.get(0));
+//                DAY2.setText(rowDate.get(1));
+//                DAY3.setText(rowDate.get(2));
+//                DAY4.setText(rowDate.get(3));
+//                DAY5.setText(rowDate.get(4));
+//                break;
+//            case 6:
+//                DAY1.setText(rowDate.get(0));
+//                DAY2.setText(rowDate.get(1));
+//                DAY3.setText(rowDate.get(2));
+//                DAY4.setText(rowDate.get(3));
+//                DAY5.setText(rowDate.get(4));
+//                DAY6.setText(rowDate.get(5));
+//                break;
+//            case 7:
+//                DAY1.setText(rowDate.get(0));
+//                DAY2.setText(rowDate.get(1));
+//                DAY3.setText(rowDate.get(2));
+//                DAY4.setText(rowDate.get(3));
+//                DAY5.setText(rowDate.get(4));
+//                DAY6.setText(rowDate.get(5));
+//                DAY7.setText(rowDate.get(6));
+//                break;
+//
+//        }
         
         
        
@@ -368,11 +447,16 @@ public class ReportController implements Initializable {
            WEEKLY_TABLE.getItems().add(getReport);                                           
        }
      }
+
+    @FXML
+    void SelectedYear(ActionEvent event) throws SQLException {
+        getReportMonth();
+    }
      
 
     @FXML
     private void SelectedCenter(ActionEvent event) throws SQLException {
-        getReportMonth();
+        getReportYear();
     }
 
     @FXML
@@ -381,7 +465,7 @@ public class ReportController implements Initializable {
     }
 
     @FXML
-    private void ShowReport(ActionEvent event) throws SQLException {
+    private void ShowReport(ActionEvent event) throws SQLException, ParseException {
         WEEKLY_TABLE.getItems().clear();
         changeNames();
         getWeekly();
@@ -405,14 +489,28 @@ public class ReportController implements Initializable {
 
             System.out.println(items + "\n" + url);
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
-            String month = cmbReportMonth.getSelectionModel().getSelectedItem();
+            String month = cmbReportMonth.getSelectionModel().getSelectedItem(),
+            center = cmbReportCent.getSelectionModel().getSelectedItem(),
+            year = cmbReportYear.getSelectionModel().getSelectedItem(),
+            Day1 = DAY1.getText(), Day2 = DAY2.getText(), Day3 = DAY3.getText(), Day4 = DAY4.getText(),
+            Day5 = DAY5.getText(), Day6 = DAY6.getText(), Day7 = DAY7.getText(), day1 = lblDay1.getText(), day2 = lblDay2.getText(),
+            day3 = lblDay3.getText(), day4 = lblDay4.getText(), day5 = lblDay5.getText(), day6 = lblDay6.getText(),
+            day7 = lblDay7.getText(), week = cmbReportWeek.getSelectionModel().getSelectedItem();
+            System.out.println(day1 +"\n"+ day2 +"\n"+ day3 +"\n"+ day4 +"\n"+ day5);
 
             /* Map to hold Jasper report Parameters */
             Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url);
             parameters.put("month", month);
+            parameters.put("center", center);
+            parameters.put("year", year);
             parameters.put("timeStamp", date);
+            parameters.put("DAY1", Day1);parameters.put("DAY2", Day2);parameters.put("DAY3", Day3);
+            parameters.put("DAY4", Day4);parameters.put("DAY5", Day5);parameters.put("DAY6", Day6);
+            parameters.put("DAY7", Day7);parameters.put("day1", day1);parameters.put("day2", day2);
+            parameters.put("day3", day3);parameters.put("day4", day4);parameters.put("day5", day5);
+            parameters.put("day6", day6);parameters.put("day7", day7);parameters.put("week", week);
 
             //read jrxml file and creating jasperdesign object
             InputStream input = new FileInputStream(new File(file.getPath()));
