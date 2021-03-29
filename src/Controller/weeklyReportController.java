@@ -30,10 +30,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -79,12 +76,17 @@ public class weeklyReportController implements Initializable {
     @FXML
     private TableColumn<GetReportgen, String> week5;
     @FXML
+    private TableColumn<GetReportgen, String> week6;
+    @FXML
     private JFXButton btnPrint;
     @FXML
     private TableColumn<GetReportgen, String> totalAmount;
-    
-    private GetReportgen getReport, getdata;
-
+    @FXML
+    private Label lblMonth;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblRevenueCenter;
     /**
      * Initializes the controller class.
      */
@@ -196,6 +198,7 @@ public class weeklyReportController implements Initializable {
         week3.setText("WEEK");
         week4.setText("WEEK");
         week5.setText("WEEK");
+        week6.setText("WEEK");
         System.out.println(rowWeek.size());
         int rowSize = rowWeek.size();
         switch(rowSize){
@@ -224,6 +227,14 @@ public class weeklyReportController implements Initializable {
                 week4.setText(rowWeek.get(3));
                 week5.setText(rowWeek.get(4));
                 break;
+            case 6:
+                week1.setText(rowWeek.get(0));
+                week2.setText(rowWeek.get(1));
+                week3.setText(rowWeek.get(2));
+                week4.setText(rowWeek.get(3));
+                week5.setText(rowWeek.get(4));
+                week6.setText(rowWeek.get(5));
+                break;
             
         }
         
@@ -232,8 +243,9 @@ public class weeklyReportController implements Initializable {
    }
       
       private void changeNames() {
-        revenueCENTER.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        MONTH.setText(cmbReportMonth.getSelectionModel().getSelectedItem());
+        lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
+        lblMonth.setText(cmbReportMonth.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem());
     }
       /***
        * have to create to calculate the methods externally and inherit them 
@@ -294,8 +306,8 @@ public class weeklyReportController implements Initializable {
           NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-           String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", totalAmnt = "0.00";
-           float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, total_amount;
+           String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00";
+           float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount;
            for(Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
                String reveItem = Items.getKey();
                System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
@@ -314,9 +326,12 @@ public class weeklyReportController implements Initializable {
                }else if(Dates.getKey() == null ? week5.getText() == null : Dates.getKey().equals(week5.getText())){
                    wek5 = formatter.format(forEntry.get(Items.getKey()).get(week5.getText()).get(0));
                    wk5 = forEntry.get(Items.getKey()).get(week5.getText()).get(0);
-               }
+               } else if(Dates.getKey() == null ? week6.getText() == null : Dates.getKey().equals(week6.getText())){
+               wek5 = formatter.format(forEntry.get(Items.getKey()).get(week6.getText()).get(0));
+               wk5 = forEntry.get(Items.getKey()).get(week6.getText()).get(0);
            }
-           total_amount = wk1 + wk2 + wk3 + wk4 + wk5;
+           }
+           total_amount = wk1 + wk2 + wk3 + wk4 + wk5 + wk6;
            totalAmnt = formatter.format(total_amount);       
            revenueITEM.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
            week1.setCellValueFactory(data -> data.getValue().week1Property());
@@ -324,8 +339,9 @@ public class weeklyReportController implements Initializable {
            week3.setCellValueFactory(data -> data.getValue().week3Property());
            week4.setCellValueFactory(data -> data.getValue().week4Property());
            week5.setCellValueFactory(data -> data.getValue().week5Property());
+           week6.setCellValueFactory(data -> data.getValue().week6Property());
            totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
-           getReport = new GetReportgen(Items.getKey(), wek1, wek2, wek3, wek4, wek5, totalAmnt);
+           GetReportgen getReport = new GetReportgen(Items.getKey(), wek1, wek2, wek3, wek4, wek5, wek6, totalAmnt);
            weekTable.getItems().add(getReport);                                           
        }
           
@@ -382,7 +398,7 @@ public class weeklyReportController implements Initializable {
               Date date = new Date();
               List<GetReportgen> items = new ArrayList<GetReportgen>();
               for (int j = 0; j < weekTable.getItems().size(); j++) {
-                  getdata = new GetReportgen();
+                  GetReportgen getdata = new GetReportgen();
                   getdata = weekTable.getItems().get(j);
                   items.add(getdata);
               }

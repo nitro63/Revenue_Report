@@ -14,20 +14,21 @@ import javafx.beans.property.StringProperty;
  */
 public class GetReportgen {
     
-    private StringProperty RevenueItem, Week1, Week2, Week3, Week4, Week5, totalAmount ;
-    private String revenueItem, week1, week2, week3, week4, week5, Total_Amount ;
+    private StringProperty RevenueItem, Week1, Week2, Week3, Week4, Week5, Week6, totalAmount ;
+    private String revenueItem, week1, week2, week3, week4, week5, week6, Total_Amount ;
     
     public GetReportgen(){
         
     }
     
     
-    public GetReportgen(String RevenueItem, String week1, String week2, String week3, String week4, String week5, String Total_Amount){
+    public GetReportgen(String RevenueItem, String week1, String week2, String week3, String week4, String week5, String week6, String Total_Amount){
        this.Week1 = new SimpleStringProperty(week1);
        this.Week2 = new SimpleStringProperty(week2);
        this.Week3 = new SimpleStringProperty(week3);
        this.Week4 = new SimpleStringProperty(week4);
        this.Week5 = new SimpleStringProperty(week5);
+        this.Week6 = new SimpleStringProperty(week6);
        this.totalAmount = new SimpleStringProperty(Total_Amount);
        this.RevenueItem = new SimpleStringProperty(RevenueItem);
     }   
@@ -121,6 +122,19 @@ public class GetReportgen {
    public final void setDay5(String Day5){
        week5Property().set(Day5);
    }
+
+    public StringProperty week6Property(){
+        return Week6;
+    }
+
+    public final String getweek6(){
+        week6 = week6Property().get();
+        return week6;
+    }
+
+    public final void setDay6(String Day6){
+        week6Property().set(Day6);
+    }
 }
 
    

@@ -38,7 +38,7 @@ public class GetFunctions {
         cal.set(date.getYear(), actMonth, date.getDayOfMonth());
         java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
         cal.setTime(setDate);//Setting time to Calendar variable
-        cal.setMinimalDaysInFirstWeek(3);//Setting the minimal days to make a week;
+        cal.setMinimalDaysInFirstWeek(1);//Setting the minimal days to make a week;
         String Week = Integer.toString(cal.get(Calendar.WEEK_OF_MONTH));
         return Week;
     }

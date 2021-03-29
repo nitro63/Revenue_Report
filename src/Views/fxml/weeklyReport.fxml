@@ -47,7 +47,7 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <TableView fx:id="weekTable" layoutX="134.0" layoutY="137.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="738.0">
+      <TableView fx:id="weekTable" layoutX="6.0" layoutY="137.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="1008.0">
          <columns>
             <TableColumn fx:id="revenueITEM" prefWidth="126.0">
                <graphic>
@@ -59,6 +59,7 @@
             <TableColumn fx:id="week3" prefWidth="100.0" text="WEEK" />
             <TableColumn fx:id="week4" prefWidth="100.0" text="WEEK" />
             <TableColumn fx:id="week5" prefWidth="100.0" text="WEEK" />
+            <TableColumn fx:id="week6" prefWidth="100.0" text="WEEK" />
             <TableColumn fx:id="totalAmount" prefWidth="100.0">
                <graphic>
                   <Label text="TOTAL AMOUNT" textAlignment="CENTER" wrapText="true" />
@@ -69,7 +70,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="896.0" layoutY="589.0" onAction="#printReport" text="PRINT">
+      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="896.0" layoutY="595.0" onAction="#printReport" text="PRINT">
          <effect>
             <DropShadow />
          </effect>
