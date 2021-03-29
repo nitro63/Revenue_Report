@@ -86,6 +86,10 @@ public class MonthlyReportController implements Initializable {
     private Label lblCenterWarn;
     @FXML
     private Label lblYearWarn;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblRevenueCenter;
     
     private GetMonthlyReport getReport;
 
@@ -166,8 +170,8 @@ public class MonthlyReportController implements Initializable {
     }
     
     private void changeNames() {
-        revenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        year.setText("Year: "+ cmbReportYear.getSelectionModel().getSelectedItem());
+        lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem());
     }
     
     private void setItems() throws SQLException{

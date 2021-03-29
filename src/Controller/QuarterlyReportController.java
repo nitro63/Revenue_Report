@@ -26,10 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import revenue_report.DBConnection;
 import Controller.Gets.GetQuarterReport;
@@ -69,6 +66,12 @@ public class QuarterlyReportController implements Initializable {
     private TableColumn<GetQuarterReport, String> month3;
     @FXML
     private TableColumn<GetQuarterReport, String> totalAmount;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblRevenueCenter;
+    @FXML
+    private Label lblQuarter;
     
     GetQuarterReport getReport;
 
@@ -200,9 +203,9 @@ public class QuarterlyReportController implements Initializable {
     
     
     private void changeNames() {
-        revenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        quarter.setText("Quarter: "+ cmbReportQuarter.getSelectionModel().getSelectedItem());
-        year.setText("Year: "+cmbReportYear.getSelectionModel().getSelectedItem());
+        lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
+        lblQuarter.setText( cmbReportQuarter.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem());
     }
     
     private void setItems() throws SQLException{
