@@ -27,10 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import revenue_report.DBConnection;
 
@@ -74,7 +71,13 @@ public class YearlyReportController implements Initializable {
     private TableColumn<GetYearlyReport, String> year5;
     @FXML
     private TableColumn<GetYearlyReport, String> totalAmount;
-    
+    @FXML
+    private Label lblYear2;
+    @FXML
+    private Label lblYear1;
+    @FXML
+    private Label lblRevenueCenter;
+
     GetYearlyReport getReport;
     
     
@@ -216,8 +219,9 @@ public class YearlyReportController implements Initializable {
     }
     
     private void changeNames() {
-        revenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        yearRange.setText("Year: "+cmbReportYear1.getSelectionModel().getSelectedItem()+" TO: "+cmbReportYear2.getSelectionModel().getSelectedItem());
+        lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
+        lblYear1.setText(cmbReportYear1.getSelectionModel().getSelectedItem());
+        lblYear2.setText(cmbReportYear2.getSelectionModel().getSelectedItem());
     }
     
       private void setItems() throws SQLException{

@@ -29,10 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -79,6 +76,12 @@ public class Payment_ReportController implements Initializable {
     private TableColumn<GetPaymentDetails, String> colAmount;
     @FXML
     private TableColumn<GetPaymentDetails, String> colTotalAmount;
+    @FXML
+    private Label lblMonth;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblRevenueCenter;
     
     private GetPaymentDetails getReport;
     
@@ -172,9 +175,9 @@ public class Payment_ReportController implements Initializable {
     }
     
     private void changeNames() {
-        revenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        year.setText("Year: "+ cmbReportYear.getSelectionModel().getSelectedItem());
-        MONTH.setText("Month: "+cmbReportMonth.getSelectionModel().getSelectedItem());
+        lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem());
+        lblMonth.setText(cmbReportMonth.getSelectionModel().getSelectedItem());
     } 
     
     private void setItems() throws SQLException{

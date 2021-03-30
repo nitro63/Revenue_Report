@@ -88,6 +88,10 @@ public class MasterItemsController implements Initializable {
     @FXML
     private TableColumn<GetItemsReport, String> totalAmount;
     @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblRevenueCenter;
+    @FXML
     private Label lblYearWarn;
     
     private GetItemsReport getReport;
@@ -144,8 +148,7 @@ public class MasterItemsController implements Initializable {
     }
     
     private void changeNames() {
-        revenueItems.setText("All Revenue Items");
-        year.setText("Year: "+ cmbMasterItemsYear.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbMasterItemsYear.getSelectionModel().getSelectedItem());
     }
     
    private void setItems() throws SQLException{

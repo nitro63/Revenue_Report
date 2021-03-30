@@ -210,6 +210,36 @@ org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launch
 
 
 
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+
+<TableView fx:id="quarterMastItemsTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <columns>
+      <TableColumn fx:id="revenueItems" maxWidth="865.0000076293945" prefWidth="848.0000076293945" text="REVENUE ITEMS">
+         <columns>
+            <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
+            <TableColumn fx:id="year" prefWidth="75.0" text="Year: #">
+               <columns>
+                  <TableColumn fx:id="quarter" prefWidth="618.0" text="QUARTER #">
+                     <columns>
+                        <TableColumn fx:id="month1" prefWidth="165.0" text="MONTH" />
+                        <TableColumn fx:id="month2" prefWidth="165.0" text="MONTH" />
+                        <TableColumn fx:id="month3" prefWidth="165.0" text="MONTH" />
+                        <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
+                     </columns>
+                  </TableColumn>
+               </columns>
+            </TableColumn>
+         </columns>
+      </TableColumn>
+   </columns>
+   <columnResizePolicy>
+      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+   </columnResizePolicy>
+</TableView>
 
 
 

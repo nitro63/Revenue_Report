@@ -71,6 +71,10 @@ public class MasterQuarterCentersController implements Initializable {
     private Label lblYearWarn;
     @FXML
     private Label lblQtrWarn;
+    @FXML
+    private Label lblQuarter;
+    @FXML
+    private Label lblYear;
     
     GetMstrQuarterCenters getReport;
 
@@ -184,8 +188,8 @@ public class MasterQuarterCentersController implements Initializable {
     
     
     private void changeNames() {
-        quarter.setText("Quarter: "+ cmbMstCentersQuarter.getSelectionModel().getSelectedItem());
-        year.setText("Year: "+cmMstCentersYear.getSelectionModel().getSelectedItem());
+        lblQuarter.setText(cmbMstCentersQuarter.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmMstCentersYear.getSelectionModel().getSelectedItem());
     }
     
     private void setItems() throws SQLException{
