@@ -13,179 +13,193 @@ import javafx.beans.property.StringProperty;
  * @author NiTrO
  */
 public class GetMonthlyReport {
-    private StringProperty RevenueItem;
-    private StringProperty jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, Total_Amount ;
+    private String revenueItem, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, total_Amount;
+    private StringProperty RevenueItem, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, Total_Amount ;
     
     public GetMonthlyReport(){
         
     }
    
     public GetMonthlyReport(String RevenueItem, String jan, String feb, String mar, String apr, String may, String jun, String jul, String aug, String sep, String oct, String nov, String dec, String Total_Amount){
-     this.jan = new SimpleStringProperty(jan);
-     this.feb = new SimpleStringProperty(feb);
-     this.mar = new SimpleStringProperty(mar);
-     this.apr = new SimpleStringProperty(apr);
-     this.may = new SimpleStringProperty(may);
-     this.jun = new SimpleStringProperty(jun);
-     this.jul = new SimpleStringProperty(jul);
-     this.aug = new SimpleStringProperty(aug);
-     this.sep = new SimpleStringProperty(sep);
-     this.oct = new SimpleStringProperty(oct);
-     this.nov = new SimpleStringProperty(nov);
-     this.dec = new SimpleStringProperty(dec);
-     this.Total_Amount = new SimpleStringProperty(Total_Amount);       
-     this.RevenueItem = new SimpleStringProperty(RevenueItem);   
-}
+        this.Jan = new SimpleStringProperty(jan);
+        this.Feb = new SimpleStringProperty(feb);
+        this.Mar = new SimpleStringProperty(mar);
+        this.Apr = new SimpleStringProperty(apr);
+        this.May = new SimpleStringProperty(may);
+        this.Jun = new SimpleStringProperty(jun);
+        this.Jul = new SimpleStringProperty(jul);
+        this.Aug = new SimpleStringProperty(aug);
+        this.Sep = new SimpleStringProperty(sep);
+        this.Oct = new SimpleStringProperty(oct);
+        this.Nov = new SimpleStringProperty(nov);
+        this.Dec = new SimpleStringProperty(dec);
+        this.Total_Amount = new SimpleStringProperty(Total_Amount);
+        this.RevenueItem = new SimpleStringProperty(RevenueItem);
+    }
+
 
     public StringProperty RevenueItemProperty() {
         return RevenueItem;
     }
 
     public String getRevenueItem() {
-        return RevenueItemProperty().get();
+        revenueItem = RevenueItemProperty().get();
+        return revenueItem;
     }
     public void setRevenueItem(String RevenueItem) {
         RevenueItemProperty().set(RevenueItem);
     }
 
     public StringProperty JanProperty() {
-        return jan;
+        return Jan;
     }
 
     public String getJan() {
-        return JanProperty().get();
+        jan = JanProperty().get();
+        return jan;
     }
     public void setJan(String jan) {
         JanProperty().set(jan);
     }
 
     public StringProperty FebProperty() {
-        return feb;
+        return Feb;
     }
 
     public String getFeb() {
-        return FebProperty().get();
+        feb = FebProperty().get();
+        return feb;
     }
     public void setFeb(String feb) {
         FebProperty().set(feb);
     }
 
     public StringProperty MarProperty() {
-        return mar;
+        return Mar;
     }
 
     public String getMar() {
-        return MarProperty().get();
+        mar = MarProperty().get();
+        return mar;
     }
-    
+
     public void setMar (String mar) {
         MarProperty().set(mar);
     }
 
     public StringProperty AprProperty() {
-        return apr;
+        return Apr;
     }
 
     public String getApr() {
-        return AprProperty().get();
+        apr = AprProperty().get();
+        return apr;
     }
-    
+
     public void setApr (String apr) {
         AprProperty().set(apr);
     }
 
     public StringProperty MayProperty() {
-        return may;
+        return May;
     }
 
     public String getMay() {
-        return MayProperty().get();
+        may = MayProperty().get();
+        return may;
     }
-    
+
     public void setMay (String may) {
         MayProperty().set(may);
     }
 
     public StringProperty JunProperty() {
-        return jun;
+        return Jun;
     }
 
     public String getJun() {
-        return JunProperty().get();
+        jun = JunProperty().get();
+        return jun;
     }
-    
+
     public void setJun (String jun) {
         JunProperty().set(jun);
     }
 
-   public StringProperty JulProperty() {
-        return jul;
+    public StringProperty JulProperty() {
+        return Jul;
     }
 
     public String getJul() {
-        return JulProperty().get();
+        jul = JulProperty().get();
+        return jul;
     }
-    
+
     public void setJul (String jul) {
         JulProperty().set(jul);
     }
 
     public StringProperty AugProperty() {
-        return aug;
+        return Aug;
     }
 
     public String getAug() {
-        return AugProperty().get();
+        aug = AugProperty().get();
+        return aug;
     }
-    
+
     public void setAug (String aug) {
         AugProperty().set(aug);
     }
 
     public StringProperty SepProperty() {
-        return sep;
+        return Sep;
     }
 
     public String getSep() {
-        return SepProperty().get();
+        sep = SepProperty().get();
+        return sep;
     }
-    
+
     public void setSep (String sep) {
         SepProperty().set(sep);
     }
 
     public StringProperty OctProperty() {
-        return oct;
+        return Oct;
     }
 
     public String getOct() {
-        return OctProperty().get();
+        oct = OctProperty().get();
+        return oct;
     }
-    
+
     public void setOct (String oct) {
         OctProperty().set(oct);
     }
 
     public StringProperty NovProperty() {
-        return nov;
+        return Nov;
     }
 
     public String getNov() {
-        return NovProperty().get();
+        nov = NovProperty().get();
+        return nov;
     }
-    
+
     public void setNov (String nov) {
         NovProperty().set(nov);
     }
 
     public StringProperty DecProperty() {
-        return dec;
+        return Dec;
     }
 
     public String getDec() {
-        return DecProperty().get();
+        dec = DecProperty().get();
+        return dec;
     }
-    
+
     public void setDec (String dec) {
         DecProperty().set(dec);
     }
@@ -195,7 +209,8 @@ public class GetMonthlyReport {
     }
 
     public String getTotal_Amount() {
-        return Total_AmountProperty().get();
+        total_Amount = Total_AmountProperty().get();
+        return total_Amount;
     }
     public void setTotal_Amount(String Total_Amount) {
         Total_AmountProperty().set(Total_Amount);
