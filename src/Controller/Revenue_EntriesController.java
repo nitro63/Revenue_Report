@@ -73,6 +73,10 @@ public class Revenue_EntriesController  implements Initializable {
     @FXML
     private TableColumn<GetEntries, String> revWeek;
     @FXML
+    private Label lblEdit;
+    @FXML
+    private Label lblDup;
+    @FXML
     private JFXButton btnDelete;
     @FXML
     private Label lblDeleteWarn;
@@ -143,7 +147,7 @@ public class Revenue_EntriesController  implements Initializable {
       revTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
       registerItem.put("", new ArrayList());
       revTable.setOnMouseClicked(e -> {
-          lblDeleteWarn.setVisible(false);
+          lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
       });
         GetRevenueItems();
        }    
@@ -276,11 +280,15 @@ public class Revenue_EntriesController  implements Initializable {
     private void clearEntries(ActionEvent event) {
       GetEntries entries = revTable.getSelectionModel().getSelectedItem();
       if (revTable.getSelectionModel().isEmpty()){
-          lblDeleteWarn.setVisible(true);
+          lblEdit.setText("Please select a row in the table to "+'"'+"Edit"+'"');
+          lblEdit.setVisible(true);
       }else {
+          String regex = "(?<=[\\d])(,)(?=[\\d])";
+          Pattern p = Pattern.compile(regex);
+          Matcher m = p.matcher(entries.getAmount());
           entDatePck.setValue(LocalDate.parse(entries.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
           cmbEntRevItem.getSelectionModel().select(entries.getItem());
-          txtEntAmt.setText(entries.getAmount());
+          txtEntAmt.setText(m.replaceAll(""));
           registerItem.get(entries.getDate()).remove(entries.getItem());
           ObservableList<GetEntries> selectedRows = revTable.getSelectionModel().getSelectedItems();
           ArrayList<GetEntries> rows = new ArrayList<>(selectedRows);
@@ -334,59 +342,30 @@ public class Revenue_EntriesController  implements Initializable {
             metaData = rs.getMetaData();
             int columns = metaData.getColumnCount();
             while(rs.next()){
-                for(int k = 1; k<=columns; k++){
-                    
-                    if(k == 2){
-                        String dup = rs.getObject(k).toString();
+
+                        String dup = rs.getString("Code");
                         duplicate.add(dup);
-                    }
-                }
+                        System.out.println("Fred"+duplicate);
+
+
             }
             if(duplicate.contains(acCode)){
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Clear Duplicate data");
-                alert.showAndWait();
-                revTable.getItems().remove(i);
+                lblDup.setText("Revenue for "+'"'+getData.getItem()+'"'+ " on "+'"'+ getData.getDate()+'"'+" already exist. Please delete or edit duplicate.");
+                lblDup.setVisible(true);
+                i = revTable.getItems().size();
             }else{
                 stmnt = connection.prepareStatement("INSERT INTO `daily_entries`(`revCenter`, `Code`, `revenueItem`, `revenueAmount`, `revenueDate`, `revenueWeek`, `revenueMonth`, `revenueYear`, `revenueQuarter`)"
                         +"VALUES('"+acCenter+"', '"+acCode+"', '"+acItem+"', '"+acAmount+"', '"+acDate+"', '"+acWeek+"','"+acMonth+"', '"+acYear+"', '"+acQtr+"')");
                 stmnt.executeUpdate();
+                revTable.getItems().remove(i);
             }
-            forDatabase.get("revCenter").add(RevCent);
-            forDatabase.get("revCode").add(getData.getCode());
-            forDatabase.get("revItem").add(getData.getItem());
-            forDatabase.get("revDate").add(getData.getDate());
-            forDatabase.get("revMonth").add(getData.getMonth());
-            forDatabase.get("revAmount").add(getData.getAmount());
-            forDatabase.get("revWeek").add(getData.getWeek());
-            arrList.add(new ArrayList<>());
-            arrList.get(i).add(forDatabase.get("revCenter").toString());
-            arrList.get(i).add(forDatabase.get("revCode").toString());
-            arrList.get(i).add(forDatabase.get("revItem").toString());
-            arrList.get(i).add(forDatabase.get("revDate").toString());
-            arrList.get(i).add(forDatabase.get("revMonth").toString());
-            arrList.get(i).add(forDatabase.get("revAmount").toString());
-            arrList.get(i).add(forDatabase.get("revWeek").toString());            
         }
-        
-         for (Entry<String, ArrayList<String>> entry : forDatabase.entrySet()) {
-        System.out.print(entry.getKey()+" | ");
-        for(String fruitNo : entry.getValue()){
-            System.out.print(fruitNo+" ");
-        }
-        System.out.println();
     }
-    
-for(int i = 0; i<arrList.size(); i++){
-    for(int j = 0; j<arrList.get(i).size(); j++){
-        System.out.println(arrList.get(i).get(j));
-    }
-}
 
-                revTable.getItems().clear();
 
-    }
+
+
+
 
     @FXML
     private void CancelEntries(ActionEvent event) {

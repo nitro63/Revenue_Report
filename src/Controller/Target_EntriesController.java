@@ -15,10 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,9 +41,13 @@ public class Target_EntriesController implements Initializable {
     @FXML
     private Button btnClose;
     @FXML
-    private TextField txtEntYear;
-    @FXML
     private TextField txtEntAmt;
+    @FXML
+    private Spinner<Integer> spnTargYear;
+    @FXML
+    private Label lblEdit;
+    @FXML
+    private Label lblDup;
     @FXML
     private Button btnEnter;
     @FXML
@@ -106,8 +107,12 @@ public class Target_EntriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        Calendar cal = Calendar.getInstance();
+        spnTargYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get(Calendar.YEAR)));
         tblCollectEnt.setOnMouseClicked(e -> {
             lblDeleteWarn.setVisible(false);
+            lblDup.setVisible(false);
+            lblEdit.setVisible(false);
         });
     }    
 
@@ -120,7 +125,7 @@ public class Target_EntriesController implements Initializable {
     @FXML
     private void saveEntries(ActionEvent event) {
         RevCent = GetCenter.getRevCenter();
-        Year = txtEntYear.getText();
+        Year = Integer.toString(spnTargYear.getValue());
         Condition = true;
         while (Condition){
             if(registerItem.contains(Year)){
@@ -155,28 +160,19 @@ public class Target_EntriesController implements Initializable {
                 Condition =false;
                 
                 
-            }else if(txtEntYear.getText().isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Please Enter YEAR");
-                alert.showAndWait();
-                txtEntAmt.clear();
-                Condition =false;
-                
-                
-            }else if(txtEntAmt.getText().isEmpty()|| txtEntYear.getText().isEmpty() || registerItem.contains(Year)){
+            }else if(txtEntAmt.getText().isEmpty()||  registerItem.contains(Year)){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Make All Entries");
                 alert.showAndWait();
                 Condition =false;
 //                }
-            }else if( txtEntYear.getText().length() > 4 /*|| !"2".equals(txtEntYear.getText()) /*|| txtEntYear.getText().charAt(1)!= 0*/){
+            }else if( Year.length() > 4 /*|| !"2".equals(txtEntYear.getText()) /*|| txtEntYear.getText().charAt(1)!= 0*/){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please ENTER YEAR correctly");
                 alert.showAndWait();
-                txtEntYear.clear();               
+                spnTargYear.getValueFactory().setValue(Calendar.getInstance().get(Calendar.YEAR));
                 Condition =false;
             }
             else{
@@ -198,9 +194,9 @@ public class Target_EntriesController implements Initializable {
             }else{
             getReport = new GetTargetEnt(RevCent, Amount, Year);
             tblCollectEnt.getItems().add(getReport);
-            registerItem.add(txtEntYear.getText());
+            registerItem.add(Year);
             Condition = false;
-        txtEntYear.clear();
+            spnTargYear.getValueFactory().setValue(Calendar.getInstance().get(Calendar.YEAR));
         txtEntAmt.clear();
         }
             }
@@ -213,8 +209,11 @@ public class Target_EntriesController implements Initializable {
         if (tblCollectEnt.getSelectionModel().isEmpty()){
             lblDeleteWarn.setVisible(true);
         }else {
-            txtEntAmt.setText(targ.getAmount());
-            txtEntYear.setText(targ.getYear());
+            String regex = "(?<=[\\d])(,)(?=[\\d])";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(targ.getAmount());
+            txtEntAmt.setText(m.replaceAll(""));
+            spnTargYear.getValueFactory().setValue(Integer.parseInt(targ.getYear()));
             ObservableList<GetTargetEnt> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
             ArrayList<GetTargetEnt> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblCollectEnt.getItems().remove(row));
@@ -244,24 +243,16 @@ public class Target_EntriesController implements Initializable {
             int col = rm.getColumnCount();
             
             while(rs.next()){
-                for(int k= 1; k<= col; k++){
-                    if(k == 1){
-                        String cent = rs.getObject(1).toString();
+                        String cent = rs.getString("revCenter");
                         duplicate.put(cent, new ArrayList<>());
-                    }
-                    if(k == 3){
-                        String year = rs.getObject(3).toString();
-                        duplicate.get(rs.getObject(1).toString()).add(year);
-                    }
-                }
+
+                        String year = rs.getString("Year");
+                        duplicate.get(cent).add(year);
+
             }
             if(duplicate.containsKey(acCenter)){
                 if(duplicate.get(acCenter).contains(getData.getYear())){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("TARGET already ENTERED for YEAR");
-                alert.showAndWait();
-                tblCollectEnt.getItems().remove(j);
+                    lblDup.setText("TARGET Amount already ENTERED for "+''+"YEAR");
                 }
             }else{
                 stmnt = con.prepareStatement("INSERT INTO `target_entries`(`revCenter`, `Amount`, `Year`) VALUES ('"+acCenter+"', '"+acAmount+"', '"+acYear+"')");
@@ -280,7 +271,7 @@ public class Target_EntriesController implements Initializable {
     @FXML
     private void processKeyYear(KeyEvent event) {
         String c = event.getCharacter();
-        String d = txtEntYear.getText();
+        String d = Integer.toString(spnTargYear.getValue());
     if("1234567890".contains(c) ) {}
     else if(d.length()>4) {
         event.consume();

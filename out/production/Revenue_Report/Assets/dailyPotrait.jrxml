@@ -552,7 +552,7 @@
 				<text><![CDATA[DATE]]></text>
 			</staticText>
 			<textField textAdjust="ScaleFont">
-				<reportElement x="150" y="326" width="73" height="20" uuid="57632224-a124-4096-92d2-c13a2c429705">
+				<reportElement positionType="FixRelativeToBottom" x="150" y="326" width="73" height="20" uuid="57632224-a124-4096-92d2-c13a2c429705">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
@@ -568,7 +568,7 @@
 				<text><![CDATA[DATE]]></text>
 			</staticText>
 			<textField textAdjust="ScaleFont">
-				<reportElement x="560" y="326" width="73" height="20" uuid="4f3862a7-302c-49cf-9b50-18692d2f52a5">
+				<reportElement positionType="FixRelativeToBottom" x="560" y="326" width="73" height="20" uuid="4f3862a7-302c-49cf-9b50-18692d2f52a5">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
