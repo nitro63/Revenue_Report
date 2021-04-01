@@ -7,6 +7,10 @@ package Controller;
 
 import Controller.Gets.GetMstrQuarterCenters;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,13 +19,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Controller.Gets.GetQuarterReport;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +32,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 
 /**
@@ -315,8 +322,47 @@ public class MasterQuarterCentersController implements Initializable {
     }
 
     @FXML
-    void printReport(ActionEvent event) {
+    void printReport(ActionEvent event) throws JRException, FileNotFoundException {
+        if (quarterMastCentersTable.getItems().isEmpty()){
+            event.consume();
+        }else {
+            Date date = new Date();
+            List<GetMstrQuarterCenters> items = new ArrayList<GetMstrQuarterCenters>();
+            for (int j = 0; j < quarterMastCentersTable.getItems().size(); j++) {
+                GetMstrQuarterCenters getdata = new GetMstrQuarterCenters();
+                getdata = quarterMastCentersTable.getItems().get(j);
+                items.add(getdata);
+            }
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                    file = this.getClass().getResource("/Assets/masterQuarterCentersPotrait.jrxml");
 
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            String year = cmMstCentersYear.getSelectionModel().getSelectedItem(),
+                    first = month1.getText(),
+                    second = month2.getText(),
+                    third = month3.getText();
+
+            /* Map to hold Jasper report Parameters */
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url); parameters.put("FirstMonth", first);
+            parameters.put("year", year); parameters.put("SecondMonth", second);
+            parameters.put("timeStamp", date); parameters.put("ThirdMonth", third);
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(new File(file.getPath()));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
+        }
     }
     
 }

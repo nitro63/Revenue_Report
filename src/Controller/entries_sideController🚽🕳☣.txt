@@ -243,6 +243,8 @@ org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launch
 
 
 
+Tadaaaaaa: myMONdevices.7
+
 
 
 

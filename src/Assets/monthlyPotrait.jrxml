@@ -501,13 +501,6 @@
 				<text><![CDATA[SIGNATURE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="41" y="317" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="4698dd31-5729-4e9c-8907-13c6acdddda2">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Static Text]]></text>
-			</staticText>
-			<staticText>
 				<reportElement positionType="FixRelativeToBottom" x="142" y="291" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="4f916c02-5ace-42f9-912f-4b6fb7527307">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -537,13 +530,6 @@
 				</textElement>
 				<text><![CDATA[....................................................................................]]></text>
 			</staticText>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="454" y="316" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="9bb4db8c-386a-4158-9d5f-6c6b5137df97">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Static Text]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="174" y="263" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="ed638445-12c0-4e7d-8337-b0a43ffff41c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -557,6 +543,38 @@
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{accountant}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="41" y="317" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="046236f7-2d35-473b-b321-808f2c0d14b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DATE]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="150" y="317" width="73" height="20" uuid="00fc2a69-9e80-4912-b670-bf83f5698a28">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{timeStamp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="454" y="316" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="20025a33-0054-4ba5-94b5-d6e4f363b108">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DATE]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="560" y="317" width="73" height="20" uuid="40100732-b336-415c-8772-80ffe55c63bb">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{timeStamp}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

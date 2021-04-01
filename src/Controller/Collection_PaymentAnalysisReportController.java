@@ -5,7 +5,13 @@
  */
 package Controller;
 
+import Controller.Gets.GetCentersReport;
 import Controller.Gets.GetColPay;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Connection;
@@ -15,7 +21,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,6 +33,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 
 /**
@@ -271,8 +282,46 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     }
 
     @FXML
-    void printReport(ActionEvent event) {
+    void printReport(ActionEvent event) throws FileNotFoundException, JRException {
+        if (tblColPayAnalysis.getItems().isEmpty()){
+            event.consume();
+        }else {
+            Date date = new Date();
+            List<GetColPay> items = new ArrayList<GetColPay>();
+            for (int j = 0; j < tblColPayAnalysis.getItems().size(); j++) {
+                GetColPay getdata = new GetColPay();
+                getdata = tblColPayAnalysis.getItems().get(j);
+                items.add(getdata);
+            }
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                    file = this.getClass().getResource("/Assets/revenueVSpayment.jrxml");
 
+            System.out.println(items + "\n" + url);
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            String year = lblYear.getText(),
+                   center = lblRevenueCenter.getText();
+
+            /* Map to hold Jasper report Parameters */
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url); parameters.put("center", center);
+            parameters.put("year", year);
+            parameters.put("timeStamp", date);
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(new File(file.getPath()));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
+        }
     }
     
 }

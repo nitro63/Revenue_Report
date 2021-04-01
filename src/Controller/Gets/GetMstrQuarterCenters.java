@@ -13,78 +13,80 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetMstrQuarterCenters {
-    private StringProperty firstMonth, secondMonth, thirdMonth, revenueCenter, totalAmount;
+    private StringProperty FirstMonth, SecondMonth, ThirdMonth, RevenueCenter, TotalAmount;
+    private String firstMonth, secondMonth, thirdMonth, revenueCenter, totalAmount;
     
     public GetMstrQuarterCenters(){
         
     }
     
     public GetMstrQuarterCenters(String firstMonth, String secondMonth, String thirdMonth, String revenueItem, String totalAmount){
-        this.firstMonth = new SimpleStringProperty(firstMonth);
-        this.secondMonth = new SimpleStringProperty(secondMonth);
-        this.thirdMonth = new SimpleStringProperty(thirdMonth);
-        this.revenueCenter = new SimpleStringProperty(revenueItem);
-        this.totalAmount = new SimpleStringProperty(totalAmount);
+        this.FirstMonth = new SimpleStringProperty(firstMonth);
+        this.SecondMonth = new SimpleStringProperty(secondMonth);
+        this.ThirdMonth = new SimpleStringProperty(thirdMonth);
+        this.RevenueCenter = new SimpleStringProperty(revenueItem);
+        this.TotalAmount = new SimpleStringProperty(totalAmount);
     }
     
     public StringProperty firstMonthProperty(){
+        return FirstMonth;
+    }
+
+    public final String getfirstMonth(){
+        firstMonth = firstMonthProperty().get();
         return firstMonth;
     }
-    
-    public final String getfirstMonth(){
-        return firstMonthProperty().get();
-    }
-    
+
     public final void setfirstMonth(String firstMonth){
         firstMonthProperty().set(firstMonth);
     }
-    
+
     public StringProperty secondMonthProperty(){
+        return SecondMonth;
+    }
+
+    public final String getsecondMonth(){
+        secondMonth = secondMonthProperty().get();
         return secondMonth;
     }
-    
-    public final String getsecondMonth(){
-        return secondMonthProperty().get();
-    }
-    
+
     public final void setsecondMonth(String secondMonth){
         secondMonthProperty().set(secondMonth);
-    }  
-    
+    }
+
     public StringProperty thirdMonthProperty(){
+        return ThirdMonth;
+    }
+
+    public final String getthirdMonth(){
+        thirdMonth = thirdMonthProperty().get();
         return thirdMonth;
     }
-    
-    public final String getthirdMonth(){
-        return thirdMonthProperty().get();
-    }
-    
+
     public final void setthirdMonth(String thirdMonth){
         thirdMonthProperty().set(thirdMonth);
     }
+
+    public StringProperty totalAmountProperty(){
+        return TotalAmount;
+    }
+
+    public final String gettotalAmount(){
+        totalAmount = totalAmountProperty().get();
+        return totalAmount;
+    }
     
     public StringProperty revenueCenterProperty(){
-        return revenueCenter;
+        return RevenueCenter;
     }
     
     public final String getrevenueCenter(){
-        return revenueCenterProperty().get();
+        revenueCenter = revenueCenterProperty().get();
+        return revenueCenter;
     }
     
     public final void setrevenueCenter(String revenueCenter){
         revenueCenterProperty().set(revenueCenter);
-    }
-    
-    public StringProperty totalAmountProperty(){
-        return totalAmount;
-    }
-    
-    public final String gettotalAmount(){
-        return totalAmountProperty().get();
-    }
-    
-    public final void settotalAmount(String totalAmount){
-        totalAmountProperty().set(totalAmount);
     }
     
 }

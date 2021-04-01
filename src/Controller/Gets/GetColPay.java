@@ -14,6 +14,7 @@ import javafx.beans.property.StringProperty;
  */
 public class GetColPay {
     private StringProperty Month, AmtReprtd, AmtPayed, Diff, Rmks;
+    private String month, amtReprtd, amtPayed, diff, rmks;
     
     public GetColPay(){
         
@@ -33,7 +34,8 @@ public class GetColPay {
     }
     
     public final String getAmtPayed(){
-        return AmtPayedProperty().get();
+        amtPayed = AmtPayedProperty().get();
+        return amtPayed;
     }
     
     public final void setAmtPayed(String AmtPayed){
@@ -45,7 +47,8 @@ public class GetColPay {
     }
     
     public final String getAmtReprtd(){
-        return AmtReprtdProperty().get();
+        amtReprtd = AmtReprtdProperty().get();
+        return amtReprtd;
     }
     
     public final void setAmtReprtd(String AmtReprtd){
@@ -57,7 +60,8 @@ public class GetColPay {
     }
     
     public final String getDiff(){
-        return DiffProperty().get();
+        diff = DiffProperty().get();
+        return diff;
     }
     
     public final void setDiff(String Diff){
@@ -69,7 +73,8 @@ public class GetColPay {
     }
     
     public final String getMonth(){
-        return MonthProperty().get();
+        month = MonthProperty().get();
+        return month;
     }
     
     public final void setMonth(String Month){
@@ -81,7 +86,8 @@ public class GetColPay {
     }
     
     public final String getRmks(){
-        return RmksProperty().get();
+        rmks = RmksProperty().get();
+        return rmks;
     }
     
     public final void setRmks(String Rmks){
