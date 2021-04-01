@@ -13,15 +13,15 @@ import javafx.beans.property.StringProperty;
  * @author NiTrO
  */
 public class GetPaymentDetails {
-    private StringProperty GCR, Date, PaymentType, Amount, CumuAmount;
-    private String gcr, date, paymentType, amount, cumuAmount;
+    private StringProperty gcr, Date, PaymentType, Amount, CumuAmount;
+    private String GCR, date, paymentType, amount, cumuAmount;
     
     public GetPaymentDetails(){
         
     }
     
     public GetPaymentDetails(String date, String GCR, String paymentType, String amount, String cumuAmount){
-        this.GCR = new SimpleStringProperty(GCR);
+        this.gcr = new SimpleStringProperty(GCR);
         this.Amount = new SimpleStringProperty(amount);
         this.Date = new SimpleStringProperty(date);
         this.CumuAmount = new SimpleStringProperty(cumuAmount);
@@ -29,12 +29,12 @@ public class GetPaymentDetails {
     }
     
     public StringProperty GCRProperty(){
-        return GCR;
+        return gcr;
     }
     
     public final String getGCR(){
-        gcr = GCRProperty().get();
-        return gcr;
+        GCR = GCRProperty().get();
+        return GCR;
     }
     
     public final void setGCR(String GCR){

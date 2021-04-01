@@ -89,6 +89,8 @@ public class MasterCentersController implements Initializable {
     @FXML
     private TableColumn<GetCentersReport, String> totalAmount;
     @FXML
+    private Label lblYear;
+    @FXML
     private Label lblYearWarn;
     
     private GetCentersReport getReport;
@@ -148,8 +150,7 @@ public class MasterCentersController implements Initializable {
     }
     
     private void changeNames() {
-        revenueCenter.setText("All Revenue Centers");
-        year.setText("Year: "+ cmbMasterCentersYear.getSelectionModel().getSelectedItem());
+        lblYear.setText("Year: "+ cmbMasterCentersYear.getSelectionModel().getSelectedItem());
     }
     
    private void setItems() throws SQLException{

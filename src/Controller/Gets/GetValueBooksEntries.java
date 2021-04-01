@@ -63,7 +63,7 @@ public class GetValueBooksEntries {
     }
 
     public String getMonth() {
-        month = Month.get();
+        month = monthProperty().get();
         return month;
     }
 
@@ -72,7 +72,7 @@ public class GetValueBooksEntries {
     }
 
     public void setMonth(String month) {
-        this.Month.set(month);
+        monthProperty().set(month);
     }
 
     public String getDate() {
