@@ -13,7 +13,8 @@ import javafx.beans.property.StringProperty;
  * @author NiTrO
  */
 public class GetPaymentDetails {
-    private StringProperty GCR, date, paymentType, amount, cumuAmount;
+    private StringProperty GCR, Date, PaymentType, Amount, CumuAmount;
+    private String gcr, date, paymentType, amount, cumuAmount;
     
     public GetPaymentDetails(){
         
@@ -21,10 +22,10 @@ public class GetPaymentDetails {
     
     public GetPaymentDetails(String date, String GCR, String paymentType, String amount, String cumuAmount){
         this.GCR = new SimpleStringProperty(GCR);
-        this.amount = new SimpleStringProperty(amount);
-        this.date = new SimpleStringProperty(date);
-        this.cumuAmount = new SimpleStringProperty(cumuAmount);
-        this.paymentType = new SimpleStringProperty(paymentType);
+        this.Amount = new SimpleStringProperty(amount);
+        this.Date = new SimpleStringProperty(date);
+        this.CumuAmount = new SimpleStringProperty(cumuAmount);
+        this.PaymentType = new SimpleStringProperty(paymentType);
     }
     
     public StringProperty GCRProperty(){
@@ -32,7 +33,8 @@ public class GetPaymentDetails {
     }
     
     public final String getGCR(){
-        return GCRProperty().get();
+        gcr = GCRProperty().get();
+        return gcr;
     }
     
     public final void setGCR(String GCR){
@@ -40,11 +42,12 @@ public class GetPaymentDetails {
     }
     
     public StringProperty dateProperty(){
-        return date;
+        return Date;
     }
     
     public final String getdate(){
-        return dateProperty().get();
+        date = dateProperty().get();
+        return date;
     }
     
     public final void setdate(String date){
@@ -52,11 +55,12 @@ public class GetPaymentDetails {
     }
     
     public StringProperty amountProperty(){
-        return amount;
+        return Amount;
     }
     
     public final String getamount(){
-        return amountProperty().get();
+        amount = amountProperty().get();
+        return amount;
     }
     
     public final void setamount(String amount){
@@ -64,11 +68,12 @@ public class GetPaymentDetails {
     }
     
     public StringProperty paymentTypeProperty(){
-        return paymentType;
+        return PaymentType;
     }
     
     public final String getpaymentType(){
-        return paymentTypeProperty().get();
+        paymentType = paymentTypeProperty().get();
+        return paymentType;
     }
     
     public final void setpaymentType(String paymentType){
@@ -76,11 +81,12 @@ public class GetPaymentDetails {
     }
     
     public StringProperty cumuAmountProperty(){
-        return cumuAmount;
+        return CumuAmount;
     }
     
     public final String getcumuAmount(){
-        return cumuAmountProperty().get();
+        cumuAmount = cumuAmountProperty().get();
+        return cumuAmount;
     }
     
     public final void setcumuAmount(String cumuAmount){

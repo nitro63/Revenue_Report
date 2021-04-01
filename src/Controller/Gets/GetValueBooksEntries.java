@@ -5,7 +5,9 @@ import javafx.beans.property.StringProperty;
 
 public class GetValueBooksEntries {
 
-    private StringProperty Year, Month, Date, valueBook, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks, ID;
+    private StringProperty Year, Month, Date, ValueBook, FirstSerial, LastSerial, Quantity, ValAmount, CumuAmount, PurAmount, remarks, ID;
+
+    private String year, month, date, valueBook, firstSerial, lastSerial, quantity, valAmount, cumuAmount, purAmount;
 
     public GetValueBooksEntries(){   }
 
@@ -13,25 +15,25 @@ public class GetValueBooksEntries {
         this.Year = new SimpleStringProperty(Year);
         this.Month = new SimpleStringProperty(month);
         this.Date = new SimpleStringProperty(date);
-        this.valueBook = new SimpleStringProperty(valueBook);
-        this.firstSerial = new SimpleStringProperty(firstSerial);
-        this.lastSerial = new SimpleStringProperty(lastSerial);
+        this.ValueBook = new SimpleStringProperty(valueBook);
+        this.FirstSerial = new SimpleStringProperty(firstSerial);
+        this.LastSerial = new SimpleStringProperty(lastSerial);
         this.Quantity = new SimpleStringProperty(quantity);
-        this.valAmount = new SimpleStringProperty(valAmount);
-        this.cumuAmount = new SimpleStringProperty(cumuAmount);
-        this.purAmount = new SimpleStringProperty(purAmount);
+        this.ValAmount = new SimpleStringProperty(valAmount);
+        this.CumuAmount = new SimpleStringProperty(cumuAmount);
+        this.PurAmount = new SimpleStringProperty(purAmount);
         this.remarks = new SimpleStringProperty(remarks);
     }
 
     public GetValueBooksEntries(String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
         this.Date = new SimpleStringProperty(date);
-        this.valueBook = new SimpleStringProperty(valueBook);
-        this.firstSerial = new SimpleStringProperty(firstSerial);
-        this.lastSerial = new SimpleStringProperty(lastSerial);
+        this.ValueBook = new SimpleStringProperty(valueBook);
+        this.FirstSerial = new SimpleStringProperty(firstSerial);
+        this.LastSerial = new SimpleStringProperty(lastSerial);
         this.Quantity = new SimpleStringProperty(quantity);
-        this.valAmount = new SimpleStringProperty(valAmount);
-        this.cumuAmount = new SimpleStringProperty(cumuAmount);
-        this.purAmount = new SimpleStringProperty(purAmount);
+        this.ValAmount = new SimpleStringProperty(valAmount);
+        this.CumuAmount = new SimpleStringProperty(cumuAmount);
+        this.PurAmount = new SimpleStringProperty(purAmount);
         this.remarks = new SimpleStringProperty(remarks);
     }
 
@@ -48,7 +50,8 @@ public class GetValueBooksEntries {
     }
 
     public String getYear() {
-        return Year.get();
+        year = Year.get();
+        return year;
     }
 
     public StringProperty yearProperty() {
@@ -60,7 +63,8 @@ public class GetValueBooksEntries {
     }
 
     public String getMonth() {
-        return Month.get();
+        month = Month.get();
+        return month;
     }
 
     public StringProperty monthProperty() {
@@ -72,7 +76,8 @@ public class GetValueBooksEntries {
     }
 
     public String getDate() {
-        return Date.get();
+        date = Date.get();
+        return date;
     }
 
     public StringProperty dateProperty() {
@@ -84,43 +89,47 @@ public class GetValueBooksEntries {
     }
 
     public String getValueBook() {
-        return valueBook.get();
-    }
-
-    public StringProperty valueBookProperty() {
+        valueBook = ValueBook.get();
         return valueBook;
     }
 
+    public StringProperty valueBookProperty() {
+        return ValueBook;
+    }
+
     public void setValueBook(String valueBook) {
-        this.valueBook.set(valueBook);
+        this.ValueBook.set(valueBook);
     }
 
     public String getFirstSerial() {
-        return firstSerial.get();
-    }
-
-    public StringProperty firstSerialProperty() {
+        firstSerial = FirstSerial.get();
         return firstSerial;
     }
 
+    public StringProperty firstSerialProperty() {
+        return FirstSerial;
+    }
+
     public void setFirstSerial(String firstSerial) {
-        this.firstSerial.set(firstSerial);
+        this.FirstSerial.set(firstSerial);
     }
 
     public String getLastSerial() {
-        return lastSerial.get();
-    }
-
-    public StringProperty lastSerialProperty() {
+        lastSerial = LastSerial.get();
         return lastSerial;
     }
 
+    public StringProperty lastSerialProperty() {
+        return LastSerial;
+    }
+
     public void setLastSerial(String lastSerial) {
-        this.lastSerial.set(lastSerial);
+        this.LastSerial.set(lastSerial);
     }
 
     public String getQuantity() {
-        return Quantity.get();
+        quantity = Quantity.get();
+        return quantity;
     }
 
     public StringProperty quantityProperty() {
@@ -132,38 +141,41 @@ public class GetValueBooksEntries {
     }
 
     public String getValAmount() {
-        return valAmount.get();
-    }
-
-    public StringProperty valAmountProperty() {
+        valAmount = ValAmount.get();
         return valAmount;
     }
 
+    public StringProperty valAmountProperty() {
+        return ValAmount;
+    }
+
     public void setValAmount(String valAmount) {
-        this.valAmount.set(valAmount);
+        this.ValAmount.set(valAmount);
     }
 
     public String getCumuAmount() {
-        return cumuAmount.get();
-    }
-
-    public StringProperty cumuAmountProperty() {
+        cumuAmount = CumuAmount.get();
         return cumuAmount;
     }
 
+    public StringProperty cumuAmountProperty() {
+        return CumuAmount;
+    }
+
     public void setCumuAmount(String cumuAmount) {
-        this.cumuAmount.set(cumuAmount);
+        this.CumuAmount.set(cumuAmount);
     }
 
     public String getPurAmount() {
-        return purAmount.get();
-    }
-
-    public StringProperty purAmountProperty() {
+        purAmount = PurAmount.get();
         return purAmount;
     }
 
+    public StringProperty purAmountProperty() {
+        return PurAmount;
+    }
+
     public void setPurAmount(String purAmount) {
-        this.purAmount.set(purAmount);
+        this.PurAmount.set(purAmount);
     }
 }

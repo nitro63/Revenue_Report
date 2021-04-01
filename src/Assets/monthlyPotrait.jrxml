@@ -11,7 +11,7 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+	<style name="Table_CH" mode="Opaque" backcolor="#F0FCFC">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -140,7 +140,7 @@
 	<detail>
 		<band height="405" splitType="Stretch">
 			<componentElement>
-				<reportElement style="Table_CH" x="1" y="3" width="806" height="207" uuid="3514dde2-6491-422a-afb0-829bd3fd7900">
+				<reportElement style="Table_CH" x="1" y="3" width="806" height="207" backcolor="#F0FCFC" uuid="3514dde2-6491-422a-afb0-829bd3fd7900">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -153,11 +153,11 @@
 					</datasetRun>
 					<jr:column width="67" uuid="bfbffbbf-e442-478d-8374-faee450f7d46">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="67" height="25" uuid="ffc19f1a-d646-407b-a005-d91c9c932382"/>
+								<reportElement x="0" y="0" width="67" height="30" uuid="ffc19f1a-d646-407b-a005-d91c9c932382"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
@@ -177,15 +177,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="ae783317-6837-4b18-910d-83aaa5f6c693">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="0b103b3e-161f-4e1e-8267-34711e7e4680"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="0b103b3e-161f-4e1e-8267-34711e7e4680"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
-								<text><![CDATA[JAN]]></text>
+								<text><![CDATA[JAN(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -201,15 +201,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="077e2353-adeb-48f7-8abf-998c3755f557">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="13581c19-530f-438d-9c0d-679285e07b8d"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="13581c19-530f-438d-9c0d-679285e07b8d"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
-								<text><![CDATA[FEB]]></text>
+								<text><![CDATA[FEB(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -225,15 +225,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="85e3c809-63a8-4c7e-b0cc-1c12bbf194f6">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="45a67661-2768-4221-a908-fa1abd82b5c5"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="45a67661-2768-4221-a908-fa1abd82b5c5"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
-								<text><![CDATA[MAR]]></text>
+								<text><![CDATA[MAR(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -249,15 +249,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="cc66ff06-d42f-4c6b-ac1d-36361e679f0e">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="39e3a41b-f51d-457f-8394-359eeb1d93ad"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="39e3a41b-f51d-457f-8394-359eeb1d93ad"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
-								<text><![CDATA[APR]]></text>
+								<text><![CDATA[APR(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -273,15 +273,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="3446bd3b-cae9-4d3a-b8e9-afe9ad47862c">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="f1b14833-f0d8-4167-982a-5b967a1b1214"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="f1b14833-f0d8-4167-982a-5b967a1b1214"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[MAY]]></text>
+								<text><![CDATA[MAY(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -297,15 +297,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="826f000b-9117-4b90-a1a8-efadb55760fe">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="718088dc-7bf4-4e60-953b-6aacba982a7e"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="718088dc-7bf4-4e60-953b-6aacba982a7e"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[JUN]]></text>
+								<text><![CDATA[JUN(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -321,15 +321,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="5e6205ae-dd14-4aea-bfd2-1f766846d484">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="c8f7785c-2b9c-44f3-ac8d-0a7841827111"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="c8f7785c-2b9c-44f3-ac8d-0a7841827111"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[JUL]]></text>
+								<text><![CDATA[JUL(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -345,15 +345,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="3faada9d-e24d-4399-a2ef-555c9957fcc5">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="4d2793e0-24d6-46a1-97be-1c88df96ae1e"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="4d2793e0-24d6-46a1-97be-1c88df96ae1e"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[AUG]]></text>
+								<text><![CDATA[AUG(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -369,15 +369,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="f430d31d-0ffa-49ff-b7fb-f20ddbfa5a4e">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="aad16d35-eea7-4a58-8251-62cb7fe3968c"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="aad16d35-eea7-4a58-8251-62cb7fe3968c"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[SEP]]></text>
+								<text><![CDATA[SEP(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -393,15 +393,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="c5ece3d1-14a7-4e90-96a6-5526a7263359">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="aa7606bb-b68b-49b9-ba87-9d6fc15ef6ff"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="aa7606bb-b68b-49b9-ba87-9d6fc15ef6ff"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
-								<text><![CDATA[OCT]]></text>
+								<text><![CDATA[OCT(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -417,15 +417,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="66e1bd3c-fb9b-49b1-8cef-a177337a7b57">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column12"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="4dd0946a-209f-4531-bcf8-e888223d696c"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="4dd0946a-209f-4531-bcf8-e888223d696c"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[NOV]]></text>
+								<text><![CDATA[NOV(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -441,15 +441,15 @@
 					</jr:column>
 					<jr:column width="56" uuid="27e0525c-1f14-4208-9f5e-87fd0457c503">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column13"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="56" height="25" uuid="d7b6e442-3226-46c0-8243-c4180ebda911"/>
+								<reportElement x="0" y="0" width="56" height="30" uuid="d7b6e442-3226-46c0-8243-c4180ebda911"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[DEC]]></text>
+								<text><![CDATA[DEC(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -465,14 +465,14 @@
 					</jr:column>
 					<jr:column width="67" uuid="83b4fb0f-c082-4441-b181-29c130fa3aea">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column14"/>
-						<jr:columnHeader style="Table_CH" height="25" rowSpan="1">
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="67" height="25" uuid="5cc6be39-ca13-40d6-a669-911221052789"/>
+								<reportElement x="0" y="0" width="67" height="30" uuid="5cc6be39-ca13-40d6-a669-911221052789"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font isBold="true"/>
+									<font size="9.2" isBold="true"/>
 								</textElement>
-								<text><![CDATA[TOTAL AMOUNT]]></text>
+								<text><![CDATA[TOTAL AMOUNT(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="26">
@@ -489,26 +489,26 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="42" y="292" width="138" height="20" isPrintWhenDetailOverflows="true" uuid="4b5512f1-2d71-4b5f-820b-d37fbaa700f6"/>
+				<reportElement x="42" y="262" width="138" height="20" isPrintWhenDetailOverflows="true" uuid="4b5512f1-2d71-4b5f-820b-d37fbaa700f6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[REVENUE SUPERVISOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="41" y="321" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="9e528f00-b163-405c-b3cc-dc9366bbd683">
+				<reportElement x="41" y="291" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="9e528f00-b163-405c-b3cc-dc9366bbd683">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[SIGNATURE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="41" y="347" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="4698dd31-5729-4e9c-8907-13c6acdddda2">
+				<reportElement x="41" y="317" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="4698dd31-5729-4e9c-8907-13c6acdddda2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Static Text]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="142" y="321" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="4f916c02-5ace-42f9-912f-4b6fb7527307">
+				<reportElement x="142" y="291" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="4f916c02-5ace-42f9-912f-4b6fb7527307">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -517,19 +517,19 @@
 				<text><![CDATA[....................................................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="451" y="291" width="123" height="20" isPrintWhenDetailOverflows="true" uuid="f69c9e25-702b-4c94-b6a4-aefec7c09e75"/>
+				<reportElement x="451" y="261" width="123" height="20" isPrintWhenDetailOverflows="true" uuid="f69c9e25-702b-4c94-b6a4-aefec7c09e75"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[ACCOUNTANT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="454" y="320" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="d9513af2-9552-441a-a6ab-76616d8889bb">
+				<reportElement x="454" y="290" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="d9513af2-9552-441a-a6ab-76616d8889bb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[SIGNATURE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="555" y="320" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="69247b22-d903-44cb-9a10-42ec572095fc">
+				<reportElement x="555" y="290" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="69247b22-d903-44cb-9a10-42ec572095fc">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -538,21 +538,21 @@
 				<text><![CDATA[....................................................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="454" y="346" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="9bb4db8c-386a-4158-9d5f-6c6b5137df97">
+				<reportElement x="454" y="316" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="9bb4db8c-386a-4158-9d5f-6c6b5137df97">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Static Text]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="174" y="293" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="ed638445-12c0-4e7d-8337-b0a43ffff41c">
+				<reportElement x="174" y="263" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="ed638445-12c0-4e7d-8337-b0a43ffff41c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{revenueSupervisor}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="560" y="291" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="f81a358f-a386-43ac-ba79-c1a0b8aa201d">
+				<reportElement x="560" y="261" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="f81a358f-a386-43ac-ba79-c1a0b8aa201d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>

@@ -13,26 +13,28 @@ import javafx.beans.property.StringProperty;
  * @author NiTrO
  */
 public class GetYearlyReport {
-    private StringProperty year1, year2, year3, year4, year5, revenueItem, totalAmount; 
+    private String year1, year2, year3, year4, year5, revenueItem, totalAmount;
+    private StringProperty Year1, Year2, Year3, Year4, Year5, RevenueItem, TotalAmount;
     public GetYearlyReport(){
     }
     
     public GetYearlyReport(String year1, String year2, String year3, String year4, String year5, String revenueItem, String totalAmount){
-        this.revenueItem = new SimpleStringProperty(revenueItem);
-        this.totalAmount = new SimpleStringProperty(totalAmount);
-        this.year1 = new SimpleStringProperty(year1);
-        this.year2 = new SimpleStringProperty(year2);
-        this.year3 = new SimpleStringProperty(year3);
-        this.year4 = new SimpleStringProperty(year4);
-        this.year5 = new SimpleStringProperty(year5);
+        this.RevenueItem = new SimpleStringProperty(revenueItem);
+        this.TotalAmount = new SimpleStringProperty(totalAmount);
+        this.Year1 = new SimpleStringProperty(year1);
+        this.Year2 = new SimpleStringProperty(year2);
+        this.Year3 = new SimpleStringProperty(year3);
+        this.Year4 = new SimpleStringProperty(year4);
+        this.Year5 = new SimpleStringProperty(year5);
     }
     
     public StringProperty revenueItemProperty(){
-        return revenueItem;
+        return RevenueItem;
     }
     
     public final String getrevenueItem(){
-        return revenueItemProperty().get();
+        revenueItem = revenueItemProperty().get();
+        return revenueItem;
     }
     
     public final void setrevenueItem(String revenueItem){
@@ -40,11 +42,12 @@ public class GetYearlyReport {
     }
     
     public StringProperty totalAmountProperty(){
-        return totalAmount;
+        return TotalAmount;
     }
     
     public final String gettotalAmount(){
-        return totalAmountProperty().get();
+        totalAmount = totalAmountProperty().get();
+        return totalAmount;
     }
     
     public final void settotalAmount(String totalAmount){
@@ -52,11 +55,12 @@ public class GetYearlyReport {
     }
     
     public StringProperty year1Property(){
-        return year1;
+        return Year1;
     }
     
     public final String getyear1(){
-        return year1Property().get();
+        year1 = year1Property().get();
+        return year1;
     }
     
     public final void setyear1(String year1){
@@ -64,11 +68,12 @@ public class GetYearlyReport {
     }
     
     public StringProperty year2Property(){
-        return year2;
+        return Year2;
     }
     
     public final String getyear2(){
-        return year2Property().get();
+        year2 = year2Property().get();
+        return year2;
     }
     
     public final void setyear2(String year2){
@@ -76,11 +81,12 @@ public class GetYearlyReport {
     }
     
     public StringProperty year3Property(){
-        return year3;
+        return Year3;
     }
     
     public final String getyear3(){
-        return year3Property().get();
+        year3 = year3Property().get();
+        return year3;
     }
     
     public final void setyear3(String year3){
@@ -88,11 +94,12 @@ public class GetYearlyReport {
     }
     
     public StringProperty year4Property(){
-        return year4;
+        return Year4;
     }
     
     public final String getyear4(){
-        return year4Property().get();
+        year4 = year4Property().get();
+        return year4;
     }
     
     public final void setyear4(String year4){
@@ -100,11 +107,12 @@ public class GetYearlyReport {
     }
     
     public StringProperty year5Property(){
-        return year5;
+        return Year5;
     }
     
     public final String getyear5(){
-        return year5Property().get();
+        year5 = year5Property().get();
+        return year5;
     }
     
     public final void setyear5(String year5){

@@ -13,29 +13,31 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetTargAnalReport {
-    private StringProperty month, totalRevenue, remarks, achvAmt, achvPercent, outAmt, outPercent;
+    private String month, totalRevenue, achvAmt, achvPercent, outAmt, outPercent;
+    private StringProperty Month, TotalRevenue, AchvAmt, AchvPercent, OutAmt, OutPercent;
     
     public GetTargAnalReport(){
         
     }
     
     public GetTargAnalReport(String month, String totalRevenue, String achvAmt, String achvPercent, String outAmt, String outPercent){
-        this.month = new SimpleStringProperty(month);
-        this.totalRevenue = new SimpleStringProperty(totalRevenue);
-        this.achvAmt = new SimpleStringProperty(achvAmt);
-        this.achvPercent = new SimpleStringProperty(achvPercent);
-        this.outAmt = new SimpleStringProperty(outAmt);
-        this.outPercent = new SimpleStringProperty(outPercent);
+        this.Month = new SimpleStringProperty(month);
+        this.TotalRevenue = new SimpleStringProperty(totalRevenue);
+        this.AchvAmt = new SimpleStringProperty(achvAmt);
+        this.AchvPercent = new SimpleStringProperty(achvPercent);
+        this.OutAmt = new SimpleStringProperty(outAmt);
+        this.OutPercent = new SimpleStringProperty(outPercent);
 //        this.remarks = new SimpleStringProperty(remarks);
         
     }
     
       
     public StringProperty monthProperty(){
-        return month;
+        return Month;
     }
     
     public final String getmonth(){
+        month = Month.get();
         return monthProperty().get();
     }
     
@@ -44,11 +46,12 @@ public class GetTargAnalReport {
     }
       
     public StringProperty totalRevenueProperty(){
-        return totalRevenue;
+        return TotalRevenue;
     }
     
     public final String gettotalRevenue(){
-        return totalRevenueProperty().get();
+        totalRevenue = TotalRevenue.get();
+        return totalRevenue;
     }
     
     public final void settotalRevenue(String totalRevenue){
@@ -56,11 +59,12 @@ public class GetTargAnalReport {
     }
       
     public StringProperty achvAmtProperty(){
-        return achvAmt;
+        return AchvAmt;
     }
     
     public final String getachvAmt(){
-        return achvAmtProperty().get();
+        achvAmt = AchvAmt.get();
+        return achvAmt;
     }
     
     public final void setCenter(String achvAmt){
@@ -68,11 +72,12 @@ public class GetTargAnalReport {
     }
       
     public StringProperty achvPercentProperty(){
-        return achvPercent;
+        return AchvPercent;
     }
     
     public final String getachvPercent(){
-        return achvPercentProperty().get();
+        achvPercent = AchvPercent.get();
+        return achvPercent;
     }
     
     public final void setachvPercent(String achvPercent){
@@ -80,11 +85,12 @@ public class GetTargAnalReport {
     }
       
     public StringProperty outAmtProperty(){
-        return outAmt;
+        return OutAmt;
     }
     
     public final String getoutAmt(){
-        return outAmtProperty().get();
+        outAmt = OutAmt.get();
+        return outAmt;
     }
     
     public final void setoutAmt(String outAmt){
@@ -92,11 +98,12 @@ public class GetTargAnalReport {
     }
       
     public StringProperty outPercentProperty(){
-        return outPercent;
+        return OutPercent;
     }
     
     public final String getoutPercent(){
-        return outPercentProperty().get();
+        outPercent = OutPercent.get();
+        return outPercent;
     }
     
     public final void setoutPercent(String outPercent){

@@ -62,37 +62,6 @@
 	<title>
 		<band height="151" splitType="Stretch">
 			<staticText>
-				<reportElement x="102" y="0" width="400" height="30" uuid="d20600c7-1e7e-4510-a899-35d5d359d14c"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="20" isBold="true"/>
-				</textElement>
-				<text><![CDATA[KUMASI METROPOLITAN ASSEMBLY]]></text>
-			</staticText>
-			<image>
-				<reportElement x="80" y="0" width="30" height="40" uuid="c0cbce31-9234-4944-a22e-5fa381fc14f7"/>
-				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="110" y="33" width="350" height="29" uuid="e97dd7b4-7e23-4690-aa8e-1d8cc3da61be"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="18" isBold="true"/>
-				</textElement>
-				<text><![CDATA[FINANCE DEPARTMENT]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="195" y="62" width="180" height="30" uuid="cf4aa4b2-b3ab-4a64-b3a4-994b2fc080f5"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[REVENUE UNIT]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="-10" y="106" width="130" height="17" uuid="e599ad31-7780-4dd6-8722-f613b8b08cf1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
@@ -132,12 +101,43 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<text><![CDATA[REPORT TYPE :]]></text>
 			</staticText>
+			<image>
+				<reportElement x="53" y="-1" width="71" height="71" uuid="9ffe4b27-1c5f-4bcf-99df-0b656a43ce41"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="75" y="-5" width="400" height="30" uuid="2267acd5-b1ad-42da-a212-a3df41656ed3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KUMASI METROPOLITAN ASSEMBLY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="98" y="15" width="350" height="29" uuid="b94c62e2-0895-4cb4-a385-a85f8fb8f55e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FINANCE DEPARTMENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="186" y="33" width="180" height="30" uuid="2802683b-a284-4a12-8932-b59424b248da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REVENUE UNIT]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
 		<band height="575" splitType="Stretch">
 			<componentElement>
-				<reportElement x="8" y="4" width="540" height="396" uuid="3514dde2-6491-422a-afb0-829bd3fd7900">
+				<reportElement x="8" y="4" width="540" height="365" uuid="3514dde2-6491-422a-afb0-829bd3fd7900">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -251,7 +251,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[TOTAL AMOUNT]]></text>
+								<text><![CDATA[TOTAL AMOUNT(GH₵)]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
@@ -267,26 +267,26 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="-20" y="495" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="0289b097-4ea6-4ec3-9833-4c7ee169966b">
+				<reportElement x="-20" y="466" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="0289b097-4ea6-4ec3-9833-4c7ee169966b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Static Text]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-6" y="436" width="129" height="20" isPrintWhenDetailOverflows="true" uuid="33f1a0be-367d-43ca-825a-cdbcc0f57f89"/>
+				<reportElement x="-6" y="407" width="129" height="20" isPrintWhenDetailOverflows="true" uuid="33f1a0be-367d-43ca-825a-cdbcc0f57f89"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[REVENUE SUPERVISOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-20" y="465" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="52da18ff-b442-4a1f-a317-3a439cc795d6">
+				<reportElement x="-20" y="436" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="52da18ff-b442-4a1f-a317-3a439cc795d6">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[SIGNATURE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="59" y="465" width="199" height="20" isPrintWhenDetailOverflows="true" uuid="51e670fc-6f03-4d7a-becd-7f44ab7978e1">
+				<reportElement x="59" y="436" width="199" height="20" isPrintWhenDetailOverflows="true" uuid="51e670fc-6f03-4d7a-becd-7f44ab7978e1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -295,7 +295,7 @@
 				<text><![CDATA[..........................................................]]></text>
 			</staticText>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement x="122" y="436" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="f48c8a55-cb71-4153-a8da-2d53ce3042cf">
+				<reportElement x="122" y="407" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="f48c8a55-cb71-4153-a8da-2d53ce3042cf">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -304,19 +304,19 @@
 				<textFieldExpression><![CDATA[$P{revenueSupervisor}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="301" y="435" width="96" height="20" isPrintWhenDetailOverflows="true" uuid="93c19607-5f1a-4ae2-b640-fc426d95a0ba"/>
+				<reportElement x="301" y="406" width="96" height="20" isPrintWhenDetailOverflows="true" uuid="93c19607-5f1a-4ae2-b640-fc426d95a0ba"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<text><![CDATA[ACCOUNTANT]]></text>
 			</staticText>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement x="365" y="435" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="fb76febe-ce34-4519-999b-937ced275aac">
+				<reportElement x="365" y="406" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="fb76febe-ce34-4519-999b-937ced275aac">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{accountant}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="360" y="464" width="202" height="20" isPrintWhenDetailOverflows="true" uuid="6414769c-5f43-4e1c-b975-4131e35b6e39">
+				<reportElement x="360" y="435" width="202" height="20" isPrintWhenDetailOverflows="true" uuid="6414769c-5f43-4e1c-b975-4131e35b6e39">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -325,14 +325,14 @@
 				<text><![CDATA[............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="280" y="464" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="e886fcfe-6289-46cf-8d02-fe6e20dcc82f">
+				<reportElement x="280" y="435" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="e886fcfe-6289-46cf-8d02-fe6e20dcc82f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[SIGNATURE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="495" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="ff23c913-f82c-4d70-aca7-44f7940a767c">
+				<reportElement x="274" y="466" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="ff23c913-f82c-4d70-aca7-44f7940a767c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>

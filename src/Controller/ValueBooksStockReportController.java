@@ -8,11 +8,18 @@ package Controller;
 import Controller.Gets.GetFunctions;
 import Controller.Gets.GetValueBooksEntries;
 import Controller.Gets.GetValueBooksReport;
+import Controller.Gets.GetYearlyReport;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.Date;
 
 import com.mysql.cj.protocol.Resultset;
 import javafx.collections.FXCollections;
@@ -23,6 +30,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 
 /**
@@ -200,8 +212,47 @@ public class ValueBooksStockReportController implements Initializable {
     }
 
     @FXML
-    void printReport(ActionEvent event) {
+    void printReport(ActionEvent event) throws FileNotFoundException, JRException {
+        if (tblValBookStocksRep.getItems().isEmpty()){
+            event.consume();
+        }else {
+            java.util.Date date = new Date();
+            List<GetValueBooksEntries> items = new ArrayList<GetValueBooksEntries>();
+            for (int j = 0; j < tblValBookStocksRep.getItems().size(); j++) {
+                GetValueBooksEntries getdata = new GetValueBooksEntries();
+                getdata = tblValBookStocksRep.getItems().get(j);
+                items.add(getdata);
+            }
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                    file = this.getClass().getResource("/Assets/valueBooksStock.jrxml");
 
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            String year = cmbYear.getSelectionModel().getSelectedItem(),
+                    month = cmbMonth.getSelectionModel().getSelectedItem(),
+                    center = cmbRevCenter.getSelectionModel().getSelectedItem();
+
+            /* Map to hold Jasper report Parameters */
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url); parameters.put("month", month);
+            parameters.put("year", year);
+            parameters.put("timeStamp", date);
+            parameters.put("center", center);
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(new File(file.getPath()));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
+        }
     }
 }
 

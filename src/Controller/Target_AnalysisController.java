@@ -6,6 +6,11 @@
 package Controller;
 
 import Controller.Gets.GetTargAnalReport;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Connection;
@@ -15,10 +20,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Controller.Gets.GetYearlyReport;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +34,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 
 /**
@@ -80,7 +91,7 @@ public class Target_AnalysisController implements Initializable {
     ObservableList<String> rowMonths =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
-    int Year;
+    String targ;
     
     public Target_AnalysisController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -172,6 +183,7 @@ public class Target_AnalysisController implements Initializable {
        }
            BigDecimal rp= new BigDecimal(targAmount);
        acTargAmount = formatter.format(targAmount);
+       targ = acTargAmount;
        txtAnnualTarget.setText(acTargAmount);
        System.out.println(targAmount);
         ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");  
@@ -260,8 +272,46 @@ public class Target_AnalysisController implements Initializable {
     }
 
     @FXML
-    void printReport(ActionEvent event) {
+    void printReport(ActionEvent event) throws JRException, FileNotFoundException {
+        if (tblColPayAnalysis.getItems().isEmpty()){
+            event.consume();
+        }else {
+            Date date = new Date();
+            List<GetTargAnalReport> items = new ArrayList<GetTargAnalReport>();
+            for (int j = 0; j < tblColPayAnalysis.getItems().size(); j++) {
+                GetTargAnalReport getdata = new GetTargAnalReport();
+                getdata = tblColPayAnalysis.getItems().get(j);
+                items.add(getdata);
+            }
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                    file = this.getClass().getResource("/Assets/targetAnalysisPotrait.jrxml");
 
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            String year = cmbReportYear.getSelectionModel().getSelectedItem(),
+                    center = cmbReportCent.getSelectionModel().getSelectedItem();
+
+            /* Map to hold Jasper report Parameters */
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url);
+            parameters.put("year", year);
+            parameters.put("timeStamp", date);
+            parameters.put("center", center); parameters.put("target", targ);
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(new File(file.getPath()));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
+        }
     }
     
 }
