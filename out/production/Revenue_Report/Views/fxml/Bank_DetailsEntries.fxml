@@ -18,11 +18,11 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchBankDetails" prefHeight="610.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="anchPane" prefHeight="610.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="-3.0" layoutY="-1.0" minWidth="-Infinity" prefHeight="82.0" prefWidth="978.0" style="-fx-background-color: #253238;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="topPane" layoutX="-3.0" layoutY="-1.0" minWidth="-Infinity" prefHeight="82.0" prefWidth="978.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label alignment="CENTER" layoutX="322.0" layoutY="6.0" prefHeight="72.0" prefWidth="358.0" text="Cheque Details" textFill="WHITE" AnchorPane.leftAnchor="322.0" AnchorPane.rightAnchor="298.0">
+            <Label fx:id="lblTitle" alignment="CENTER" layoutX="322.0" layoutY="6.0" prefHeight="72.0" prefWidth="358.0" text="Cheque Details" textFill="WHITE" AnchorPane.leftAnchor="322.0" AnchorPane.rightAnchor="298.0">
                <font>
                   <Font name="System Bold" size="33.0" />
                </font>

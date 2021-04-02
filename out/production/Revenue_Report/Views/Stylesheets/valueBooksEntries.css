@@ -3,12 +3,12 @@
 #btnClose:hover {
     -fx-background-color: #e0345c;
     -fx-text-fill: #ffffff;
-    -fx-font-weight: 10;
+    -fx-font-weight: bold;
 }
 
 #btnClose:pressed:hover {
     -fx-text-fill: #ffffff;
-    -fx-font-weight: 10;
+    -fx-font-weight: bold;
     -fx-background-color: #8d0606;
 
 }

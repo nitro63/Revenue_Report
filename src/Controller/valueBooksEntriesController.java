@@ -166,6 +166,8 @@ public class valueBooksEntriesController implements Initializable {
         tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblValueBookStocks.setOnMouseClicked(e -> {
             lblDeleteWarn.setVisible(false);
+            lblDup.setVisible(false);
+            lblEdit.setVisible(false);
         });
         entDatePck.setOnMouseClicked(event -> {
             lblDateWarn.setVisible(false);
@@ -205,7 +207,8 @@ public class valueBooksEntriesController implements Initializable {
             Year = getDates.getYear(date);
             while (Condition){
                 if(regValSerial.containsKey(typeOfValBk)){
-                    if(regValSerial.get(typeOfValBk).contains(firstSerial) || regValSerial.get(typeOfValBk).contains(lastSerial)){
+                    if(regValSerial.get(typeOfValBk).contains(firstSerial) || regValSerial.get(typeOfValBk).
+                            contains(lastSerial)){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Warning Dialog");
                         alert.setHeaderText("Serials have already been entered");
@@ -279,15 +282,18 @@ public class valueBooksEntriesController implements Initializable {
                             Condition = false;
 
                         } else {
-                            addEntries = new GetValueBooksEntries(Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks);
+                            addEntries = new GetValueBooksEntries(Year, Month, Date, typeOfValBk, firstSerial,
+                                    lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks);
                             tblValueBookStocks.getItems().add(addEntries);
                             if (!regValSerial.containsKey(typeOfValBk)) {
                                 regValSerial.put(typeOfValBk, new ArrayList<>());
                                 regValSerial.get(typeOfValBk).add(firstSerial);
                                 regValSerial.get(typeOfValBk).add(lastSerial);
-                            } else if (regValSerial.containsKey(typeOfValBk) && !regValSerial.get(typeOfValBk).contains(firstSerial)) {
+                            } else if (regValSerial.containsKey(typeOfValBk) && !regValSerial.get(typeOfValBk).
+                                    contains(firstSerial)) {
                                 regValSerial.get(typeOfValBk).add(firstSerial);
-                            } else if (regValSerial.containsKey(typeOfValBk) && !regValSerial.get(typeOfValBk).contains(lastSerial)) {
+                            } else if (regValSerial.containsKey(typeOfValBk) && !regValSerial.get(typeOfValBk).
+                                    contains(lastSerial)) {
                                 regValSerial.get(typeOfValBk).add(lastSerial);
                             }
                             clearEnt();
@@ -311,7 +317,8 @@ public class valueBooksEntriesController implements Initializable {
     public void clearEntries(ActionEvent actionEvent) {
         GetValueBooksEntries valueBooks = tblValueBookStocks.getSelectionModel().getSelectedItem();
         if (tblValueBookStocks.getSelectionModel().isEmpty()){
-            lblDeleteWarn.setVisible(true);
+            lblEdit.setText("Please select a row in the table to "+'"'+"Edit"+'"');
+            lblEdit.setVisible(true);
         }else {
             entDatePck.setValue(LocalDate.parse(valueBooks.getDate(),
                     DateTimeFormatter.ofPattern("dd-MM-yyyy")));
@@ -342,13 +349,11 @@ public class valueBooksEntriesController implements Initializable {
 
     public void SaveToDatabase(ActionEvent actionEvent) throws SQLException {
         revCent = GetCenter.getRevCenter();
+        ArrayList<String> duplicate = new ArrayList<>();
         getData = new GetValueBooksEntries();
         ResultSet rs;
         ResultSetMetaData rm;
-        for(int f = 0; f<=tblValueBookStocks.getItems().size(); f++) {
-            if (f == tblValueBookStocks.getItems().size()) {
-                tblValueBookStocks.getItems().clear();
-            }else {
+        for(int f = 0; f<tblValueBookStocks.getItems().size(); f++) {
             getData = tblValueBookStocks.getItems().get(f);
             Month = getData.getMonth();
             Date = getData.getDate();
@@ -359,11 +364,30 @@ public class valueBooksEntriesController implements Initializable {
             int acQuantity = Integer.parseInt(getData.getQuantity());
             float acAmount = Float.parseFloat(getData.getValAmount());
             float acPurAmount = Float.parseFloat(getData.getPurAmount());
-                PreparedStatement stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" + Month + "', '" + Date + "', '" + typeOfValBk + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount + "', '" + acPurAmount + "','" + remarks + "')");
-            stmnt.executeUpdate();
+            PreparedStatement stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE " +
+                    "`revCenter` = '"+revCent+"' AND `value_book` = '"+typeOfValBk+"' AND `first_serial` = " +
+                    "'"+acFirstSerial+"' AND `last_serial` = '"+acLastSerial+"'");
+            ResultSet res = stmnt.executeQuery();
+            while (res.next()){
+                duplicate.add(res.getString("first_serial"));
+            }
+            if (duplicate.contains(getData.getFirstSerial())){
+                lblDup.setText('"'+acFirstSerial+'"'+" to "+'"'+acLastSerial+'"'+" for "+'"'+typeOfValBk+'"'+"" +
+                        " already exist. Please select row of duplicate data to Edit or Delete." );
+                lblDup.setVisible(true);
+                f = tblValueBookStocks.getItems().size();
+            }else {
+                stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`," +
+                        " `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`," +
+                        " `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" + Month + "', '" + Date + "', '" +
+                        typeOfValBk + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" +
+                        acAmount + "', '" + acPurAmount + "','" + remarks + "')");
+                stmnt.executeUpdate();
+                tblValueBookStocks.getItems().remove(f);
+            }
         }
     }
-}
+
 
     public void CancelEntries(ActionEvent actionEvent) {
         tblValueBookStocks.getItems().clear();

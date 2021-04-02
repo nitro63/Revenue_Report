@@ -9,7 +9,7 @@
     -fx-border-color:  #0fc649;
 }
 .root{
-    -fx-background-color:  #f0f6f8;
+    -fx-background-color: #cdfce2;
 }
 .spinner {
     -fx-prompt-text-fill: black;
@@ -117,6 +117,35 @@
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
+#btnClose {
+    -fx-border-width:0.5;
+    -fx-border-color:  #ff2f2f;
+    -fx-border-radius: 25;
+    -fx-background-radius: 25;
+    -fx-background-color: #f53333;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+#btnClose:hover {
+    -fx-border-width:0.5;
+    -fx-border-color:  #ff2f2f;
+    -fx-border-radius: 25;
+    -fx-background-radius: 25;
+    -fx-background-color: #e0345c;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+#btnClose:pressed:hover {
+    -fx-border-width:0.5;
+    -fx-border-color:  #ff2f2f;
+    -fx-border-radius: 25;
+    -fx-background-radius: 25;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-color: #8d0606;
+
+}
 #btnSaveEntries{
     -fx-background-color: #007d07;
     -fx-text-fill:  #F5F6F7;
@@ -132,6 +161,14 @@
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
+#lblTitle{
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+#topPane{
+    -fx-background-color: #27b52b;
+}
 
 .combo-box-base .text{
     -fx-fill: #03531e;
@@ -144,7 +181,7 @@
     -fx-padding: 0 0 1 0;
 }
 .combo-box-base .text-field{
-    -fx-prompt-text-fill: #73e778;
+    -fx-prompt-text-fill: #057c0a;
     -fx-border-width: 0 0 1 0;
     -fx-border-color: #007d07;
 }
@@ -167,7 +204,7 @@
 
 .text-field{
     -fx-background-color: none;
-    -fx-prompt-text-fill: #007d07;
+    -fx-prompt-text-fill: #08400c;
     -fx-border-width: 0 0 1 0;
-    -fx-border-color: #007d07;
+    -fx-border-color: #03a00b;
 }

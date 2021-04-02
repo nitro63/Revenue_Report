@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="DailyEntPane" prefHeight="620.0" prefWidth="1010.0" style="-fx-background-color: #f0f6f8;" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchPane" prefHeight="620.0" prefWidth="1010.0" style="-fx-background-color: #f0f6f8;" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane fx:id="topPane" layoutX="5.0" layoutY="5.0" prefHeight="41.0" prefWidth="1005.0">
          <children>
@@ -28,7 +28,7 @@
                   </Button>
                </children>
             </AnchorPane>
-            <Label layoutX="371.0" text="DAILY REVENUE ENTRIES">
+            <Label fx:id="lblTitle" layoutX="371.0" text="DAILY REVENUE ENTRIES">
                <font>
                   <Font name="System Bold" size="34.0" />
                </font>
