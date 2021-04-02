@@ -77,7 +77,10 @@ public class Payment_EntriesController implements Initializable {
     private Button btnSaveEntries;
     @FXML
     private Label lblDeleteWarn;
-
+    @FXML
+    private Label lblEdit;
+    @FXML
+    private Label lblDup;
     @FXML
     private JFXButton btnDelete;
 
@@ -143,6 +146,8 @@ public class Payment_EntriesController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Calendar cal = Calendar.getInstance();
+        spnColYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get(Calendar.YEAR)));
         cmbColMonth.setItems(collectionMonth);
         cmbPayType.setItems(paymentType);
         cmbColMonth.setVisibleRowCount(4);
@@ -150,6 +155,8 @@ public class Payment_EntriesController implements Initializable {
         tblCollection.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblCollection.setOnMouseClicked(e ->{
             lblDeleteWarn.setVisible(false);
+            lblDup.setVisible(false);
+            lblEdit.setVisible(false);
         });
     }  
         
@@ -348,13 +355,17 @@ public class Payment_EntriesController implements Initializable {
     @FXML
     private void clearEntries(ActionEvent event) {
         if (tblCollection.getSelectionModel().isEmpty()){
-            lblDeleteWarn.setVisible(true);
+            lblEdit.setText("Please select a row in the table to "+'"'+"Edit"+'"');
+            lblEdit.setVisible(true);
         }else{
+            String regex = "(?<=[\\d])(,)(?=[\\d])";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(tblCollection.getSelectionModel().getSelectedItem().getAmount());
             cmbColMonth.getSelectionModel().select(tblCollection.getSelectionModel().getSelectedItem().getMonth());
             cmbPayType.getSelectionModel().select(tblCollection.getSelectionModel().getSelectedItem().getType());
             entDatePck.setValue(LocalDate.parse(tblCollection.getSelectionModel().getSelectedItem().getDate(),
                     DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            txtEntAmt.setText(tblCollection.getSelectionModel().getSelectedItem().getAmount());
+            txtEntAmt.setText(m.replaceAll(""));
             txtEntGCR.setText(tblCollection.getSelectionModel().getSelectedItem().getGCR());
             registerItem.remove(tblCollection.getSelectionModel().getSelectedItem().getGCR());
             ObservableList<GetCollectEnt> selectedRows = tblCollection.getSelectionModel().getSelectedItems();
@@ -366,86 +377,66 @@ public class Payment_EntriesController implements Initializable {
     @FXML
     private void SaveToDatabase(ActionEvent event) throws SQLException {
         getData = new GetCollectEnt();
-        Map<String, ArrayList<String>> duplicate = new HashMap<>();
+         ArrayList<String> duplicate = new ArrayList<>();
         ResultSet rs;
         ResultSetMetaData rm;
         
-        for(int h = 0; h<=tblCollection.getItems().size(); h++){
-            if( h==tblCollection.getItems().size()){
-                tblCollection.getItems().clear();
-            }else {
+        for(int h = 0; h<tblCollection.getItems().size(); h++){
             getData = tblCollection.getItems().get(h);
             int acGCR = Integer.parseInt(getData.getGCR());
             String amount = getData.getAmount();
             Matcher m = p.matcher(amount);
             amount = m.replaceAll("");
             float acAMOUNT =Float.parseFloat(amount);
-            String acDATE =getData.getDate();
+            String acDate =getData.getDate();
             String acMonth =getData.getMonth();
             String acCENTER =getData.getCenter();
             String acType = getData.getType();
+            String acYear = getData.getYear();
             int acYEAR = Integer.parseInt(getData.getYear());
                 if(acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")){
                     count++;
-                    if(dateGCR.isEmpty() || !dateGCR.containsKey(Date)){
-                        dateGCR.put(Date, new HashMap<>());
-                        dateGCR.get(Date).put(Month, new ArrayList<>());
-                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                    }else if(dateGCR.containsKey(Date) && !dateGCR.get(Date).containsKey(Month)){
-                        dateGCR.get(Date).put(Month, new ArrayList<>());
-                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
-                    }else if (dateGCR.containsKey(Date) && dateGCR.get(Date).containsKey(Month) && !dateGCR.get(Date).get(Month).contains(txtEntGCR.getText())){
-                        dateGCR.get(Date).get(Month).add(txtEntGCR.getText());
+                    if(dateGCR.isEmpty() || !dateGCR.containsKey(acDate)){
+                        dateGCR.put(acDate, new HashMap<>());
+                        dateGCR.get(acDate).put(acMonth, new ArrayList<>());
+                        dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
+                    }else if(dateGCR.containsKey(acDate) && !dateGCR.get(acDate).containsKey(acMonth)){
+                        dateGCR.get(acDate).put(acMonth, new ArrayList<>());
+                        dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
+                    }else if (dateGCR.containsKey(acDate) && dateGCR.get(acDate).containsKey(acMonth) && !dateGCR.get(acDate).get(acMonth).contains(getData.getGCR())){
+                        dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
                     }
-                    if(monthGCR.isEmpty() || !monthGCR.containsKey(Month)){
-                        monthGCR.put(Month, new ArrayList<>());
-                        monthGCR.get(Month).add(txtEntGCR.getText());
-                    }else if(monthGCR.containsKey(Month) && !monthGCR.get(Month).contains(txtEntGCR.getText())){
-                        monthGCR.get(Month).add(txtEntGCR.getText());
+                    if(monthGCR.isEmpty() || !monthGCR.containsKey(acMonth)){
+                        monthGCR.put(acMonth, new ArrayList<>());
+                        monthGCR.get(acMonth).add(getData.getGCR());
+                    }else if(monthGCR.containsKey(acMonth) && !monthGCR.get(acMonth).contains(getData.getGCR())){
+                        monthGCR.get(acMonth).add(getData.getGCR());
                     }
-                    if(regGcr.isEmpty() || !regGcr.containsKey(Year)){
-                        regGcr.put(Year, new ArrayList<>());
-                        regGcr.get(Year).add(txtEntGCR.getText());
-                    }else if(regGcr.containsKey(Year) && !regGcr.get(Year).contains(txtEntGCR.getText())){
-                        regGcr.get(Year).add(txtEntGCR.getText());
+                    if(regGcr.isEmpty() || !regGcr.containsKey(acYear)){
+                        regGcr.put(acYear, new ArrayList<>());
+                        regGcr.get(acYear).add(getData.getGCR());
+                    }else if(regGcr.containsKey(acYear) && !regGcr.get(acYear).contains(getData.getGCR())){
+                        regGcr.get(acYear).add(getData.getGCR());
                     }
                 }
-//            stmnt = con.prepareStatement("SELECT `revCenter`, `GCR`  FROM `collection_payment_entries` WHERE `GCR` = '"+acGCR+"' ");
-//            rs = stmnt.executeQuery();
-//            rm = rs.getMetaData();
-//            int col = rm.getColumnCount();
-//            
-//            while(rs.next()){
-//                for(int j = 1; j <= col; j++){
-//                    if(j == 1){
-//                        String cent = rs.getObject(1).toString();
-//                        duplicate.put(cent, new ArrayList<>());                        
-//                    }
-//                    if (j == 2){
-//                        String gcr = rs.getObject(2).toString();
-//                        duplicate.get(rs.getObject(1).toString()).add(gcr);                        
-//                    }
-//                }
-//            }
-//            if(duplicate.containsKey(acCENTER)&& duplicate.get(acCENTER).contains(getData.getGCR())){
-//                
-//                Alert alert = new Alert(Alert.AlertType.WARNING);
-//                alert.setTitle("Warning Dialog");
-//                alert.setHeaderText("Payment already ENTERED for GCR:" + getData.getGCR());
-//                alert.showAndWait();
-//                tblCollection.getItems().remove(h);
-//                
-//            }else{
-//                stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`, `Amount`, `Date`, `Month`, `Year`) VALUES ('"+acCENTER+"', '"+acGCR+"' ,'"+acAMOUNT+"', '"+acDATE+"', '"+acMonth+"', '"+acYEAR+"')");
-//                stmnt.executeUpdate();
-//            }
-
-
-                stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`, `Amount`, `Date`, `Month`, `Year`, `payment_type`) VALUES ('" + acCENTER + "', '" + acGCR + "' ,'" + acAMOUNT + "', '" + acDATE + "', '" + acMonth + "', '" + acYEAR + "', '" + acType + "')");
-                stmnt.executeUpdate();
-            }
+                stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE  " +
+                        "`revCenter` = '"+acCENTER+"' AND `GCR` = '"+acGCR+"' AND `payment_type` = '"+acType+"'");
+                ResultSet res = stmnt.executeQuery();
+                while (res.next()){
+                    duplicate.add(res.getString("GCR"));
+                }
+                if (duplicate.contains(acGCR)){
+                    lblDup.setText('"'+acGCR+'"'+" of payment method "+'"'+acType+'"'+" already exist. Please select row of duplicate data in table to edit or delete.");
+                    lblDup.setVisible(true);
+                    h=tblCollection.getItems().size();
+                }else {
+                    stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`, `Amount`, `Date`, `Month`, `Year`, `payment_type`) VALUES ('" + acCENTER + "', '" + acGCR + "' ,'" + acAMOUNT + "', '" + acDate + "', '" + acMonth + "', '" + acYEAR + "', '" + acType + "')");
+                    stmnt.executeUpdate();
+                    tblCollection.getItems().remove(h);
+                }
         }
         if(!regGcr.isEmpty()){
+            System.out.println(regGcr);
             Main st =new Main();
             try {
                 FXMLLoader bankDetails = new FXMLLoader();

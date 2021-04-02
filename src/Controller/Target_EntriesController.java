@@ -207,7 +207,8 @@ public class Target_EntriesController implements Initializable {
     private void clearEntries(ActionEvent event) {
         GetTargetEnt targ = tblCollectEnt.getSelectionModel().getSelectedItem();
         if (tblCollectEnt.getSelectionModel().isEmpty()){
-            lblDeleteWarn.setVisible(true);
+            lblEdit.setText("Please select a row in the table to "+'"'+"Edit"+'"');
+            lblEdit.setVisible(true);
         }else {
             String regex = "(?<=[\\d])(,)(?=[\\d])";
             Pattern p = Pattern.compile(regex);
@@ -252,15 +253,14 @@ public class Target_EntriesController implements Initializable {
             }
             if(duplicate.containsKey(acCenter)){
                 if(duplicate.get(acCenter).contains(getData.getYear())){
-                    lblDup.setText("TARGET Amount already ENTERED for "+''+"YEAR");
+                    lblDup.setText("REVENUE TARGET Amount already ENTERED for "+'"'+"acCenter"+'"'+" for "+'"'+getData.getYear()+'"'+". Please select duplicate data in the table to edit or delete.");
                 }
             }else{
                 stmnt = con.prepareStatement("INSERT INTO `target_entries`(`revCenter`, `Amount`, `Year`) VALUES ('"+acCenter+"', '"+acAmount+"', '"+acYear+"')");
                 stmnt.executeUpdate();
+                tblCollectEnt.getItems().remove(j);
             }
         }
-        System.out.println(duplicate);
-        tblCollectEnt.getItems().clear();
     }
 
     @FXML

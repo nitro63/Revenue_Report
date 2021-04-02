@@ -8,6 +8,7 @@ package Controller;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -220,6 +221,7 @@ public class Bank_DetailsEntriesController implements Initializable {
 
     @FXML
     void SaveToDatabase(ActionEvent event) throws SQLException {
+        ArrayList<String> duplicate = new ArrayList<>();
         Node node =(Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         getData = new GetBankDetails();
@@ -248,7 +250,7 @@ public class Bank_DetailsEntriesController implements Initializable {
             event.consume();
         }else{
             for(int i = 0; i <= tblCollectEnt.getItems().size(); i++){
-                if(i == tblCollectEnt.getItems().size()){
+                if(tblCollectEnt.getItems().isEmpty()){
                     tblCollectEnt.getItems().clear();
                     colEnt.regGcr.clear();
                     colEnt.monthGCR.clear();
@@ -269,6 +271,17 @@ public class Bank_DetailsEntriesController implements Initializable {
                     String acBank = getData.getBank();
                     String center = colEnt.GetCenter.getRevCenter();
                     String year = getData.getYear();
+                    stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE  " +
+                            "`revCenter` = '"+center+"' AND `GCR` = '"+acGCR+"' AND `payment_type` = '"+acType+"'");
+                    ResultSet res = stmnt.executeQuery();
+                    while (res.next()){
+                        duplicate.add(res.getString("GCR"));
+                    }
+                    if (duplicate.contains(acGCR)){
+                        lblDup.setText('"'+acGCR+'"'+" of payment method "+'"'+acType+'"'+" already exist. Please select row of duplicate data in table to edit or delete.");
+                        lblDup.setVisible(true);
+                        h=tblCollection.getItems().size();
+                    }else {
                     stmnt = con.prepareStatement("INSERT INTO `cheque_details`" +
                             "(`revCenter`, `gcr`, `year`, `month`, `date`, `cheque_date`, `cheque_number`, `bank`," +
                             " `amount`) VALUES ('" + center + "','" + acGCR + "', '" + year + "', '" + acMonth + "'," +
