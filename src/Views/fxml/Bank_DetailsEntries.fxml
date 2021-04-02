@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchBankDetails" prefHeight="593.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="anchBankDetails" prefHeight="610.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutX="-3.0" layoutY="-1.0" minWidth="-Infinity" prefHeight="82.0" prefWidth="978.0" style="-fx-background-color: #253238;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -175,37 +175,43 @@
             <DropShadow />
          </effect>
       </TableView>
-      <HBox alignment="CENTER_RIGHT" layoutY="529.0" prefHeight="55.0" prefWidth="750.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane layoutX="117.0" layoutY="529.0" minWidth="-Infinity" prefHeight="82.0" prefWidth="579.0">
          <children>
-            <AnchorPane minWidth="-Infinity" prefHeight="61.0" prefWidth="652.0">
-               <children>
-                  <Label fx:id="lblDeleteWarn" layoutX="241.0" layoutY="19.0" prefHeight="17.0" prefWidth="232.0" text="Please select a row in the table to delete" textFill="#ee2222" visible="false">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane>
-               <children>
-                  <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="66.0" ripplerFill="#aea6a6" text="Delete" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="217.0" AnchorPane.topAnchor="13.0">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </JFXButton>
-                  <JFXButton fx:id="btnClearEntr" buttonType="RAISED" layoutX="99.0" layoutY="13.0" onAction="#CancelEntries" prefHeight="35.0" prefWidth="67.0" ripplerFill="#aea6a6" text="Cancel" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="99.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="13.0">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </JFXButton>
-                  <JFXButton fx:id="btnSaveEntries" buttonType="RAISED" layoutX="182.0" layoutY="15.0" onAction="#SaveToDatabase" prefHeight="31.0" prefWidth="105.0" ripplerFill="#aea6a6" text="Save Entries" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="15.0">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </JFXButton>
-               </children>
-            </AnchorPane>
+            <Label fx:id="lblDeleteWarn" layoutX="198.0" layoutY="19.0" prefHeight="17.0" prefWidth="232.0" text="Please select a row in the table to delete" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblEdit" alignment="CENTER" prefHeight="17.0" prefWidth="579.0" text="Label" textAlignment="CENTER" textFill="#ee2222" visible="false" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblDup" alignment="CENTER" layoutX="-4.0" layoutY="39.0" prefHeight="41.0" prefWidth="586.0" text="Label" textAlignment="CENTER" textFill="#ee2222" visible="false" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
-      </HBox>
+      </AnchorPane>
+      <AnchorPane layoutX="696.0" layoutY="529.0">
+         <children>
+            <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="66.0" ripplerFill="#aea6a6" text="Delete" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="217.0" AnchorPane.topAnchor="13.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnClearEntr" buttonType="RAISED" layoutX="99.0" layoutY="13.0" onAction="#CancelEntries" prefHeight="35.0" prefWidth="67.0" ripplerFill="#aea6a6" text="Cancel" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="99.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="13.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnSaveEntries" buttonType="RAISED" layoutX="182.0" layoutY="15.0" onAction="#SaveToDatabase" prefHeight="31.0" prefWidth="105.0" ripplerFill="#aea6a6" text="Save Entries" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="15.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

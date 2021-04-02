@@ -104,6 +104,10 @@ public class valueBooksEntriesController implements Initializable {
     @FXML
     private Label lblDeleteWarn;
     @FXML
+    private Label lblEdit;
+    @FXML
+    private Label lblDup;
+    @FXML
     private Label lblDateWarn;
     @FXML
     private Label lblToWarn;
@@ -122,16 +126,15 @@ public class valueBooksEntriesController implements Initializable {
     private final GetRevCenter GetCenter;
     boolean Condition = true;
     private final Connection con;
-    private PreparedStatement stmnt;
     float amount =0, cumuamount, puramount;
     String regex = "(?<=[\\d])(,)(?=[\\d])";
     Pattern p = Pattern.compile(regex);
     Matcher mac;
     Map<String, ArrayList<String>> regValSerial = new HashMap<>();
-    ObservableList<String> valueBookType = FXCollections.observableArrayList("GCR", "Car-Park(GH₵ 1.00)", "Car-Park(GH₵ 2.00)","Market-tolls(GH₵ 1.00)");
     String revCent, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount;
-
     String remarks = "Initial Entry";
+    Map<String, Float> priceBook = new HashMap<>();
+
 
     public valueBooksEntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -148,6 +151,18 @@ public class valueBooksEntriesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        PreparedStatement stmnt = null;
+        try {
+            stmnt = con.prepareStatement("SELECT * FROM `value_books_details`");
+            ResultSet res = stmnt.executeQuery();
+            cmbTypeOfValueBook.getItems().clear();
+            while (res.next()){
+                cmbTypeOfValueBook.getItems().add(res.getString("value_books"));
+                priceBook.put(res.getString("value_books"), res.getFloat("price"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblValueBookStocks.setOnMouseClicked(e -> {
             lblDeleteWarn.setVisible(false);
@@ -167,14 +182,13 @@ public class valueBooksEntriesController implements Initializable {
         txtSerialTo.setOnMouseClicked(event -> {
             lblToWarn.setVisible(false);
         });
-        cmbTypeOfValueBook.getItems().addAll(valueBookType);
     }
 
     public void showClose(ActionEvent actionEvent) {
         getentries_sideController().getappController().getCenterPane().getChildren().clear();
     }
 
-    public void saveEntries(ActionEvent actionEvent) {
+    public void saveEntries(ActionEvent actionEvent) throws SQLException {
         regValSerial.put("", new ArrayList<>());
         revCent = GetCenter.getRevCenter();
         LocalDate date = entDatePck.getValue();
@@ -246,12 +260,10 @@ public class valueBooksEntriesController implements Initializable {
                         Condition =false;
                     }else {
                         Quantity = Integer.toString(quantity);
-                        if (typeOfValBk.equals("GCR")) {
-                            amount = 0;
-                        } else if (typeOfValBk.equals("Car-Park(GH₵ 2.00)")) {
-                            amount = 2 * quantity * 100;
-                        } else if (typeOfValBk.equals("Car-Park(GH₵ 1.00)") || typeOfValBk.equals("Market-tolls(GH₵ 1.00)")) {
-                            amount = quantity * 100;
+                        for (Map.Entry<String, Float> calValAmount : priceBook.entrySet()){
+                            if (calValAmount.getKey().equals(typeOfValBk)){
+                                amount = quantity * calValAmount.getValue() * 100;
+                            }
                         }
                         cumuamount += amount;
                         puramount = (Float.parseFloat(txtUnitAmount.getText()) * quantity);
@@ -347,7 +359,7 @@ public class valueBooksEntriesController implements Initializable {
             int acQuantity = Integer.parseInt(getData.getQuantity());
             float acAmount = Float.parseFloat(getData.getValAmount());
             float acPurAmount = Float.parseFloat(getData.getPurAmount());
-            stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" + Month + "', '" + Date + "', '" + typeOfValBk + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount + "', '" + acPurAmount + "','" + remarks + "')");
+                PreparedStatement stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" + Month + "', '" + Date + "', '" + typeOfValBk + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount + "', '" + acPurAmount + "','" + remarks + "')");
             stmnt.executeUpdate();
         }
     }

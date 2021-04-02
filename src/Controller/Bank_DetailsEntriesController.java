@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Controller.Gets.GetBankDetails;
 import Controller.Gets.GetFunctions;
@@ -61,7 +62,10 @@ public class Bank_DetailsEntriesController implements Initializable {
     private JFXComboBox<String> cmbGCR;
     @FXML
     private Label lblDeleteWarn;
-
+    @FXML
+    private Label lblEdit;
+    @FXML
+    private Label lblDup;
     @FXML
     private Label lblChqNmbwarn;
 
@@ -160,6 +164,8 @@ public class Bank_DetailsEntriesController implements Initializable {
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblCollectEnt.setOnMouseClicked(event -> {
             lblDeleteWarn.setVisible(false);
+            lblDup.setVisible(false);
+            lblEdit.setVisible(false);
         });
         cmbGCR.setOnMouseClicked(event -> {
             lblGCRWarn.setVisible(false);
@@ -249,15 +255,7 @@ public class Bank_DetailsEntriesController implements Initializable {
         if (!ButtonType.OK.equals(saveResponse.get())) {
             event.consume();
         }else{
-            for(int i = 0; i <= tblCollectEnt.getItems().size(); i++){
-                if(tblCollectEnt.getItems().isEmpty()){
-                    tblCollectEnt.getItems().clear();
-                    colEnt.regGcr.clear();
-                    colEnt.monthGCR.clear();
-                    colEnt.dateGCR.clear();
-                    colEnt.count = 0;
-                    stage.close();
-                }else {
+            for(int i = 0; i < tblCollectEnt.getItems().size(); i++){
                     getData = tblCollectEnt.getItems().get(i);
                     int acGCR = Integer.parseInt(getData.getGCR());
                     int acChqNmb = Integer.parseInt(getData.getChequeNumber());
@@ -272,15 +270,15 @@ public class Bank_DetailsEntriesController implements Initializable {
                     String center = colEnt.GetCenter.getRevCenter();
                     String year = getData.getYear();
                     stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE  " +
-                            "`revCenter` = '"+center+"' AND `GCR` = '"+acGCR+"' AND `payment_type` = '"+acType+"'");
+                            "`revCenter` = '"+center+"' AND `cheque_number` = '"+acChqNmb+"' AND `bank` = '"+acBank+"'");
                     ResultSet res = stmnt.executeQuery();
                     while (res.next()){
                         duplicate.add(res.getString("GCR"));
                     }
                     if (duplicate.contains(acGCR)){
-                        lblDup.setText('"'+acGCR+'"'+" of payment method "+'"'+acType+'"'+" already exist. Please select row of duplicate data in table to edit or delete.");
+                        lblDup.setText("Cheque Number "+'"'+acChqNmb+'"'+" for "+'"'+acBank+'"'+" already exist. Please select row of duplicate data in table to edit or delete.");
                         lblDup.setVisible(true);
-                        h=tblCollection.getItems().size();
+                        i=tblCollectEnt.getItems().size();
                     }else {
                     stmnt = con.prepareStatement("INSERT INTO `cheque_details`" +
                             "(`revCenter`, `gcr`, `year`, `month`, `date`, `cheque_date`, `cheque_number`, `bank`," +
@@ -288,7 +286,17 @@ public class Bank_DetailsEntriesController implements Initializable {
                             "'" + acDATE + "' ,'" + acChqDate + "', '" + acChqNmb + "', '" + acBank + "', '" + acAMOUNT
                             + "')");
                     stmnt.executeUpdate();
-                }
+                        tblCollectEnt.getItems().remove(i);
+
+                    }
+            }
+            if(tblCollectEnt.getItems().isEmpty()){
+                tblCollectEnt.getItems().clear();
+                colEnt.regGcr.clear();
+                colEnt.monthGCR.clear();
+                colEnt.dateGCR.clear();
+                colEnt.count = 0;
+                stage.close();
             }
         }
     }
@@ -298,11 +306,14 @@ public class Bank_DetailsEntriesController implements Initializable {
         if (tblCollectEnt.getSelectionModel().isEmpty()){
             lblDeleteWarn.setVisible(true);
         }else{
+            String regex = "(?<=[\\d])(,)(?=[\\d])";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(tblCollectEnt.getSelectionModel().getSelectedItem().getAmount());
             cmbGCR.getSelectionModel().select(tblCollectEnt.getSelectionModel().getSelectedItem().getGCR());
             dtpckChequeDate.setValue(LocalDate.parse(tblCollectEnt.getSelectionModel().getSelectedItem().getDate(),
                     DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             txtChqNmb.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getChequeNumber());
-            txtAmount.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getAmount());
+            txtAmount.setText(m.replaceAll(""));
             txtBankName.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getBank());
             ObservableList<GetBankDetails> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
             ArrayList<GetBankDetails> rows = new ArrayList<>(selectedRows);

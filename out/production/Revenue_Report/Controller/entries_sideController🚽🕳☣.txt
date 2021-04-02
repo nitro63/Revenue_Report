@@ -247,6 +247,9 @@ Tadaaaaaa: myMONdevices.7
 
 
 
+DELETE FROM `collection_payment_entries` WHERE `revCenter` = 'Environmental' AND `GCR` = '352654' AND `payment_type` = 'Cheque'
+
+
 
 
 

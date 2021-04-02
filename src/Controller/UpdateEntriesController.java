@@ -278,7 +278,7 @@ public class UpdateEntriesController implements Initializable {
     Matcher m, match, mac;
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     LocalDate date;
-    Map<Float, String> priceBook = new HashMap<>();
+    Map<String, Float> priceBook = new HashMap<>();
     Map<String, String> codeItem = new HashMap<>();
     ObservableList<String> Item = FXCollections.observableArrayList();
 
@@ -740,7 +740,7 @@ public class UpdateEntriesController implements Initializable {
         cmbTypeOfValueBook.getItems().clear();
         while (res.next()){
             cmbTypeOfValueBook.getItems().add(res.getString("value_books"));
-            priceBook.put(res.getFloat("price"), res.getString("value_books"));
+            priceBook.put(res.getString("value_books"), res.getFloat("price"));
         }
         colStckAmtVal.setCellValueFactory(d -> d.getValue().valAmountProperty());
         colStckDATE.setCellValueFactory(d -> d.getValue().dateProperty());
@@ -994,9 +994,9 @@ public class UpdateEntriesController implements Initializable {
             alert.showAndWait();
         } else {
             Quantity = Integer.toString(quantity);
-            for (Map.Entry<Float, String> calValAmount : priceBook.entrySet()){
-                if (calValAmount.getValue().equals(typeOfValBk)){
-                    amount = quantity * calValAmount.getKey() * 100;
+            for (Map.Entry<String, Float> calValAmount : priceBook.entrySet()){
+                if (calValAmount.getKey().equals(typeOfValBk)){
+                    amount = quantity * calValAmount.getValue() * 100;
                 }
             }
             puramount = (Float.parseFloat(txtUnitAmount.getText()) * quantity);
@@ -1009,10 +1009,10 @@ public class UpdateEntriesController implements Initializable {
                 alert.showAndWait();
                 txtUnitAmount.clear();
             } else {
-                stmnt = con.prepareStatement("UPDATE `value_books_details` SET `date` = '"+Date+"'," +
+                stmnt = con.prepareStatement("UPDATE `value_books_stock_record` SET `date` = '"+Date+"'," +
                         " `month` = '"+Month+"', `value_book` = '"+typeOfValBk+"', `first_serial` = '"+firstSerial+"'," +
                         "`last_serial` = '"+lastSerial+"', `quantity` = '"+Quantity+"', `amount` = '"+valAmount+"'," +
-                        "`purchase_amount` = '"+purAmount+"', `remarks` = 'Updated'");
+                        "`purchase_amount` = '"+purAmount+"', `remarks` = 'Updated' WHERE `ID` = '"+entry_ID+"'");
                 stmnt.executeUpdate();
                 loadValueBooksTable();
                 resetValueBooksTable();
