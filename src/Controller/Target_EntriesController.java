@@ -128,12 +128,12 @@ public class Target_EntriesController implements Initializable {
         Year = Integer.toString(spnTargYear.getValue());
         Condition = true;
         while (Condition){
-            if(registerItem.contains(Year)){
+            if( Year.length() > 4 /*|| !"2".equals(txtEntYear.getText()) /*|| txtEntYear.getText().charAt(1)!= 0*/){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Year has already been entered for");
+                alert.setHeaderText("Please ENTER YEAR correctly");
                 alert.showAndWait();
-                
+                spnTargYear.getValueFactory().setValue(Calendar.getInstance().get(Calendar.YEAR));
                 Condition =false;
                 
             }else if(txtEntAmt.getText().isEmpty()){
@@ -167,12 +167,12 @@ public class Target_EntriesController implements Initializable {
                 alert.showAndWait();
                 Condition =false;
 //                }
-            }else if( Year.length() > 4 /*|| !"2".equals(txtEntYear.getText()) /*|| txtEntYear.getText().charAt(1)!= 0*/){
+            }else if(registerItem.contains(Year)){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Please ENTER YEAR correctly");
+                alert.setHeaderText("Year has already been entered for");
                 alert.showAndWait();
-                spnTargYear.getValueFactory().setValue(Calendar.getInstance().get(Calendar.YEAR));
+
                 Condition =false;
             }
             else{
@@ -253,7 +253,8 @@ public class Target_EntriesController implements Initializable {
             }
             if(duplicate.containsKey(acCenter)){
                 if(duplicate.get(acCenter).contains(getData.getYear())){
-                    lblDup.setText("REVENUE TARGET Amount already ENTERED for "+'"'+"acCenter"+'"'+" for "+'"'+getData.getYear()+'"'+". Please select duplicate data in the table to edit or delete.");
+                    lblDup.setText("REVENUE TARGET Amount for "+'"'+acCenter+'"'+" for "+'"'+getData.getYear()+'"'+". Please select duplicate data in the table to edit or delete.");
+                    lblDup.setVisible(true);
                 }
             }else{
                 stmnt = con.prepareStatement("INSERT INTO `target_entries`(`revCenter`, `Amount`, `Year`) VALUES ('"+acCenter+"', '"+acAmount+"', '"+acYear+"')");
@@ -266,6 +267,7 @@ public class Target_EntriesController implements Initializable {
     @FXML
     private void CancelEntries(ActionEvent event) {
         tblCollectEnt.getItems().clear();
+    }
     }
 
     @FXML

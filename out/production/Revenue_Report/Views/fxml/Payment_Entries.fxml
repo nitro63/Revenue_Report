@@ -121,7 +121,7 @@
       </AnchorPane>
       <AnchorPane fx:id="topPane" prefHeight="41.0" prefWidth="1005.0">
          <children>
-            <AnchorPane layoutX="956.0" layoutY="9.0" prefHeight="26.0" prefWidth="35.0" style="-fx-border-width: 0.5px;">
+            <AnchorPane layoutX="969.0" layoutY="9.0" prefHeight="17.0" prefWidth="22.0" style="-fx-border-width: 0.5px;">
                <children>
                   <Button fx:id="btnClose" layoutY="-1.0" mnemonicParsing="false" onAction="#showClose" text="X" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
                      <font>
@@ -135,15 +135,6 @@
                   <Font name="System Bold" size="34.0" />
                </font>
             </Label>
-            <AnchorPane style="-fx-border-width: 0.5px;">
-               <children>
-                  <JFXButton fx:id="btnClose1" alignment="CENTER" buttonType="RAISED" cancelButton="true" layoutX="26.0" layoutY="16.0" onAction="#showClose" prefHeight="23.0" prefWidth="21.0" ripplerFill="#8d0606" style="-fx-border-width: 0.5; -fx-border-color: #ff2f2f; -fx-border-radius: 25; -fx-background-radius: 25;" text="X" textAlignment="CENTER" textFill="#0d0c0c" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <font>
-                        <Font name="System Bold" size="10.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </AnchorPane>
          </children>
       </AnchorPane>
    </children>

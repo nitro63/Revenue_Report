@@ -19,9 +19,9 @@
    <children>
       <AnchorPane fx:id="topPane" layoutX="5.0" layoutY="5.0" prefHeight="41.0" prefWidth="1005.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane layoutX="940.0" prefHeight="26.0" prefWidth="35.0" style="-fx-border-width: 0.5px;">
+            <AnchorPane layoutX="955.0" layoutY="10.0" prefHeight="17.0" prefWidth="23.0" style="-fx-border-width: 0.5px;">
                <children>
-                  <Button fx:id="btnClose" mnemonicParsing="false" onAction="#showClose" style="-fx-background-color: transparent;" text="X" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Button fx:id="btnClose" layoutX="24.0" mnemonicParsing="false" onAction="#showClose" prefHeight="26.0" prefWidth="23.0" text="X" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
