@@ -300,7 +300,7 @@ public class Payment_EntriesController implements Initializable {
                 alert.showAndWait();
                 Condition =false;
 //                }
-            }else if(txtEntGCR.getText().length() > 10){
+            }else if(txtEntGCR.getText().length() > 10 || txtEntGCR.getText().length() < 7){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Check GCR number");

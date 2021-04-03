@@ -64,11 +64,6 @@ public class Target_EntriesController implements Initializable {
     private JFXButton btnDelete;
     @FXML
     private Label lblDeleteWarn;
-    
-    GetTargetEnt getData, getReport;
-    
-    entries_sideController app; 
-    
     private final GetRevCenter GetCenter;
     @FXML
     private AnchorPane collectEntPane;
@@ -76,8 +71,10 @@ public class Target_EntriesController implements Initializable {
     private TableView<GetTargetEnt> tblCollectEnt;
     @FXML
     private Button btnClearEntr;
-    
-        ObservableList<String> registerItem = FXCollections.observableArrayList(); 
+    GetTargetEnt getData, getReport;
+    entries_sideController app;
+
+    ObservableList<String> registerItem = FXCollections.observableArrayList();
         
          boolean Condition = true;
     private final Connection con;
@@ -267,7 +264,6 @@ public class Target_EntriesController implements Initializable {
     @FXML
     private void CancelEntries(ActionEvent event) {
         tblCollectEnt.getItems().clear();
-    }
     }
 
     @FXML

@@ -206,16 +206,20 @@ public class valueBooksEntriesController implements Initializable {
             Date = getDates.getDate(date);
             Year = getDates.getYear(date);
             while (Condition){
-                if(regValSerial.containsKey(typeOfValBk)){
-                    if(regValSerial.get(typeOfValBk).contains(firstSerial) || regValSerial.get(typeOfValBk).
-                            contains(lastSerial)){
+                    if(regValSerial.containsKey(typeOfValBk) && regValSerial.get(typeOfValBk).contains(firstSerial)){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning Dialog");
+                        alert.setHeaderText("Serials have already been entered");
+                        alert.showAndWait();
+                        Condition =false;
+                    }else if (regValSerial.containsKey(typeOfValBk) && regValSerial.get(typeOfValBk).contains
+                            (lastSerial)){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Warning Dialog");
                         alert.setHeaderText("Serials have already been entered");
                         alert.showAndWait();
                         Condition =false;
                     }
-                }
                 else if(cmbTypeOfValueBook.getSelectionModel().isEmpty()){
                     lblValueBookWarn.setVisible(true);
                     Condition = false;
@@ -242,17 +246,6 @@ public class valueBooksEntriesController implements Initializable {
                     Condition = false;
                 }
                 else {
-                    colYear.setCellValueFactory(data -> data.getValue().yearProperty());
-                    colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
-                    colDATE.setCellValueFactory(data -> data.getValue().dateProperty());
-                    colTypeVB.setCellValueFactory(data -> data.getValue().valueBookProperty());
-                    colSerialFrom.setCellValueFactory(data -> data.getValue().firstSerialProperty());
-                    colSerialTo.setCellValueFactory(data -> data.getValue().lastSerialProperty());
-                    colQuantity.setCellValueFactory(data -> data.getValue().quantityProperty());
-                    colAmtVal.setCellValueFactory(data -> data.getValue().valAmountProperty());
-                    colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
-                    colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
-                    colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
                     int serialChecker = (Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial))+1 ;
                     int quantity = ((serialChecker)/ 100);
                     if((serialChecker)<100 || serialChecker % 100 !=0){
@@ -282,6 +275,17 @@ public class valueBooksEntriesController implements Initializable {
                             Condition = false;
 
                         } else {
+                            colYear.setCellValueFactory(data -> data.getValue().yearProperty());
+                            colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
+                            colDATE.setCellValueFactory(data -> data.getValue().dateProperty());
+                            colTypeVB.setCellValueFactory(data -> data.getValue().valueBookProperty());
+                            colSerialFrom.setCellValueFactory(data -> data.getValue().firstSerialProperty());
+                            colSerialTo.setCellValueFactory(data -> data.getValue().lastSerialProperty());
+                            colQuantity.setCellValueFactory(data -> data.getValue().quantityProperty());
+                            colAmtVal.setCellValueFactory(data -> data.getValue().valAmountProperty());
+                            colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
+                            colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
+                            colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
                             addEntries = new GetValueBooksEntries(Year, Month, Date, typeOfValBk, firstSerial,
                                     lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks);
                             tblValueBookStocks.getItems().add(addEntries);
