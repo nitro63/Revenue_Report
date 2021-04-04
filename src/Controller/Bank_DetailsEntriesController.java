@@ -224,6 +224,15 @@ public class Bank_DetailsEntriesController implements Initializable {
         }
 
     }
+    private String getGcrID(String Gcr){
+        String id = "";
+        for(Map.Entry<String, String>gcrID :colEnt.gcrID.entrySet()) {
+            if(gcrID.getValue().equals(Gcr)){
+                id = gcrID.getKey();
+            }
+        }
+        return id;
+    }
 
     @FXML
     void SaveToDatabase(ActionEvent event) throws SQLException {
@@ -269,11 +278,8 @@ public class Bank_DetailsEntriesController implements Initializable {
                     String acBank = getData.getBank();
                     String center = colEnt.GetCenter.getRevCenter();
                     String year = getData.getYear();
-                for(Map.Entry<String, String>gcrID :colEnt.gcrID.entrySet()) {
-                    if(gcrID.getValue().equals(GCR)){
-                        ID = gcrID.getKey();
-                    }
-                }
+                    ID = getGcrID(getData.getGCR());
+
                 String fini = "chq"+colEnt.getID();
                 boolean condition = true;
                 ArrayList<String> dup = new ArrayList<>();
@@ -283,7 +289,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                     while (res.next()){
                         duplicate.add(res.getString("GCR"));
                     }
-                    if (duplicate.contains(acGCR)){
+                    if (duplicate.contains(getData.getGCR())){
                         lblDup.setText("Cheque Number "+'"'+acChqNmb+'"'+" for "+'"'+acBank+'"'+" already exist. " +
                                 "Please select row of duplicate data in table to edit or delete.");
                         lblDup.setVisible(true);
@@ -370,19 +376,24 @@ public class Bank_DetailsEntriesController implements Initializable {
         if(GCR == null){
             lblGCRWarn.setVisible(true);
             Condition =false;
-        }else if(date == null){
+        }else if(!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR)) && date == null){
             lblChqdatewarn.setVisible(true);
             Condition = false;
         }else{
             Condition =true;
+            if (!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR))){
             chqDate = getFunctions.getDate(date);
+            }else {
+                chqDate = "NA";
+            }
             while(Condition) {
                 if(txtBankName.getText().isEmpty() || Bank.matches("\\s+")){
                     lblBankwarn.setVisible(true);
                     Condition =false;
-                }else if(chqDate == null){
+                }else if(!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR)) && chqDate == null){
                     lblChqdatewarn.setVisible(true);
                     Condition =false;
+
                 }else if(txtChqNmb.getText().isEmpty() || chqNumber.matches("\\s+")){
                     lblChqNmbwarn.setVisible(true);
                     Condition =false;

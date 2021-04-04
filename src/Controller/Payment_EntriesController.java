@@ -110,6 +110,7 @@ public class Payment_EntriesController implements Initializable {
     Map<String, ArrayList<String>> regGcr = new HashMap<>();
     Map<String, ArrayList<String>> monthGCR = new HashMap<>();
     Map<String, Map<String, ArrayList<String>>> dateGCR = new HashMap<>();
+    Map<String, ArrayList<String>> typeSerials = new HashMap<>();
     Map<String, String> gcrID = new HashMap<>();
     int count;
     @FXML
@@ -162,6 +163,8 @@ public class Payment_EntriesController implements Initializable {
             lblDup.setVisible(false);
             lblEdit.setVisible(false);
         });
+        typeSerials.put("Cheque", new ArrayList<>());
+        typeSerials.put("Cheque Deposit Slip", new ArrayList<>());
     }  
         
     @FXML
@@ -474,8 +477,12 @@ public class Payment_EntriesController implements Initializable {
                             condition = false;
                         }
                     }
+
                     if (acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")){
                         gcrID.put(fini, getData.getGCR());
+                        if(!typeSerials.get(acType).contains(fini)){
+                            typeSerials.get(acType).add(fini);
+                        }
                     }
                     stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`," +
                             " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `ID`) VALUES ('" + acCENTER + "', '" +
@@ -486,7 +493,7 @@ public class Payment_EntriesController implements Initializable {
                 }
         }
         if(!regGcr.isEmpty()){
-            System.out.println(regGcr);
+            System.out.println(typeSerials);
             Main st =new Main();
             try {
                 FXMLLoader bankDetails = new FXMLLoader();
