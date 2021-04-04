@@ -93,8 +93,10 @@ public class Payment_EntriesController implements Initializable {
    
         
         ObservableList<String> registerItem = FXCollections.observableArrayList(); 
-        ObservableList<String> paymentType = FXCollections.observableArrayList("Cash", "Cheque", "Cash Deposit Slip","Cheque Deposit Slip");
-        ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        ObservableList<String> paymentType = FXCollections.observableArrayList("Cash", "Cheque",
+                "Cash Deposit Slip","Cheque Deposit Slip");
+        ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March"
+                , "April", "May", "June", "July", "August", "September", "October", "November", "December");
         
          boolean Condition = true;
     private final Connection con;
@@ -108,6 +110,7 @@ public class Payment_EntriesController implements Initializable {
     Map<String, ArrayList<String>> regGcr = new HashMap<>();
     Map<String, ArrayList<String>> monthGCR = new HashMap<>();
     Map<String, Map<String, ArrayList<String>>> dateGCR = new HashMap<>();
+    Map<String, String> gcrID = new HashMap<>();
     int count;
     @FXML
     private TextField txtEntGCR;
@@ -147,7 +150,8 @@ public class Payment_EntriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Calendar cal = Calendar.getInstance();
-        spnColYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get(Calendar.YEAR)));
+        spnColYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get
+                (Calendar.YEAR)));
         cmbColMonth.setItems(collectionMonth);
         cmbPayType.setItems(paymentType);
         cmbColMonth.setVisibleRowCount(4);
@@ -198,9 +202,11 @@ public class Payment_EntriesController implements Initializable {
         
         int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
         
-        cal.set(date.getYear(), actMonth, date.getDayOfMonth());//Initialising assigning datepicker value to Calendar item
+        cal.set(date.getYear(), actMonth, date.getDayOfMonth());//Initialising assigning datepicker value to Calendar
+             // item
         
-        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use 
+        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for
+             // further use
         SimpleDateFormat Dateformat = new SimpleDateFormat("dd-MM-yyyy");// Date format for Date 
         Date = Dateformat.format(setDate);// Assigning converted date with "MM/dd/YY" format to "Date" variable
         cal.setTime(setDate);//Setting time to Calendar variable
@@ -374,12 +380,32 @@ public class Payment_EntriesController implements Initializable {
         }
     }
 
+    public String getID(){
+        Date day = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(day);
+        String milli = Integer.toString(cal.get(Calendar.MILLISECOND)),
+                date = Integer.toString(cal.get(Calendar.DATE)),
+                month = Integer.toString(cal.get(Calendar.MONTH)+1),
+                Day = Integer.toString(cal.get(Calendar.DAY_OF_WEEK)),
+                year = Integer.toString(cal.get(Calendar.YEAR)),
+                second = Integer.toString(cal.get(Calendar.SECOND)),
+                minute = Integer.toString(cal.get(Calendar.MINUTE)),
+                hour = Integer.toString(cal.get(Calendar.HOUR_OF_DAY));
+        String id = UUID.randomUUID().toString(),
+                is = id.replace("-", "").substring(9,12),
+                ID = id.replace("-", "").substring(17,20),
+                si = id.replace("-", "").substring(23,25),
+                fini = is+ID+si.concat(Day).concat(date).concat(month).
+                        concat(year).concat(hour).concat(minute).concat(second).concat(milli);
+        return fini;
+    }
+
     @FXML
     private void SaveToDatabase(ActionEvent event) throws SQLException {
         getData = new GetCollectEnt();
          ArrayList<String> duplicate = new ArrayList<>();
-        ResultSet rs;
-        ResultSetMetaData rm;
+         String fini;
         
         for(int h = 0; h<tblCollection.getItems().size(); h++){
             getData = tblCollection.getItems().get(h);
@@ -393,6 +419,7 @@ public class Payment_EntriesController implements Initializable {
             String acCENTER =getData.getCenter();
             String acType = getData.getType();
             String acYear = getData.getYear();
+            fini = getID();
             int acYEAR = Integer.parseInt(getData.getYear());
                 if(acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")){
                     count++;
@@ -403,7 +430,8 @@ public class Payment_EntriesController implements Initializable {
                     }else if(dateGCR.containsKey(acDate) && !dateGCR.get(acDate).containsKey(acMonth)){
                         dateGCR.get(acDate).put(acMonth, new ArrayList<>());
                         dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
-                    }else if (dateGCR.containsKey(acDate) && dateGCR.get(acDate).containsKey(acMonth) && !dateGCR.get(acDate).get(acMonth).contains(getData.getGCR())){
+                    }else if (dateGCR.containsKey(acDate) && dateGCR.get(acDate).containsKey(acMonth) && !dateGCR.
+                            get(acDate).get(acMonth).contains(getData.getGCR())){
                         dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
                     }
                     if(monthGCR.isEmpty() || !monthGCR.containsKey(acMonth)){
@@ -425,12 +453,34 @@ public class Payment_EntriesController implements Initializable {
                 while (res.next()){
                     duplicate.add(res.getString("GCR"));
                 }
-                if (duplicate.contains(acGCR)){
-                    lblDup.setText('"'+acGCR+'"'+" of payment method "+'"'+acType+'"'+" already exist. Please select row of duplicate data in table to edit or delete.");
+                if (duplicate.contains(getData.getGCR())){
+                    lblDup.setText('"'+getData.getGCR()+'"'+" of payment method "+'"'+acType+'"'+" already exist. Please select " +
+                            "row of duplicate data in table to edit or delete.");
                     lblDup.setVisible(true);
                     h=tblCollection.getItems().size();
                 }else {
-                    stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`, `Amount`, `Date`, `Month`, `Year`, `payment_type`) VALUES ('" + acCENTER + "', '" + acGCR + "' ,'" + acAMOUNT + "', '" + acDate + "', '" + acMonth + "', '" + acYEAR + "', '" + acType + "')");
+                    boolean condition = true;
+                    ArrayList<String> dup = new ArrayList<>();
+                    while (condition){
+                        stmnt = con.prepareStatement("SELECT `ID` FROM `collection_payment_entries` WHERE `ID` = " +
+                                "'" + fini + "' ");
+                        ResultSet rt = stmnt.executeQuery();
+                        while (rt.next()){
+                            dup.add(rt.getString("ID"));
+                        }
+                        if (dup.contains(fini)){
+                            fini = getID();
+                        }else {
+                            condition = false;
+                        }
+                    }
+                    if (acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")){
+                        gcrID.put(fini, getData.getGCR());
+                    }
+                    stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`," +
+                            " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `ID`) VALUES ('" + acCENTER + "', '" +
+                            acGCR + "' ,'" + acAMOUNT + "', '" + acDate + "', '" + acMonth + "', '" + acYEAR + "', '" +
+                            acType + "', '" + fini + "')");
                     stmnt.executeUpdate();
                     tblCollection.getItems().remove(h);
                 }

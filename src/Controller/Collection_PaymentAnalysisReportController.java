@@ -175,17 +175,18 @@ public class Collection_PaymentAnalysisReportController implements Initializable
         for(String month : collectionMonth){
            repMonth = setReptMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
            payMonth = setPayMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
-           diff = payMonth - repMonth;
-           if(diff > 0){
-               rmks = "Excess";
-           }else if(diff < 0){
-               rmks = "Outstanding";
+           diff = repMonth - payMonth ;
+            acDiff = formatter.format(diff);
+           if(diff < 0){
+               rmks = "Overpayment";
+               acDiff = "("+formatter.format(Math.abs(diff))+")";
+           }else if(diff > 0){
+               rmks = "Underpayment";
            }else if(diff == 0){
                rmks = "Balanced";
            }
            acRepMonth =formatter.format( repMonth);
            acPayMonth = formatter.format(payMonth);
-           acDiff = formatter.format(diff);
            colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
            colAmtReptd.setCellValueFactory(data -> data.getValue().AmtReprtdProperty());
            colAmtPayed.setCellValueFactory(data -> data.getValue().AmtPayedProperty());
@@ -193,7 +194,6 @@ public class Collection_PaymentAnalysisReportController implements Initializable
            colRemarks.setCellValueFactory(data -> data.getValue().RmksProperty());
            getReport = new GetColPay(month, acRepMonth, acPayMonth, acDiff, rmks);
            tblColPayAnalysis.getItems().add(getReport);
-           System.out.println(repMonth +" "+ payMonth+" "+ diff);
            repMonth = 0;
            payMonth = 0;
            diff = 0;

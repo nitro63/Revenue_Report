@@ -63,15 +63,9 @@ public class Payment_ReportController implements Initializable {
     @FXML
     private Button btnShowReport;
     @FXML
-    private TableColumn<?, ?> revenueCenter;
-    @FXML
-    private TableColumn<?, ?> year;
-    @FXML
     private ComboBox<String> cmbReportMonth;
     @FXML
     private TableView<GetPaymentDetails> tblPaymentDetails;
-    @FXML
-    private TableColumn<?, ?> MONTH;
     @FXML
     private TableColumn<GetPaymentDetails, String> colDate;
     @FXML
@@ -98,7 +92,8 @@ public class Payment_ReportController implements Initializable {
     ObservableList<String> rowMonths =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
-    int Year;
+    String Year, Month, Center;
+    boolean cond = false;
 
     
     public Payment_ReportController() throws SQLException, ClassNotFoundException{
@@ -160,7 +155,6 @@ public class Payment_ReportController implements Initializable {
     }
     
     private void getMonths() throws SQLException{
-        System.out.println(year);
         stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries` WHERE  `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
@@ -201,32 +195,21 @@ public class Payment_ReportController implements Initializable {
         colPaymentType.setCellValueFactory(data -> data.getValue().paymentTypeProperty());
         colTotalAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
         while(rs.next()){
-            for(int i = 1; i<= col; i++){
-                switch (i) {
-                    case 1:
-                        GCR = rs.getObject(i).toString();
-                        break;
-                    case 2:
-                        Date = rs.getObject(i).toString();
-                        break;
-                    case 3:
-                        payment_type = rs.getObject(i).toString();
-                        break;
-                    case 4:
-                        amount = Float.parseFloat(rs.getObject(i).toString());
-                        acAmount = formatter.format(amount);
-                        cumuAmount+= amount;
-                        acCumuAmount= formatter.format(cumuAmount);
-                        break;
-                    default:
-                        break;
-                }
+            GCR = rs.getString("GCR");
+            Date = rs.getString("Date");
+            payment_type = rs.getString("payment_type");
+            amount = rs.getFloat("Amount");
+            acAmount = rs.getString("Amount");
+            cumuAmount+= amount;
+            acCumuAmount= formatter.format(cumuAmount);
+            if (payment_type.equals("Cheque") || payment_type.equals("Cheque Deposit Slip")){
+                cond = true;
+            }
             }
             getReport = new GetPaymentDetails(Date, GCR, payment_type, acAmount, acCumuAmount);
             tblPaymentDetails.getItems().add(getReport);
-            System.out.println(GCR+" "+Date+" "+payment_type+" "+amount+" "+cumuAmount);
         }
-    }
+
 
     @FXML
     private void SelectedCenter(ActionEvent event) throws SQLException {
@@ -295,6 +278,10 @@ public class Payment_ReportController implements Initializable {
         if (tblPaymentDetails.getItems().isEmpty()){
             event.consume();
         }else {
+            if (cond){
+            Year = cmbReportYear.getSelectionModel().getSelectedItem();
+            Center = cmbReportCent.getSelectionModel().getSelectedItem();
+            Month = cmbReportMonth.getSelectionModel().getSelectedItem();
             Main st = new Main();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/Views/fxml/BankDetailsReport.fxml"));
@@ -310,6 +297,12 @@ public class Payment_ReportController implements Initializable {
             stg.initStyle(StageStyle.UTILITY);
             stg.setScene(s);
             stg.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Notice!");
+                alert.setHeaderText("There is no Bank Details for this record!");
+                alert.showAndWait();
+            }
         }
     }
 

@@ -94,17 +94,8 @@ public class BankDetailsReportController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cmbRevCenter.setOnMouseClicked(mouseEvent -> {
-            lblRevenueCenterWarn.setVisible(false);
-        });
-        cmbYear.setOnMouseClicked(mouseEvent -> {
-            lblYearWarn.setVisible(false);
-        });
-        cmbMonth.setOnMouseClicked(mouseEvent -> {
-            lblMonthWarn.setVisible(false);
-        });
         try {
-            getRevenueCenters();
+            setTable();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -124,76 +115,110 @@ public class BankDetailsReportController implements Initializable {
         cmbRevCenter.setVisibleRowCount(5);
     }
 
-    @FXML
-    private void loadYears(ActionEvent event) throws SQLException {
-        stmnt = con.prepareStatement("SELECT `year` FROM `cheque_details` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' GROUP BY `year`");
-        ResultSet rs= stmnt.executeQuery();
+//    @FXML
+//    private void loadYears(ActionEvent event) throws SQLException {
+//        stmnt = con.prepareStatement("SELECT `year` FROM `cheque_details` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' GROUP BY `year`");
+//        ResultSet rs= stmnt.executeQuery();
+//        ResultSetMetaData rm = rs.getMetaData();
+//
+//        while(rs.next()){
+//            rowYear.add(rs.getString("year"));
+//        }
+//        cmbYear.getItems().clear();
+//        cmbYear.setItems(rowYear);
+//        cmbYear.setVisibleRowCount(5);
+//    }
+//
+//    @FXML
+//    private void loadMonths(ActionEvent event) throws SQLException {
+//        stmnt = con.prepareStatement("SELECT `month` FROM `cheque_details` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
+//        ResultSet rs= stmnt.executeQuery();
+//        ResultSetMetaData rm = rs.getMetaData();
+//
+//        while(rs.next()){
+//            rowMonths.add(rs.getString("month"));
+//        }
+//        cmbMonth.getItems().clear();
+//        cmbMonth.setItems(rowMonths);
+//        cmbMonth.setVisibleRowCount(5);
+//    }
+
+//    @FXML
+//    private void showReport(ActionEvent event) throws SQLException {
+//            lblRevenueCenter.setText(payRep.Center);
+//            lblYear.setText(payRep.Year);
+//            lblMonth.setText(payRep.Month);
+//            tblBankDetails.getItems().clear();
+//            String Date = "", GCR = "", Amount = "", bankName = "", chqNumber = "", chqDate = "";
+//
+//
+//            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
+//                    "`collection_payment_entries`.`date`, `cheque_details`.`cheque_date`, " +
+//                    "`cheque_details`.`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount` FROM" +
+//                    " `cheque_details`, `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` =" +
+//                    " '"+payRep.Center+"' AND `collection_payment_entries`.`year`" +
+//                    " = '"+payRep.Year+"' AND `collection_payment_entries`.`month` " +
+//                    "= '"+payRep.Month+"' AND `collection_payment_entries`.`ID` =" +
+//                    " `cheque_details`.`payment_ID`");
+//            ResultSet rs = stmnt.executeQuery();
+//            ResultSetMetaData rm = rs.getMetaData();
+//            int col = rm.getColumnCount();
+//
+//            colDate.setCellValueFactory(data -> data.getValue().dateProperty());
+//            colGCRNumber.setCellValueFactory(data -> data.getValue().GCRProperty());
+//            colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
+//            colChqNumber.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
+//            colBank.setCellValueFactory(data -> data.getValue().bankProperty());
+//            colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
+//            while(rs.next()){
+//                Date = rs.getString("date");
+//                GCR = rs.getString("gcr");
+//                Amount = getFunctions.getAmount(rs.getString("amount"));
+//                chqNumber = rs.getString("cheque_number");
+//                chqDate = rs.getString("cheque_date");
+//                bankName = rs.getString("bank");
+//                getReport = new GetBankDetails(GCR, Date, chqDate, chqNumber, bankName, Amount);
+//                tblBankDetails.getItems().add(getReport);
+//            }
+//        }
+
+    void setTable() throws SQLException {
+        lblRevenueCenter.setText(payRep.Center);
+        lblYear.setText(payRep.Year);
+        lblMonth.setText(payRep.Month);
+        tblBankDetails.getItems().clear();
+        String Date = "", GCR = "", Amount = "", bankName = "", chqNumber = "", chqDate = "";
+
+
+        stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
+                "`collection_payment_entries`.`date`, `cheque_details`.`cheque_date`, " +
+                "`cheque_details`.`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount` FROM" +
+                " `cheque_details`, `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` =" +
+                " '"+payRep.Center+"' AND `collection_payment_entries`.`year`" +
+                " = '"+payRep.Year+"' AND `collection_payment_entries`.`month` " +
+                "= '"+payRep.Month+"' AND `collection_payment_entries`.`ID` =" +
+                " `cheque_details`.`payment_ID`");
+        ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();
+        int col = rm.getColumnCount();
 
+        colDate.setCellValueFactory(data -> data.getValue().dateProperty());
+        colGCRNumber.setCellValueFactory(data -> data.getValue().GCRProperty());
+        colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
+        colChqNumber.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
+        colBank.setCellValueFactory(data -> data.getValue().bankProperty());
+        colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
         while(rs.next()){
-            rowYear.add(rs.getString("year"));
-        }
-        cmbYear.getItems().clear();
-        cmbYear.setItems(rowYear);
-        cmbYear.setVisibleRowCount(5);
-    }
+            Date = rs.getString("date");
+            GCR = rs.getString("gcr");
+            Amount = getFunctions.getAmount(rs.getString("amount"));
+            chqNumber = rs.getString("cheque_number");
+            chqDate = rs.getString("cheque_date");
+            bankName = rs.getString("bank");
+            getReport = new GetBankDetails(GCR, Date, chqDate, chqNumber, bankName, Amount);
+            tblBankDetails.getItems().add(getReport);
+        }}
 
-    @FXML
-    private void loadMonths(ActionEvent event) throws SQLException {
-        stmnt = con.prepareStatement("SELECT `month` FROM `cheque_details` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
-        ResultSet rs= stmnt.executeQuery();
-        ResultSetMetaData rm = rs.getMetaData();
-
-        while(rs.next()){
-            rowMonths.add(rs.getString("month"));
-        }
-        cmbMonth.getItems().clear();
-        cmbMonth.setItems(rowMonths);
-        cmbMonth.setVisibleRowCount(5);
-    }
-
-    @FXML
-    private void showReport(ActionEvent event) throws SQLException {
-        if (cmbRevCenter.getSelectionModel().isEmpty()) {
-            lblRevenueCenterWarn.setVisible(true);
-        } else if (cmbYear.getSelectionModel().isEmpty()) {
-            lblYearWarn.setVisible(true);
-        } else if (cmbMonth.getSelectionModel().isEmpty()) {
-            lblMonthWarn.setVisible(true);
-        } else {
-            lblRevenueCenter.setText(cmbRevCenter.getSelectionModel().getSelectedItem());
-            lblYear.setText(cmbYear.getSelectionModel().getSelectedItem());
-            lblMonth.setText(cmbMonth.getSelectionModel().getSelectedItem());
-            tblBankDetails.getItems().clear();
-            String Date = "", GCR = "", Amount = "", bankName = "", chqNumber = "", chqDate = "";
-
-
-            stmnt = con.prepareStatement("SELECT `gcr`, `date`, `cheque_date`, `cheque_number`, `bank`, `amount` FROM" +
-                    " `cheque_details` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' AND " +
-                    "`year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '"+cmbMonth.
-                    getSelectionModel().getSelectedItem()+"'");
-            ResultSet rs = stmnt.executeQuery();
-            ResultSetMetaData rm = rs.getMetaData();
-            int col = rm.getColumnCount();
-
-            colDate.setCellValueFactory(data -> data.getValue().dateProperty());
-            colGCRNumber.setCellValueFactory(data -> data.getValue().GCRProperty());
-            colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
-            colChqNumber.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
-            colBank.setCellValueFactory(data -> data.getValue().bankProperty());
-            colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
-            while(rs.next()){
-                Date = rs.getString("date");
-                GCR = rs.getString("gcr");
-                Amount = getFunctions.getAmount(rs.getString("amount"));
-                chqNumber = rs.getString("cheque_number");
-                chqDate = rs.getString("cheque_date");
-                bankName = rs.getString("bank");
-                getReport = new GetBankDetails(GCR, Date, chqDate, chqNumber, bankName, Amount);
-                tblBankDetails.getItems().add(getReport);
-            }
-        }
-    }
 
     @FXML
     void printReport(ActionEvent event) {

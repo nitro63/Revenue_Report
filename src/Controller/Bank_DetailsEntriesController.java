@@ -148,7 +148,7 @@ public class Bank_DetailsEntriesController implements Initializable {
         this.stage = stage;
     }
 
-    String GCR, Date, chqDate, chqNumber, Bank, Amount, Month, Year;
+    String GCR, Date, chqDate, chqNumber, Bank, Amount, Month, Year, ID;
     ObservableList<String> GCRs = FXCollections.observableArrayList();
 
     /**
@@ -269,22 +269,43 @@ public class Bank_DetailsEntriesController implements Initializable {
                     String acBank = getData.getBank();
                     String center = colEnt.GetCenter.getRevCenter();
                     String year = getData.getYear();
-                    stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE  " +
-                            "`revCenter` = '"+center+"' AND `cheque_number` = '"+acChqNmb+"' AND `bank` = '"+acBank+"'");
+                for(Map.Entry<String, String>gcrID :colEnt.gcrID.entrySet()) {
+                    if(gcrID.getValue().equals(GCR)){
+                        ID = gcrID.getKey();
+                    }
+                }
+                String fini = "chq"+colEnt.getID();
+                boolean condition = true;
+                ArrayList<String> dup = new ArrayList<>();
+                    stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE " +
+                            " `cheque_number` = '"+acChqNmb+"' AND `bank` = '"+acBank+"'");
                     ResultSet res = stmnt.executeQuery();
                     while (res.next()){
                         duplicate.add(res.getString("GCR"));
                     }
                     if (duplicate.contains(acGCR)){
-                        lblDup.setText("Cheque Number "+'"'+acChqNmb+'"'+" for "+'"'+acBank+'"'+" already exist. Please select row of duplicate data in table to edit or delete.");
+                        lblDup.setText("Cheque Number "+'"'+acChqNmb+'"'+" for "+'"'+acBank+'"'+" already exist. " +
+                                "Please select row of duplicate data in table to edit or delete.");
                         lblDup.setVisible(true);
                         i=tblCollectEnt.getItems().size();
                     }else {
-                    stmnt = con.prepareStatement("INSERT INTO `cheque_details`" +
-                            "(`revCenter`, `gcr`, `year`, `month`, `date`, `cheque_date`, `cheque_number`, `bank`," +
-                            " `amount`) VALUES ('" + center + "','" + acGCR + "', '" + year + "', '" + acMonth + "'," +
-                            "'" + acDATE + "' ,'" + acChqDate + "', '" + acChqNmb + "', '" + acBank + "', '" + acAMOUNT
-                            + "')");
+                        while (condition){
+                            stmnt = con.prepareStatement("SELECT `ID` FROM `cheque_details` WHERE `ID` = " +
+                                    "'" + fini + "' ");
+                            ResultSet rt = stmnt.executeQuery();
+                            while (rt.next()){
+                                dup.add(rt.getString("ID"));
+                            }
+                            if (dup.contains(fini)){
+                                fini = "chq"+colEnt.getID();
+                            }else {
+                                condition = false;
+                            }
+                        }
+                    stmnt = con.prepareStatement("INSERT INTO  `cheque_details`" +
+                            "( `ID`, `cheque_date`, `cheque_number`, `bank`," +
+                            " `amount`, `payment_ID`) VALUES ('" + fini + "','" + acChqDate + "', " +
+                            "'" + acChqNmb + "', '" + acBank + "', '" + acAMOUNT + "',  '" + ID + "')");
                     stmnt.executeUpdate();
                         tblCollectEnt.getItems().remove(i);
 

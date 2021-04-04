@@ -372,12 +372,6 @@ public class UpdateEntriesController implements Initializable {
         ObservableList<String> entryYears = FXCollections.observableArrayList();
         String entryYear = "", entryTypeTable = "", acEntryYear = "";
         switch(cmbEntryType.getSelectionModel().getSelectedItem()){
-            case "Bank Details":
-                entryTypeTable = "`cheque_details`";
-                entryYear = "`year`";
-                acEntryYear = "year";
-
-                break;
             case "Payments Entries":
                 entryTypeTable = "`collection_payment_entries`";
                 entryYear = "`Year`";
@@ -405,8 +399,17 @@ public class UpdateEntriesController implements Initializable {
         }else{
             cmbEntryMonth.setDisable(false);
         }
-        stmnt = con.prepareStatement("SELECT "+entryYear+" FROM "+entryTypeTable+" WHERE `revCenter` =" +
-                " '"+revCenter+"' GROUP  BY "+entryYear+"");
+        if (cmbEntryType.getSelectionModel().getSelectedItem().equals("Bank Details")){
+            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`Year` FROM " +
+                    "`collection_payment_entries`,`cheque_details` WHERE `collection_payment_entries`.`revCenter` = " +
+                    "'" + revCenter + "' AND `collection_payment_entries`.`ID` = `cheque_details`.`payment_ID` GROUP " +
+                    " BY `collection_payment_entries`.`Year`");
+
+            acEntryYear = "Year";
+        }else {
+            stmnt = con.prepareStatement("SELECT " + entryYear + " FROM " + entryTypeTable + " WHERE `revCenter` =" +
+                    " '" + revCenter + "' GROUP  BY " + entryYear + "");
+        }
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();
         while(rs.next()){
@@ -415,7 +418,6 @@ public class UpdateEntriesController implements Initializable {
         }
         cmbEntryYear.getItems().clear();
         cmbEntryYear.getItems().addAll(entryYears);
-        System.out.println(entryTypeTable+"\n"+entryYear+"\n"+entryYears+"\n"+acEntryYear);
     }
 
     @FXML
@@ -454,21 +456,27 @@ public class UpdateEntriesController implements Initializable {
                 break;
         }
         if (cmbEntryType.getSelectionModel().getSelectedItem() == "Revenue Target") {
-        } else {
+        } else {if (cmbEntryType.getSelectionModel().getSelectedItem().equals("Bank Details")){
+            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`Month` FROM" +
+                    " `collection_payment_entries`,`cheque_details` WHERE `collection_payment_entries`.`revCenter`" +
+                    " = '" + revCenter + "' AND `collection_payment_entries`.`ID` = `cheque_details`.`payment_ID`" +
+                    " AND `collection_payment_entries`.`Year` = '" + cmbEntryYear.getSelectionModel().
+                    getSelectedItem() + "' GROUP BY `collection_payment_entries`.`Month`");
+
+            acEntryMonth = "Month";
+        }else {
             stmnt = con.prepareStatement("SELECT " + entryMonth + " FROM " + entryTypeTable + " WHERE `revCenter` = " +
-                    "'" + revCenter + "' AND " + entryYear + " = '" + cmbEntryYear.getSelectionModel().
-                    getSelectedItem() + "' GROUP  BY " + entryMonth + "");
+                    "'" + revCenter + "' AND " + entryYear + " = '" + cmbEntryYear.getSelectionModel().getSelectedItem() + "' GROUP  BY " + entryMonth + "");
+        }
             ResultSet rs = stmnt.executeQuery();
             ResultSetMetaData rm = rs.getMetaData();
             int col = rs.getFetchSize();
             while (rs.next()) {
                 String Month = rs.getString(acEntryMonth);
-                System.out.println(Month);
                 entryMonths.add(Month);
             }
             cmbEntryMonth.getItems().clear();
             cmbEntryMonth.getItems().addAll(entryMonths);
-            System.out.println(entryTypeTable + "\n" + entryMonths + "\n" + entryMonth + "\n" + acEntryMonth + "\n" + rm + "\n" + col);
         }
     }
 
@@ -668,7 +676,8 @@ public class UpdateEntriesController implements Initializable {
             year = rs.getString("Year");
             getTargetReport = new GetTargetEnt(rs.getString("target_ID"), center, amount, year);
             tblTargetEntries.getItems().add(getTargetReport);
-        }}
+        }
+    }
 
     void getBankDetails() throws SQLException {
         paneNothing.setVisible(false);
@@ -696,11 +705,21 @@ public class UpdateEntriesController implements Initializable {
         colChqNmb.setCellValueFactory(d -> d.getValue().chequeNumberProperty());
         colPayChqDate.setCellValueFactory(d -> d.getValue().dateProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
-            stmnt = con.prepareStatement("SELECT * FROM  `cheque_details` WHERE `revCenter` = '"+revCenter+"' AND " +
-                    "`year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"'");
+            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
+                    "`collection_payment_entries`.`date`, `cheque_details`.`cheque_date`, `cheque_details`." +
+                    "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount` FROM `cheque_details`," +
+                    " `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` = '"+revCenter+"'" +
+                    " AND `collection_payment_entries`.`year` = '"+cmbEntryYear.getSelectionModel().
+                    getSelectedItem()+"' AND `collection_payment_entries`.`ID` = `cheque_details`.`payment_ID`");
         }else{
-            stmnt = con.prepareStatement("SELECT * FROM  `cheque_details` WHERE `revCenter` = '"+revCenter+"' AND " +
-                    "`year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"' AND `month` = '"+month+"'");
+            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
+                    "`collection_payment_entries`.`date`, `cheque_details`.`cheque_date`, `cheque_details`." +
+                    "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount` FROM `cheque_details`," +
+                    " `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` = '"+revCenter+"'" +
+                    " AND `collection_payment_entries`.`year` = '"+cmbEntryYear.getSelectionModel().
+                    getSelectedItem()+"' AND `collection_payment_entries`.`month` = '"+cmbEntryMonth.
+                    getSelectionModel().getSelectedItem()+"' AND `collection_payment_entries`.`ID` = " +
+                    "`cheque_details`.`payment_ID`");
         }
         rs = stmnt.executeQuery();
         while(rs.next()) {
@@ -712,7 +731,8 @@ public class UpdateEntriesController implements Initializable {
             Amount = getFunctions.getAmount(rs.getString("amount"));
             getBankReport = new GetBankDetails(GCR, date, chqDate, chqNumber, Bank, Amount);
             tblChequeDetails.getItems().add(getBankReport);
-        }}
+        }
+    }
 
     void getValueBooks() throws SQLException {
         paneNothing.setVisible(false);

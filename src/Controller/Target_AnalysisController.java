@@ -115,7 +115,7 @@ public class Target_AnalysisController implements Initializable {
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revCenter` FROM `daily_entries` WHERE 1 GROUP BY `revCenter` ");
+            stmnt = con.prepareStatement("SELECT `revCenter` FROM `target_entries` WHERE 1 GROUP BY `revCenter` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -137,7 +137,7 @@ public class Target_AnalysisController implements Initializable {
     
      
     private void getReportYear() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        stmnt = con.prepareStatement(" SELECT `Year` FROM `target_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -168,8 +168,9 @@ public class Target_AnalysisController implements Initializable {
        float targAmount=0 ;
        String acTargAmount="";
         NumberFormat formatter = new DecimalFormat("#,##0.00");
-        NumberFormat percent = NumberFormat.getPercentInstance();
-        percent.setMinimumFractionDigits(4);
+        NumberFormat percent = new DecimalFormat("0.0000%");
+//        NumberFormat percent = NumberFormat.getPercentInstance();
+//        percent.setMinimumFractionDigits(4);
        int row = 0 ;        
        int col = meta.getColumnCount();
        while(rs.next()){
@@ -192,12 +193,12 @@ public class Target_AnalysisController implements Initializable {
         for(String month : collectionMonth){            
            totRevenue = setReptMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
            cumuRevenue += totRevenue;
-           cumuPercent = cumuRevenue / targAmount;
+           cumuPercent = (cumuRevenue / targAmount);
            outRevenue = targAmount - cumuRevenue;
-           outPercent = outRevenue / targAmount;
+           outPercent = (outRevenue / targAmount);
            if (outRevenue<0){               
            acOutRevenue = "("+formatter.format(Math.abs(outRevenue))+")";
-           acOutPercent = "("+percent.format(Math.abs(outPercent))+")";           
+           acOutPercent = "("+percent.format(Math.abs(outPercent))+")";
            }else{
                acOutRevenue = formatter.format(outRevenue);
                acOutPercent = percent.format(outPercent);
@@ -222,11 +223,10 @@ public class Target_AnalysisController implements Initializable {
            colPercOut.setCellValueFactory(data -> data.getValue().outPercentProperty());
            getReport = new GetTargAnalReport(month, actotRevenue, acCumuRevenue, acCumPercent,acOutRevenue, acOutPercent);
            tblColPayAnalysis.getItems().add(getReport);
-           System.out.println(totRevenue +" "+cumuRevenue+" "+outRevenue+" "+cumuPercent+ " "+outPercent);
            totRevenue = 0;
-        
-    }
-   }
+           }
+       }
+
          
        public Float setReptMonthSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;

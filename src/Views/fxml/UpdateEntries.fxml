@@ -319,7 +319,6 @@
             <AnchorPane layoutX="71.0" layoutY="242.0">
                <children>
                   <Spinner fx:id="spnPaymentYear" initialValue="2021" layoutX="-5.0" max="2080" min="1980" prefHeight="30.0" prefWidth="111.0" />
-                  <Label fx:id="lblYearPayment" layoutX="24.0" layoutY="6.0" text="YEAR" />
                </children>
             </AnchorPane>
             <JFXTextField fx:id="txtPaymentAmount" alignment="CENTER" focusColor="#0d832d" labelFloat="true" layoutX="67.0" layoutY="124.0" onKeyTyped="#onlyAmount" prefHeight="25.0" prefWidth="118.0" promptText="AMOUNT" unFocusColor="#0aab27" />

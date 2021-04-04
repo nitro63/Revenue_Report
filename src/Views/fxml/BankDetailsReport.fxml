@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import java.net.URL?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -11,9 +10,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="597.0" prefWidth="968.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="620.0" prefWidth="968.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="880.0" layoutY="10.0" onAction="#printReport" text="PRINT">
+      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="870.0" layoutY="577.0" onAction="#printReport" text="PRINT">
          <effect>
             <DropShadow />
          </effect>
@@ -26,7 +25,7 @@
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <TableView fx:id="tblBankDetails" layoutX="32.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="904.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="110.0">
+      <TableView fx:id="tblBankDetails" layoutX="32.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="904.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="99.0">
          <columns>
             <TableColumn fx:id="colDate" maxWidth="1500.0" prefWidth="126.0" text="DATE" />
             <TableColumn fx:id="colGCRNumber" maxWidth="400.0" minWidth="99.0" prefWidth="126.0">
@@ -59,7 +58,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane layoutX="275.0" layoutY="74.0">
+      <AnchorPane layoutX="717.0" layoutY="56.0">
          <children>
             <Label text="MONTH:">
                <font>
@@ -73,11 +72,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXComboBox fx:id="cmbRevCenter" layoutX="280.0" layoutY="42.0" onAction="#loadYears" prefHeight="17.0" prefWidth="150.0" promptText="      REVENUE CENTER" AnchorPane.topAnchor="42.0" />
-      <JFXComboBox fx:id="cmbYear" layoutX="485.0" layoutY="40.0" onAction="#loadMonths" prefHeight="25.0" prefWidth="108.0" promptText="        YEAR" AnchorPane.topAnchor="40.0" />
-      <JFXComboBox fx:id="cmbMonth" layoutX="656.0" layoutY="40.0" prefHeight="25.0" prefWidth="108.0" promptText="      MONTH" AnchorPane.topAnchor="40.0" />
-      <JFXButton fx:id="btnShowReport" buttonType="RAISED" layoutX="789.0" layoutY="42.0" onAction="#showReport" text="SHOW REPORT" textAlignment="CENTER" />
-      <AnchorPane layoutX="75.0" layoutY="74.0">
+      <AnchorPane layoutX="517.0" layoutY="56.0">
          <children>
             <Label layoutY="2.0" text="YEAR:">
                <font>
@@ -91,14 +86,14 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="526.0" layoutY="76.0">
+      <AnchorPane layoutX="42.0" layoutY="59.0" prefHeight="28.0" prefWidth="410.0">
          <children>
             <Label text="REVENUE CENTER:">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblRevenueCenter" layoutX="168.0" text="NAN">
+            <Label fx:id="lblRevenueCenter" layoutX="168.0" prefHeight="28.0" prefWidth="241.0" text="NAN" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
