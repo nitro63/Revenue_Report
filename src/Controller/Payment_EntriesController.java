@@ -113,6 +113,7 @@ public class Payment_EntriesController implements Initializable {
     Map<String, ArrayList<String>> monthGCR = new HashMap<>();
     Map<String, Map<String, ArrayList<String>>> dateGCR = new HashMap<>();
     Map<String, ArrayList<String>> typeSerials = new HashMap<>();
+    Map<String, String> codeGCR = new HashMap<>();
     Map<String, String> gcrID = new HashMap<>();
     int count;
     @FXML
@@ -403,40 +404,69 @@ public class Payment_EntriesController implements Initializable {
 
                 if (acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")) {
                     count++;
+
                     if (dateGCR.isEmpty() || !dateGCR.containsKey(acDate)) {
                         dateGCR.put(acDate, new HashMap<>());
                         dateGCR.get(acDate).put(acMonth, new ArrayList<>());
-                        dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
+                        if (acType.equals("Cheque")){
+                        dateGCR.get(acDate).get(acMonth).add("Chq-"+getData.getGCR());
+                        }else {
+                            dateGCR.get(acDate).get(acMonth).add("ChqDps-"+getData.getGCR());
+                        }
                     } else if (dateGCR.containsKey(acDate) && !dateGCR.get(acDate).containsKey(acMonth)) {
                         dateGCR.get(acDate).put(acMonth, new ArrayList<>());
-                        dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
+                        if (acType.equals("Cheque")){
+                        dateGCR.get(acDate).get(acMonth).add("Chq-"+getData.getGCR());
+                        }else {
+                            dateGCR.get(acDate).get(acMonth).add("ChqDps-"+getData.getGCR());
+                        }
                     } else if (dateGCR.containsKey(acDate) && dateGCR.get(acDate).containsKey(acMonth) && !dateGCR.
-                            get(acDate).get(acMonth).contains(getData.getGCR())) {
-                        dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
+                            get(acDate).get(acMonth).contains("Chq-" + getData.getGCR())
+                            && acType.equals("Cheque")) {
+                        dateGCR.get(acDate).get(acMonth).add("Chq-"+getData.getGCR());
+                    }else if (dateGCR.containsKey(acDate) && dateGCR.get(acDate).containsKey(acMonth) && !dateGCR.
+                            get(acDate).get(acMonth).contains("ChqDps-" + getData.getGCR())
+                            && acType.equals("Cheque Deposit Slip")) {
+                        dateGCR.get(acDate).get(acMonth).add("ChqDps-"+getData.getGCR());
                     }
+
+
                     if (monthGCR.isEmpty() || !monthGCR.containsKey(acMonth)) {
                         monthGCR.put(acMonth, new ArrayList<>());
-                        monthGCR.get(acMonth).add(getData.getGCR());
-                    } else if (monthGCR.containsKey(acMonth) && !monthGCR.get(acMonth).contains(getData.getGCR())) {
-                        monthGCR.get(acMonth).add(getData.getGCR());
+                        if (acType.equals("Cheque")){
+                        monthGCR.get(acMonth).add("Chq-"+getData.getGCR());
+                        }else {
+                            monthGCR.get(acMonth).add("ChqDps-"+getData.getGCR());
+                        }
+                    } else if (monthGCR.containsKey(acMonth) && !monthGCR.get(acMonth).contains("Chq-" + getData.getGCR())
+                            && acType.equals("Cheque")) {
+                        monthGCR.get(acMonth).add("Chq-"+getData.getGCR());
+                    }else if (monthGCR.containsKey(acMonth) && !monthGCR.get(acMonth).contains("ChqDps-" + getData.getGCR())
+                            && acType.equals("Cheque Deposit Slip")) {
+                        monthGCR.get(acMonth).add("ChqDps-"+getData.getGCR());
                     }
+
                     if (regGcr.isEmpty() || !regGcr.containsKey(acYear)) {
                         regGcr.put(acYear, new ArrayList<>());
                         if (acType.equals("Cheque")) {
-                            regGcr.get(acYear).add("Che-" + getData.getGCR());
+                            regGcr.get(acYear).add("Chq-" + getData.getGCR());
+                            codeGCR.put("Chq-" + getData.getGCR(), getData.getGCR());
                         } else {
                             regGcr.get(acYear).add("ChqDpS-" + getData.getGCR());
+                            codeGCR.put("ChqDpS-" + getData.getGCR(), getData.getGCR());
                         }
-                    } else if (regGcr.containsKey(acYear) && !regGcr.get(acYear).contains(getData.getGCR())) {
-                        if (acType.equals("Cheque")) {
-                            regGcr.get(acYear).add("Che-" + getData.getGCR());
-                        } else {
+                    } else if (regGcr.containsKey(acYear) && !regGcr.get(acYear).contains("Chq-" + getData.getGCR()) &&
+                            acType.equals("Cheque")) {
+                            regGcr.get(acYear).add("Chq-" + getData.getGCR());
+                        codeGCR.put("Chq-" + getData.getGCR(), getData.getGCR());
+                    }else if (regGcr.containsKey(acYear) && !regGcr.get(acYear).contains("ChqDps-" + getData.getGCR())
+                            && acType.equals("Cheque Deposit Slip")) {
                             regGcr.get(acYear).add("ChqDpS-" + getData.getGCR());
-                        }
+                            codeGCR.put("ChqDpS-" + getData.getGCR(), getData.getGCR());
                     }
                 }
                 stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE  " +
-                        "`revCenter` = '" + acCENTER + "' AND `GCR` = '" + acGCR + "' AND `payment_type` = '" + acType + "'");
+                        "`pay_revCenter` = '" + acCENTER + "' AND `GCR` = '" + acGCR + "' AND `payment_type` = '" + acType + "'");
                 ResultSet res = stmnt.executeQuery();
                 while (res.next()) {
                     duplicate.add(res.getString("GCR"));
@@ -450,7 +480,7 @@ public class Payment_EntriesController implements Initializable {
                     boolean condition = true;
                     ArrayList<String> dup = new ArrayList<>();
                     while (condition) {
-                        stmnt = con.prepareStatement("SELECT `ID` FROM `collection_payment_entries` WHERE `ID` = " +
+                        stmnt = con.prepareStatement("SELECT `pay_ID` FROM `collection_payment_entries` WHERE `pay_ID` = " +
                                 "'" + fini + "' ");
                         ResultSet rt = stmnt.executeQuery();
                         while (rt.next()) {
@@ -474,8 +504,8 @@ public class Payment_EntriesController implements Initializable {
                             typeSerials.get(acType).add(fini);
                         }
                     }
-                    stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`revCenter`, `GCR`," +
-                            " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `ID`) VALUES ('" + acCENTER + "', '" +
+                    stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`pay_revCenter`, `GCR`," +
+                            " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `pay_ID`) VALUES ('" + acCENTER + "', '" +
                             acGCR + "' ,'" + acAMOUNT + "', '" + acDate + "', '" + acMonth + "', '" + acYEAR + "', '" +
                             acType + "', '" + fini + "')");
                     stmnt.executeUpdate();

@@ -7,6 +7,7 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,7 +85,7 @@ public  appController() {
     }
 
     @FXML
-    private void showSGRE(ActionEvent event) throws IOException {
+    private void showSGRE(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader loadsgre = new FXMLLoader();
         loadsgre.setLocation(getClass().getResource( "/Views/fxml/entries_side.fxml"));
         loadsgre.setController(new entries_sideController(GetCenter));

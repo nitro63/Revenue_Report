@@ -115,7 +115,7 @@ public class Target_AnalysisController implements Initializable {
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revCenter` FROM `target_entries` WHERE 1 GROUP BY `revCenter` ");
+            stmnt = con.prepareStatement("SELECT `target_revCenter` FROM `target_entries` WHERE 1 GROUP BY `target_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -137,7 +137,8 @@ public class Target_AnalysisController implements Initializable {
     
      
     private void getReportYear() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `Year` FROM `target_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
+        stmnt = con.prepareStatement(" SELECT `Year` FROM `target_entries` WHERE `target_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -162,7 +163,9 @@ public class Target_AnalysisController implements Initializable {
     } 
     
     private void setItems() throws SQLException {
-        stmnt = con.prepareStatement(" SELECT `Amount`   FROM `target_entries` WHERE  `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'  ");
+        stmnt = con.prepareStatement(" SELECT `Amount`   FROM `target_entries` WHERE  `target_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.
+                getSelectionModel().getSelectedItem()+"'  ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        float targAmount=0 ;
@@ -230,7 +233,8 @@ public class Target_AnalysisController implements Initializable {
          
        public Float setReptMonthSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+Month+"' AND `revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
+       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+
+               Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        

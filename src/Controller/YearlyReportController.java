@@ -118,7 +118,7 @@ public class YearlyReportController implements Initializable {
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revCenter` FROM `daily_entries` WHERE 1 GROUP BY `revCenter` ");
+            stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -137,7 +137,8 @@ public class YearlyReportController implements Initializable {
     }
     
     private void getReportYear1() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -157,7 +158,9 @@ public class YearlyReportController implements Initializable {
     }
     
     private void getReportYear2() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueYear` LIMIT 5");
+        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+
+                cmbReportYear1.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueYear` LIMIT 5");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -177,7 +180,10 @@ public class YearlyReportController implements Initializable {
     }
     
     private void getYears() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueYear` ");
+        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+cmbReportYear1.
+                getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().
+                getSelectedItem()+"' GROUP BY `revenueYear` ");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -233,7 +239,10 @@ public class YearlyReportController implements Initializable {
     }
     
       private void setItems() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
+        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` >= '"+
+                cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+
+                cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int col = meta.getColumnCount();
@@ -322,7 +331,8 @@ public class YearlyReportController implements Initializable {
       
        public Float setYearSum(String Center, String item, String Year1) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+item+"' AND `revenueYear` = '"+Year1+"'AND `revCenter` = '"+Center+"'");
+       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+
+               item+"' AND `revenueYear` = '"+Year1+"'AND `daily_revCenter` = '"+Center+"'");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        

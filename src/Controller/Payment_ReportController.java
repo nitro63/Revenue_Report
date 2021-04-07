@@ -114,7 +114,7 @@ public class Payment_ReportController implements Initializable {
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revCenter` FROM `collection_payment_entries` WHERE 1 GROUP BY `revCenter` ");
+            stmnt = con.prepareStatement("SELECT `pay_revCenter` FROM `collection_payment_entries` WHERE 1 GROUP BY `pay_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -135,7 +135,7 @@ public class Payment_ReportController implements Initializable {
     }
     
     private void getReportYear() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `Year` FROM `collection_payment_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
+        stmnt = con.prepareStatement(" SELECT `Year` FROM `collection_payment_entries` WHERE `pay_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -155,7 +155,7 @@ public class Payment_ReportController implements Initializable {
     }
     
     private void getMonths() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries` WHERE  `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
+        stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries` WHERE  `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `pay_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -184,7 +184,7 @@ public class Payment_ReportController implements Initializable {
         String Date = "", GCR = "", payment_type = "", acAmount = "", acCumuAmount = "";
         float amount = 0, cumuAmount = 0;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
-        stmnt = con.prepareStatement("SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `collection_payment_entries` WHERE `Month`= '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'");
+        stmnt = con.prepareStatement("SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `collection_payment_entries` WHERE `Month`= '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `pay_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();
         int col = rm.getColumnCount();

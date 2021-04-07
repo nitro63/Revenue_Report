@@ -155,7 +155,7 @@ public class BankDetailsReportController implements Initializable {
 //            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
 //                    "`collection_payment_entries`.`date`, `cheque_details`.`cheque_date`, " +
 //                    "`cheque_details`.`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount` FROM" +
-//                    " `cheque_details`, `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` =" +
+//                    " `cheque_details`, `collection_payment_entries` WHERE `collection_payment_entries`.`pay_revCenter` =" +
 //                    " '"+payRep.Center+"' AND `collection_payment_entries`.`year`" +
 //                    " = '"+payRep.Year+"' AND `collection_payment_entries`.`month` " +
 //                    "= '"+payRep.Month+"' AND `collection_payment_entries`.`ID` =" +
@@ -193,10 +193,10 @@ public class BankDetailsReportController implements Initializable {
         stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
                 "`collection_payment_entries`.`date`, `cheque_details`.`cheque_date`, " +
                 "`cheque_details`.`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount` FROM" +
-                " `cheque_details`, `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` =" +
+                " `cheque_details`, `collection_payment_entries` WHERE `collection_payment_entries`.`pay_revCenter` =" +
                 " '"+payRep.Center+"' AND `collection_payment_entries`.`year`" +
                 " = '"+payRep.Year+"' AND `collection_payment_entries`.`month` " +
-                "= '"+payRep.Month+"' AND `collection_payment_entries`.`ID` =" +
+                "= '"+payRep.Month+"' AND `collection_payment_entries`.`pay_ID` =" +
                 " `cheque_details`.`payment_ID`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();

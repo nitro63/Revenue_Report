@@ -195,7 +195,7 @@ public class ReportController implements Initializable {
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revCenter` FROM `daily_entries` WHERE 1 GROUP BY `revCenter` ");
+            stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -213,7 +213,7 @@ public class ReportController implements Initializable {
     }
     private void getReportYear() throws SQLException{
         stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE " +
-                "`revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+                "`daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -228,7 +228,7 @@ public class ReportController implements Initializable {
     
     private void getReportMonth() throws SQLException{
         stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE " +
-                "`revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND " +
+                "`daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND " +
                 "`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
@@ -250,7 +250,7 @@ public class ReportController implements Initializable {
     
     private void getReportWeek() throws SQLException{
         stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE " +
-                "`revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND " +
+                "`daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND " +
                 "`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND" +
                 " `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueWeek`");
         ResultSet rs = stmnt.executeQuery();
@@ -310,7 +310,10 @@ public class ReportController implements Initializable {
 
     
     private void getWeekly() throws SQLException, ParseException {
-        stmnt = con.prepareStatement(" SELECT `revenueDate` FROM `daily_entries` WHERE   `revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueDate`");
+        stmnt = con.prepareStatement(" SELECT `revenueDate` FROM `daily_entries` WHERE   `revenueWeek` = '"+
+                cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.
+                getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().
+                getSelectedItem()+"' GROUP BY `revenueDate`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int col = meta.getColumnCount();
@@ -402,7 +405,10 @@ public class ReportController implements Initializable {
           * Retrieving Revenue Items from database per week selected
           * Put Revenue Items into a list for later use
          ***/
-        stmnt = con.prepareStatement(" SELECT `revenueItem`   FROM `daily_entries` WHERE   `revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem` ");
+        stmnt = con.prepareStatement(" SELECT `revenueItem`   FROM `daily_entries` WHERE   `revenueWeek` = '"+
+                cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.
+                getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().
+                getSelectedItem()+"' GROUP BY `revenueItem` ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        
@@ -418,7 +424,10 @@ public class ReportController implements Initializable {
         * Retrieving revenue items and their respective Amount and Dates in an ordered form by revenueItem 
         * 
        ***/
-       stmnt =con.prepareStatement(" SELECT  `revenueItem`, `revenueAmount`, `revenueDate` FROM `daily_entries` WHERE   `revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `revenueItem` ");
+       stmnt =con.prepareStatement(" SELECT  `revenueItem`, `revenueAmount`, `revenueDate` FROM `daily_entries`" +
+               " WHERE   `revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
+               cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.
+               getSelectionModel().getSelectedItem()+"' ORDER BY `revenueItem` ");
        ResultSet rt = stmnt.executeQuery();
        ResultSetMetaData Meta = rt.getMetaData();
        int Col = Meta.getColumnCount();

@@ -233,6 +233,16 @@ public class Bank_DetailsEntriesController implements Initializable {
         }
         return id;
     }
+    public String getcodeGcr(String Gcr, Map<String, String> codeGCR){
+        String id = "";
+        for(Map.Entry<String, String>gCrID :codeGCR.entrySet()) {
+            if(gCrID.getKey().equals(Gcr)){
+                id = gCrID.getValue();
+            }
+        }
+        return id;
+    }
+
 
     @FXML
     void SaveToDatabase(ActionEvent event) throws SQLException {
@@ -259,7 +269,6 @@ public class Bank_DetailsEntriesController implements Initializable {
         }else{
             for(int i = 0; i < tblCollectEnt.getItems().size(); i++){
                     getData = tblCollectEnt.getItems().get(i);
-                    int acGCR = Integer.parseInt(getData.getGCR());
                     int acChqNmb = Integer.parseInt(getData.getChequeNumber());
                     String acMonth = getData.getMonth();
                     String amount = getData.getAmount();
@@ -272,7 +281,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                     String center = colEnt.GetCenter.getRevCenter();
                     String year = getData.getYear();
                     ID = getGcrID(getData.getGCR(), colEnt.gcrID);
-
+                    System.out.println("Fred"+ID);
                 String fini = "chq"+colEnt.getID();
                 boolean condition = true;
                 ArrayList<String> dup = new ArrayList<>();
@@ -289,11 +298,11 @@ public class Bank_DetailsEntriesController implements Initializable {
                         i=tblCollectEnt.getItems().size();
                     }else {
                         while (condition){
-                            stmnt = con.prepareStatement("SELECT `ID` FROM `cheque_details` WHERE `ID` = " +
+                            stmnt = con.prepareStatement("SELECT `cheque_ID` FROM `cheque_details` WHERE `cheque_ID` = " +
                                     "'" + fini + "' ");
                             ResultSet rt = stmnt.executeQuery();
                             while (rt.next()){
-                                dup.add(rt.getString("ID"));
+                                dup.add(rt.getString("cheque_ID"));
                             }
                             if (dup.contains(fini)){
                                 fini = "chq"+colEnt.getID();
@@ -302,7 +311,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                             }
                         }
                     stmnt = con.prepareStatement("INSERT INTO  `cheque_details`" +
-                            "( `ID`, `cheque_date`, `cheque_number`, `bank`," +
+                            "( `cheque_ID`, `cheque_date`, `cheque_number`, `bank`," +
                             " `amount`, `payment_ID`) VALUES ('" + fini + "','" + acChqDate + "', " +
                             "'" + acChqNmb + "', '" + acBank + "', '" + acAMOUNT + "',  '" + ID + "')");
                     stmnt.executeUpdate();
@@ -343,6 +352,7 @@ public class Bank_DetailsEntriesController implements Initializable {
 
     @FXML
     void saveEntries(ActionEvent event) {
+//        getcodeGcr(cmbGCR.getSelectionModel().getSelectedItem(),colEnt.codeGCR)
         GCR = cmbGCR.getSelectionModel().getSelectedItem();
         Bank = txtBankName.getText();
         for(Map.Entry<String, ArrayList<String>>GcRdate :colEnt.monthGCR.entrySet()) {
@@ -419,6 +429,8 @@ public class Bank_DetailsEntriesController implements Initializable {
                         txtAmount.clear();
                         Condition =false;
                     }else{
+                        String gcr = cmbGCR.getSelectionModel().getSelectedItem().substring(cmbGCR.getSelectionModel().getSelectedItem().lastIndexOf("-")+1);
+                        System.out.println("Fred"+"\n"+gcr+"\n"+getGcrID(cmbGCR.getSelectionModel().getSelectedItem(), colEnt.gcrID)+"\n"+colEnt.gcrID);
                         getReport = new GetBankDetails(GCR, Year, Month, Date, chqDate, chqNumber, Bank, Amount);
                         tblCollectEnt.getItems().add(getReport);
                         Condition = false;

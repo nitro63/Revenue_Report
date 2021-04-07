@@ -121,7 +121,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revCenter` FROM `daily_entries` WHERE 1 GROUP BY `revCenter` ");
+            stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -143,7 +143,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     
      
     private void getReportYear() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -203,7 +203,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
         
        public Float setReptMonthSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+Month+"' AND `revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
+       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        
@@ -234,7 +234,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
         
        public Float setPayMonthSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `Amount`   FROM `collection_payment_entries` WHERE `Month` = '"+Month+"' AND `revCenter` = '"+Center+"' AND `Year` = '"+Year+"'  ");
+       stmnt = con.prepareStatement(" SELECT `Amount`   FROM `collection_payment_entries` WHERE `Month` = '"+Month+"' AND `pay_revCenter` = '"+Center+"' AND `Year` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        

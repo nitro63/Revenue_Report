@@ -200,7 +200,7 @@ public class MasterQuarterCentersController implements Initializable {
     }
     
     private void setItems() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revCenter` FROM `daily_entries` WHERE   `revenueYear` = '"+cmMstCentersYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbMstCentersQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revCenter`");
+        stmnt = con.prepareStatement(" SELECT `daily_revCenter` FROM `daily_entries` WHERE   `revenueYear` = '"+cmMstCentersYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbMstCentersQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `daily_revCenter`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int col = meta.getColumnCount();
@@ -281,7 +281,7 @@ public class MasterQuarterCentersController implements Initializable {
     
        public Float setMonthSum(String Center, String Month, String Year, String Quarter) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revCenter` = '"+Center+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' ");
+       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `daily_revCenter` = '"+Center+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        

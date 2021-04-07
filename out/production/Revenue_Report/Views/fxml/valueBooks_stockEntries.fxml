@@ -132,10 +132,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <TableView fx:id="tblValueBookStocks" layoutX="19.0" layoutY="127.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="1012.0">
+      <TableView fx:id="tblValueBookStocks" layoutX="3.0" layoutY="127.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="1042.0">
          <columns>
             <TableColumn fx:id="colYear" editable="false" prefWidth="66.0" text="YEAR" />
+            <TableColumn fx:id="colQuarter" editable="false" prefWidth="66.0" text="QUARTER" />
             <TableColumn fx:id="colMonth" editable="false" prefWidth="66.0" text="MONTH" />
+            <TableColumn fx:id="colWeek" editable="false" minWidth="0.0" prefWidth="86.0" text="WEEK" />
             <TableColumn fx:id="colDATE" editable="false" minWidth="0.0" prefWidth="86.0" text="DATE" />
             <TableColumn fx:id="colTypeVB" editable="false" prefWidth="143.0">
                <graphic>
@@ -150,7 +152,10 @@
             </TableColumn>
             <TableColumn fx:id="colQuantity" editable="false" prefWidth="167.0">
                <graphic>
-                  <Label prefHeight="34.0" prefWidth="116.0" text="QUANTITY(Books/ Booklets)" textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="34.0" prefWidth="116.0" text="QUANTITY(Books/ Booklets)" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="10.0" />
+                     </font></Label>
                </graphic>
             </TableColumn>
             <TableColumn fx:id="colAmtVal" editable="false" prefWidth="121.0">

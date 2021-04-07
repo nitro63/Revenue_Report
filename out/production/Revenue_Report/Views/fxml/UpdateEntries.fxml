@@ -26,11 +26,43 @@
                   <Label prefHeight="24.0" prefWidth="78.0" text="STOCK ID" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colStckMonth" editable="false" prefWidth="66.0" text="MONTH" />
-            <TableColumn fx:id="colStckDATE" editable="false" minWidth="0.0" prefWidth="68.0" text="DATE" />
+            <TableColumn fx:id="colStckYear" editable="false" prefWidth="66.0">
+               <graphic>
+                  <Label text="YEAR" />
+               </graphic>
+            </TableColumn>
+            <TableColumn fx:id="colStckQuarter" editable="false" prefWidth="66.0">
+               <graphic>
+                  <Label text="QUARTER">
+                     <font>
+                        <Font name="System Bold" size="9.5" />
+                     </font>
+                  </Label>
+               </graphic>
+            </TableColumn>
+            <TableColumn fx:id="colStckMonth" editable="false" prefWidth="66.0">
+               <graphic>
+                  <Label text="MONTH" />
+               </graphic></TableColumn>
+            <TableColumn fx:id="colStckWeek" editable="false" prefWidth="66.0">
+               <graphic>
+                  <Label text="WEEK">
+                     <font>
+                        <Font name="System Bold" size="9.5" />
+                     </font>
+                  </Label>
+               </graphic>
+            </TableColumn>
+            <TableColumn fx:id="colStckDATE" editable="false" minWidth="0.0" prefWidth="68.0">
+               <graphic>
+                  <Label text="DATE" />
+               </graphic></TableColumn>
             <TableColumn fx:id="colStckTypeVB" editable="false" prefWidth="109.0">
                <graphic>
-                  <Label text="TYPE OF VALUE BOOK" textAlignment="CENTER" wrapText="true" />
+                  <Label text="TYPE OF VALUE BOOK" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="9.5" />
+                     </font></Label>
                </graphic></TableColumn>
             <TableColumn editable="false" prefWidth="134.0" text="SERIAL NUMBER">
                <columns>
@@ -40,19 +72,31 @@
             </TableColumn>
             <TableColumn fx:id="colStckQuantity" editable="false" minWidth="18.0" prefWidth="85.0">
                <graphic>
-                  <Label prefHeight="45.0" prefWidth="100.0" text="QUANTITY(Books/ Booklets)" wrapText="true" />
+                  <Label prefHeight="45.0" prefWidth="100.0" text="QUANTITY(Books/ Booklets)" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="9.5" />
+                     </font></Label>
                </graphic></TableColumn>
             <TableColumn fx:id="colStckAmtVal" editable="false" minWidth="-1.0" prefWidth="110.0">
                <graphic>
-                  <Label prefHeight="34.0" prefWidth="77.0" text="AMOUNT (VALUE)" textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="34.0" prefWidth="77.0" text="AMOUNT (VALUE)" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="9.5" />
+                     </font></Label>
                </graphic></TableColumn>
             <TableColumn fx:id="colStckPurAmt" editable="false" prefWidth="116.0">
                <graphic>
-                  <Label text="PURCHASE AMOUNT" textAlignment="CENTER" wrapText="true" />
+                  <Label text="PURCHASE AMOUNT" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="9.5" />
+                     </font></Label>
                </graphic></TableColumn>
             <TableColumn fx:id="colRemarks" maxWidth="100.0" minWidth="80.0" prefWidth="100.0">
                <graphic>
-                  <Label prefHeight="24.0" prefWidth="78.0" text="REMARKS" textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="24.0" prefWidth="78.0" text="REMARKS" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="9.5" />
+                     </font></Label>
                </graphic>
             </TableColumn>
          </columns>

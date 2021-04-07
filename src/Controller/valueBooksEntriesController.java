@@ -376,7 +376,8 @@ public class valueBooksEntriesController implements Initializable {
         String regex = "(?<=[\\d])(,)(?=[\\d])";
         Pattern p = Pattern.compile(regex);
         Matcher m ;
-        for(int f = 0; f<tblValueBookStocks.getItems().size(); f++) {
+        for(int f = 0; f <= tblValueBookStocks.getItems().size(); f++) {
+            if (f != tblValueBookStocks.getItems().size()){
             getData = tblValueBookStocks.getItems().get(f);
             String acMonth = getData.getMonth(),
             acDate = getData.getDate();
@@ -392,7 +393,7 @@ public class valueBooksEntriesController implements Initializable {
             m = p.matcher(getData.getPurAmount());
             float acPurAmount = Float.parseFloat(m.replaceAll(""));
             PreparedStatement stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE " +
-                    "`revCenter` = '"+revCent+"' AND `value_book` = '"+typeOfValBk+"' AND `first_serial` = " +
+                    "`value_stock_revCenter` = '"+revCent+"' AND `value_book` = '"+typeOfValBk+"' AND `first_serial` = " +
                     "'"+acFirstSerial+"' AND `last_serial` = '"+acLastSerial+"'");
             ResultSet res = stmnt.executeQuery();
             while (res.next()){
@@ -402,16 +403,18 @@ public class valueBooksEntriesController implements Initializable {
                 lblDup.setText('"'+acFirstSerial+'"'+" to "+'"'+acLastSerial+'"'+" for "+'"'+typeOfValBk+'"'+"" +
                         " already exist. Please select row of duplicate data to Edit or Delete." );
                 lblDup.setVisible(true);
-                f = tblValueBookStocks.getItems().size();
+                f = tblValueBookStocks.getItems().size() + 1;
             }else {
-                stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, " +
+                stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`value_stock_revCenter`, `year`, " +
                         "`month`,`quarter`, `week`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`," +
                         " `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" +
                         acMonth + "', '" + acQuarter + "', '" + acWeek + "', '" + acDate + "', '" + typeOfValBk
                         + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount
                         + "', '" + acPurAmount + "','" + remarks + "')");
                 stmnt.executeUpdate();
-                tblValueBookStocks.getItems().remove(f);
+            }
+            } else {
+                tblValueBookStocks.getItems().clear();
             }
         }
     }

@@ -437,28 +437,32 @@ public class UpdateEntriesController implements Initializable {
 
     void getYear() throws SQLException {
         ObservableList<String> entryYears = FXCollections.observableArrayList();
-        String entryYear = "", entryTypeTable = "", acEntryYear = "";
+        String entryYear = "", entryTypeTable = "", acEntryYear = "", center = "";
         switch(cmbEntryType.getSelectionModel().getSelectedItem()){
             case "Payments Entries":
                 entryTypeTable = "`collection_payment_entries`";
                 entryYear = "`Year`";
                 acEntryYear = "Year";
+                center = "`pay_revCenter`";
 
                 break;
             case "Revenue Entries":
                 entryTypeTable = "`daily_entries`";
                 entryYear = "`revenueYear`";
                 acEntryYear = "revenueYear";
+                center = "`daily_revCenter`";
                 break;
             case "Revenue Target":
                 entryTypeTable = "`target_entries`";
                 entryYear = "`Year`";
                 acEntryYear = "Year";
+                center = "`target_revCenter`";
                 break;
             case "Value Books Stock":
                 entryTypeTable = "`value_books_stock_record`";
                 entryYear = "`year`";
                 acEntryYear = "year";
+                center = "`value_stock_revCenter`";
                 break;
         }
         if (cmbEntryType.getSelectionModel().getSelectedItem().equals("Revenue Target")){
@@ -468,13 +472,13 @@ public class UpdateEntriesController implements Initializable {
         }
         if (cmbEntryType.getSelectionModel().getSelectedItem().equals("Bank Details")){
             stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`Year` FROM " +
-                    "`collection_payment_entries`,`cheque_details` WHERE `collection_payment_entries`.`revCenter` = " +
-                    "'" + revCenter + "' AND `collection_payment_entries`.`ID` = `cheque_details`.`payment_ID` GROUP " +
+                    "`collection_payment_entries`,`cheque_details` WHERE `collection_payment_entries`.`pay_revCenter` = " +
+                    "'" + revCenter + "' AND `collection_payment_entries`.`pay_ID` = `cheque_details`.`payment_ID` GROUP " +
                     " BY `collection_payment_entries`.`Year`");
 
             acEntryYear = "Year";
         }else {
-            stmnt = con.prepareStatement("SELECT " + entryYear + " FROM " + entryTypeTable + " WHERE `revCenter` =" +
+            stmnt = con.prepareStatement("SELECT " + entryYear + " FROM " + entryTypeTable + " WHERE "+center+" =" +
                     " '" + revCenter + "' GROUP  BY " + entryYear + "");
         }
         ResultSet rs = stmnt.executeQuery();
@@ -491,7 +495,7 @@ public class UpdateEntriesController implements Initializable {
     void loadEntryMonths(ActionEvent event) throws SQLException {
         entryTypeYear = cmbEntryYear.getSelectionModel().getSelectedItem();
         ObservableList<String> entryMonths = FXCollections.observableArrayList();
-        String entryYear = "", entryTypeTable = "", entryMonth = "", acEntryMonth = "";
+        String entryYear = "", entryTypeTable = "", entryMonth = "", acEntryMonth = "", center = "";
         switch (cmbEntryType.getSelectionModel().getSelectedItem()) {
             case "Bank Details":
                 entryTypeTable = "`cheque_details`";
@@ -504,35 +508,39 @@ public class UpdateEntriesController implements Initializable {
                 entryYear = "`Year`";
                 entryMonth = "`Month`";
                 acEntryMonth = "Month";
+                center = "`pay_revCenter`";
                 break;
             case "Revenue Entries":
                 entryTypeTable = "`daily_entries`";
                 entryYear = "`revenueYear`";
                 acEntryMonth = "revenueMonth";
                 entryMonth = "`revenueMonth`";
+                center = "`daily_revCenter`";
                 break;
             case "Revenue Target":
                 entryTypeTable = "`target_entries`";
                 entryYear = "`Year`";
+                center = "`target_revCenter`";
                 break;
             case "Value Books Stock":
                 entryTypeTable = "`value_books_stock_record`";
                 entryYear = "`year`";
                 acEntryMonth = "month";
                 entryMonth = "`month`";
+                center = "`value_stock_revCenter`";
                 break;
         }
         if (cmbEntryType.getSelectionModel().getSelectedItem() == "Revenue Target") {
         } else {if (cmbEntryType.getSelectionModel().getSelectedItem().equals("Bank Details")){
             stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`Month` FROM" +
-                    " `collection_payment_entries`,`cheque_details` WHERE `collection_payment_entries`.`revCenter`" +
-                    " = '" + revCenter + "' AND `collection_payment_entries`.`ID` = `cheque_details`.`payment_ID`" +
+                    " `collection_payment_entries`,`cheque_details` WHERE `collection_payment_entries`.`pay_revCenter`" +
+                    " = '" + revCenter + "' AND `collection_payment_entries`.`pay_ID` = `cheque_details`.`payment_ID`" +
                     " AND `collection_payment_entries`.`Year` = '" + cmbEntryYear.getSelectionModel().
                     getSelectedItem() + "' GROUP BY `collection_payment_entries`.`Month`");
 
             acEntryMonth = "Month";
         }else {
-            stmnt = con.prepareStatement("SELECT " + entryMonth + " FROM " + entryTypeTable + " WHERE `revCenter` = " +
+            stmnt = con.prepareStatement("SELECT " + entryMonth + " FROM " + entryTypeTable + " WHERE "+center+" = " +
                     "'" + revCenter + "' AND " + entryYear + " = '" + cmbEntryYear.getSelectionModel().getSelectedItem() + "' GROUP  BY " + entryMonth + "");
         }
             ResultSet rs = stmnt.executeQuery();
@@ -750,9 +758,9 @@ public class UpdateEntriesController implements Initializable {
         colTargYear.setCellValueFactory(data -> data.getValue().YearProperty());
         colTargID.setCellValueFactory(data -> data.getValue().IDProperty());
         if (cmbEntryYear.getSelectionModel().isEmpty()) {
-            stmnt = con.prepareStatement("SELECT  * FROM `target_entries` WHERE `revCenter` = '" + revCenter + "'");
+            stmnt = con.prepareStatement("SELECT  * FROM `target_entries` WHERE `target_revCenter` = '" + revCenter + "'");
         } else {
-            stmnt = con.prepareStatement("SELECT  * FROM `target_entries` WHERE `revCenter` = '" + revCenter + "'" +
+            stmnt = con.prepareStatement("SELECT  * FROM `target_entries` WHERE `target_revCenter` = '" + revCenter + "'" +
                     " AND `Year` = '" + cmbEntryYear.getSelectionModel().getSelectedItem() + "'");
         }
         rs = stmnt.executeQuery();
@@ -795,21 +803,21 @@ public class UpdateEntriesController implements Initializable {
             stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
                     "`collection_payment_entries`.`date`, `collection_payment_entries`.`payment_type`, " +
                     "`cheque_details`.`cheque_date`, `cheque_details`." +
-                    "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`ID`, `cheque_details`.`amount`, " +
+                    "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`cheque_ID`, `cheque_details`.`amount`, " +
                     "`cheque_details`.`payment_ID` FROM `cheque_details`," +
-                    " `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` = '"+revCenter+"'" +
+                    " `collection_payment_entries` WHERE `collection_payment_entries`.`pay_revCenter` = '"+revCenter+"'" +
                     " AND `collection_payment_entries`.`year` = '"+cmbEntryYear.getSelectionModel().
-                    getSelectedItem()+"' AND `collection_payment_entries`.`ID` = `cheque_details`.`payment_ID`");
+                    getSelectedItem()+"' AND `collection_payment_entries`.`pay_ID` = `cheque_details`.`payment_ID`");
         }else{
             stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
                     "`collection_payment_entries`.`date`, `collection_payment_entries`.`payment_type`, " +
                     "`cheque_details`.`cheque_date`, `cheque_details`." +
-                    "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount`, `cheque_details`.`ID`," +
+                    "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount`, `cheque_details`.`cheque_ID`," +
                     " `cheque_details`.`payment_ID` FROM `cheque_details`," +
-                    " `collection_payment_entries` WHERE `collection_payment_entries`.`revCenter` = '"+revCenter+"'" +
+                    " `collection_payment_entries` WHERE `collection_payment_entries`.`pay_revCenter` = '"+revCenter+"'" +
                     " AND `collection_payment_entries`.`year` = '"+cmbEntryYear.getSelectionModel().
                     getSelectedItem()+"' AND `collection_payment_entries`.`month` = '"+cmbEntryMonth.
-                    getSelectionModel().getSelectedItem()+"' AND `collection_payment_entries`.`ID` = " +
+                    getSelectionModel().getSelectedItem()+"' AND `collection_payment_entries`.`pay_ID` = " +
                     "`cheque_details`.`payment_ID`");
         }
         rs = stmnt.executeQuery();
@@ -820,7 +828,7 @@ public class UpdateEntriesController implements Initializable {
             chqNumber = rs.getString("cheque_number");
             Bank = rs.getString("bank");
             Amount = getFunctions.getAmount(rs.getString("amount"));
-            ID = rs.getString("ID");
+            ID = rs.getString("cheque_ID");
             id = rs.getString("payment_ID");
             type = rs.getString("payment_type");
             typeSerials.get(type).add(id);
@@ -872,10 +880,10 @@ public class UpdateEntriesController implements Initializable {
         colStckID.setCellValueFactory(d -> d.getValue().IDProperty());
         colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
-            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `revCenter` = '"+revCenter+"'" +
+            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `value_stock_revCenter` = '"+revCenter+"'" +
                     " AND `year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"'");
         }else{
-            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `revCenter` = '"+revCenter+"'" +
+            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `value_stock_revCenter` = '"+revCenter+"'" +
                     " AND `year` = '"+cmbEntryYear.getSelectionModel().getSelectedItem()+"' AND `month` = '"+month+"'");
         }
         rs = stmnt.executeQuery();
@@ -892,7 +900,7 @@ public class UpdateEntriesController implements Initializable {
             valAmount = getFunctions.getAmount(rs.getString("amount"));
             purAmount = getFunctions.getAmount(rs.getString("purchase_amount"));
             remarks = rs.getString("remarks");
-            getValueReport = new GetValueBooksReport(Year, Quarter, Month, Week, rs.getString("ID"), Date, typeOfValBk, firstSerial,
+            getValueReport = new GetValueBooksReport(Year, Quarter, Month, Week, rs.getString("value_record_ID"), Date, typeOfValBk, firstSerial,
                     lastSerial, Quantity, valAmount, purAmount, remarks);
             tblValueBookStocks.getItems().add(getValueReport);
         }}
@@ -925,10 +933,10 @@ public class UpdateEntriesController implements Initializable {
         colRevYear.setCellValueFactory(d -> d.getValue().YearProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
             stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"' " +
-                    "AND `revCenter` = '"+revCenter+"'");
+                    "AND `daily_revCenter` = '"+revCenter+"'");
         }else{
             stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"'" +
-                    " AND `revenueMonth` = '"+entryTypeMonth+"' AND `revCenter` = '"+revCenter+"'");
+                    " AND `revenueMonth` = '"+entryTypeMonth+"' AND `daily_revCenter` = '"+revCenter+"'");
         }
         rs = stmnt.executeQuery();
         while (rs.next()){
@@ -974,10 +982,10 @@ public class UpdateEntriesController implements Initializable {
         colPayID.setCellValueFactory(d -> d.getValue().IDProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()) {
             stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE" +
-                    "`Year` = '"+entryTypeYear+"'AND `revCenter` = '"+revCenter+"'");
+                    "`Year` = '"+entryTypeYear+"'AND `pay_revCenter` = '"+revCenter+"'");
         }else{
             stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE" +
-                    "`Year` = '"+entryTypeYear+"' AND `Month` = '"+entryTypeMonth+"'AND `revCenter` = '"+revCenter+"'");
+                    "`Year` = '"+entryTypeYear+"' AND `Month` = '"+entryTypeMonth+"'AND `pay_revCenter` = '"+revCenter+"'");
         }
         rs = stmnt.executeQuery();
         while (rs.next()){
@@ -987,7 +995,7 @@ public class UpdateEntriesController implements Initializable {
             Year = rs.getString("Year");
             Date = rs.getString("Date");
             Type = rs.getString("payment_type");
-            ID = rs.getString("ID");
+            ID = rs.getString("pay_ID");
             getPaymentData = new GetPaymentDetails(Amount, GCR, Month, Date, Year, Type, ID);
             tblPaymentEntries.getItems().add(getPaymentData);
         }
@@ -1016,7 +1024,7 @@ public class UpdateEntriesController implements Initializable {
         Matcher m = p.matcher(txtTargetAmount.getText());
         newTargetAmount = Float.parseFloat(m.replaceAll(""));
 
-        stmnt = con.prepareStatement("UPDATE `target_entries` SET `revCenter`= '"+revCenter+"', " +
+        stmnt = con.prepareStatement("UPDATE `target_entries` SET `target_revCenter`= '"+revCenter+"', " +
                 "`Amount`= '"+newTargetAmount+"',`Year`= '"+newTargetYear+"' WHERE   `target_ID`= '"+entry_ID+"' ");
         stmnt.executeUpdate();
         txtTargetAmount.setText(null);
@@ -1051,7 +1059,7 @@ public class UpdateEntriesController implements Initializable {
         Month = getFunctions.getMonth(entDatePckRevCol.getValue());
         String revItem = cmbRevenueItem.getSelectionModel().getSelectedItem();
         stmnt = con.prepareStatement("SELECT `revenueItem` FROM `daily_entries` WHERE `revenueItem` = '"+
-                revItem+"' AND `entries_ID` != '"+entry_ID+"'AND `revenueDate` = '"+Date+"' AND `revCenter` = '"+
+                revItem+"' AND `entries_ID` != '"+entry_ID+"'AND `revenueDate` = '"+Date+"' AND `daily_revCenter` = '"+
                 revCenter+"'");
         ResultSet rt = stmnt.executeQuery();
         while (rt.next()){
@@ -1089,7 +1097,7 @@ public class UpdateEntriesController implements Initializable {
                 "`revenueAmount`= '"+Float.parseFloat(txtRevenueAmount.getText())+"',`revenueYear`= '"+Year+"'," +
                 "`revenueDate` = '"+Date+"', `revenueItem` = '"+cmbRevenueItem.getSelectionModel().getSelectedItem()+"'" +
                 ",`revenueWeek` = '"+Week+"', `revenueMonth` = '"+Month+"', `revenueQuarter` = '"+Qtr+"' WHERE   " +
-                "`entries_ID`= '"+entry_ID+"' AND `revCenter`= '"+revCenter+"'");
+                "`entries_ID`= '"+entry_ID+"' AND `daily_revCenter`= '"+revCenter+"'");
         stmnt.executeUpdate();
         resetRevenueCollection();
         loadRevenueCollectionTable();
@@ -1133,7 +1141,7 @@ public class UpdateEntriesController implements Initializable {
     }
 
     void deleteValueBooksEntries() throws SQLException {
-        stmnt = con.prepareStatement("DELETE FROM `value_books_stock_record` WHERE `ID` = '"+entry_ID+"' ");
+        stmnt = con.prepareStatement("DELETE FROM `value_books_stock_record` WHERE `value_record_ID` = '"+entry_ID+"' ");
         stmnt.executeUpdate();
         loadValueBooksTable();
         resetValueBooksTable();
@@ -1178,7 +1186,7 @@ public class UpdateEntriesController implements Initializable {
                         " `week` = '"+week+"', `quarter` = '"+quarter+"', `date` = '"+Date+"', `month` = '"+Month
                         +"', `value_book` = '"+typeOfValBk+"', `first_serial` = '"+firstSerial+"', `last_serial` = '"+
                         lastSerial+"', `quantity` = '"+Quantity+"', `amount` = '"+valAmount+"', `purchase_amount` = '"+
-                        purAmount+"', `remarks` = 'Updated' WHERE `ID` = '"+entry_ID+"'");
+                        purAmount+"', `remarks` = 'Updated' WHERE `value_record_ID` = '"+entry_ID+"'");
                 stmnt.executeUpdate();
                 loadValueBooksTable();
                 resetValueBooksTable();
@@ -1219,7 +1227,7 @@ public class UpdateEntriesController implements Initializable {
         int payYear = spnPaymentYear.getValue();
         float payAmount = Float.parseFloat(txtPaymentAmount.getText());
         stmnt = con.prepareStatement("SELECT `GCR` FROM `collection_payment_entries` WHERE `GCR` = '"+
-                payGCR+"' AND `ID` != '"+entry_ID+"'AND `payment_type` = '"+payType+"' AND `revCenter` = '" +
+                payGCR+"' AND `pay_ID` != '"+entry_ID+"'AND `payment_type` = '"+payType+"' AND `pay_revCenter` = '" +
                                revCenter+"'");
         ResultSet rt = stmnt.executeQuery();
         while (rt.next()){
@@ -1286,7 +1294,7 @@ public class UpdateEntriesController implements Initializable {
                                 "`Date`= '"+payDate+"',`GCR`= '"+payGCR+"'," +
                                 "`Month` = '"+payMonth+"', `payment_type` = '"+payType+"'" +
                                 ",`Amount` = '"+payAmount+"', `Year` = '"+payYear+"' WHERE   " +
-                                "`ID`= '"+entry_ID+"' AND `revCenter`= '"+revCenter+"' ");
+                                "`pay_ID`= '"+entry_ID+"' AND `pay_revCenter`= '"+revCenter+"' ");
                         stmnt.executeUpdate();
                         resetPaymentEntries();
                         loadPaymentTable();
@@ -1323,7 +1331,7 @@ public class UpdateEntriesController implements Initializable {
             if (!ButtonType.YES.equals(deleteResponse.get())) {
                 event.consume();
             }else{
-                stmnt = con.prepareStatement("DELETE FROM `collection_payment_entries` WHERE `ID` = '"+entry_ID+"' ");
+                stmnt = con.prepareStatement("DELETE FROM `collection_payment_entries` WHERE `pay_ID` = '"+entry_ID+"' ");
                 stmnt.executeUpdate();
                 loadPaymentTable();
                 resetPaymentEntries();
@@ -1367,7 +1375,7 @@ public class UpdateEntriesController implements Initializable {
         String chqNumber = txtChqNmb.getText(), chqDate, Bank = txtBankName.getText();
         date = dtpckChequeDate.getValue();
         stmnt = con.prepareStatement("SELECT `cheque_number` FROM `cheque_details` WHERE `bank` = '"+
-                Bank+"' AND `ID` != '"+entry_ID+"'AND `cheque_number` = '"+chqNumber+"'");
+                Bank+"' AND `cheque_ID` != '"+entry_ID+"'AND `cheque_number` = '"+chqNumber+"'");
         ResultSet rt = stmnt.executeQuery();
         while (rt.next()){
             dupChq.add(rt.getString("cheque_number"));
@@ -1422,7 +1430,7 @@ public class UpdateEntriesController implements Initializable {
                     stmnt = con.prepareStatement("UPDATE `cheque_details` SET  " +
                             "`cheque_date`= '"+chqDate+"',`cheque_number`= '"+chqNumber+"'," +
                             "`bank` = '"+Bank+"', `amount` = '"+Amount+"' WHERE   " +
-                            "`ID`= '"+entry_ID+"' ");
+                            "`cheque_ID`= '"+entry_ID+"' ");
                     stmnt.executeUpdate();
                     resetBankDetails();
                     loadBankDetailsTable();

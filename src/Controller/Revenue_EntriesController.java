@@ -345,8 +345,9 @@ public class Revenue_EntriesController  implements Initializable {
             forDatabase.put("revWeek", new ArrayList<>());   
         
         
-        for(int i = 0; i < revTable.getItems().size(); i++){
-            getData = revTable.getItems().get(i);
+        for(int i = 0; i <= revTable.getItems().size(); i++){
+            if (i != revTable.getItems().size()){
+                getData = revTable.getItems().get(i);
             String acDate = getData.getDate();
             String acCode = getData.getCode();
             String acItem = getData.getItem();
@@ -367,7 +368,8 @@ public class Revenue_EntriesController  implements Initializable {
             int acWeek = Integer.parseInt(getData.getWeek());
             String acMonth = getData.getMonth();
             int acYear = Integer.parseInt(getData.getYear());
-            stmnt = connection.prepareStatement("SELECT * FROM `daily_entries` WHERE `Code` = '"+acCode+"' AND `revenueDate` = '"+acDate+"' AND `revCenter` = '"+RevCent+"' ");
+            stmnt = connection.prepareStatement("SELECT * FROM `daily_entries` WHERE `Code` = '"+acCode+"'" +
+                    " AND `revenueDate` = '"+acDate+"' AND `daily_revCenter` = '"+RevCent+"' ");
             rs = stmnt.executeQuery();       
             metaData = rs.getMetaData();
             int columns = metaData.getColumnCount();
@@ -382,15 +384,18 @@ public class Revenue_EntriesController  implements Initializable {
             if(duplicate.contains(acCode)){
                 lblDup.setText("Revenue for "+'"'+getData.getItem()+'"'+ " on "+'"'+ getData.getDate()+'"'+" already exist. Please delete or edit duplicate.");
                 lblDup.setVisible(true);
-                i = revTable.getItems().size();
+                i = revTable.getItems().size() + 1;
             }else{
-                stmnt = connection.prepareStatement("INSERT INTO `daily_entries`(`revCenter`, `commissionAmount`, " +
+                stmnt = connection.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, `commissionAmount`, " +
                         "`Code`, `revenueItem`, `revenueAmount`, `revenueDate`, `revenueWeek`, `revenueMonth`," +
                         " `revenueYear`, `revenueQuarter`) VALUES('"+RevCent+"','"+acCCAmount+"', '"+acCode+"'," +
                         " '"+acItem+"', '"+acAmount+"', '"+acDate+"', '"+acWeek+"','"+acMonth+"', '"+acYear+"'," +
                         " '"+acQtr+"')");
                 stmnt.executeUpdate();
-                revTable.getItems().remove(i);
+            }
+            }else {
+
+                revTable.getItems().clear();
             }
         }
     }

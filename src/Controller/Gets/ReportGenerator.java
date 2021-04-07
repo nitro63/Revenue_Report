@@ -31,7 +31,7 @@ public class ReportGenerator {
     
     public Float getWeekSum(String Center, String item, String month, String week, String Year) throws SQLException{
         float totalAmount;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+item+"' AND `revenueWeek` = '"+week+"' AND `revCenter` = '"+Center+"' AND `revenueMonth` = '"+month+"' AND `revenueYear` = '"+Year+"'  ");
+       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+item+"' AND `revenueWeek` = '"+week+"' AND `daily_revCenter` = '"+Center+"' AND `revenueMonth` = '"+month+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        

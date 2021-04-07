@@ -120,13 +120,14 @@ public class ValueBooksStockReportController implements Initializable {
     }
 
     void getRevenueCenters() throws SQLException {
-        stmnt = con.prepareStatement("SELECT `revCenter` FROM `value_books_stock_record` WHERE 1 GROUP BY `revCenter` ");
+        stmnt = con.prepareStatement("SELECT `value_stock_revCenter` FROM `value_books_stock_record` WHERE" +
+                " 1 GROUP BY `value_stock_revCenter` ");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData metadata = rs.getMetaData();
         int columns = metadata.getColumnCount();
 
         while(rs.next()){
-            rowCent.add(rs.getString("revCenter"));
+            rowCent.add(rs.getString("value_stock_revCenter"));
         }
         cmbRevCenter.getItems().clear();
         cmbRevCenter.setItems(rowCent);
@@ -135,7 +136,8 @@ public class ValueBooksStockReportController implements Initializable {
 
     @FXML
     private void loadYears(ActionEvent event) throws SQLException {
-        stmnt = con.prepareStatement("SELECT `year` FROM `value_books_stock_record` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' GROUP BY `year`");
+        stmnt = con.prepareStatement("SELECT `year` FROM `value_books_stock_record` WHERE " +
+                "`value_stock_revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' GROUP BY `year`");
         ResultSet rs= stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();
 
@@ -149,7 +151,9 @@ public class ValueBooksStockReportController implements Initializable {
 
     @FXML
     private void loadMonths(ActionEvent event) throws SQLException {
-        stmnt = con.prepareStatement("SELECT `month` FROM `value_books_stock_record` WHERE `revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
+        stmnt = con.prepareStatement("SELECT `month` FROM `value_books_stock_record` WHERE " +
+                "`value_stock_revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' AND `year` = '"+
+                cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
         ResultSet rs= stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();
 
@@ -182,7 +186,10 @@ public class ValueBooksStockReportController implements Initializable {
 //        int ;
             float cumuamount = 0;
             String amount;
-            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `year`= '" + cmbYear.getSelectionModel().getSelectedItem() + "' AND `revCenter` = '" + cmbRevCenter.getSelectionModel().getSelectedItem() + "' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "'");
+            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE `year`= '" +
+                    cmbYear.getSelectionModel().getSelectedItem() + "' AND `value_stock_revCenter` = '" +
+                    cmbRevCenter.getSelectionModel().getSelectedItem() + "' AND `month` = '" + cmbMonth.
+                    getSelectionModel().getSelectedItem() + "'");
             ResultSet rs = stmnt.executeQuery();
             ResultSetMetaData rm = rs.getMetaData();
             colDate.setCellValueFactory(data -> data.getValue().dateProperty());

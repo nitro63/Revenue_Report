@@ -226,6 +226,7 @@ public class Target_EntriesController implements Initializable {
         ResultSetMetaData rm;
         
         for(int j=0; j<tblCollectEnt.getItems().size(); j++){
+            if (j != tblCollectEnt.getItems().size()){
             getData = tblCollectEnt.getItems().get(j);
             String acCenter = getData.getCenter();
             String regex = "(?<=[\\d])(,)(?=[\\d])";
@@ -235,13 +236,11 @@ public class Target_EntriesController implements Initializable {
             amount = m.replaceAll("");
             float acAmount = Float.parseFloat(amount);
             int acYear = Integer.parseInt(getData.getYear());
-            stmnt = con.prepareStatement("SELECT * FROM `target_entries` WHERE `revCenter` = '"+acCenter+"' AND `Year` = '"+acYear+"'");
+            stmnt = con.prepareStatement("SELECT * FROM `target_entries` WHERE `target_revCenter` = '"+
+                    acCenter+"' AND `Year` = '"+acYear+"'");
             rs = stmnt.executeQuery();
-            rm = rs.getMetaData();
-            int col = rm.getColumnCount();
-            
             while(rs.next()){
-                        String cent = rs.getString("revCenter");
+                        String cent = rs.getString("target_revCenter");
                         duplicate.put(cent, new ArrayList<>());
 
                         String year = rs.getString("Year");
@@ -252,11 +251,15 @@ public class Target_EntriesController implements Initializable {
                 if(duplicate.get(acCenter).contains(getData.getYear())){
                     lblDup.setText("REVENUE TARGET Amount for "+'"'+acCenter+'"'+" for "+'"'+getData.getYear()+'"'+". Please select duplicate data in the table to edit or delete.");
                     lblDup.setVisible(true);
+                    j = tblCollectEnt.getItems().size() + 1;
                 }
             }else{
-                stmnt = con.prepareStatement("INSERT INTO `target_entries`(`revCenter`, `Amount`, `Year`) VALUES ('"+acCenter+"', '"+acAmount+"', '"+acYear+"')");
+                stmnt = con.prepareStatement("INSERT INTO `target_entries`(`target_revCenter`, `Amount`," +
+                        " `Year`) VALUES ('"+acCenter+"', '"+acAmount+"', '"+acYear+"')");
                 stmnt.executeUpdate();
-                tblCollectEnt.getItems().remove(j);
+            }
+            } else {
+                tblCollectEnt.getItems().clear();
             }
         }
     }

@@ -7,6 +7,9 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +22,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import Controller.Gets.GetRevCenter;
+import revenue_report.DBConnection;
+
 import java.sql.SQLException;
 
 
@@ -47,6 +52,8 @@ public class entries_sideController  implements Initializable {
     private final GetRevCenter GetCenter;
     
     public  ObservableList<String> RevenueCenters = FXCollections.observableArrayList("KMA MAIN","OUTSOURCED","SUB-METROS","OTHER REVENUES");
+    private final Connection con;
+    private PreparedStatement stmnt;
       String SelItem ;
       String SelRev;
      GetRevCenter u = new GetRevCenter();
@@ -62,7 +69,8 @@ public class entries_sideController  implements Initializable {
      /***
     * @param GetCenter
       */
-     public entries_sideController(GetRevCenter GetCenter){         
+     public entries_sideController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
+         this.con = DBConnection.getConn();
          this.GetCenter = GetCenter;
      }
      public void setRevCenter(String revCenter){
@@ -92,37 +100,54 @@ public class entries_sideController  implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        SetRevenueCenters();
+        try {
+            SetRevenueCenters();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }  
     
     
-    public void SetRevenueCenters(){
+    public void SetRevenueCenters() throws SQLException {
+        stmnt = con.prepareStatement("SELECT `revenue_category` FROM `revenue_centers` WHERE 1 GROUP BY `revenue_category`");
+        ResultSet rt = stmnt.executeQuery();
         cmbRevGroup.getItems().clear();
-        cmbRevGroup.getItems().addAll(RevenueCenters);
+        while (rt.next()){
+            cmbRevGroup.getItems().add(rt.getString("revenue_category"));
+        }
+
+
     }
     
-    private void SetCenters(){
+    private void SetCenters() throws SQLException {
         String Center = cmbRevGroup.getSelectionModel().getSelectedItem();
-        switch(Center){
-        
-            case "KMA MAIN":
-                cmbRevCent.getItems().clear();
-                cmbRevCent.getItems().addAll("Marriage Unit", " Licence Unit", "Environmental", "Waste Management");
-                break;
-            case "OUTSOURCED":
-                cmbRevCent.getItems().clear();
-                cmbRevCent.getItems().addAll("SKYMOUNT", "GREENFIELD", "DEGEON", "GOLDSTREET", "MY COMPANY 360");
-                break;
-            case "SUB-METROS":
-                 cmbRevCent.getItems().clear();
-                cmbRevCent.getItems().addAll("BANTAMA", "MANHYIA SOUTH", "MANHYIA NORTH", "SUBIN", "NHYIAESO");
-                break;
-            case "OTHER REVENUES":
-                cmbRevCent.getItems().clear();
-                cmbRevCent.getItems().addAll("SOKOBAN WOOD VILLAGE","ABINKYI","AFIA KOBI", "ASAFO MARKET");
-                break;
-           
-    }
+        stmnt = con.prepareStatement("SELECT `revenue_center` FROM `revenue_centers` WHERE `revenue_category` = '"+
+                Center+"'");
+        ResultSet rt = stmnt.executeQuery();
+        cmbRevCent.getItems().clear();
+        while (rt.next()){
+            cmbRevCent.getItems().add(rt.getString("revenue_center"));
+        }
+//        switch(Center){
+//
+//            case "KMA MAIN":
+//                cmbRevCent.getItems().clear();
+//                cmbRevCent.getItems().addAll("Marriage Unit", " Licence Unit", "Environmental", "Waste Management");
+//                break;
+//            case "OUTSOURCED":
+//                cmbRevCent.getItems().clear();
+//                cmbRevCent.getItems().addAll("SKYMOUNT", "GREENFIELD", "DEGEON", "GOLDSTREET", "MY COMPANY 360");
+//                break;
+//            case "SUB-METROS":
+//                 cmbRevCent.getItems().clear();
+//                cmbRevCent.getItems().addAll("BANTAMA", "MANHYIA SOUTH", "MANHYIA NORTH", "SUBIN", "NHYIAESO");
+//                break;
+//            case "OTHER REVENUES":
+//                cmbRevCent.getItems().clear();
+//                cmbRevCent.getItems().addAll("SOKOBAN WOOD VILLAGE","ABINKYI","AFIA KOBI", "ASAFO MARKET");
+//                break;
+//
+//    }
     }
 
    
@@ -147,7 +172,7 @@ public class entries_sideController  implements Initializable {
     
     
     @FXML
-    private void setCenters(ActionEvent event) {       
+    private void setCenters(ActionEvent event) throws SQLException {
         SetCenters();
         }
     
