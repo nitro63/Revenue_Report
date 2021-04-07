@@ -172,6 +172,9 @@
 #topPane{
     -fx-background-color: #27b52b;
 }
+.table-cell{
+    -fx-alignment: CENTER;
+}
 
 .combo-box-base .text{
     -fx-fill: #03531e;

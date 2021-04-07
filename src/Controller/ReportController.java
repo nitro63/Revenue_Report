@@ -33,6 +33,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -59,6 +60,8 @@ public class ReportController implements Initializable {
     private TableView<GetReport> WEEKLY_TABLE;
     @FXML
     private JFXButton btnPrint;
+    @FXML
+    private AnchorPane generalPane;
     @FXML
     private TableColumn<GetReport, String> REVENUE_ITEM;
     @FXML
@@ -103,6 +106,58 @@ public class ReportController implements Initializable {
     private ComboBox<String> cmbReportMonth;
     @FXML
     private ComboBox<String> cmbReportWeek;
+    @FXML
+    private AnchorPane subPane;
+    @FXML
+    private TableView<GetReport> WEEKLY_TABLESub;
+    @FXML
+    private TableColumn<GetReport, String> REVENUE_ITEMSub;
+    @FXML
+    private TableColumn<GetReport, String> DAY1Sub;
+    @FXML
+    private Label lblDay1Sub;
+    @FXML
+    private TableColumn<GetReport, String> DAY2Sub;
+    @FXML
+    private Label lblDay2Sub;
+    @FXML
+    private TableColumn<GetReport, String> DAY3Sub;
+    @FXML
+    private Label lblDay3Sub;
+    @FXML
+    private TableColumn<GetReport, String> DAY4Sub;
+    @FXML
+    private Label lblDay4Sub;
+    @FXML
+    private TableColumn<GetReport, String> DAY5Sub;
+    @FXML
+    private Label lblDay5Sub;
+    @FXML
+    private TableColumn<GetReport, String> DAY6Sub;
+    @FXML
+    private Label lblDay6Sub;
+    @FXML
+    private TableColumn<GetReport, String> DAY7Sub;
+    @FXML
+    private Label lblDay7Sub;
+    @FXML
+    private TableColumn<GetReport, String> Total_amtSub;
+    @FXML
+    private Label lblCumuAmount;
+    @FXML
+    private Label lblCCAmount;
+    @FXML
+    private Label lblCommission;
+    @FXML
+    private Label lblCostValueBooks;
+    @FXML
+    private Label lblDiff;
+    @FXML
+    private Label lblNetRevenue;
+    @FXML
+    private Label lblAmtDueSub;
+    @FXML
+    private Label lblAmtDueKMA;
     /**
      * initialises the controller class.
      * @param url

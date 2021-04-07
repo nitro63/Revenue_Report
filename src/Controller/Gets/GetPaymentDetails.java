@@ -13,11 +13,21 @@ import javafx.beans.property.StringProperty;
  * @author NiTrO
  */
 public class GetPaymentDetails {
-    private StringProperty gcr, Date, PaymentType, Amount, CumuAmount;
+    private StringProperty gcr, Date, PaymentType, Amount, CumuAmount, ID, Month, Year;
     private String GCR, date, paymentType, amount, cumuAmount;
     
     public GetPaymentDetails(){
         
+    }
+
+    public GetPaymentDetails(String Amount, String GCR, String Month, String Date, String Year, String Type, String ID){
+        this.Amount = new SimpleStringProperty(Amount);
+        this.gcr = new SimpleStringProperty(GCR);
+        this.Month = new SimpleStringProperty(Month);
+        this.Date = new SimpleStringProperty(Date);
+        this.Year = new SimpleStringProperty(Year);
+        this.ID = new SimpleStringProperty(ID);
+        this.PaymentType = new SimpleStringProperty(Type);
     }
     
     public GetPaymentDetails(String date, String GCR, String paymentType, String amount, String cumuAmount){
@@ -36,7 +46,43 @@ public class GetPaymentDetails {
         GCR = GCRProperty().get();
         return GCR;
     }
-    
+
+    public String getID() {
+        return ID.get();
+    }
+
+    public StringProperty IDProperty() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID.set(ID);
+    }
+
+    public String getMonth() {
+        return Month.get();
+    }
+
+    public StringProperty monthProperty() {
+        return Month;
+    }
+
+    public void setMonth(String month) {
+        this.Month.set(month);
+    }
+
+    public String getYear() {
+        return Year.get();
+    }
+
+    public StringProperty yearProperty() {
+        return Year;
+    }
+
+    public void setYear(String year) {
+        this.Year.set(year);
+    }
+
     public final void setGCR(String GCR){
         GCRProperty().set(GCR);
     }

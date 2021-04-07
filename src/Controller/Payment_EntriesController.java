@@ -6,6 +6,7 @@
 package Controller;
 
 import Controller.Gets.GetCollectEnt;
+import Controller.Gets.GetFunctions;
 import Controller.Gets.GetRevCenter;
 
 import java.io.IOException;
@@ -86,13 +87,14 @@ public class Payment_EntriesController implements Initializable {
 
     
     GetCollectEnt getData, getReport;
+    GetFunctions getFunctions = new GetFunctions();
     
     entries_sideController app;
     
     public final GetRevCenter GetCenter;
    
         
-        ObservableList<String> registerItem = FXCollections.observableArrayList(); 
+        Map<String, ArrayList<String>> registerItem = new HashMap<>();
         ObservableList<String> paymentType = FXCollections.observableArrayList("Cash", "Cheque",
                 "Cash Deposit Slip","Cheque Deposit Slip");
         ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March"
@@ -186,7 +188,7 @@ public class Payment_EntriesController implements Initializable {
       RevCent = GetCenter.getRevCenter();
       GCR = txtEntGCR.getText();
       Type = cmbPayType.getSelectionModel().getSelectedItem();
-//      registerItem.put("", new ArrayList());
+      registerItem.put("", new ArrayList());
                
         LocalDate date = entDatePck.getValue();// Assigning the date picker value to a variable 
         //Making sure Datepicker is never empty :)
@@ -199,41 +201,18 @@ public class Payment_EntriesController implements Initializable {
                 Condition = false;
             }else{
              Condition =true;
-        
-        Calendar cal = Calendar.getInstance();
-        
-        
-        int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
-        
-        cal.set(date.getYear(), actMonth, date.getDayOfMonth());//Initialising assigning datepicker value to Calendar
-             // item
-        
-        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for
-             // further use
-        SimpleDateFormat Dateformat = new SimpleDateFormat("dd-MM-yyyy");// Date format for Date 
-        Date = Dateformat.format(setDate);// Assigning converted date with "MM/dd/YY" format to "Date" variable
-        cal.setTime(setDate);//Setting time to Calendar variable
-        cal.setMinimalDaysInFirstWeek(3);//Setting the minimal days to make a week;
-//        int initYear = cal.get(Calendar.YEAR);
-        int initYear = spnColYear.getValue();
-        Year = Integer.toString(initYear);
-//        Year = spnColYear.getValue();
-//        Month = new SimpleDateFormat("MMMM").format(cal.getTime());
+        Date = getFunctions.getDate(date);
+        Year = Integer.toString(spnColYear.getValue());
         Month = cmbColMonth.getSelectionModel().getSelectedItem();
-        
-        
-
        while(Condition) {
             String i=txtEntGCR.getText();
-//       if(registerItem.containsKey(Date)){
-           if(registerItem.contains(i)){
+           if(registerItem.containsKey(Type) && registerItem.get(Type).contains(i)){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Revenue already entered");
                 alert.showAndWait();
                 
                 Condition =false;
-//           }
             }else if(txtEntAmt.getText().isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
@@ -261,7 +240,6 @@ public class Payment_EntriesController implements Initializable {
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Enter Amount");
                 alert.showAndWait();
-                txtEntAmt.clear();
                 Condition =false;
                 
            
@@ -270,7 +248,6 @@ public class Payment_EntriesController implements Initializable {
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please select PAYMENT TYPE");
                 alert.showAndWait();
-                txtEntAmt.clear();
                 Condition =false;
                 
                 
@@ -279,7 +256,6 @@ public class Payment_EntriesController implements Initializable {
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Select Collection Month");
                 alert.showAndWait();
-                txtEntAmt.clear();
                 Condition =false;
                 
                 
@@ -288,7 +264,6 @@ public class Payment_EntriesController implements Initializable {
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Select Collection Year");
                 alert.showAndWait();
-                txtEntAmt.clear();
                 Condition =false;
                 
                 
@@ -298,11 +273,10 @@ public class Payment_EntriesController implements Initializable {
                 alert.setHeaderText("Please Enter Amount");
                 alert.setContentText("Please check the number of '.' in the amount");
                 alert.showAndWait();
-                txtEntAmt.clear();
                 Condition =false;
-                
-                
-            }else if(txtEntAmt.getText().isEmpty()|| txtEntGCR.getText().isEmpty() || registerItem.contains(i)){
+            }
+            else if(txtEntAmt.getText().isEmpty()|| txtEntGCR.getText().isEmpty() || registerItem.containsKey(Type) &&
+                   registerItem.get(Type).contains(i)){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Make All Entries");
@@ -334,26 +308,24 @@ public class Payment_EntriesController implements Initializable {
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Amount cannot be '0'");
                 alert.showAndWait();
-                txtEntAmt.clear();
                 Condition =false;
                 
             }else{
             getReport = new GetCollectEnt(RevCent, Amount, GCR, Month, Date, Year, Type);
             tblCollection.getItems().add(getReport);
-            registerItem.add(txtEntGCR.getText());
             Condition = false;
             entDatePck.setValue(null);
             txtEntGCR.clear();
             txtEntAmt.clear();
             cmbColMonth.getSelectionModel().clearSelection();
             cmbPayType.getSelectionModel().clearSelection();
-//                
-//                if(!registerItem.containsKey(Date)){
-//                    registerItem.put(Date, new ArrayList());
-//                    registerItem.get(Date).add(i);
-//                }else if(registerItem.containsKey(Date) && !registerItem.get(Date).contains(i)){
-//                    registerItem.get(Date).add(i);
-//                }
+
+                if(!registerItem.containsKey(Type)){
+                    registerItem.put(Type, new ArrayList());
+                    registerItem.get(Type).add(i);
+                }else if(registerItem.containsKey(Type) && !registerItem.get(Type).contains(i)){
+                    registerItem.get(Type).add(i);
+                }
         }
             }
        }
@@ -376,7 +348,9 @@ public class Payment_EntriesController implements Initializable {
                     DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             txtEntAmt.setText(m.replaceAll(""));
             txtEntGCR.setText(tblCollection.getSelectionModel().getSelectedItem().getGCR());
-            registerItem.remove(tblCollection.getSelectionModel().getSelectedItem().getGCR());
+            if (registerItem.get(cmbPayType.getSelectionModel().getSelectedItem()).contains(txtEntGCR.getText())){
+                registerItem.get(cmbPayType.getSelectionModel().getSelectedItem()).remove(txtEntGCR.getText());
+            }
             ObservableList<GetCollectEnt> selectedRows = tblCollection.getSelectionModel().getSelectedItems();
             ArrayList<GetCollectEnt> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblCollection.getItems().remove(row));
@@ -410,7 +384,9 @@ public class Payment_EntriesController implements Initializable {
          ArrayList<String> duplicate = new ArrayList<>();
          String fini;
         
-        for(int h = 0; h<tblCollection.getItems().size(); h++){
+        for(int h = 0; h<=tblCollection.getItems().size(); h++){
+            System.out.println(/*h+"\n"+*/tblCollection.getItems().size());
+            if (h != tblCollection.getItems().size()) {
             getData = tblCollection.getItems().get(h);
             int acGCR = Integer.parseInt(getData.getGCR());
             String amount = getData.getAmount();
@@ -424,63 +400,77 @@ public class Payment_EntriesController implements Initializable {
             String acYear = getData.getYear();
             fini = getID();
             int acYEAR = Integer.parseInt(getData.getYear());
-                if(acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")){
+
+                if (acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")) {
                     count++;
-                    if(dateGCR.isEmpty() || !dateGCR.containsKey(acDate)){
+                    if (dateGCR.isEmpty() || !dateGCR.containsKey(acDate)) {
                         dateGCR.put(acDate, new HashMap<>());
                         dateGCR.get(acDate).put(acMonth, new ArrayList<>());
                         dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
-                    }else if(dateGCR.containsKey(acDate) && !dateGCR.get(acDate).containsKey(acMonth)){
+                    } else if (dateGCR.containsKey(acDate) && !dateGCR.get(acDate).containsKey(acMonth)) {
                         dateGCR.get(acDate).put(acMonth, new ArrayList<>());
                         dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
-                    }else if (dateGCR.containsKey(acDate) && dateGCR.get(acDate).containsKey(acMonth) && !dateGCR.
-                            get(acDate).get(acMonth).contains(getData.getGCR())){
+                    } else if (dateGCR.containsKey(acDate) && dateGCR.get(acDate).containsKey(acMonth) && !dateGCR.
+                            get(acDate).get(acMonth).contains(getData.getGCR())) {
                         dateGCR.get(acDate).get(acMonth).add(getData.getGCR());
                     }
-                    if(monthGCR.isEmpty() || !monthGCR.containsKey(acMonth)){
+                    if (monthGCR.isEmpty() || !monthGCR.containsKey(acMonth)) {
                         monthGCR.put(acMonth, new ArrayList<>());
                         monthGCR.get(acMonth).add(getData.getGCR());
-                    }else if(monthGCR.containsKey(acMonth) && !monthGCR.get(acMonth).contains(getData.getGCR())){
+                    } else if (monthGCR.containsKey(acMonth) && !monthGCR.get(acMonth).contains(getData.getGCR())) {
                         monthGCR.get(acMonth).add(getData.getGCR());
                     }
-                    if(regGcr.isEmpty() || !regGcr.containsKey(acYear)){
+                    if (regGcr.isEmpty() || !regGcr.containsKey(acYear)) {
                         regGcr.put(acYear, new ArrayList<>());
-                        regGcr.get(acYear).add(getData.getGCR());
-                    }else if(regGcr.containsKey(acYear) && !regGcr.get(acYear).contains(getData.getGCR())){
-                        regGcr.get(acYear).add(getData.getGCR());
+                        if (acType.equals("Cheque")) {
+                            regGcr.get(acYear).add("Che-" + getData.getGCR());
+                        } else {
+                            regGcr.get(acYear).add("ChqDpS-" + getData.getGCR());
+                        }
+                    } else if (regGcr.containsKey(acYear) && !regGcr.get(acYear).contains(getData.getGCR())) {
+                        if (acType.equals("Cheque")) {
+                            regGcr.get(acYear).add("Che-" + getData.getGCR());
+                        } else {
+                            regGcr.get(acYear).add("ChqDpS-" + getData.getGCR());
+                        }
                     }
                 }
                 stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE  " +
-                        "`revCenter` = '"+acCENTER+"' AND `GCR` = '"+acGCR+"' AND `payment_type` = '"+acType+"'");
+                        "`revCenter` = '" + acCENTER + "' AND `GCR` = '" + acGCR + "' AND `payment_type` = '" + acType + "'");
                 ResultSet res = stmnt.executeQuery();
-                while (res.next()){
+                while (res.next()) {
                     duplicate.add(res.getString("GCR"));
                 }
-                if (duplicate.contains(getData.getGCR())){
-                    lblDup.setText('"'+getData.getGCR()+'"'+" of payment method "+'"'+acType+'"'+" already exist. Please select " +
+                if (duplicate.contains(getData.getGCR())) {
+                    lblDup.setText('"' + getData.getGCR() + '"' + " of payment method " + '"' + acType + '"' + " already exist. Please select " +
                             "row of duplicate data in table to edit or delete.");
                     lblDup.setVisible(true);
-                    h=tblCollection.getItems().size();
-                }else {
+                    h = tblCollection.getItems().size() + 1;
+                } else {
                     boolean condition = true;
                     ArrayList<String> dup = new ArrayList<>();
-                    while (condition){
+                    while (condition) {
                         stmnt = con.prepareStatement("SELECT `ID` FROM `collection_payment_entries` WHERE `ID` = " +
                                 "'" + fini + "' ");
                         ResultSet rt = stmnt.executeQuery();
-                        while (rt.next()){
+                        while (rt.next()) {
                             dup.add(rt.getString("ID"));
                         }
-                        if (dup.contains(fini)){
+                        if (dup.contains(fini)) {
                             fini = getID();
-                        }else {
+                        } else {
                             condition = false;
                         }
                     }
+                    if (acType.equals("Cheque")) {
+                        gcrID.put(fini, "Che-" + getData.getGCR());
+                    }
+                    if (acType.equals("Cheque Deposit Slip")) {
+                        gcrID.put(fini, "ChqDpS-" + getData.getGCR());
+                    }
 
-                    if (acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")){
-                        gcrID.put(fini, getData.getGCR());
-                        if(!typeSerials.get(acType).contains(fini)){
+                    if (acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")) {
+                        if (!typeSerials.get(acType).contains(fini)) {
                             typeSerials.get(acType).add(fini);
                         }
                     }
@@ -489,8 +479,10 @@ public class Payment_EntriesController implements Initializable {
                             acGCR + "' ,'" + acAMOUNT + "', '" + acDate + "', '" + acMonth + "', '" + acYEAR + "', '" +
                             acType + "', '" + fini + "')");
                     stmnt.executeUpdate();
-                    tblCollection.getItems().remove(h);
                 }
+            }else {
+                tblCollection.getItems().clear();
+            }
         }
         if(!regGcr.isEmpty()){
             System.out.println(typeSerials);
@@ -532,13 +524,6 @@ public class Payment_EntriesController implements Initializable {
                         }
                         closeConfirmation.initModality(Modality.APPLICATION_MODAL);
                         closeConfirmation.initOwner(stg);
-
-                        // normally, you would just use the default alert positioning,
-                        // but for this simple sample the main stage is small,
-                        // so explicitly position the alert so that the main window can still be seen.
-                        closeConfirmation.setX(stg.getX()*2);
-                        closeConfirmation.setY(stg.getY()*2);
-
                         Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
                         if (!ButtonType.OK.equals(closeResponse.get())) {
                             we.consume();

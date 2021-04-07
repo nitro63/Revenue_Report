@@ -97,6 +97,7 @@
       </TableView>
       <TableView fx:id="tblPaymentEntries" layoutX="327.0" layoutY="55.0" prefHeight="510.0" prefWidth="759.0" visible="false" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="39.0">
          <columns>
+            <TableColumn fx:id="colPayID" editable="false" prefWidth="119.0" text="ID" />
             <TableColumn fx:id="colPayGCR" editable="false" prefWidth="119.0" text="GCR NO." />
             <TableColumn fx:id="colPayAmount" editable="false" prefWidth="119.0" text="AMOUNT" />
             <TableColumn fx:id="colPayDATE" editable="false" minWidth="0.0" prefWidth="110.0" text="DATE" />
@@ -118,6 +119,7 @@
       </Label>
       <TableView fx:id="tblChequeDetails" layoutX="360.0" layoutY="55.0" prefHeight="490.0" prefWidth="714.0" visible="false" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="51.0">
          <columns>
+            <TableColumn fx:id="colChqID" editable="false" prefWidth="103.0" text="ID" />
             <TableColumn fx:id="colChqGCR" editable="false" prefWidth="103.0" text="GCR" />
             <TableColumn fx:id="colPayChqDate" editable="false" prefWidth="103.0" text="DATE" />
             <TableColumn fx:id="colChqDate" editable="false" prefWidth="153.0" text="CHEQUE DATE" />
@@ -358,40 +360,6 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneCheque" layoutX="31.0" layoutY="149.0" prefHeight="337.0" prefWidth="246.0" visible="false">
-         <children>
-            <JFXComboBox fx:id="cmbGCR" focusColor="#0ac31f" layoutX="55.0" layoutY="21.0" prefHeight="25.0" prefWidth="92.0" promptText="GCR" unFocusColor="#11da4a" />
-            <JFXDatePicker fx:id="dtpckChequeDate" defaultColor="#0fc649" editable="false" layoutX="54.0" layoutY="84.0" prefHeight="25.0" prefWidth="116.0" promptText="MM/DD/YYYY" />
-            <JFXTextField fx:id="txtChqNmb" focusColor="#0ed75e" layoutX="54.0" layoutY="149.0" onKeyTyped="#onlyNumbers" promptText="Cheque Number" unFocusColor="#11c939" />
-            <JFXTextField fx:id="txtBankName" focusColor="#17c651" layoutX="54.0" layoutY="211.0" promptText="Bank" unFocusColor="#17d72d" />
-            <JFXTextField fx:id="txtChqAmount" focusColor="#13e428" layoutX="54.0" layoutY="273.0" onKeyTyped="#onlyAmount" promptText="Amount" unFocusColor="#0fb51a" />
-            <Label fx:id="lblGCRChqWarn" layoutX="55.0" layoutY="13.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblChequeDateWarn" layoutX="55.0" layoutY="68.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblChqNmbWarn" layoutX="55.0" layoutY="141.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblBankNameWarn" layoutX="55.0" layoutY="203.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblChqAmtWarn" layoutX="55.0" layoutY="265.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="paneNothing" layoutX="360.0" layoutY="51.0" prefHeight="538.0" prefWidth="766.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="51.0">
          <children>
             <Label layoutX="152.0" layoutY="208.0" prefHeight="122.0" prefWidth="462.0" text="No Data to Display" textAlignment="CENTER" textFill="#bcbaba">
@@ -406,6 +374,34 @@
             <Label layoutX="20.0" layoutY="127.0" prefHeight="101.0" prefWidth="223.0" text="SELECT AN ENTRY TYPE TO EDIT" textAlignment="CENTER" textFill="#9a9797">
                <font>
                   <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="paneCheque" layoutX="31.0" layoutY="149.0" prefHeight="337.0" prefWidth="246.0" visible="false">
+         <children>
+            <JFXDatePicker fx:id="dtpckChequeDate" defaultColor="#0fc649" editable="false" layoutX="54.0" layoutY="59.0" prefHeight="25.0" prefWidth="116.0" promptText="MM/DD/YYYY" />
+            <JFXTextField fx:id="txtChqNmb" focusColor="#0ed75e" layoutX="54.0" layoutY="124.0" onKeyTyped="#onlyNumbers" promptText="Cheque Number" unFocusColor="#11c939" />
+            <JFXTextField fx:id="txtBankName" focusColor="#17c651" layoutX="54.0" layoutY="186.0" promptText="Bank" unFocusColor="#17d72d" />
+            <JFXTextField fx:id="txtChqAmount" focusColor="#13e428" layoutX="54.0" layoutY="248.0" onKeyTyped="#onlyAmount" promptText="Amount" unFocusColor="#0fb51a" />
+            <Label fx:id="lblChequeDateWarn" layoutX="55.0" layoutY="43.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblChqNmbWarn" layoutX="55.0" layoutY="116.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblBankNameWarn" layoutX="55.0" layoutY="178.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblChqAmtWarn" layoutX="55.0" layoutY="240.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Label>
          </children>

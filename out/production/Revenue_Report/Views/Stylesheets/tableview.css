@@ -29,7 +29,10 @@ and open the template in the editor.
     -fx-border-radius: 30;
     -fx-background-color: transparent;
 }
-.table-row-cell:selected{
+.table-cell{
+    -fx-alignment: CENTER;
+}
+.table-cell:selected{
     -fx-background-color: #031c03;
     -fx-background-insets: 0;
     -fx-background-radius: 1;

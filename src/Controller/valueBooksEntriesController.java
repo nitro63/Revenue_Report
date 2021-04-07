@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.Gets.GetCollectEnt;
 import Controller.Gets.GetFunctions;
 import Controller.Gets.GetRevCenter;
 import Controller.Gets.GetValueBooksEntries;
@@ -68,6 +69,12 @@ public class valueBooksEntriesController implements Initializable {
     private TableColumn<GetValueBooksEntries, String> colMonth;
 
     @FXML
+    private TableColumn<GetValueBooksEntries, String> colQuarter;
+
+    @FXML
+    private TableColumn<GetValueBooksEntries, String> colWeek;
+
+    @FXML
     private TableColumn<GetValueBooksEntries, String> colDATE;
 
     @FXML
@@ -131,7 +138,8 @@ public class valueBooksEntriesController implements Initializable {
     Pattern p = Pattern.compile(regex);
     Matcher mac;
     Map<String, ArrayList<String>> regValSerial = new HashMap<>();
-    String revCent, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount;
+    String revCent, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount,
+            purAmount, Quarter, Week;
     String remarks = "Initial Entry";
     Map<String, Float> priceBook = new HashMap<>();
 
@@ -202,7 +210,9 @@ public class valueBooksEntriesController implements Initializable {
             Condition = false;
         }else{
             Condition =true;
+            Quarter = getDates.getQuarter(date);
             Month = getDates.getMonth(date);
+            Week = getDates.getWeek(date);
             Date = getDates.getDate(date);
             Year = getDates.getYear(date);
             while (Condition){
@@ -277,6 +287,8 @@ public class valueBooksEntriesController implements Initializable {
                         } else {
                             colYear.setCellValueFactory(data -> data.getValue().yearProperty());
                             colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
+                            colQuarter.setCellValueFactory(data -> data.getValue().monthProperty());
+                            colWeek.setCellValueFactory(data -> data.getValue().dateProperty());
                             colDATE.setCellValueFactory(data -> data.getValue().dateProperty());
                             colTypeVB.setCellValueFactory(data -> data.getValue().valueBookProperty());
                             colSerialFrom.setCellValueFactory(data -> data.getValue().firstSerialProperty());
@@ -286,7 +298,7 @@ public class valueBooksEntriesController implements Initializable {
                             colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
                             colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
                             colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
-                            addEntries = new GetValueBooksEntries(Year, Month, Date, typeOfValBk, firstSerial,
+                            addEntries = new GetValueBooksEntries(Year, Month, Quarter, Week, Date, typeOfValBk, firstSerial,
                                     lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks);
                             tblValueBookStocks.getItems().add(addEntries);
                             if (!regValSerial.containsKey(typeOfValBk)) {
@@ -329,11 +341,12 @@ public class valueBooksEntriesController implements Initializable {
             cmbTypeOfValueBook.getSelectionModel().select(valueBooks.getValueBook());
                     mac = p.matcher(valueBooks.getPurAmount());
             String amount = "";
-            if (mac.matches()){
-                amount = mac.replaceAll("");
-            }else {
-                amount = valueBooks.getPurAmount();
-            }
+            amount = mac.replaceAll("");
+//            if (mac.matches()){
+//
+//            }else {
+//                amount = valueBooks.getPurAmount();
+//            }
             float price = Float.parseFloat(amount);
             int quantity = Integer.parseInt(valueBooks.getQuantity());
             txtUnitAmount.setText(Float.toString(price / quantity));
@@ -347,6 +360,9 @@ public class valueBooksEntriesController implements Initializable {
                 regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).remove(txtSerialTo.
                         getText());
             }
+            ObservableList<GetValueBooksEntries> selectedRows = tblValueBookStocks.getSelectionModel().getSelectedItems();
+            ArrayList<GetValueBooksEntries> rows = new ArrayList<>(selectedRows);
+            rows.forEach(row -> tblValueBookStocks.getItems().remove(row));
 
         }
     }
@@ -357,17 +373,24 @@ public class valueBooksEntriesController implements Initializable {
         getData = new GetValueBooksEntries();
         ResultSet rs;
         ResultSetMetaData rm;
+        String regex = "(?<=[\\d])(,)(?=[\\d])";
+        Pattern p = Pattern.compile(regex);
+        Matcher m ;
         for(int f = 0; f<tblValueBookStocks.getItems().size(); f++) {
             getData = tblValueBookStocks.getItems().get(f);
-            Month = getData.getMonth();
-            Date = getData.getDate();
+            String acMonth = getData.getMonth(),
+            acDate = getData.getDate();
             typeOfValBk = getData.getValueBook();
             int acYear = Integer.parseInt(getData.getYear());
+            int acQuarter = Integer.parseInt(getData.getQuarter());
+            int acWeek = Integer.parseInt(getData.getWeek());
             int acFirstSerial = Integer.parseInt(getData.getFirstSerial());
             int acLastSerial = Integer.parseInt(getData.getLastSerial());
             int acQuantity = Integer.parseInt(getData.getQuantity());
-            float acAmount = Float.parseFloat(getData.getValAmount());
-            float acPurAmount = Float.parseFloat(getData.getPurAmount());
+            m = p.matcher(getData.getValAmount());
+            float acAmount = Float.parseFloat(m.replaceAll(""));
+            m = p.matcher(getData.getPurAmount());
+            float acPurAmount = Float.parseFloat(m.replaceAll(""));
             PreparedStatement stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE " +
                     "`revCenter` = '"+revCent+"' AND `value_book` = '"+typeOfValBk+"' AND `first_serial` = " +
                     "'"+acFirstSerial+"' AND `last_serial` = '"+acLastSerial+"'");
@@ -381,11 +404,12 @@ public class valueBooksEntriesController implements Initializable {
                 lblDup.setVisible(true);
                 f = tblValueBookStocks.getItems().size();
             }else {
-                stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, `month`," +
-                        " `date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`," +
-                        " `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" + Month + "', '" + Date + "', '" +
-                        typeOfValBk + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" +
-                        acAmount + "', '" + acPurAmount + "','" + remarks + "')");
+                stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`revCenter`, `year`, " +
+                        "`month`,`quarter`, `week`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`," +
+                        " `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" +
+                        acMonth + "', '" + acQuarter + "', '" + acWeek + "', '" + acDate + "', '" + typeOfValBk
+                        + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount
+                        + "', '" + acPurAmount + "','" + remarks + "')");
                 stmnt.executeUpdate();
                 tblValueBookStocks.getItems().remove(f);
             }

@@ -4,11 +4,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetValueBooksReport {
-    StringProperty Year, Month, Date, valueBook, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks, ID;
+    StringProperty Quarter, Week, Year, Month, Date, valueBook, firstSerial, lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks, ID;
 
     public  GetValueBooksReport(){}
 
-    public GetValueBooksReport(String month, String ID, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String purAmount, String remarks) {
+    public GetValueBooksReport(String Year, String Quarter, String month, String Week, String ID, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String purAmount, String remarks) {
+        this.Year = new SimpleStringProperty(Year);
+        this.Quarter = new SimpleStringProperty(Quarter);
+        this.Week = new SimpleStringProperty(Week);
         this.Month = new SimpleStringProperty(month);
         this.ID = new SimpleStringProperty(ID);
         this.Date = new SimpleStringProperty(date);
@@ -20,6 +23,43 @@ public class GetValueBooksReport {
         this.purAmount = new SimpleStringProperty(purAmount);
         this.remarks = new SimpleStringProperty(remarks);
     }
+
+    public String getQuarter() {
+        return Quarter.get();
+    }
+
+    public StringProperty quarterProperty() {
+        return Quarter;
+    }
+
+    public void setQuarter(String quarter) {
+        this.Quarter.set(quarter);
+    }
+
+    public String getWeek() {
+        return Week.get();
+    }
+
+    public StringProperty weekProperty() {
+        return Week;
+    }
+
+    public void setWeek(String week) {
+        this.Week.set(week);
+    }
+
+    public String getYear() {
+        return Year.get();
+    }
+
+    public StringProperty yearProperty() {
+        return Year;
+    }
+
+    public void setYear(String year) {
+        this.Year.set(year);
+    }
+
     public String getID() {
         return ID.get();
     }

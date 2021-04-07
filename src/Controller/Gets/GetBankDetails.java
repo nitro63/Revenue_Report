@@ -4,26 +4,48 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetBankDetails {
-    StringProperty GCR, Date,Year, chequeDate, chequeNumber, Bank, Amount, Month;
+    StringProperty gcr, Date,Year, ChequeDate, ChequeNumber, Bank, Amount, Month, ID;
+    String GCR, date, chequeDate, chequeNumber, bank, amount;
     public GetBankDetails(){
     }
     public GetBankDetails(String GCR, String Year, String Month, String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
-        this.GCR = new SimpleStringProperty(GCR);
+        this.gcr = new SimpleStringProperty(GCR);
         this.Year = new SimpleStringProperty(Year);
         this.Month = new SimpleStringProperty(Month);
         this.Date = new SimpleStringProperty(Date);
-        this.chequeDate = new SimpleStringProperty(chequeDate);
-        this.chequeNumber = new SimpleStringProperty(chequeNumber);
+        this.ChequeDate = new SimpleStringProperty(chequeDate);
+        this.ChequeNumber = new SimpleStringProperty(chequeNumber);
+        this.Bank = new SimpleStringProperty(Bank);
+        this.Amount = new SimpleStringProperty(Amount);
+    }
+    public GetBankDetails(String ID, String GCR,  String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
+        this.gcr = new SimpleStringProperty(GCR);
+        this.Date = new SimpleStringProperty(Date);
+        this.ChequeDate = new SimpleStringProperty(chequeDate);
+        this.ChequeNumber = new SimpleStringProperty(chequeNumber);
+        this.ID = new SimpleStringProperty(ID);
         this.Bank = new SimpleStringProperty(Bank);
         this.Amount = new SimpleStringProperty(Amount);
     }
     public GetBankDetails(String GCR,  String Date, String chequeDate, String chequeNumber, String Bank, String Amount){
-        this.GCR = new SimpleStringProperty(GCR);
+        this.gcr = new SimpleStringProperty(GCR);
         this.Date = new SimpleStringProperty(Date);
-        this.chequeDate = new SimpleStringProperty(chequeDate);
-        this.chequeNumber = new SimpleStringProperty(chequeNumber);
+        this.ChequeDate = new SimpleStringProperty(chequeDate);
+        this.ChequeNumber = new SimpleStringProperty(chequeNumber);
         this.Bank = new SimpleStringProperty(Bank);
         this.Amount = new SimpleStringProperty(Amount);
+    }
+
+    public String getID() {
+        return ID.get();
+    }
+
+    public StringProperty IDProperty() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID.set(ID);
     }
 
     public String getYear() {
@@ -39,7 +61,7 @@ public class GetBankDetails {
     }
 
     public String getGCR() {
-        return GCR.get();
+        return gcr.get();
     }
 
     public String getMonth() {
@@ -55,11 +77,11 @@ public class GetBankDetails {
     }
 
     public StringProperty GCRProperty() {
-        return GCR;
+        return gcr;
     }
 
     public void setGCR(String GCR) {
-        this.GCR.set(GCR);
+        this.gcr.set(GCR);
     }
 
     public String getDate() {
@@ -75,27 +97,27 @@ public class GetBankDetails {
     }
 
     public String getChequeDate() {
-        return chequeDate.get();
+        return ChequeDate.get();
     }
 
     public StringProperty chequeDateProperty() {
-        return chequeDate;
+        return ChequeDate;
     }
 
     public void setChequeDate(String chequeDate) {
-        this.chequeDate.set(chequeDate);
+        this.ChequeDate.set(chequeDate);
     }
 
     public String getChequeNumber() {
-        return chequeNumber.get();
+        return ChequeNumber.get();
     }
 
     public StringProperty chequeNumberProperty() {
-        return chequeNumber;
+        return ChequeNumber;
     }
 
     public void setChequeNumber(String chequeNumber) {
-        this.chequeNumber.set(chequeNumber);
+        this.ChequeNumber.set(chequeNumber);
     }
 
     public String getBank() {

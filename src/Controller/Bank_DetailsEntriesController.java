@@ -224,11 +224,11 @@ public class Bank_DetailsEntriesController implements Initializable {
         }
 
     }
-    private String getGcrID(String Gcr){
+    public String getGcrID(String Gcr, Map<String, String> gcrID){
         String id = "";
-        for(Map.Entry<String, String>gcrID :colEnt.gcrID.entrySet()) {
-            if(gcrID.getValue().equals(Gcr)){
-                id = gcrID.getKey();
+        for(Map.Entry<String, String>gCrID :gcrID.entrySet()) {
+            if(gCrID.getValue().equals(Gcr)){
+                id = gCrID.getKey();
             }
         }
         return id;
@@ -253,13 +253,6 @@ public class Bank_DetailsEntriesController implements Initializable {
         saveConfirmation.initModality(Modality.APPLICATION_MODAL);
         saveConfirmation.initOwner(stage);
         saveConfirmation.initStyle(StageStyle.UTILITY);
-
-        // normally, you would just use the default alert positioning,
-        // but for this simple sample the main stage is small,
-        // so explicitly position the alert so that the main window can still be seen.
-        saveConfirmation.setX(stage.getX()*2.5);
-        saveConfirmation.setY(stage.getY()*2.5);
-
         Optional<ButtonType> saveResponse = saveConfirmation.showAndWait();
         if (!ButtonType.OK.equals(saveResponse.get())) {
             event.consume();
@@ -278,7 +271,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                     String acBank = getData.getBank();
                     String center = colEnt.GetCenter.getRevCenter();
                     String year = getData.getYear();
-                    ID = getGcrID(getData.getGCR());
+                    ID = getGcrID(getData.getGCR(), colEnt.gcrID);
 
                 String fini = "chq"+colEnt.getID();
                 boolean condition = true;
@@ -376,12 +369,12 @@ public class Bank_DetailsEntriesController implements Initializable {
         if(GCR == null){
             lblGCRWarn.setVisible(true);
             Condition =false;
-        }else if(!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR)) && date == null){
+        }else if(!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR, colEnt.gcrID)) && date == null){
             lblChqdatewarn.setVisible(true);
             Condition = false;
         }else{
             Condition =true;
-            if (!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR))){
+            if (!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR, colEnt.gcrID))){
             chqDate = getFunctions.getDate(date);
             }else {
                 chqDate = "NA";
@@ -390,7 +383,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                 if(txtBankName.getText().isEmpty() || Bank.matches("\\s+")){
                     lblBankwarn.setVisible(true);
                     Condition =false;
-                }else if(!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR)) && chqDate == null){
+                }else if(!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR, colEnt.gcrID)) && chqDate == null){
                     lblChqdatewarn.setVisible(true);
                     Condition =false;
 

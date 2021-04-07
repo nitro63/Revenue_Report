@@ -5,15 +5,17 @@ import javafx.beans.property.StringProperty;
 
 public class GetValueBooksEntries {
 
-    private StringProperty Year, Month, Date, ValueBook, FirstSerial, LastSerial, Quantity, ValAmount, CumuAmount, PurAmount, remarks, ID;
+    private StringProperty Quarter, Week, Year, Month, Date, ValueBook, FirstSerial, LastSerial, Quantity, ValAmount, CumuAmount, PurAmount, remarks, ID;
 
     private String year, month, date, valueBook, firstSerial, lastSerial, quantity, valAmount, cumuAmount, purAmount;
 
     public GetValueBooksEntries(){   }
 
-    public GetValueBooksEntries(String Year, String month, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
+    public GetValueBooksEntries(String Year, String month, String quarter, String week, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
         this.Year = new SimpleStringProperty(Year);
         this.Month = new SimpleStringProperty(month);
+        this.Quarter = new SimpleStringProperty(quarter);
+        this.Week = new SimpleStringProperty(week);
         this.Date = new SimpleStringProperty(date);
         this.ValueBook = new SimpleStringProperty(valueBook);
         this.FirstSerial = new SimpleStringProperty(firstSerial);
@@ -35,6 +37,30 @@ public class GetValueBooksEntries {
         this.CumuAmount = new SimpleStringProperty(cumuAmount);
         this.PurAmount = new SimpleStringProperty(purAmount);
         this.remarks = new SimpleStringProperty(remarks);
+    }
+
+    public String getQuarter() {
+        return Quarter.get();
+    }
+
+    public StringProperty quarterProperty() {
+        return Quarter;
+    }
+
+    public void setQuarter(String quarter) {
+        this.Quarter.set(quarter);
+    }
+
+    public String getWeek() {
+        return Week.get();
+    }
+
+    public StringProperty weekProperty() {
+        return Week;
+    }
+
+    public void setWeek(String week) {
+        this.Week.set(week);
     }
 
     public String getRemarks() {

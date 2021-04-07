@@ -31,6 +31,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -57,6 +58,8 @@ public class weeklyReportController implements Initializable {
     private Button btnShowReport;
     @FXML
     private VBox weekTemplate;
+    @FXML
+    private AnchorPane generalPane;
     @FXML
     private TableView<GetReportgen> weekTable;
     @FXML
@@ -87,6 +90,42 @@ public class weeklyReportController implements Initializable {
     private Label lblYear;
     @FXML
     private Label lblRevenueCenter;
+    @FXML
+    private AnchorPane subPane;
+    @FXML
+    private TableView<GetReportgen> weekTableSub;
+    @FXML
+    private TableColumn<GetReportgen, String> revenueITEMSub;
+    @FXML
+    private TableColumn<GetReportgen, String> week1Sub;
+    @FXML
+    private TableColumn<GetReportgen, String> week2Sub;
+    @FXML
+    private TableColumn<GetReportgen, String> week3Sub;
+    @FXML
+    private TableColumn<GetReportgen, String> week4Sub;
+    @FXML
+    private TableColumn<GetReportgen, String> week5Sub;
+    @FXML
+    private TableColumn<GetReportgen, String> week6Sub;
+    @FXML
+    private TableColumn<GetReportgen, String> totalAmountSub;
+    @FXML
+    private Label lblCumuAmount;
+    @FXML
+    private Label lblCCAmount;
+    @FXML
+    private Label lblCommission;
+    @FXML
+    private Label lblCostValueBooks;
+    @FXML
+    private Label lblDiff;
+    @FXML
+    private Label lblNetRevenue;
+    @FXML
+    private Label lblAmtDueSub;
+    @FXML
+    private Label lblAmtDueKMA;
     /**
      * Initializes the controller class.
      */
@@ -124,13 +163,9 @@ public class weeklyReportController implements Initializable {
          int columns = metadata.getColumnCount();
          
          while(rs.next()){
-             for(int i= 1; i<=columns; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 rowCent.add(value);
-                 
-             }
+                 rowCent.add(rs.getString("revCenter"));
          }
+         stmnt = con.prepareStatement("SELECT `revCenter`");
          cmbReportCent.getItems().clear();
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);

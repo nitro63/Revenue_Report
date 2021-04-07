@@ -29,6 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -56,13 +57,11 @@ public class MonthlyReportController implements Initializable {
     @FXML
     private Button btnShowReport;
     @FXML
+    private AnchorPane generalPane;
+    @FXML
     private TableView<GetMonthlyReport> monthlyTable;
     @FXML
-    private TableColumn<?, ?> revenueCenter;
-    @FXML
     private TableColumn<GetMonthlyReport, String> revenueItem;
-    @FXML
-    private TableColumn<?, ?> year;
     @FXML
     private TableColumn<GetMonthlyReport, String> january;
     @FXML
@@ -97,7 +96,56 @@ public class MonthlyReportController implements Initializable {
     private Label lblYear;
     @FXML
     private Label lblRevenueCenter;
-    
+    @FXML
+    private AnchorPane subPane;
+    @FXML
+    private TableView<GetMonthlyReport> monthlyTableSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> revenueItemSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> januarySub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> februarySub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> marchSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> aprilSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> maySub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> juneSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> julySub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> augustSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> septemberSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> octoberSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> novemberSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> decemberSub;
+    @FXML
+    private TableColumn<GetMonthlyReport, String> totalAmountSub;
+    @FXML
+    private Label lblCumuAmount;
+    @FXML
+    private Label lblCCAmount;
+    @FXML
+    private Label lblCommission;
+    @FXML
+    private Label lblCostValueBooks;
+    @FXML
+    private Label lblDiff;
+    @FXML
+    private Label lblNetRevenue;
+    @FXML
+    private Label lblAmtDueSub;
+    @FXML
+    private Label lblAmtDueKMA;
+
+
     private GetMonthlyReport getReport;
 
     /**
