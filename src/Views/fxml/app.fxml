@@ -25,7 +25,7 @@
       </ScrollPane>
    </left>
    <center>
-      <VBox fx:id="centerPane" alignment="CENTER" fillWidth="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1100.0" style="-fx-background-color: #edfff7;" />
+      <VBox fx:id="centerPane" alignment="CENTER" fillWidth="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1100.0" style="-fx-background-color: #edfff7;" />
    </center>
    <top>
       <HBox prefHeight="81.0" prefWidth="876.0" style="-fx-background-color: #dddcf7; -fx-background-color: #f5f6f7;">
