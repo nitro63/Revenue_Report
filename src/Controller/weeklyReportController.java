@@ -310,14 +310,14 @@ public class weeklyReportController implements Initializable {
           while(rs.next()){
               rowWeek.add(rs.getString("revenueWeek"));
           }
-          Map<String, ArrayList<Float>> weekAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
+//          Map<String, ArrayList<Float>> weekAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
           Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
           rowItems.forEach((rowItem) -> {
               forEntry.put(rowItem, new HashMap<>());
       });
-          rowWeek.forEach((rowDates) -> {
-              weekAmount.put(rowDates, new ArrayList<>());
-          });
+//          rowWeek.forEach((rowDates) -> {
+//              weekAmount.put(rowDates, new ArrayList<>());
+//          });
           try {
           for(String week : rowWeek) {
               for(String Item : rowItems) {

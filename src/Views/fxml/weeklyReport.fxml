@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="630.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="630.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="322.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEEKLY REVENUE REPORT" textAlignment="CENTER" wrappingWidth="405.13671875">
          <font>
@@ -48,9 +48,9 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <AnchorPane fx:id="generalPane" layoutX="6.0" layoutY="137.0" visible="false">
+      <AnchorPane fx:id="generalPane" layoutX="6.0" layoutY="134.0" prefHeight="451.0" prefWidth="1008.0">
          <children>
-            <TableView fx:id="weekTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="1008.0">
+            <TableView fx:id="weekTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="388.0" prefWidth="1008.0">
                <columns>
                   <TableColumn fx:id="revenueITEM" prefWidth="126.0">
                      <graphic>
@@ -117,18 +117,6 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
-                     <columns>
-                        <TableColumn fx:id="week6" prefWidth="100.0" text="6" />
-                     </columns>
-                     <graphic>
-                        <Label fx:id="lblWeek6gen" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="System Bold" size="10.0" />
-                           </font>
-                        </Label>
-                     </graphic>
-                  </TableColumn>
                   <TableColumn fx:id="totalAmount" prefWidth="100.0">
                      <graphic>
                         <Label text="TOTAL AMOUNT" textAlignment="CENTER" wrapText="true" />
@@ -139,6 +127,41 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <Label alignment="CENTER" layoutY="408.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" text="TOTAL" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk1SumSub1" alignment="CENTER" layoutX="155.0" layoutY="408.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk2SumSub1" alignment="CENTER" layoutX="292.0" layoutY="408.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk3SumSub1" alignment="CENTER" layoutX="428.0" layoutY="408.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk4SumSub1" alignment="CENTER" layoutX="580.0" layoutY="408.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk5SumSub1" alignment="CENTER" layoutX="719.0" layoutY="408.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalSumSub1" alignment="CENTER" layoutX="859.0" layoutY="408.0" prefHeight="38.0" prefWidth="142.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="905.0" layoutY="596.0" onAction="#printReport" text="PRINT">
@@ -191,7 +214,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <ScrollPane layoutX="4.0" layoutY="112.0" prefHeight="477.0" prefWidth="1024.0">
+      <ScrollPane layoutX="4.0" layoutY="112.0" prefHeight="477.0" prefWidth="1024.0" visible="false">
          <content>
             <AnchorPane fx:id="subPane" prefHeight="579.0" prefWidth="1008.0">
                <children>
@@ -202,35 +225,65 @@
                               <Label prefHeight="51.0" prefWidth="99.0" text="REVENUE ITEM " textAlignment="CENTER" wrapText="true" />
                            </graphic>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Column X">
+                        <TableColumn prefWidth="75.0">
                            <columns>
-                              <TableColumn fx:id="week1Sub" prefWidth="100.0" text="WEEK" />
+                              <TableColumn fx:id="week1Sub" prefWidth="100.0" text="1" />
                            </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek1sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Column X">
+                        <TableColumn prefWidth="75.0">
                            <columns>
-                              <TableColumn fx:id="week2Sub" prefWidth="100.0" text="WEEK" />
+                              <TableColumn fx:id="week2Sub" prefWidth="100.0" text="2" />
                            </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek2sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Column X">
+                        <TableColumn prefWidth="75.0">
                            <columns>
-                              <TableColumn fx:id="week4Sub" prefWidth="100.0" text="WEEK" />
+                              <TableColumn fx:id="week4Sub" prefWidth="100.0" text="3" />
                            </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek3sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Column X">
+                        <TableColumn prefWidth="75.0">
                            <columns>
-                              <TableColumn fx:id="week3Sub" prefWidth="100.0" text="WEEK" />
+                              <TableColumn fx:id="week3Sub" prefWidth="100.0" text="4" />
                            </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek4sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
                         </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Column X">
+                        <TableColumn prefWidth="75.0">
                            <columns>
-                              <TableColumn fx:id="week5Sub" prefWidth="100.0" text="WEEK" />
+                              <TableColumn fx:id="week5Sub" prefWidth="100.0" text="5" />
                            </columns>
-                        </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Column X">
-                           <columns>
-                              <TableColumn fx:id="week6Sub" prefWidth="100.0" text="WEEK" />
-                           </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek5sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
                         </TableColumn>
                         <TableColumn fx:id="totalAmountSub" prefWidth="100.0">
                            <graphic>
@@ -322,42 +375,37 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutY="417.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" text="TOTAL" textAlignment="CENTER">
+                  <Label alignment="CENTER" layoutY="417.0" prefHeight="38.0" prefWidth="125.0" style="-fx-background-color: #b6f1c3;" text="TOTAL" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblWk1SumSub" alignment="CENTER" layoutX="127.0" layoutY="417.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="lblWk1SumSub" alignment="CENTER" layoutX="148.0" layoutY="417.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblWk2SumSub" alignment="CENTER" layoutX="254.0" layoutY="418.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="lblWk2SumSub" alignment="CENTER" layoutX="301.0" layoutY="418.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblWk3SumSub" alignment="CENTER" layoutX="382.0" layoutY="417.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="lblWk3SumSub" alignment="CENTER" layoutX="440.0" layoutY="418.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblWk4SumSub" alignment="CENTER" layoutX="509.0" layoutY="418.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="lblWk4SumSub" alignment="CENTER" layoutX="589.0" layoutY="418.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblWk5SumSub" alignment="CENTER" layoutX="636.0" layoutY="419.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="lblWk5SumSub" alignment="CENTER" layoutX="731.0" layoutY="419.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblWk6SumSub" alignment="CENTER" layoutX="764.0" layoutY="418.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblTotalSumSub" alignment="CENTER" layoutX="890.0" layoutY="419.0" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="lblTotalSumSub" alignment="CENTER" layoutX="864.0" layoutY="419.0" prefHeight="38.0" prefWidth="142.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
