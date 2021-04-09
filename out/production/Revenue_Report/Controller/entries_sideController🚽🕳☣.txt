@@ -1,3 +1,9 @@
+
+
+Crap: AK-763-9907
+
+
+
 //         FXMLLoader loadsgre = new FXMLLoader();
 //        loadsgre.setLocation(getClass().getResource( "/Views/fxml/entries_side.fxml"));
 //        loadsgre.setController(this);
@@ -249,17 +255,147 @@ Tadaaaaaa: myMONdevices.7
 
 DELETE FROM `collection_payment_entries` WHERE `pay_revCenter` = 'Environmental' AND `GCR` = '352654' AND `payment_type` = 'Cheque'
 
+Head of Cyber Security
+Posting Country:  Ghana
+Date Posted:  31-Mar-2021
+Full Time / Part Time:  Full Time
+Contract Type:  Permanent
+
+At Vodafone, we’re working hard to build a better future. A more connected, inclusive and sustainable world. As a dynamic global community, it's our human spirit, together with technology, that empowers us to achieve this.
+
+We challenge and innovate in order to connect people, businesses, and communities across the world. Delighting our customers and earning their loyalty drive us, and we experiment, learn fast and get it done, together.
+
+With us, you can be truly be yourself and belong, share inspiration, embrace new opportunities, thrive, and make a real difference.
+
+Role Purpose
+The successful person will act as the local market lead for Cyber Security, responsible for all security elements within the networks and IT Function.
+He/She will work with the local CTO and the Vodafone Regional Cyber Security Lead to ensure adequate budget, resource and management focus is on cyber security risks and will be responsible for delivering a fully transparent budget planning and purchasing process for spend related to cyber security activities.
+In addition, the Head of Cyber Security will be responsible for ensuring the risks for the local market, in terms of cyber security, are effectively managed and will drive forward the CSB strategic program within the local market with the technology support.
+Again, the successful candidate will act as a local control and facilitation point for cyber security related tasks and activities, which are executed in other parts of the local organisation in order to ensure a reliable end to end chain of responsibility from group to local technical execution.
+He/She will report to the Vodafone Regional Cyber Security Lead with a dotted matrix reporting line to the local market Technology Director. The Head of Cyber Security plays an active role as a member of the local Technology Leadership Team, is able to understand business priorities and to get the right balance between local and global strategy delivery.
+
+
+Duties and Responsibilities
+Act as the single point of contact for the local market Cyber Security Community liaising with the Global Cyber Security Functions
+Responsible for the effective implementation of security in all local products and services within the local market, ensuring that all risks are effectively managed or mitigated
+Manage all staff working on technology security within the local market and region where appropriate
+Responsible for effectively capturing and monitoring the local market Cyber Security risks and managing these on the group risk management platform
+Responsible for ensuring all cyber security and risk management processes are optimised for maximum efficiency
+Responsible for obtaining and maintaining operational excellence within the local market and achieving and maintain IS027001 standard for the local operations and data centres where appropriate
+Responsible for ensuring that local technology security is effectively resourced in terms of budget and people to effectively manage the local risk, working with the CTO and Vodafone Regional Cyber Security Lead
+Acts as the final security escalation point within the local market for all cyber security operational issues
+Acts as the Sponsor for the global security programmes within the local market
+Works closely with the local and group corporate security function and the local and group internal audit functions to ensure adequate segregation of duties and effective end to end security for the local market
+Responsible for ensuring all security technology purchases or solutions are in line with the group strategy
+Identify and promote industry best practice for technology security, and security risk management for the local market
+Approve expenditure against cyber security OPEX and CAPEX budgets within the local market
+Qualification and Experience
+• Must be Educated to Degree level or equivalent in Computer Science, Engineering or IT
+• 10-15 years of experience, 5+ Years working in a Telecommunications/Banking or Data network or related service industry
+• Must have Excellent Network and IT security skills
+• Skilled in relationship management – getting closer to the customer
+• Stakeholder management at senior levels
+• Interpersonal skills, enthusiastic, reliable, team player and committed to Vodafone security strategic goals delivery actively.
+
+
+Technical Skills/Experience:
+• Understanding of delivery frameworks:
+• ISO 27001/SOX - PCI DSS – GDPR knowledge
+• Project Management
+• Change Management
+• Incident response/ Supplier Risk Risk Assessment/Compliance and Assurance
+• Experience with the following technologies:
+• Cloud AWS, Azure, and others
+• WAN technologies
+• DNS & WAF DDoS Protection
+• Professional Certification in area of inforamtion security
+• Experience in leading roles into SecbyDesign processes
+
+Vodafone is committed to attracting, developing and retaining the very best people by offering a motivating and inclusive workplace in which talent is truly recognised and rewarded. We are committed to promoting Inclusion for All with the belief that diversity plays an important role in the success of our business. We actively encourage everyone to consider becoming a part of our journey.
 
 
 
 
 
+FP & A Specialist
+Posting Country:  Ghana
+Date Posted:  30-Mar-2021
+Full Time / Part Time:  Full Time
+Contract Type:  Permanent
+At Vodafone, we’re working hard to build a better future. A more connected, inclusive and sustainable world. As a dynamic global community, it's our human spirit, together with technology, that empowers us to achieve this.
+
+We challenge and innovate in order to connect people, businesses, and communities across the world. Delighting our customers and earning their loyalty drive us, and we experiment, learn fast and get it done, together.
+
+With us, you can be truly be yourself and belong, share inspiration, embrace new opportunities, thrive, and make a real difference.
+
+Role Profile
+The FP&A Specialist will be responsible for supporting the quantitative and qualitative analysis of all operational aspects of the business in order to evaluate the company’s progress towards achieving its goals and to map out future objectives and plans The Role involves but not limited to review of actual results against plan, accurate forecasting of business drivers and leading to the consolidation and review of the corporate budget over the short term and long range planning cycles.
+
+Key Accountabilities
+
+
+Monthly Rolling Forecast: lead the consolidation and review of inputs from FDS for revenue and direct costs forecast and overall submission of P&L & OFCF into Vodafone Integrated Planning (VIP) tool
+Management Performance Review Pack: Perform variance analysis to explain differences in performance (actual vs budget) & ensuring timely completion of Pack for EXCO review
+Month End Close (MEC) – lead the consolidation and review of the P&L with FDS & Finance Leadership Team (FLT)
+Work with business segments (FDS) to prepare annual & long-range plan for revenue and direct cost budgets and consolidate into one overall corporate budget including submission into relevant systems/tools (HFM)
+Techinical/Proffesional Qualifications
+Strong quantitative ability
+Excellent written and oral communication skills
+Deep thinker able to view a problem from different angles
+Ability to handle detail whilst retaining sense of the big picture
+Good Stakeholder Management skills
+
+
+Core Competencies
+The candidate must have demonstrated at least 3 years’ experience in a challenging working environment
+Prior experience in telecoms industry is a plus but not a requirement
+Proactive, with strong personal drive
+The candidate must have good communication skills and be able to present to senior leaders in the business.
+Vodafone is committed to attracting, developing and retaining the very best people by offering a motivating and inclusive workplace in which talent is truly recognised and rewarded. We are committed to promoting Inclusion for All with the belief that diversity plays an important role in the success of our business. We actively encourage everyone to consider becoming a part of our journey.
 
 
 
+Roaming, ILD & Messaging Specialist
+Posting Country:  Ghana
+Date Posted:  27-Mar-2021
+Full Time / Part Time:  Full Time
+Contract Type:  Permanent
+
+At Vodafone, we’re working hard to build a better future. A more connected, inclusive and sustainable world. As a dynamic global community, it's our human spirit, together with technology, that empowers us to achieve this.
+
+We challenge and innovate in order to connect people, businesses, and communities across the world. Delighting our customers and earning their loyalty drive us, and we experiment, learn fast and get it done, together.
+
+With us, you can be truly be yourself and belong, share inspiration, embrace new opportunities, thrive, and make a real difference.
+
+Role Purpose
+The ILD, Roaming & Messaging Specialist will be responsible for managing the Roaming portfolio.  The holder will be responsible for all engagements with roaming partners, messaging partners, commercial performance of the portfolio.
 
 
+Duties and Responsibilities
+• Design strategy to increase roaming footprint.
+• Leverage on Roaming footprint and International as foothold in attracting and growing Mid to High Value Segments
+• Conduct regular market research to maintain high technological and market value level in comparison to world leading International & Roaming Services offering
+• In conjunction with CVM and the Marketing Communication teams, ensure advertising (ATL/BTL) campaigns clearly identifies the correct propositions to ensure targeted uptake and revenue
+• Carry out training to ensure that Sales and Sales Support functions are adequately trained on International & Roaming Services
+• Work with VRS to ensure roaming cost and revenue are properly booked
+• Work with VRS to aggressively work on roaming coverage expansion
+• Ensure timely implementation of MSC/STP database configurations and software changes with new Roaming Networks.
+• Establish and maintain strong business relationships with international carriers, local operators, aggregators, SMS hubs and resellers to grow and strengthen our bilateral route connectivity and clientele
+• Carry out all necessary studies, analyses and cost calculations with the aim of minimizing the cost of international products and services to improve margin
 
+
+Qualification and Experience
+• University Degree in Telecommunication Engineering, Computer Science, Economics & Marketing
+• 3-5 years of varied experience, 3-5 within Telecom Industry or 3-5 years in Marketing/Commercial Department.
+• Experience in Telecoms with Knowledge and experience in managing carriers, roaming business is a prerequisite
+• Must have knowledge of technology platforms
+• Must have experience of product development and management life cycles
+• Excellent Data analysis and Excel skills
+• Sound knowledge of Campaign Management
+• Strong Analytical, statistical and Presentation skills
+• Must be committed to timely and excellent delivery with “first time right” mind-set.
+
+Vodafone is committed to attracting, developing and retaining the very best people by offering a motivating and inclusive workplace in which talent is truly recognised and rewarded. We are committed to promoting Inclusion for All with the belief that diversity plays an important role in the success of our business. We actively encourage everyone to consider becoming a part of our journey.
 
 
 

@@ -205,9 +205,9 @@ public class Payment_ReportController implements Initializable {
             if (payment_type.equals("Cheque") || payment_type.equals("Cheque Deposit Slip")){
                 cond = true;
             }
-            }
             getReport = new GetPaymentDetails(Date, GCR, payment_type, acAmount, acCumuAmount);
             tblPaymentDetails.getItems().add(getReport);
+            }
         }
 
 

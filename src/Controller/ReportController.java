@@ -197,16 +197,8 @@ public class ReportController implements Initializable {
         
             stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
-         ResultSetMetaData metadata = rs.getMetaData();
-         int columns = metadata.getColumnCount();
-         
          while(rs.next()){
-             for(int i= 1; i<=columns; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 rowCent.add(value);
-                 
-             }
+             rowCent.add(rs.getString("daily_revCenter"));
          }
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);
@@ -215,8 +207,6 @@ public class ReportController implements Initializable {
         stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE " +
                 "`daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowYear.clear();
         while(rs.next()){
             rowYear.add(rs.getString("revenueYear"));
@@ -231,17 +221,9 @@ public class ReportController implements Initializable {
                 "`daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND " +
                 "`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowMonth.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowMonth.add(value);
-                 
-             }
+            rowMonth.add(rs.getString("revenueMonth"));
         }
         cmbReportMonth.getItems().clear();
         cmbReportMonth.getItems().setAll(rowMonth);
@@ -254,19 +236,10 @@ public class ReportController implements Initializable {
                 "`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND" +
                 " `revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueWeek`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         boolean condition = true;
         rowWeek.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 
-                 String value = rs.getObject(i).toString();
-                 
-                 rowWeek.add(value);
-                 
-             }
+            rowWeek.add(rs.getString("revenueWeek"));
         }
         cmbReportWeek.getItems().clear();
         cmbReportWeek.getItems().setAll(rowWeek);
@@ -289,6 +262,7 @@ public class ReportController implements Initializable {
         int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+        calendar.setMinimalDaysInFirstWeek(1);
         calendar.set(Calendar.DAY_OF_WEEK, day);
 
         return df.format(calendar.getTime());
@@ -315,17 +289,9 @@ public class ReportController implements Initializable {
                 getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().
                 getSelectedItem()+"' GROUP BY `revenueDate`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int col = meta.getColumnCount();
         rowDate.clear();
         while(rs.next()){
-            for(int i=1; i<=col; i++){
-                if(i == 1){
-
-                    rowDate.add(rs.getObject(i).toString());
-
-                }
-            }
+            rowDate.add(rs.getString("revenueDate"));
         }
         Date mon = new SimpleDateFormat("MMMM").parse(cmbReportMonth.getSelectionModel().getSelectedItem());
         Calendar cal = Calendar.getInstance();
@@ -410,15 +376,9 @@ public class ReportController implements Initializable {
                 getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().
                 getSelectedItem()+"' GROUP BY `revenueItem` ");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        ObservableList<String> Item = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-           String revitem =rs.getObject(j).toString();
-           Item.add(revitem);//adding revenue items to list
-           }
+           Item.add(rs.getString("revenueItem"));//adding revenue items to list
        }
        /***
         * Retrieving revenue items and their respective Amount and Dates in an ordered form by revenueItem 
@@ -429,42 +389,30 @@ public class ReportController implements Initializable {
                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.
                getSelectionModel().getSelectedItem()+"' ORDER BY `revenueItem` ");
        ResultSet rt = stmnt.executeQuery();
-       ResultSetMetaData Meta = rt.getMetaData();
-       int Col = Meta.getColumnCount();
-       Map<String, ArrayList<Float>> AmountDate = new HashMap<>();//HashMap to store revenue Amounts on their respective dates
-       Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
+        Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview
 
-       
-       rowDate.forEach((rowDates) -> {
-           AmountDate.put(rowDates, new ArrayList());
-          
-        });
-       System.out.println(AmountDate);
+
+        //HashMap to store revenue Amounts on their respective dates
+//        ArrayList<String> AmountDate = new ArrayList<>(rowDate);
        
        Item.forEach((Items) -> {
-           forEntry.put(Items,  new HashMap());
+           forEntry.put(Items,  new HashMap<>());
         });
-       System.out.println(forEntry); 
        while(rt.next()){
-           row =rt.getRow();
-           float object2 = Float.parseFloat(rt.getObject(2).toString());
-           for(Entry<String, ArrayList<Float>> Dates : AmountDate.entrySet()){
+           float object2 = rt.getFloat("revenueAmount");
+           for( String Dates : rowDate){
                for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-                   if (Items.getKey().equals(rt.getObject(1).toString())  && Dates.getKey().equals(rt.getObject(3).toString()) ){
-                           if(forEntry.containsKey(rt.getObject(1).toString()) && !forEntry.get(rt.getObject(1).toString()).containsValue(rt.getObject(3).toString())){
-                           forEntry.get(rt.getObject(1).toString()).put(rt.getObject(3).toString(), new ArrayList());
-                           forEntry.get(rt.getObject(1).toString()).get(rt.getObject(3).toString()).add(object2);
-                       }else if(forEntry.containsKey(rt.getObject(1).toString()) && forEntry.get(rt.getObject(1).toString()).containsValue(rt.getObject(3).toString())){
-                           forEntry.get(rt.getObject(1).toString()).get(rt.getObject(3).toString()).add(object2);
+                   if (Items.getKey().equals(rt.getString("revenueItem"))  && Dates.equals(rt.getString("revenueDate")) ){
+                           if(forEntry.containsKey(rt.getString("revenueItem")) && !forEntry.get(rt.getString("revenueItem")).containsKey(rt.getString("revenueDate"))){
+                           forEntry.get(rt.getString("revenueItem")).put(rt.getString("revenueDate"), new ArrayList<>());
+                           forEntry.get(rt.getString("revenueItem")).get(rt.getString("revenueDate")).add(object2);
+                       }else if(forEntry.containsKey(rt.getString("revenueItem")) && forEntry.get(rt.getString("revenueItem")).containsKey(rt.getString("revenueDate"))){
+                           forEntry.get(rt.getString("revenueItem")).get(rt.getString("revenueDate")).add(object2);
                        }
                    }
                }
            }
        }
-
-       System.out.println(Item+"  "+col+"  "+ row+" "+ forEntry + " ");
-       //Items.getValue().entrySet()
-         final String Day1= DAY1.getText();
          NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
@@ -472,7 +420,6 @@ public class ReportController implements Initializable {
            float day1 = 0, day2 = 0, day3 = 0, day4 = 0, day5 = 0, day6 = 0, day7 = 0, total_amount;
            for(Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
                String reveItem = Items.getKey();
-               System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
                if(Dates.getKey() == null ? DAY1.getText() == null : Dates.getKey().equals(DAY1.getText())){
                    da1 = formatter.format(forEntry.get(Items.getKey()).get(DAY1.getText()).get(0));
                    day1 = forEntry.get(Items.getKey()).get(DAY1.getText()).get(0);
@@ -550,8 +497,6 @@ public class ReportController implements Initializable {
             }
             URL url = this.getClass().getResource("/Assets/kmalogo.png"),
                     file = this.getClass().getResource("/Assets/dailyPotrait.jrxml");
-
-            System.out.println(items + "\n" + url);
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String month = cmbReportMonth.getSelectionModel().getSelectedItem(),
             center = cmbReportCent.getSelectionModel().getSelectedItem(),
@@ -560,7 +505,6 @@ public class ReportController implements Initializable {
             Day5 = DAY5.getText(), Day6 = DAY6.getText(), Day7 = DAY7.getText(), day1 = lblDay1.getText(), day2 = lblDay2.getText(),
             day3 = lblDay3.getText(), day4 = lblDay4.getText(), day5 = lblDay5.getText(), day6 = lblDay6.getText(),
             day7 = lblDay7.getText(), week = cmbReportWeek.getSelectionModel().getSelectedItem();
-            System.out.println(day1 +"\n"+ day2 +"\n"+ day3 +"\n"+ day4 +"\n"+ day5);
 
             /* Map to hold Jasper report Parameters */
             Map<String, Object> parameters = new HashMap<String, Object>();

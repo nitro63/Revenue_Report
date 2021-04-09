@@ -97,7 +97,7 @@ public  appController() {
     }
 
     @FXML
-    private void showSDRR(ActionEvent event) throws IOException {
+    private void showSDRR(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader load = new FXMLLoader();
         load.setLocation(getClass().getResource("/Views/fxml/report_side.fxml"));
         load.setController(new report_sideController());

@@ -7,14 +7,23 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+
+import Controller.Gets.Conditioner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import revenue_report.DBConnection;
 
 /**
  * FXML Controller class
@@ -55,17 +64,39 @@ public class report_sideController implements Initializable {
     private Button btnPaymentDetails;
     @FXML
     private Button btnValueBooksReport;
-    
+    Conditioner conditioner = new Conditioner();
+
+    private final Connection con;
+
+    public report_sideController() throws SQLException, ClassNotFoundException {
+        this.con = DBConnection.getConn();
+    }
      public void setappController(appController app){
          this.app = app;
      }
+
+     Map<String, ArrayList<String>> catCenter = new HashMap<>();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            PreparedStatement stmnt = con.prepareStatement("SELECT `revenue_category` FROM `revenue_centers` WHERE 1 GROUP BY `revenue_category`");
+            ResultSet rt = stmnt.executeQuery();
+            while (rt.next()){
+                catCenter.put(rt.getString("revenue_category"), new ArrayList<>());
+            }
+            stmnt = con.prepareStatement("SELECT `revenue_category`, `revenue_center` FROM `revenue_centers` WHERE 1 GROUP BY `revenue_category`");
+            rt = stmnt.executeQuery();
+            while (rt.next()){
+                catCenter.get(rt.getString("revenue_category")).add(rt.getString("revenue_center"));
+            }
+            conditioner.setMapper(catCenter);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }    
 
     @FXML
@@ -73,6 +104,7 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/Report.fxml"));
         loader.setController(new ReportController());
+        ReportController rep = (ReportController)loader.getController();
         app.getCenterPane().getChildren().clear();
         app.getCenterPane().getChildren().add(loader.load());
     }
@@ -82,6 +114,8 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/weeklyReport.fxml"));
         loader.setController(new weeklyReportController());
+        weeklyReportController week = (weeklyReportController)loader.getController();
+        week.setReportSide(this);
         app.getCenterPane().getChildren().clear();
         app.getCenterPane().getChildren().add(loader.load());
     }

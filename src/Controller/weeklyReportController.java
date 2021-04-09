@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Controller.Gets.Conditioner;
 import Controller.Gets.ReportGenerator;
 
 import java.io.File;
@@ -126,10 +127,11 @@ public class weeklyReportController implements Initializable {
     private Label lblAmtDueSub;
     @FXML
     private Label lblAmtDueKMA;
+    report_sideController app;
     /**
      * Initializes the controller class.
      */
-    ReportGenerator repGen;
+    Conditioner conditioner ;
     private final Connection con;
     private PreparedStatement stmnt;
     ObservableList<String> rowCent =FXCollections.observableArrayList();
@@ -138,11 +140,15 @@ public class weeklyReportController implements Initializable {
     ObservableList<String> rowWeek =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
     int Year;
+    boolean condSubMetro;
     
     public weeklyReportController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
     }
-    
+    public void setReportSide(report_sideController app){
+        this.app = app;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -159,9 +165,6 @@ public class weeklyReportController implements Initializable {
         
             stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
-         ResultSetMetaData metadata = rs.getMetaData();
-         int columns = metadata.getColumnCount();
-         
          while(rs.next()){
                  rowCent.add(rs.getString("daily_revCenter"));
          }
@@ -175,112 +178,104 @@ public class weeklyReportController implements Initializable {
         stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+
                 cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowYear.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowYear.add(value);
-                 
-             }
+            rowYear.add(rs.getString("revenueYear"));
         }
         cmbReportYear.getItems().clear();
         cmbReportYear.getItems().setAll(rowYear);
         cmbReportYear.setVisibleRowCount(5);
+         String center = cmbReportCent.getSelectionModel().getSelectedItem();
+         for (Map.Entry<String, ArrayList<String>> cond : app.catCenter.entrySet()){
+             if (cond.getValue().contains(center) && cond.getKey().equals("SUB-METROS")){
+                 condSubMetro = true;
+             }
+         }
+         System.out.println(app.catCenter+"\n"+condSubMetro);
     }
      
      private void getReportMonth() throws SQLException{
-        Year = Integer.parseInt(cmbReportYear.getSelectionModel().getSelectedItem());
+      /*  if (!cmbReportYear.getItems().isEmpty() || !cmbReportYear.getSelectionModel().isEmpty()){
+        Year = Integer.parseInt(cmbReportYear.getSelectionModel().getSelectedItem());}*/
         stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE `revenueYear`='"+
                 cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.
                 getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueMonth`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowMonth.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowMonth.add(value);
-                 
-             }
+            rowMonth.add(rs.getString("revenueMonth"));
         }
         cmbReportMonth.getItems().clear();
         cmbReportMonth.getItems().setAll(rowMonth);
         cmbReportMonth.setVisibleRowCount(5);
     }
      
-      private void getWeekly() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE   `revenueMonth` = '"+
-                cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.
-                getSelectionModel().getSelectedItem()+"' GROUP BY `revenueWeek`");
-        ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int col = meta.getColumnCount();
-        rowWeek.clear();
-        while(rs.next()){
-            for(int i=1; i<=col; i++){
-                if(i == 1){
-                    
-                    rowWeek.add(rs.getObject(i).toString());
-                    
-                }
-            }
-        }
-        week1.setText("WEEK");
-        week2.setText("WEEK");
-        week3.setText("WEEK");
-        week4.setText("WEEK");
-        week5.setText("WEEK");
-        week6.setText("WEEK");
-        System.out.println(rowWeek.size());
-        int rowSize = rowWeek.size();
-        switch(rowSize){
-            case 1:
-                week1.setText(rowWeek.get(0));
-                break;
-            case 2: 
-                week1.setText(rowWeek.get(0));
-                week2.setText(rowWeek.get(1));
-                break;
-            case 3:
-                week1.setText(rowWeek.get(0));
-                week2.setText(rowWeek.get(1));
-                week3.setText(rowWeek.get(2));
-                break;
-            case 4:
-                week1.setText(rowWeek.get(0));
-                week2.setText(rowWeek.get(1));
-                week3.setText(rowWeek.get(2));
-                week4.setText(rowWeek.get(3));
-                break;
-            case 5:
-                week1.setText(rowWeek.get(0));
-                week2.setText(rowWeek.get(1));
-                week3.setText(rowWeek.get(2));
-                week4.setText(rowWeek.get(3));
-                week5.setText(rowWeek.get(4));
-                break;
-            case 6:
-                week1.setText(rowWeek.get(0));
-                week2.setText(rowWeek.get(1));
-                week3.setText(rowWeek.get(2));
-                week4.setText(rowWeek.get(3));
-                week5.setText(rowWeek.get(4));
-                week6.setText(rowWeek.get(5));
-                break;
-            
-        }
-        
-        
-       
-   }
+//      private void getWeekly() throws SQLException{
+//        stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE   `revenueMonth` = '"+
+//                cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
+//                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.
+//                getSelectionModel().getSelectedItem()+"' GROUP BY `revenueWeek`");
+//        ResultSet rs = stmnt.executeQuery();
+//        ResultSetMetaData meta = rs.getMetaData();
+//        int col = meta.getColumnCount();
+//        rowWeek.clear();
+//        while(rs.next()){
+//            for(int i=1; i<=col; i++){
+//                if(i == 1){
+//
+//                    rowWeek.add(rs.getObject(i).toString());
+//
+//                }
+//            }
+//        }
+//        week1.setText("WEEK");
+//        week2.setText("WEEK");
+//        week3.setText("WEEK");
+//        week4.setText("WEEK");
+//        week5.setText("WEEK");
+//        week6.setText("WEEK");
+//        System.out.println(rowWeek.size());
+//        int rowSize = rowWeek.size();
+//        switch(rowSize){
+//            case 1:
+//                week1.setText(rowWeek.get(0));
+//                break;
+//            case 2:
+//                week1.setText(rowWeek.get(0));
+//                week2.setText(rowWeek.get(1));
+//                break;
+//            case 3:
+//                week1.setText(rowWeek.get(0));
+//                week2.setText(rowWeek.get(1));
+//                week3.setText(rowWeek.get(2));
+//                break;
+//            case 4:
+//                week1.setText(rowWeek.get(0));
+//                week2.setText(rowWeek.get(1));
+//                week3.setText(rowWeek.get(2));
+//                week4.setText(rowWeek.get(3));
+//                break;
+//            case 5:
+//                week1.setText(rowWeek.get(0));
+//                week2.setText(rowWeek.get(1));
+//                week3.setText(rowWeek.get(2));
+//                week4.setText(rowWeek.get(3));
+//                week5.setText(rowWeek.get(4));
+//                break;
+//            case 6:
+//                week1.setText(rowWeek.get(0));
+//                week2.setText(rowWeek.get(1));
+//                week3.setText(rowWeek.get(2));
+//                week4.setText(rowWeek.get(3));
+//                week5.setText(rowWeek.get(4));
+//                week6.setText(rowWeek.get(5));
+//                break;
+//
+//        }
+//
+//
+//
+//   }
       
       private void changeNames() {
         lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
@@ -302,43 +297,44 @@ public class weeklyReportController implements Initializable {
                 getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().
                 getSelectedItem()+"' GROUP BY `revenueItem`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int col = meta.getColumnCount();
         rowItems.clear();
         while(rs.next()){
-            for(int i=1; i<=col; i++){
-                if(i == 1){
-                    
-                    rowItems.add(rs.getObject(i).toString());
-                    
-                }
-            }
-        }        
+            rowItems.add(rs.getString("revenueItem"));
+        }
+          stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE   `revenueMonth` = '"+
+                  cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
+                  cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.
+                  getSelectionModel().getSelectedItem()+"' GROUP BY `revenueWeek`");
+          rs = stmnt.executeQuery();
+          rowWeek.clear();
+          while(rs.next()){
+              rowWeek.add(rs.getString("revenueWeek"));
+          }
           Map<String, ArrayList<Float>> weekAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
           Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
           rowItems.forEach((rowItem) -> {
-              forEntry.put(rowItem, new HashMap());
+              forEntry.put(rowItem, new HashMap<>());
       });
           rowWeek.forEach((rowDates) -> {
-              weekAmount.put(rowDates, new ArrayList());
+              weekAmount.put(rowDates, new ArrayList<>());
           });
           try {
           for(String week : rowWeek) {
               for(String Item : rowItems) {
                   float weekSum;
                    weekSum = setWeekSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, cmbReportMonth.getSelectionModel().getSelectedItem(), week, cmbReportYear.getSelectionModel().getSelectedItem());
-                      for(Entry<String, ArrayList<Float>> Dates : weekAmount.entrySet()){
+//                      for(Entry<String, ArrayList<Float>> Dates : weekAmount.entrySet()){
                           for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-                              if (Items.getKey().equals(Item)  && Dates.getKey().equals(week)){
-                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsValue(week)){
-                                      forEntry.get(Item).put(week, new ArrayList());
+                              if (Items.getKey().equals(Item)  ){
+                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(week)){
+                                      forEntry.get(Item).put(week, new ArrayList<>());
                                       forEntry.get(Item).get(week).add(weekSum);
-                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsValue(week)){
+                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(week)){
                                       forEntry.get(Item).get(week).add(weekSum);
                                   } 
                               };
                           };
-                      }
+//                      }
                   
               }
           }
@@ -397,22 +393,14 @@ public class weeklyReportController implements Initializable {
                item+"' AND `revenueWeek` = '"+week+"' AND `daily_revCenter` = '"+Center+"' AND `revenueMonth` = '"+
                month+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-               if(j == 1){
-           String revitem =rs.getObject(j).toString();
-           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
-           }
-           }     
+           Amount.add(rs.getFloat("revenueAmount"));
        }
         totalAmunt = 0;
-        for(int i = 0; i < Amount.size(); i++){
-            totalAmunt += Amount.get(i);
-        }
+       for(Float n : Amount){
+           totalAmunt += n;
+       }
         return totalAmunt;
     }
 
@@ -430,7 +418,6 @@ public class weeklyReportController implements Initializable {
     private void ShowReport(ActionEvent event) throws SQLException {
         weekTable.getItems().clear();
         changeNames();
-        getWeekly();
         setItems();
         
     }

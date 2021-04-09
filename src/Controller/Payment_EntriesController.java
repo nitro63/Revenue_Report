@@ -493,10 +493,10 @@ public class Payment_EntriesController implements Initializable {
                         }
                     }
                     if (acType.equals("Cheque")) {
-                        gcrID.put(fini, "Che-" + getData.getGCR());
+                        gcrID.put("Chq-" + getData.getGCR(), fini);
                     }
                     if (acType.equals("Cheque Deposit Slip")) {
-                        gcrID.put(fini, "ChqDpS-" + getData.getGCR());
+                        gcrID.put("ChqDpS-" + getData.getGCR(), fini);
                     }
 
                     if (acType.equals("Cheque") || acType.equals("Cheque Deposit Slip")) {

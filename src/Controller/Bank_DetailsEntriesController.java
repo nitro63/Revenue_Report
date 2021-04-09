@@ -227,8 +227,8 @@ public class Bank_DetailsEntriesController implements Initializable {
     public String getGcrID(String Gcr, Map<String, String> gcrID){
         String id = "";
         for(Map.Entry<String, String>gCrID :gcrID.entrySet()) {
-            if(gCrID.getValue().equals(Gcr)){
-                id = gCrID.getKey();
+            if(gCrID.getKey().equals(Gcr)){
+                id = gCrID.getValue();
             }
         }
         return id;
@@ -429,8 +429,9 @@ public class Bank_DetailsEntriesController implements Initializable {
                         txtAmount.clear();
                         Condition =false;
                     }else{
+                        String id = colEnt.gcrID.get(GCR);
                         String gcr = cmbGCR.getSelectionModel().getSelectedItem().substring(cmbGCR.getSelectionModel().getSelectedItem().lastIndexOf("-")+1);
-                        System.out.println("Fred"+"\n"+gcr+"\n"+getGcrID(cmbGCR.getSelectionModel().getSelectedItem(), colEnt.gcrID)+"\n"+colEnt.gcrID);
+                        System.out.println("Fred"+"\n"+GCR+"\n"+id+"\n"+colEnt.gcrID);
                         getReport = new GetBankDetails(GCR, Year, Month, Date, chqDate, chqNumber, Bank, Amount);
                         tblCollectEnt.getItems().add(getReport);
                         Condition = false;
