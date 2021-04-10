@@ -262,7 +262,8 @@ public class ReportController implements Initializable {
         int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
-        calendar.setMinimalDaysInFirstWeek(1);
+        calendar.setFirstDayOfWeek(1);
+        calendar.setMinimalDaysInFirstWeek(2);
         calendar.set(Calendar.DAY_OF_WEEK, day);
 
         return df.format(calendar.getTime());
@@ -299,20 +300,20 @@ public class ReportController implements Initializable {
         int monthNum = cal.get(Calendar.MONTH);
         int yearNum = Integer.parseInt(cmbReportYear.getSelectionModel().getSelectedItem());
         int weekNum = Integer.parseInt(cmbReportWeek.getSelectionModel().getSelectedItem());
-        DAY1.setText(getDate(2, monthNum, yearNum, weekNum));
-        DAY2.setText(getDate(3, monthNum, yearNum, weekNum));
-        DAY3.setText(getDate(4, monthNum, yearNum, weekNum));
-        DAY4.setText(getDate(5, monthNum, yearNum, weekNum));
-        DAY5.setText(getDate(6, monthNum, yearNum, weekNum));
-        DAY6.setText(getDate(7, monthNum, yearNum, weekNum));
-        DAY7.setText(getDate(1, monthNum, yearNum, weekNum));
-        lblDay1.setText(getDay(2, monthNum, yearNum, weekNum));
-        lblDay2.setText(getDay(3, monthNum, yearNum, weekNum));
-        lblDay3.setText(getDay(4, monthNum, yearNum, weekNum));
-        lblDay4.setText(getDay(5, monthNum, yearNum, weekNum));
-        lblDay5.setText(getDay(6, monthNum, yearNum, weekNum));
-        lblDay6.setText(getDay(7, monthNum, yearNum, weekNum));
-        lblDay7.setText(getDay(1, monthNum, yearNum, weekNum));
+        DAY1.setText(getDate(1, monthNum, yearNum, weekNum));
+        DAY2.setText(getDate(2, monthNum, yearNum, weekNum));
+        DAY3.setText(getDate(3, monthNum, yearNum, weekNum));
+        DAY4.setText(getDate(4, monthNum, yearNum, weekNum));
+        DAY5.setText(getDate(5, monthNum, yearNum, weekNum));
+        DAY6.setText(getDate(6, monthNum, yearNum, weekNum));
+        DAY7.setText(getDate(7, monthNum, yearNum, weekNum));
+        lblDay1.setText(getDay(1, monthNum, yearNum, weekNum));
+        lblDay2.setText(getDay(2, monthNum, yearNum, weekNum));
+        lblDay3.setText(getDay(3, monthNum, yearNum, weekNum));
+        lblDay4.setText(getDay(4, monthNum, yearNum, weekNum));
+        lblDay5.setText(getDay(5, monthNum, yearNum, weekNum));
+        lblDay6.setText(getDay(6, monthNum, yearNum, weekNum));
+        lblDay7.setText(getDay(7, monthNum, yearNum, weekNum));
 //        System.out.println(rowDate.size());
 //        int rowSize = rowDate.size();
 //        switch(rowSize){

@@ -312,11 +312,11 @@ public class UpdateEntriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            stmnt = con.prepareStatement("SELECT * FROM `revenue_items`");
+            stmnt = con.prepareStatement("SELECT `revenue_item`, `revenue_item_ID` FROM `revenue_items` WHERE 1");
             ResultSet rs = stmnt.executeQuery();
             while (rs.next()){
                 Item.add(rs.getString("revenue_item"));
-                codeItem.put(rs.getString("ID"), rs.getString("revenue_item"));
+                codeItem.put(rs.getString("revenue_item_ID"), rs.getString("revenue_item"));
             }
             cmbRevenueItem.getItems().clear();
             cmbRevenueItem.setItems(Item);

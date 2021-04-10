@@ -72,19 +72,45 @@ public class weeklyReportController implements Initializable {
     @FXML
     private TableColumn<GetReportgen, String> week1;
     @FXML
+    private Label lblWeek1gen;
+    @FXML
     private TableColumn<GetReportgen, String> week2;
+    @FXML
+    private Label lblWeek2gen;
     @FXML
     private TableColumn<GetReportgen, String> week3;
     @FXML
+    private Label lblWeek3gen;
+    @FXML
     private TableColumn<GetReportgen, String> week4;
+    @FXML
+    private Label lblWeek4gen;
     @FXML
     private TableColumn<GetReportgen, String> week5;
     @FXML
+    private Label lblWeek5gen;
+    @FXML
     private TableColumn<GetReportgen, String> week6;
+    @FXML
+    private Label lblWeek6gen;
     @FXML
     private JFXButton btnPrint;
     @FXML
     private TableColumn<GetReportgen, String> totalAmount;
+    @FXML
+    private Label lblWk1SumGen;
+    @FXML
+    private Label lblWk2SumGen;
+    @FXML
+    private Label lblWk3SumGen;
+    @FXML
+    private Label lblWk4SumGen;
+    @FXML
+    private Label lblWk5SumGen;
+    @FXML
+    private Label lblTotalSumGen;
+    @FXML
+    private Label lblWk6SumGen;
     @FXML
     private Label lblMonth;
     @FXML
@@ -92,7 +118,7 @@ public class weeklyReportController implements Initializable {
     @FXML
     private Label lblRevenueCenter;
     @FXML
-    private AnchorPane subPane;
+    private ScrollPane subPane;
     @FXML
     private TableView<GetReportgen> weekTableSub;
     @FXML
@@ -112,21 +138,122 @@ public class weeklyReportController implements Initializable {
     @FXML
     private TableColumn<GetReportgen, String> totalAmountSub;
     @FXML
-    private Label lblCumuAmount;
+    private Label lblCumuAmountTot;
     @FXML
-    private Label lblCCAmount;
+    private Label lblCCAmountTot;
     @FXML
-    private Label lblCommission;
+    private Label lblCommissionTot;
     @FXML
-    private Label lblCostValueBooks;
+    private Label lblCostValueBooksTot;
     @FXML
-    private Label lblDiff;
+    private Label lblDiffTot;
     @FXML
-    private Label lblNetRevenue;
+    private Label lblNetRevenueTot;
     @FXML
-    private Label lblAmtDueSub;
+    private Label lblAmtDueSubTot;
     @FXML
-    private Label lblAmtDueKMA;
+    private Label lblAmtDueKMATot;
+    @FXML
+    private Label lblCumuAmount1;
+    @FXML
+    private Label lblCCAmount1;
+    @FXML
+    private Label lblCommission1;
+    @FXML
+    private Label lblCostValueBooks1;
+    @FXML
+    private Label lblDiff1;
+    @FXML
+    private Label lblNetRevenue1;
+    @FXML
+    private Label lblAmtDueSub1;
+    @FXML
+    private Label lblAmtDueKMA1;
+    @FXML
+    private Label lblCCAmount2;
+    @FXML
+    private Label lblCommission2;
+    @FXML
+    private Label lblCostValueBooks2;
+    @FXML
+    private Label lblDiff2;
+    @FXML
+    private Label lblNetRevenue2;
+    @FXML
+    private Label lblAmtDueSub2;
+    @FXML
+    private Label lblAmtDueKMA2;
+    @FXML
+    private Label lblCCAmount3;
+    @FXML
+    private Label lblCommission3;
+    @FXML
+    private Label lblCostValueBooks3;
+    @FXML
+    private Label lblDiff3;
+    @FXML
+    private Label lblNetRevenue3;
+    @FXML
+    private Label lblAmtDueSub3;
+    @FXML
+    private Label lblAmtDueKMA3;
+    @FXML
+    private Label lblCCAmount4;
+    @FXML
+    private Label lblCommission4;
+    @FXML
+    private Label lblCostValueBooks4;
+    @FXML
+    private Label lblDiff4;
+    @FXML
+    private Label lblNetRevenue4;
+    @FXML
+    private Label lblAmtDueSub4;
+    @FXML
+    private Label lblAmtDueKMA4;
+    @FXML
+    private Label lblCCAmount5;
+    @FXML
+    private Label lblCommission5;
+    @FXML
+    private Label lblCostValueBooks5;
+    @FXML
+    private Label lblDiff5;
+    @FXML
+    private Label lblNetRevenue5;
+    @FXML
+    private Label lblAmtDueSub5;
+    @FXML
+    private Label lblAmtDueKMA5;
+    @FXML
+    private Label lblCCAmount6;
+    @FXML
+    private Label lblCommission6;
+    @FXML
+    private Label lblCostValueBooks6;
+    @FXML
+    private Label lblDiff6;
+    @FXML
+    private Label lblNetRevenue6;
+    @FXML
+    private Label lblAmtDueSub6;
+    @FXML
+    private Label lblAmtDueKMA6;
+    @FXML
+    private Label lblWk1SumSub;
+    @FXML
+    private Label lblWk2SumSub;
+    @FXML
+    private Label lblWk3SumSub;
+    @FXML
+    private Label lblWk4SumSub;
+    @FXML
+    private Label lblWk5SumSub;
+    @FXML
+    private Label lblTotalSumSub;
+    @FXML
+    private Label lblWk6SumSub;
+
     report_sideController app;
     /**
      * Initializes the controller class.
@@ -151,6 +278,7 @@ public class weeklyReportController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        subPane.setVisible(false);
         try {
             getRevCenters();
         } catch (SQLException ex) {
@@ -345,8 +473,11 @@ public class weeklyReportController implements Initializable {
           NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-           String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00";
-           float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount;
+           String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00",
+           totWek1 = "0.00", totWek2 = "0.00", totWek3 = "0.00", totWek4 = "0.00", totWek5 = "0.00", totWek6 = "0.00", summation = "0.00";
+           float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, totwek1 = 0, totwek2 = 0,totwek3 = 0,totwek4 = 0,
+                   totwek5 = 0,totwek6 = 0,totweksum = 0;
+
            for(Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
                String reveItem = Items.getKey();
                System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
@@ -371,7 +502,14 @@ public class weeklyReportController implements Initializable {
            }
            }
            total_amount = wk1 + wk2 + wk3 + wk4 + wk5 + wk6;
-           totalAmnt = formatter.format(total_amount);       
+           totalAmnt = formatter.format(total_amount);
+           totwek1 += wk1; totWek1 = formatter.format(totwek1);
+           totwek2 += wk2; totWek2 = formatter.format(totwek2);
+           totwek3 += wk3; totWek3 = formatter.format(totwek3);
+           totwek4 += wk4; totWek4 = formatter.format(totwek4);
+           totwek5 += wk5; totWek5 = formatter.format(totwek5);
+           totwek6 += wk6; totWek6 = formatter.format(totwek6);
+           totweksum += total_amount; summation = formatter.format(totweksum);
            revenueITEM.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
            week1.setCellValueFactory(data -> data.getValue().week1Property());
            week2.setCellValueFactory(data -> data.getValue().week2Property());
@@ -381,11 +519,133 @@ public class weeklyReportController implements Initializable {
            week6.setCellValueFactory(data -> data.getValue().week6Property());
            totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
            GetReportgen getReport = new GetReportgen(Items.getKey(), wek1, wek2, wek3, wek4, wek5, wek6, totalAmnt);
-           weekTable.getItems().add(getReport);                                           
+           weekTable.getItems().add(getReport);
+           lblWk1SumGen.setText(totWek1);   lblWk2SumGen.setText(totWek2);
+           lblWk3SumGen.setText(totWek3);   lblWk4SumGen.setText(totWek4);
+           lblWk5SumGen.setText(totWek5);   lblWk6SumGen.setText(totWek6);
+           lblTotalSumGen.setText(summation);
        }
           
           System.out.println(rowWeek +"\n"+ forEntry);
       }
+
+
+    private void setItemsSub() throws SQLException{
+        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueMonth` = '"+
+                cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.
+                getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().
+                getSelectedItem()+"' GROUP BY `revenueItem`");
+        ResultSet rs = stmnt.executeQuery();
+        rowItems.clear();
+        while(rs.next()){
+            rowItems.add(rs.getString("revenueItem"));
+        }
+        stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE   `revenueMonth` = '"+
+                cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.
+                getSelectionModel().getSelectedItem()+"' GROUP BY `revenueWeek`");
+        rs = stmnt.executeQuery();
+        rowWeek.clear();
+        while(rs.next()){
+            rowWeek.add(rs.getString("revenueWeek"));
+        }
+//          Map<String, ArrayList<Float>> weekAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
+        Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview
+        rowItems.forEach((rowItem) -> {
+            forEntry.put(rowItem, new HashMap<>());
+        });
+//          rowWeek.forEach((rowDates) -> {
+//              weekAmount.put(rowDates, new ArrayList<>());
+//          });
+
+        try {
+            for(String week : rowWeek) {
+                for(String Item : rowItems) {
+                    float weekSum;
+                    weekSum = setWeekSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, cmbReportMonth.getSelectionModel().getSelectedItem(), week, cmbReportYear.getSelectionModel().getSelectedItem());
+//                      for(Entry<String, ArrayList<Float>> Dates : weekAmount.entrySet()){
+                    for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
+                        if (Items.getKey().equals(Item)  ){
+                            if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(week)){
+                                forEntry.get(Item).put(week, new ArrayList<>());
+                                forEntry.get(Item).get(week).add(weekSum);
+                            }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(week)){
+                                forEntry.get(Item).get(week).add(weekSum);
+                            }
+                        };
+                    };
+//                      }
+
+                }
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        NumberFormat formatter = new DecimalFormat("#,##0.00");
+        stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE   `revenueMonth` = '"+
+                cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
+                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.
+                getSelectionModel().getSelectedItem()+"' GROUP BY `revenueWeek`");
+        rs = stmnt.executeQuery();
+while (rs.next()){
+        for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
+            String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00",
+                    totWek1 = "0.00", totWek2 = "0.00", totWek3 = "0.00", totWek4 = "0.00", totWek5 = "0.00", totWek6 = "0.00", summation = "0.00";
+            float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, totwek1 = 0, totwek2 = 0,totwek3 = 0,totwek4 = 0,
+                    totwek5 = 0,totwek6 = 0,totweksum = 0;
+            for(Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
+                String reveItem = Items.getKey();
+                System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
+                if(Dates.getKey() == null ? week1Sub.getText() == null : Dates.getKey().equals(week1Sub.getText())){
+                    wek1 = formatter.format(forEntry.get(Items.getKey()).get(week1Sub.getText()).get(0));
+                    wk1 = forEntry.get(Items.getKey()).get(week1Sub.getText()).get(0);
+                }else if(Dates.getKey() == null ? week2Sub.getText() == null : Dates.getKey().equals(week2Sub.getText())){
+                    wek2 = formatter.format(forEntry.get(Items.getKey()).get(week2Sub.getText()).get(0));
+                    wk2 = forEntry.get(Items.getKey()).get(week2Sub.getText()).get(0);
+                }else if(Dates.getKey() == null ? week3Sub.getText() == null : Dates.getKey().equals(week3Sub.getText())){
+                    wek3 = formatter.format(forEntry.get(Items.getKey()).get(week3Sub.getText()).get(0));
+                    wk3 = forEntry.get(Items.getKey()).get(week3Sub.getText()).get(0);
+                }else if(Dates.getKey() == null ? week4Sub.getText() == null : Dates.getKey().equals(week4Sub.getText())){
+                    wek4 = formatter.format(forEntry.get(Items.getKey()).get(week4Sub.getText()).get(0));
+                    wk4 = forEntry.get(Items.getKey()).get(week4Sub.getText()).get(0);
+                }else if(Dates.getKey() == null ? week5Sub.getText() == null : Dates.getKey().equals(week5Sub.getText())){
+                    wek5 = formatter.format(forEntry.get(Items.getKey()).get(week5Sub.getText()).get(0));
+                    wk5 = forEntry.get(Items.getKey()).get(week5Sub.getText()).get(0);
+                } else if(Dates.getKey() == null ? week6Sub.getText() == null : Dates.getKey().equals(week6Sub.getText())){
+                    wek5 = formatter.format(forEntry.get(Items.getKey()).get(week6Sub.getText()).get(0));
+                    wk5 = forEntry.get(Items.getKey()).get(week6Sub.getText()).get(0);
+                }
+            }
+        revenueITEMSub.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
+        week1Sub.setCellValueFactory(data -> data.getValue().week1Property());
+        week2Sub.setCellValueFactory(data -> data.getValue().week2Property());
+        week3Sub.setCellValueFactory(data -> data.getValue().week3Property());
+        week4Sub.setCellValueFactory(data -> data.getValue().week4Property());
+        week5Sub.setCellValueFactory(data -> data.getValue().week5Property());
+        week6Sub.setCellValueFactory(data -> data.getValue().week6Property());
+        totalAmountSub.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
+
+            total_amount = wk1 + wk2 + wk3 + wk4 + wk5 + wk6;
+            totalAmnt = formatter.format(total_amount);
+            totwek1 += wk1; totWek1 = formatter.format(totwek1);
+            totwek2 += wk2; totWek2 = formatter.format(totwek2);
+            totwek3 += wk3; totWek3 = formatter.format(totwek3);
+            totwek4 += wk4; totWek4 = formatter.format(totwek4);
+            totwek5 += wk5; totWek5 = formatter.format(totwek5);
+            totwek6 += wk6; totWek6 = formatter.format(totwek6);
+            totweksum += total_amount; summation = formatter.format(totweksum);
+            GetReportgen getReport = new GetReportgen(Items.getKey(), wek1, wek2, wek3, wek4, wek5, wek6, totalAmnt);
+            weekTableSub.getItems().add(getReport);
+            lblWk1SumSub.setText(totWek1);   lblWk2SumSub.setText(totWek2);
+            lblWk3SumSub.setText(totWek3);   lblWk4SumSub.setText(totWek4);
+            lblWk5SumSub.setText(totWek5);   lblWk6SumSub.setText(totWek6);
+            lblTotalSumSub.setText(summation);
+        }
+}
+
+        /*System.out.println(rowWeek +"\n"+ forEntry);*/
+    }
       
        public Float setWeekSum(String Center, String item, String month, String week, String Year) throws SQLException{
         float totalAmunt;
@@ -404,6 +664,10 @@ public class weeklyReportController implements Initializable {
         return totalAmunt;
     }
 
+    public void setCommission(){
+          stmnt = con.prepareStatement("SELECT ``");
+    }
+
     @FXML
     private void SelectedCenter(ActionEvent event) throws SQLException {
         getReportYear();
@@ -416,9 +680,18 @@ public class weeklyReportController implements Initializable {
 
     @FXML
     private void ShowReport(ActionEvent event) throws SQLException {
-        weekTable.getItems().clear();
         changeNames();
+        if (condSubMetro){
+            subPane.setVisible(true);
+            generalPane.setVisible(false);
+            weekTableSub.getItems().clear();
+            setItemsSub();
+        } else {
+            generalPane.setVisible(true);
+            subPane.setVisible(false);
+        weekTable.getItems().clear();
         setItems();
+        }
         
     }
 

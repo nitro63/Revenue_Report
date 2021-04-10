@@ -322,7 +322,7 @@ public class Revenue_EntriesController  implements Initializable {
 
     @FXML
     private void SaveToDatabase(ActionEvent event) throws ClassNotFoundException, SQLException {
-        
+      float deduction = 0;
         GetEntries getData = new GetEntries();
         ObservableList<String> duplicate = FXCollections.observableArrayList();
         String Username = "root";
@@ -386,6 +386,7 @@ public class Revenue_EntriesController  implements Initializable {
                 lblDup.setVisible(true);
                 i = revTable.getItems().size() + 1;
             }else{
+                deduction += acAmount;
                 stmnt = connection.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, `commissionAmount`, " +
                         "`Code`, `revenueItem`, `revenueAmount`, `revenueDate`, `revenueWeek`, `revenueMonth`," +
                         " `revenueYear`, `revenueQuarter`) VALUES('"+RevCent+"','"+acCCAmount+"', '"+acCode+"'," +
@@ -394,7 +395,7 @@ public class Revenue_EntriesController  implements Initializable {
                 stmnt.executeUpdate();
             }
             }else {
-
+                totAmount -= deduction;
                 revTable.getItems().clear();
             }
         }
@@ -433,7 +434,10 @@ public class Revenue_EntriesController  implements Initializable {
       if(revTable.getSelectionModel().isEmpty()){
           lblDeleteWarn.setVisible(true);
       }else{
-          totAmount -= Float.parseFloat(entries.getAmount());
+          String regex = "(?<=[\\d])(,)(?=[\\d])";
+          Pattern p = Pattern.compile(regex);
+          Matcher m = p.matcher(entries.getAmount());
+          totAmount -= Float.parseFloat(m.replaceAll(""));
           totalAmount = getFunctions.getAmount(Float.toString(totAmount));
           lblTotalAmount.setText(totalAmount);
         ObservableList<GetEntries> selectedRows = revTable.getSelectionModel().getSelectedItems();
