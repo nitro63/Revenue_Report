@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="640.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="640.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="851.0" layoutY="590.0" onAction="#printReport" text="PRINT">
          <effect>
@@ -102,7 +102,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblQuarter" layoutX="91.0" layoutY="-2.0" prefHeight="28.0" prefWidth="124.0" text="NAN">
+            <Label fx:id="lblQuarter" layoutX="91.0" layoutY="-2.0" prefHeight="28.0" prefWidth="188.0" text="NAN">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>

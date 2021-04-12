@@ -167,26 +167,20 @@ public class QuarterlyReportController implements Initializable {
                  
              }
         }
+        rowQuater.add("All Quarters");
         cmbReportQuarter.getItems().clear();
         cmbReportQuarter.getItems().setAll(rowQuater);
         cmbReportQuarter.setVisibleRowCount(5);
     }
     
     
-    private void getMonths() throws SQLException{      
+    private void getMonths() throws SQLException{
+        if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
         stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet Rs = stmnt.executeQuery();
-        ResultSetMetaData Meta = Rs.getMetaData();
-        int Col = Meta.getColumnCount();
         rowMonths.clear();
         while(Rs.next()){
-            for(int i=1; i<=Col; i++){
-                if(i == 1){
-                    
-                    rowMonths.add(Rs.getObject(i).toString());
-                    
-                }
-            }
+            rowMonths.add(Rs.getString("revenueMonth"));
         }
         month1.setText("MONTH");
         month2.setText("MONTH");
@@ -206,6 +200,12 @@ public class QuarterlyReportController implements Initializable {
                 month3.setText(rowMonths.get(2));
                 break;
         }
+        }else {
+            month1.setText("1st Quarter");
+            month2.setText("2nd Quarter");
+            month3.setText("3rd Quarter");
+            rowMonths.addAll("1", "2", "3");
+        }
     }
     
     
@@ -216,20 +216,21 @@ public class QuarterlyReportController implements Initializable {
     }
     
     private void setItems() throws SQLException{
+        if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
         stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int col = meta.getColumnCount();
         rowItems.clear();
         while(rs.next()){
-            for(int i=1; i<=col; i++){
-                if(i == 1){
-                    
-                    rowItems.add(rs.getObject(i).toString());
-                    
-                }
+            rowItems.add(rs.getString("revenueItem"));
+        }
+        } else {
+            stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
+            ResultSet rs = stmnt.executeQuery();
+            rowItems.clear();
+            while(rs.next()){
+                        rowItems.add(rs.getString("revenueItem"));
             }
-        }          
+        }
           Map<String, ArrayList<Float>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
           Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
           rowItems.forEach((rowItem) -> {
@@ -239,6 +240,7 @@ public class QuarterlyReportController implements Initializable {
               monthAmount.put(rowMonth, new ArrayList());
           });
           try {
+              if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
           for(String month : rowMonths) {
               for(String Item : rowItems) {
                   float monthSum;
@@ -258,6 +260,28 @@ public class QuarterlyReportController implements Initializable {
                   
               }
           }
+              } else {
+                  for(String month : rowMonths) {
+                      for(String Item : rowItems) {
+                          float monthSum = 0;
+                          monthSum = setMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, cmbReportYear.getSelectionModel().getSelectedItem(), month);
+                          for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
+                              for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
+                                  if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
+                                      if(forEntry.containsKey(Item) && !forEntry.get(Item).containsValue(month)){
+                                          forEntry.get(Item).put(month, new ArrayList());
+                                          forEntry.get(Item).get(month).add(monthSum);
+                                      }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsValue(month)){
+                                          forEntry.get(Item).get(month).add(monthSum);
+                                      }
+                                  };
+                              };
+                          }
+
+                      }
+                  }
+                  System.out.println(forEntry);
+              }
          }
                   catch (SQLException ex) {
                       Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
@@ -270,6 +294,7 @@ public class QuarterlyReportController implements Initializable {
            for(Map.Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
                String reveItem = Items.getKey();
                System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
+               if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
                if(Dates.getKey() == null ? month1.getText() == null : Dates.getKey().equals(month1.getText())){
                    mon1 = formatter.format(forEntry.get(Items.getKey()).get(month1.getText()).get(0));
                    Mon1 = forEntry.get(Items.getKey()).get(month1.getText()).get(0);
@@ -281,6 +306,20 @@ public class QuarterlyReportController implements Initializable {
                else if(Dates.getKey() == null ? month3.getText() == null : Dates.getKey().equals(month3.getText())){
                    mon3 = formatter.format(forEntry.get(Items.getKey()).get(month3.getText()).get(0));
                    Mon3 = forEntry.get(Items.getKey()).get(month3.getText()).get(0);
+               }
+           } else{
+                   if( Dates.getKey().equals("1")){
+                       mon1 = formatter.format(forEntry.get(Items.getKey()).get("1").get(0));
+                       Mon1 = forEntry.get(Items.getKey()).get("1").get(0);
+                   }
+                   else if(Dates.getKey().equals("2")){
+                       mon2 = formatter.format(forEntry.get(Items.getKey()).get("2").get(0));
+                       Mon2 = forEntry.get(Items.getKey()).get("2").get(0);
+                   }
+                   else if(Dates.getKey().equals("3")){
+                       mon3 = formatter.format(forEntry.get(Items.getKey()).get("3").get(0));
+                       Mon3 = forEntry.get(Items.getKey()).get("3").get(0);
+                   }
                }
            }
            total_amount = Mon3 + Mon2 + Mon1;
@@ -294,22 +333,29 @@ public class QuarterlyReportController implements Initializable {
            quarterTable.getItems().add(getReport);                                           
        }
     }
+
+    public Float setMonthSum(String Center, String item, String Year, String Quarter) throws SQLException{
+        float totalAmunt;
+        stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+item+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' ");
+        ResultSet rs = stmnt.executeQuery();
+        ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+        while(rs.next()){//looping through the retrieved revenueItems result set
+            Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
+        }
+        totalAmunt = 0;
+        for(int i = 0; i < Amount.size(); i++){
+            totalAmunt += Amount.get(i);
+        }
+        return totalAmunt;
+    }
     
        public Float setMonthSum(String Center, String item, String Month, String Year, String Quarter) throws SQLException{
         float totalAmunt;
        stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+item+"' AND `revenueMonth` = '"+Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' ");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-               if(j == 1){
-           String revitem =rs.getObject(j).toString();
-           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
-           }
-           }     
+           Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
        }
         totalAmunt = 0;
         for(int i = 0; i < Amount.size(); i++){

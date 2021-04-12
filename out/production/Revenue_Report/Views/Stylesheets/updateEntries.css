@@ -75,6 +75,21 @@
     -fx-background-color: #0e150c;
 
 }
+#btnComm {
+    -fx-background-color: #08cd3a;
+    -fx-text-fill:  #ffffff;
+    -fx-font-weight: bold;
+}
+#btnComm:hover {
+    -fx-background-color: #045a01;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+#btnComm:hover:pressed {
+    -fx-background-color: #015a17;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
 #btnClear {
     -fx-background-color: #0484bf;
     -fx-text-fill:  #ffffff;

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="620.0" prefWidth="1132.0" style="-fx-background-color: #f0f6f8;" stylesheets="@../Stylesheets/updateEntries.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="620.0" prefWidth="1132.0" style="-fx-background-color: #f0f6f8;" stylesheets="@../Stylesheets/updateEntries.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Separator layoutX="306.0" layoutY="34.0" orientation="VERTICAL" prefHeight="553.0" prefWidth="0.0" style="-fx-background-color: #263238;" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="34.0" />
       <TableView fx:id="tblValueBookStocks" layoutX="331.0" layoutY="46.0" prefHeight="530.0" prefWidth="771.0" visible="false" AnchorPane.leftAnchor="331.0" AnchorPane.rightAnchor="23.0">
@@ -358,6 +358,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
+            <JFXButton fx:id="btnComm" buttonType="RAISED" layoutX="81.0" layoutY="240.0" onAction="#showCommission" prefHeight="35.0" prefWidth="106.0" text="Commission" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="panePayment" layoutX="8.0" layoutY="130.0" prefHeight="380.0" prefWidth="292.0" visible="false">

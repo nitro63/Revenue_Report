@@ -141,6 +141,8 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private Label lblStockDateWarn;
     @FXML
+    private JFXButton btnComm;
+    @FXML
     private JFXComboBox<String> cmbTypeOfValueBook;
     @FXML
     private Label lblValueBookWarn;
@@ -575,6 +577,11 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     private void reloadAll(ActionEvent event) {
+    }
+
+    @FXML
+    void showCommission(ActionEvent event) {
+
     }
 
     void toggleViews(){

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchPane" prefHeight="598.0" prefWidth="1010.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchPane" prefHeight="598.0" prefWidth="1010.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane fx:id="topPane" layoutX="5.0" layoutY="5.0" prefHeight="41.0" prefWidth="1005.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -35,47 +35,25 @@
             </Label>
          </children>
       </AnchorPane>
-      <HBox alignment="CENTER" layoutX="225.0" layoutY="56.0">
+      <AnchorPane layoutX="150.0" layoutY="64.0">
          <children>
-            <DatePicker fx:id="entDatePck" editable="false" prefHeight="25.0" prefWidth="118.0" promptText="Select Date">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </DatePicker>
-            <ComboBox fx:id="cmbEntRevItem" prefHeight="25.0" prefWidth="126.0" promptText="REVENUE ITEM">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </ComboBox>
-            <TextField fx:id="txtEntAmt" alignment="CENTER" onKeyTyped="#processKeyEvent" prefHeight="25.0" prefWidth="111.0" promptText="AMOUNT">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </TextField>
-            <TextField fx:id="txtEntCCAmt" alignment="CENTER" onKeyTyped="#processKeyEvent" prefHeight="25.0" prefWidth="111.0" promptText="CC AMOUNT">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </TextField>
-            <Button fx:id="btnEnter" mnemonicParsing="false" onAction="#saveEntries" prefHeight="41.0" prefWidth="69.0" text="ENTER">
+            <DatePicker fx:id="entDatePck" editable="false" layoutY="8.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Date" />
+            <ComboBox fx:id="cmbEntRevItem" layoutX="138.0" layoutY="7.0" prefHeight="25.0" prefWidth="126.0" promptText="REVENUE ITEM" />
+            <TextField fx:id="txtEntAmt" alignment="CENTER" layoutX="284.0" layoutY="8.0" onKeyTyped="#processKeyEvent" prefHeight="25.0" prefWidth="111.0" promptText="AMOUNT" />
+            <Button fx:id="btnEnter" layoutX="430.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#saveEntries" prefHeight="35.0" prefWidth="69.0" text="ENTER">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
             </Button>
-            <Button fx:id="btnClear" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#clearEntries" prefHeight="41.0" prefWidth="100.0" text="Edit Entries">
+            <Button fx:id="btnClear" alignment="CENTER_RIGHT" layoutX="519.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#clearEntries" prefHeight="35.0" prefWidth="94.0" text="Edit Entries">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
             </Button>
+            <JFXButton fx:id="btnComm" buttonType="RAISED" layoutX="675.0" layoutY="2.0" onAction="#showCommission" prefHeight="35.0" prefWidth="100.0" text="Commission" />
          </children>
-      </HBox>
-      <TableView fx:id="revTable" layoutX="107.0" layoutY="117.0" prefHeight="332.0" prefWidth="809.0">
+      </AnchorPane>
+      <TableView fx:id="revTable" layoutX="107.0" layoutY="118.0" prefHeight="332.0" prefWidth="809.0">
         <columns>
             <TableColumn fx:id="revDate" editable="false" minWidth="0.0" prefWidth="88.0" text="Date" />
             <TableColumn fx:id="revWeek" editable="false" prefWidth="56.0" text="Week" />
@@ -85,7 +63,6 @@
           <TableColumn fx:id="revCode" editable="false" prefWidth="100.0" text="Code" />
           <TableColumn fx:id="revItem" editable="false" prefWidth="215.0" text="Revenue Item" />
             <TableColumn fx:id="revAmount" editable="false" prefWidth="113.0" text="Amount " />
-            <TableColumn fx:id="colCCAmount" editable="false" prefWidth="129.0" text="CC Amount" />
         </columns>
          <effect>
             <DropShadow />
@@ -135,12 +112,12 @@
             </Button>
          </children>
       </HBox>
-      <Label layoutX="279.0" layoutY="457.0" text="TOTAL AMOUNT:">
+      <Label layoutX="260.0" layoutY="460.0" text="TOTAL AMOUNT:">
          <font>
             <Font name="System Bold" size="27.0" />
          </font>
       </Label>
-      <Label fx:id="lblTotalAmount" layoutX="518.0" layoutY="455.0" prefHeight="39.0" prefWidth="285.0">
+      <Label fx:id="lblTotalAmount" layoutX="499.0" layoutY="458.0" prefHeight="39.0" prefWidth="285.0">
          <font>
             <Font name="System Bold" size="27.0" />
          </font>
