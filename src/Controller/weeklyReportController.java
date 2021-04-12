@@ -6,6 +6,7 @@
 package Controller;
 
 import Controller.Gets.Conditioner;
+import Controller.Gets.GetFunctions;
 import Controller.Gets.ReportGenerator;
 
 import java.io.File;
@@ -156,6 +157,16 @@ public class weeklyReportController implements Initializable {
     @FXML
     private Label lblCumuAmount1;
     @FXML
+    private Label lblCumuAmount2;
+    @FXML
+    private Label lblCumuAmount3;
+    @FXML
+    private Label lblCumuAmount4;
+    @FXML
+    private Label lblCumuAmount5;
+    @FXML
+    private Label lblCumuAmount6;
+    @FXML
     private Label lblCCAmount1;
     @FXML
     private Label lblCommission1;
@@ -268,6 +279,7 @@ public class weeklyReportController implements Initializable {
     ObservableList<String> rowItems =FXCollections.observableArrayList();
     int Year;
     boolean condSubMetro;
+    GetFunctions getFunctions = new GetFunctions();
     
     public weeklyReportController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -531,6 +543,13 @@ public class weeklyReportController implements Initializable {
 
 
     private void setItemsSub() throws SQLException{
+          String totWek1 = "0.00", totWek2 = "0.00", totWek3 = "0.00", totWek4 = "0.00", totWek5 = "0.00", totWek6 = "0.00", summation = "0.00";
+          float commAmt1 = 0, commAmt2 = 0, commAmt3 = 0, commAmt4 = 0, commAmt5 = 0, commAmt6 = 0, val1 = 0, val2 = 0,
+                  val3 = 0, val4 = 0, val5 = 0, val6 = 0, _18_1 = 0, _18_2 = 0, _18_3 = 0, _18_4 = 0, _18_5 = 0,
+                  _18_6 = 0, netRev1 = 0, netRev2 = 0, netRev3 = 0, netRev4 = 0, netRev5 = 0, netRev6 = 0, cost1 = 0,
+                  cost2 = 0, cost3 = 0, cost4 = 0, cost5 = 0, cost6 = 0, amtDue1 = 0, amtDue2 = 0, amtDue3 = 0, _18Tot = 0,
+                  amtDue4 = 0, amtDue5 = 0, amtDue6 = 0, commTot = 0, valTot = 0, netTot = 0, costTot = 0, amtDTot = 0, totwek1 = 0, totwek2 = 0,totwek3 = 0,totwek4 = 0,
+                    totwek5 = 0,totwek6 = 0,totweksum = 0;
         stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueMonth` = '"+
                 cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.
                 getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().
@@ -560,6 +579,39 @@ public class weeklyReportController implements Initializable {
 
         try {
             for(String week : rowWeek) {
+                String month = cmbReportMonth.getSelectionModel().getSelectedItem(), year = cmbReportYear.
+                        getSelectionModel().getSelectedItem(), cent = cmbReportCent.getSelectionModel().getSelectedItem();
+                stmnt = con.prepareStatement("SELECT  `commission_details`.`commission_amount` , `value_books_stock_record`.`purchase_amount` FROM `commission_details`, `value_books_stock_record` WHERE `commission_details`.`commission_week` = '"+week+"' AND `commission_details`.`commission_month` = '"+month+"' AND `commission_details`.`commission_year` = '"+year+"'AND `commission_details`.`commission_center` = '"+cent+"' AND  `value_books_stock_record`.`week` = '"+week+"' AND`value_books_stock_record`.`year` = '"
+                    +year+"' AND `value_books_stock_record`.`month` = '"+month+"'AND `value_books_stock_record`.`value_stock_revCenter` = '"+cent+"'");
+                rs = stmnt.executeQuery();
+                while (rs.next()){
+                    switch (week){
+                        case "1":
+                            commAmt1 += rs.getFloat("commission_amount");
+                        val1 += rs.getFloat("purchase_amount");
+                            break;
+                        case "2":
+                            commAmt2 += rs.getFloat("commission_amount");
+                        val2 += rs.getFloat("purchase_amount");
+                            break;
+                        case "3":
+                            commAmt3 += rs.getFloat("commission_amount");
+                        val3 += rs.getFloat("purchase_amount");
+                            break;
+                        case "4":
+                            commAmt4 += rs.getFloat("commission_amount");
+                        val4 += rs.getFloat("purchase_amount");
+                            break;
+                        case "5":
+                            commAmt5 += rs.getFloat("commission_amount");
+                        val5 += rs.getFloat("purchase_amount");
+                            break;
+                        case "6":
+                            commAmt6 += rs.getFloat("commission_amount");
+                        val6 += rs.getFloat("purchase_amount");
+                            break;
+                    }
+                }
                 for(String Item : rowItems) {
                     float weekSum;
                     weekSum = setWeekSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, cmbReportMonth.getSelectionModel().getSelectedItem(), week, cmbReportYear.getSelectionModel().getSelectedItem());
@@ -582,41 +634,56 @@ public class weeklyReportController implements Initializable {
         catch (SQLException ex) {
             Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        for (String week : rowWeek){
+            switch (week){
+                case "1":
+                    _18_1 = 18 * commAmt1;
+                    break;
+                case "2":
+                    _18_2 = 18 * commAmt2;
+                    break;
+                case "3":
+                    _18_3 = 18 * commAmt3;
+                    break;
+                case "4":
+                    _18_4 = 18 * commAmt4;
+                    break;
+                case "5":
+                    _18_5 = 18 * commAmt5;
+                    break;
+                case "6":
+                    _18_6 = 18 * commAmt6;
+                    break;
+            }
+        }
         NumberFormat formatter = new DecimalFormat("#,##0.00");
-        stmnt = con.prepareStatement(" SELECT `revenueWeek` FROM `daily_entries` WHERE   `revenueMonth` = '"+
-                cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.
-                getSelectionModel().getSelectedItem()+"' GROUP BY `revenueWeek`");
-        rs = stmnt.executeQuery();
-while (rs.next()){
         for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-            String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00",
-                    totWek1 = "0.00", totWek2 = "0.00", totWek3 = "0.00", totWek4 = "0.00", totWek5 = "0.00", totWek6 = "0.00", summation = "0.00";
-            float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, totwek1 = 0, totwek2 = 0,totwek3 = 0,totwek4 = 0,
-                    totwek5 = 0,totwek6 = 0,totweksum = 0;
-            for(Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
+            String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00";
+            float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount;
+            for(Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ) {
                 String reveItem = Items.getKey();
-                System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
-                if(Dates.getKey() == null ? week1Sub.getText() == null : Dates.getKey().equals(week1Sub.getText())){
+                System.out.println(reveItem + "\n" + Items.getValue().get(Dates.getKey()));
+                if (Dates.getKey() == null ? week1Sub.getText() == null : Dates.getKey().equals(week1Sub.getText())) {
                     wek1 = formatter.format(forEntry.get(Items.getKey()).get(week1Sub.getText()).get(0));
                     wk1 = forEntry.get(Items.getKey()).get(week1Sub.getText()).get(0);
-                }else if(Dates.getKey() == null ? week2Sub.getText() == null : Dates.getKey().equals(week2Sub.getText())){
+                } else if (Dates.getKey() == null ? week2Sub.getText() == null : Dates.getKey().equals(week2Sub.getText())) {
                     wek2 = formatter.format(forEntry.get(Items.getKey()).get(week2Sub.getText()).get(0));
                     wk2 = forEntry.get(Items.getKey()).get(week2Sub.getText()).get(0);
-                }else if(Dates.getKey() == null ? week3Sub.getText() == null : Dates.getKey().equals(week3Sub.getText())){
+                } else if (Dates.getKey() == null ? week3Sub.getText() == null : Dates.getKey().equals(week3Sub.getText())) {
                     wek3 = formatter.format(forEntry.get(Items.getKey()).get(week3Sub.getText()).get(0));
                     wk3 = forEntry.get(Items.getKey()).get(week3Sub.getText()).get(0);
-                }else if(Dates.getKey() == null ? week4Sub.getText() == null : Dates.getKey().equals(week4Sub.getText())){
+                } else if (Dates.getKey() == null ? week4Sub.getText() == null : Dates.getKey().equals(week4Sub.getText())) {
                     wek4 = formatter.format(forEntry.get(Items.getKey()).get(week4Sub.getText()).get(0));
                     wk4 = forEntry.get(Items.getKey()).get(week4Sub.getText()).get(0);
-                }else if(Dates.getKey() == null ? week5Sub.getText() == null : Dates.getKey().equals(week5Sub.getText())){
+                } else if (Dates.getKey() == null ? week5Sub.getText() == null : Dates.getKey().equals(week5Sub.getText())) {
                     wek5 = formatter.format(forEntry.get(Items.getKey()).get(week5Sub.getText()).get(0));
                     wk5 = forEntry.get(Items.getKey()).get(week5Sub.getText()).get(0);
-                } else if(Dates.getKey() == null ? week6Sub.getText() == null : Dates.getKey().equals(week6Sub.getText())){
+                } else if (Dates.getKey() == null ? week6Sub.getText() == null : Dates.getKey().equals(week6Sub.getText())) {
                     wek5 = formatter.format(forEntry.get(Items.getKey()).get(week6Sub.getText()).get(0));
                     wk5 = forEntry.get(Items.getKey()).get(week6Sub.getText()).get(0);
                 }
             }
+
         revenueITEMSub.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
         week1Sub.setCellValueFactory(data -> data.getValue().week1Property());
         week2Sub.setCellValueFactory(data -> data.getValue().week2Property());
@@ -641,8 +708,67 @@ while (rs.next()){
             lblWk3SumSub.setText(totWek3);   lblWk4SumSub.setText(totWek4);
             lblWk5SumSub.setText(totWek5);   lblWk6SumSub.setText(totWek6);
             lblTotalSumSub.setText(summation);
-        }
+
+
+
 }
+
+
+
+
+        System.out.println(rowWeek);
+        cost1 = val1 + (_18_1/100);
+        netRev1 = totwek1 - cost1;
+        amtDue1 = netRev1/2 ;
+        cost2 = (val2 + (_18_2/100));
+        netRev2 = totwek2 - cost2;
+        amtDue2 = netRev2/2 ;
+        cost3 = (val3 + (_18_3/100));
+        netRev3 = totwek3 - cost3;
+        amtDue3 = netRev3/2 ;
+        cost4 = (val4 + (_18_4/100));
+        netRev4 = totwek4 - cost4;
+        amtDue4 = netRev4/2 ;
+        cost5 = (val5 + (_18_5/100));
+        netRev5 = totwek5 - cost5;
+        amtDue5 = netRev5/2 ;
+        cost6 = (val6 + (_18_6/100));
+        netRev6 = totwek6 - cost6;
+        amtDue6 = netRev6/2 ;
+        commTot = (commAmt1+commAmt2+commAmt3+commAmt4+commAmt5+commAmt6);
+        amtDTot = (amtDue5+amtDue1+amtDue6+amtDue2+amtDue3+amtDue4);
+        valTot = (val1+val2+val3+val4+val5+val6);
+        _18Tot = (_18_1+_18_2+_18_3+_18_4+_18_5+_18_6)/100;
+        netTot = (netRev1+netRev2+netRev3+netRev4+netRev5+netRev6);
+        costTot = (cost1+cost2+cost3+cost4+cost5+cost6);
+        lblAmtDueKMA1.setText(getFunctions.getAmount(Float.toString(amtDue1))); lblAmtDueKMA2.setText(getFunctions.getAmount(Float.toString(amtDue2)));
+        lblAmtDueKMA3.setText(getFunctions.getAmount(Float.toString(amtDue3))); lblAmtDueKMA4.setText(getFunctions.getAmount(Float.toString(amtDue4)));
+        lblAmtDueKMA5.setText(getFunctions.getAmount(Float.toString(amtDue5))); lblAmtDueKMA6.setText(getFunctions.getAmount(Float.toString(amtDue6)));
+        lblAmtDueKMATot.setText(getFunctions.getAmount(Float.toString(amtDTot))); lblAmtDueSub1.setText(getFunctions.getAmount(Float.toString(amtDue1)));
+        lblAmtDueSub2.setText(getFunctions.getAmount(Float.toString(amtDue2))); lblAmtDueSub3.setText(getFunctions.getAmount(Float.toString(amtDue3)));
+        lblAmtDueSub4.setText(getFunctions.getAmount(Float.toString(amtDue4))); lblAmtDueSub5.setText(getFunctions.getAmount(Float.toString(amtDue5)));
+        lblAmtDueSub6.setText(getFunctions.getAmount(Float.toString(amtDue6))); lblAmtDueSubTot.setText(getFunctions.getAmount(Float.toString(amtDTot)));
+        lblCCAmount1.setText(getFunctions.getAmount(Float.toString(commAmt1))); lblCCAmount2.setText(getFunctions.getAmount(Float.toString(commAmt2)));
+        lblCCAmount3.setText(getFunctions.getAmount(Float.toString(commAmt3))); lblCCAmount4.setText(getFunctions.getAmount(Float.toString(commAmt4)));
+        lblCCAmount5.setText(getFunctions.getAmount(Float.toString(commAmt5))); lblCCAmount6.setText(getFunctions.getAmount(Float.toString(commAmt6)));
+        lblCCAmountTot.setText(getFunctions.getAmount(Float.toString(commTot))); lblCostValueBooks1.setText(getFunctions.getAmount(Float.toString(val1)));
+        lblCostValueBooks2.setText(getFunctions.getAmount(Float.toString(val2))); lblCostValueBooks3.setText(getFunctions.getAmount(Float.toString(val3)));
+        lblCostValueBooks4.setText(getFunctions.getAmount(Float.toString(val4))); lblCostValueBooks5.setText(getFunctions.getAmount(Float.toString(val5)));
+        lblCostValueBooks6.setText(getFunctions.getAmount(Float.toString(val6))); lblCostValueBooksTot.setText(getFunctions.getAmount(Float.toString(valTot)));
+        lblCommission1.setText(getFunctions.getAmount(Float.toString(_18_1/100))); lblCommission2.setText(getFunctions.getAmount(Float.toString(_18_2/100)));
+        lblCommission3.setText(getFunctions.getAmount(Float.toString(_18_3/100))); lblCommission4.setText(getFunctions.getAmount(Float.toString(_18_4/100)));
+        lblCommission5.setText(getFunctions.getAmount(Float.toString(_18_5/100))); lblCommission6.setText(getFunctions.getAmount(Float.toString(_18_6/100)));
+        lblCommissionTot.setText(getFunctions.getAmount(Float.toString(_18Tot/100))); lblDiff1.setText(getFunctions.getAmount(Float.toString(cost1)));
+        lblDiff2.setText(getFunctions.getAmount(Float.toString(cost2))); lblDiff3.setText(getFunctions.getAmount(Float.toString(cost3)));
+        lblDiff4.setText(getFunctions.getAmount(Float.toString(cost4))); lblDiff5.setText(getFunctions.getAmount(Float.toString(cost5)));
+        lblDiff6.setText(getFunctions.getAmount(Float.toString(cost6))); lblDiffTot.setText(getFunctions.getAmount(Float.toString(costTot)));
+        lblCumuAmount1.setText(getFunctions.getAmount(Float.toString(totwek1))); lblCumuAmount2.setText(getFunctions.getAmount(Float.toString(totwek2)));
+        lblCumuAmount3.setText(getFunctions.getAmount(Float.toString(totwek3))); lblCumuAmount4.setText(getFunctions.getAmount(Float.toString(totwek4)));
+        lblCumuAmount5.setText(getFunctions.getAmount(Float.toString(totwek5))); lblCumuAmount6.setText(getFunctions.getAmount(Float.toString(totwek6)));
+        lblCumuAmountTot.setText(getFunctions.getAmount(Float.toString(totweksum))); lblNetRevenue1.setText(getFunctions.getAmount(Float.toString(netRev1)));
+        lblNetRevenue2.setText(getFunctions.getAmount(Float.toString(netRev2))); lblNetRevenue3.setText(getFunctions.getAmount(Float.toString(netRev3)));
+        lblNetRevenue4.setText(getFunctions.getAmount(Float.toString(netRev4))); lblNetRevenue5.setText(getFunctions.getAmount(Float.toString(netRev5)));
+        lblNetRevenue6.setText(getFunctions.getAmount(Float.toString(netRev6))); lblNetRevenueTot.setText(getFunctions.getAmount(Float.toString(netTot)));
 
         /*System.out.println(rowWeek +"\n"+ forEntry);*/
     }
@@ -664,8 +790,9 @@ while (rs.next()){
         return totalAmunt;
     }
 
-    public void setCommission(){
-          stmnt = con.prepareStatement("SELECT ``");
+    public void setCommission() throws SQLException {
+          String month = cmbReportMonth.getSelectionModel().getSelectedItem(), year = cmbReportYear.getSelectionModel().getSelectedItem(), cent = cmbReportCent.getSelectionModel().getSelectedItem();
+          stmnt = con.prepareStatement("SELECT `commission_details`.`commission_amount`, `value_books_stock_record`.`purchase_amount` FROM `commission_details`, `value_books_stock_record` WHERE `commission_details`.`center` AND `commission_details`.`commission_month`AND `commission_details`.`commission_year`");
     }
 
     @FXML

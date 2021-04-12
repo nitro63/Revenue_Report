@@ -364,42 +364,42 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Text>
-                  <Label fx:id="lblCumuAmount1" layoutX="142.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCumuAmount1" alignment="CENTER" layoutX="142.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCCAmount1" layoutX="139.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCCAmount1" alignment="CENTER" layoutX="139.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCommission1" layoutX="131.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCommission1" alignment="CENTER" layoutX="131.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCostValueBooks1" layoutX="130.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCostValueBooks1" alignment="CENTER" layoutX="130.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDiff1" layoutX="129.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblDiff1" alignment="CENTER" layoutX="129.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNetRevenue1" layoutX="128.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblNetRevenue1" alignment="CENTER" layoutX="128.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueSub1" layoutX="125.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueSub1" alignment="CENTER" layoutX="125.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueKMA1" layoutX="124.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueKMA1" alignment="CENTER" layoutX="124.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
@@ -444,242 +444,242 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCumuAmount2" layoutX="268.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCumuAmount2" alignment="CENTER" layoutX="268.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCCAmount2" layoutX="265.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCCAmount2" alignment="CENTER" layoutX="265.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCommission2" layoutX="257.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCommission2" alignment="CENTER" layoutX="257.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCostValueBooks2" layoutX="256.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCostValueBooks2" alignment="CENTER" layoutX="256.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDiff2" layoutX="255.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblDiff2" alignment="CENTER" layoutX="255.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNetRevenue2" layoutX="254.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblNetRevenue2" alignment="CENTER" layoutX="254.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueSub2" layoutX="251.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueSub2" alignment="CENTER" layoutX="251.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueKMA2" layoutX="250.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueKMA2" alignment="CENTER" layoutX="250.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCumuAmount3" layoutX="391.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCumuAmount3" alignment="CENTER" layoutX="391.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCCAmount3" layoutX="388.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCCAmount3" alignment="CENTER" layoutX="388.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCommission3" layoutX="380.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCommission3" alignment="CENTER" layoutX="380.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCostValueBooks3" layoutX="379.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCostValueBooks3" alignment="CENTER" layoutX="379.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDiff3" layoutX="378.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblDiff3" alignment="CENTER" layoutX="378.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNetRevenue3" layoutX="377.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblNetRevenue3" alignment="CENTER" layoutX="377.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueSub3" layoutX="374.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueSub3" alignment="CENTER" layoutX="374.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueKMA3" layoutX="373.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueKMA3" alignment="CENTER" layoutX="373.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCumuAmount4" layoutX="516.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCumuAmount4" alignment="CENTER" layoutX="516.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCCAmount4" layoutX="513.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCCAmount4" alignment="CENTER" layoutX="513.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCommission4" layoutX="505.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCommission4" alignment="CENTER" layoutX="505.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCostValueBooks4" layoutX="504.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCostValueBooks4" alignment="CENTER" layoutX="504.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDiff4" layoutX="503.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblDiff4" alignment="CENTER" layoutX="503.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNetRevenue4" layoutX="502.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblNetRevenue4" alignment="CENTER" layoutX="502.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueSub4" layoutX="499.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueSub4" alignment="CENTER" layoutX="499.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueKMA4" layoutX="498.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueKMA4" alignment="CENTER" layoutX="498.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCumuAmount5" layoutX="642.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCumuAmount5" alignment="CENTER" layoutX="642.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCCAmount5" layoutX="639.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCCAmount5" alignment="CENTER" layoutX="639.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCommission5" layoutX="631.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCommission5" alignment="CENTER" layoutX="631.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCostValueBooks5" layoutX="630.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCostValueBooks5" alignment="CENTER" layoutX="630.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDiff5" layoutX="629.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblDiff5" alignment="CENTER" layoutX="629.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNetRevenue5" layoutX="628.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblNetRevenue5" alignment="CENTER" layoutX="628.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueSub5" layoutX="625.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueSub5" alignment="CENTER" layoutX="625.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueKMA5" layoutX="624.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueKMA5" alignment="CENTER" layoutX="624.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCumuAmount6" layoutX="767.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCumuAmount6" alignment="CENTER" layoutX="767.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCCAmount6" layoutX="764.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCCAmount6" alignment="CENTER" layoutX="764.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCommission6" layoutX="756.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCommission6" alignment="CENTER" layoutX="756.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCostValueBooks11111" layoutX="755.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCostValueBooks6" alignment="CENTER" layoutX="755.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDiff6" layoutX="754.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblDiff6" alignment="CENTER" layoutX="754.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNetRevenue6" layoutX="753.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblNetRevenue6" alignment="CENTER" layoutX="753.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueSub6" layoutX="750.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueSub6" alignment="CENTER" layoutX="750.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueKMA6" layoutX="749.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueKMA6" alignment="CENTER" layoutX="749.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCumuAmountTot" layoutX="891.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCumuAmountTot" alignment="CENTER" layoutX="891.0" layoutY="459.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCCAmountTot" layoutX="888.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################">
+                  <Label fx:id="lblCCAmountTot" alignment="CENTER" layoutX="888.0" layoutY="489.0" prefHeight="21.0" prefWidth="115.0" text="#################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCommissionTot" layoutX="880.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCommissionTot" alignment="CENTER" layoutX="880.0" layoutY="526.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblCostValueBooksTot" layoutX="879.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblCostValueBooksTot" alignment="CENTER" layoutX="879.0" layoutY="550.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDiffTot" layoutX="878.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblDiffTot" alignment="CENTER" layoutX="878.0" layoutY="574.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNetRevenueTot" layoutX="877.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblNetRevenueTot" alignment="CENTER" layoutX="877.0" layoutY="598.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueSubTot" layoutX="874.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueSubTot" alignment="CENTER" layoutX="874.0" layoutY="630.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAmtDueKMATot" layoutX="873.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################">
+                  <Label fx:id="lblAmtDueKMATot" alignment="CENTER" layoutX="873.0" layoutY="666.0" prefHeight="16.0" prefWidth="120.0" text="##################" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
