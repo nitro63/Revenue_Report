@@ -326,9 +326,14 @@ public class weeklyReportController implements Initializable {
         cmbReportYear.getItems().setAll(rowYear);
         cmbReportYear.setVisibleRowCount(5);
          String center = cmbReportCent.getSelectionModel().getSelectedItem();
-         for (Map.Entry<String, ArrayList<String>> cond : app.catCenter.entrySet()){
-             if (cond.getValue().contains(center) && cond.getKey().equals("SUB-METROS")){
+         stmnt = con.prepareStatement(" SELECT `revenue_category` FROM `revenue_centers` WHERE `revenue_center` = '"+
+                 cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenue_category`");
+         rs = stmnt.executeQuery();
+         while(rs.next()){
+             if (rs.getString("revenue_category").equals("SUB-METROS")){
                  condSubMetro = true;
+             }else {
+                 condSubMetro = false;
              }
          }
          System.out.println(app.catCenter+"\n"+condSubMetro);
@@ -858,6 +863,46 @@ public class weeklyReportController implements Initializable {
     @FXML
     private void SelectedYear(ActionEvent event) throws SQLException {
         getReportMonth();
+    }
+
+    void setGeneralNull(){
+        lblWk1SumGen.setText("-");   lblWk2SumGen.setText("-");
+        lblWk3SumGen.setText("-");   lblWk4SumGen.setText("-");
+        lblWk5SumGen.setText("-");   lblWk6SumGen.setText("-");
+        lblTotalSumGen.setText("-");
+    }
+
+    void setSubNull(){
+        lblWk1SumSub.setText("-");   lblWk2SumSub.setText("-");
+        lblWk3SumSub.setText("-");   lblWk4SumSub.setText("-");
+        lblWk5SumSub.setText("-");   lblWk6SumSub.setText("-");
+        lblTotalSumSub.setText("-");
+
+        lblAmtDueKMA1.setText("-"); lblAmtDueKMA2.setText("-");
+        lblAmtDueKMA3.setText("-"); lblAmtDueKMA4.setText("-");
+        lblAmtDueKMA5.setText("-"); lblAmtDueKMA6.setText("-");
+        lblAmtDueKMATot.setText("-"); lblAmtDueSub1.setText("-");
+        lblAmtDueSub2.setText("-"); lblAmtDueSub3.setText("-");
+        lblAmtDueSub4.setText("-"); lblAmtDueSub5.setText("-");
+        lblAmtDueSub6.setText("-"); lblAmtDueSubTot.setText("-");
+        lblCCAmount1.setText("-"); lblCCAmount2.setText("-");
+        lblCCAmount3.setText("-"); lblCCAmount4.setText("-");
+        lblCCAmount5.setText("-"); lblCCAmount6.setText("-");
+        lblCCAmountTot.setText("-"); lblCostValueBooks1.setText("-");
+        lblCostValueBooks2.setText("-"); lblCostValueBooks3.setText("-");
+        lblCostValueBooks4.setText("-"); lblCostValueBooks5.setText("-");
+        lblCostValueBooks6.setText("-"); lblCostValueBooksTot.setText("-");
+        lblCommission1.setText("-"); lblCommission2.setText("-");
+        lblCommission3.setText("-"); lblCommission4.setText("-");
+        lblCommission5.setText("-"); lblCommission6.setText("-");
+        lblCommissionTot.setText("-"); lblDiff1.setText("-");
+        lblDiff2.setText("-"); lblDiff3.setText("-");
+        lblDiff4.setText("-"); lblDiff5.setText("-");
+        lblDiff6.setText("-"); lblDiffTot.setText("-");
+        lblNetRevenue1.setText("-");
+        lblNetRevenue2.setText("-"); lblNetRevenue3.setText("-");
+        lblNetRevenue4.setText("-"); lblNetRevenue5.setText("-");
+        lblNetRevenue6.setText("-"); lblNetRevenueTot.setText("-");
     }
 
     @FXML

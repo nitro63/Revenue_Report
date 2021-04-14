@@ -95,7 +95,7 @@ public class commissionUpdateController implements Initializable {
 
     GetRevCenter GetCenter;
     GetFunctions getFunctions = new GetFunctions();
-    String regex = "(?<=[\\d])(,)(?=[\\d])";
+    String regex = "(?<=[\\d])(,)(?=[\\d])", revCenter;
     Pattern p = Pattern.compile(regex);
     Matcher m, match, mac;
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -147,7 +147,8 @@ public class commissionUpdateController implements Initializable {
         ResultSet rs;
         String ID = "", Date = "", Month = "", Amount = "", Week = "", Year = "", Qtr = "",
                 entryTypeYear = app.getEntryYear(),
-                entryTypeMonth = app.getEntryMonth(), revCenter = app.getRevCenter();
+                entryTypeMonth = app.getEntryMonth();
+        revCenter = app.getRevCenter();
         colID.setCellValueFactory(d -> d.getValue().IDProperty());
         colDate.setCellValueFactory(d -> d.getValue().DateProperty());
         colCCAmount.setCellValueFactory(d -> d.getValue().AmountProperty());
@@ -196,7 +197,7 @@ public class commissionUpdateController implements Initializable {
     }
 
     @FXML
-    void updateEntries(ActionEvent event) {
+    void updateEntries(ActionEvent event) throws SQLException, FileNotFoundException, JRException {
         String ccAmount = txtEntCCAmt.getText();
         LocalDate date = entDatePck.getValue();
         if (entDatePck.getValue() == null) {
@@ -250,13 +251,13 @@ public class commissionUpdateController implements Initializable {
                         alert.showAndWait();
                         Condition =false;
                     }else{
-                        amount += Float.parseFloat(ccAmount);
-                        lblTotalAmount.setText(getFunctions.getAmount(Float.toString(amount)));
-                        addEntries = new GetEntries(Date, Month, Week, Year, Qtr, Amount);
-                        commTable.getItems().add(addEntries);
-                        if (!registerAmount.containsKey(Date)){
-                            registerAmount.put(Date, ccAmount);
-                        }
+                        float ccamount = Float.parseFloat(ccAmount);
+                        stmnt = con.prepareStatement("UPDATE `commission_details` SET `commission_amount` = '"+
+                                ccamount+"', `commission_week` = '"+Week+"' ,`commission_date` = '"+Date+"'," +
+                                " `commission_month` = '"+Month+"', `commission_quarter` = '"+Qtr+"', `commission_year` = '"+Year+"'" +
+                                " WHERE `commission_ID` = '"+entryID+"' AND `commission_center` = '"+revCenter+"'");
+                        stmnt.executeUpdate();
+                        loadRevenueCollectionTable();
                         entDatePck.setValue(null);
                         txtEntCCAmt.setText(null);
                         Condition = false;
