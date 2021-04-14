@@ -38,6 +38,7 @@
       </AnchorPane>
       <TableView fx:id="tblCollectUpdate" layoutX="324.0" layoutY="117.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="333.0" prefWidth="593.0">
          <columns>
+            <TableColumn fx:id="colGCR1" editable="false" prefWidth="103.0" text="ID" />
             <TableColumn fx:id="colGCR" editable="false" prefWidth="103.0" text="GCR" />
             <TableColumn fx:id="colChqDate" editable="false" prefWidth="153.0">
                <graphic>
@@ -79,17 +80,17 @@
          </children>
       </AnchorPane>
       <AnchorPane layoutX="658.0" layoutY="529.0" prefHeight="55.0" prefWidth="332.0" />
-      <JFXButton fx:id="btnClearEntr" buttonType="RAISED" layoutX="144.0" layoutY="472.0" onAction="#CancelEntries" prefHeight="35.0" prefWidth="84.0" ripplerFill="#aea6a6" text="Delete">
+      <JFXButton fx:id="btnDelete" buttonType="RAISED" layoutX="118.0" layoutY="472.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="63.0" ripplerFill="#aea6a6" style="-fx-background-radius: 10 10 10 10;" text="Delete">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnSaveEntries" buttonType="RAISED" layoutX="242.0" layoutY="473.0" onAction="#SaveToDatabase" prefHeight="35.0" prefWidth="84.0" ripplerFill="#aea6a6" text="Update">
+      <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="313.0" layoutY="473.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="71.0" ripplerFill="#aea6a6" style="-fx-background-radius: 10 10 10 10;" text="Update">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="40.0" layoutY="471.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="84.0" ripplerFill="#aea6a6" text="Clear">
+      <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="25.0" layoutY="471.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="71.0" ripplerFill="#aea6a6" style="-fx-background-radius: 10 10 10 10;" text="Clear">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -144,5 +145,10 @@
             </Label>
          </children>
       </AnchorPane>
+      <JFXButton fx:id="btnSaveEntries" buttonType="RAISED" layoutX="202.0" layoutY="472.0" onAction="#SaveToDatabase" prefHeight="35.0" prefWidth="95.0" ripplerFill="#aea6a6" style="-fx-background-radius: 10 10 10 10;" text="Save Entries">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
    </children>
 </AnchorPane>

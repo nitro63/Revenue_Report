@@ -104,5 +104,15 @@
       </Button>
       <TextField fx:id="txtEntCCAmt" alignment="CENTER" layoutX="428.0" layoutY="69.0" onKeyTyped="#processKeyEvent" prefHeight="25.0" prefWidth="111.0" promptText="CC AMOUNT" />
       <DatePicker fx:id="entDatePck" editable="false" layoutX="275.0" layoutY="71.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Date" />
+      <Label fx:id="lblDateWarn" layoutX="282.0" layoutY="61.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblAmountWarn" layoutX="441.0" layoutY="60.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

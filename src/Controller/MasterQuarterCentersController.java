@@ -231,10 +231,10 @@ public class MasterQuarterCentersController implements Initializable {
                   for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
                           for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
                               if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
-                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsValue(month)){
+                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(month)){
                                       forEntry.get(Item).put(month, new ArrayList<>());
                                       forEntry.get(Item).get(month).add(monthSum);
-                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsValue(month)){
+                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
                                       forEntry.get(Item).get(month).add(monthSum);
                                   } 
                               };
@@ -251,10 +251,10 @@ public class MasterQuarterCentersController implements Initializable {
                           for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
                               for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
                                   if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
-                                      if(forEntry.containsKey(Item) && !forEntry.get(Item).containsValue(month)){
+                                      if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(month)){
                                           forEntry.get(Item).put(month, new ArrayList<>());
                                           forEntry.get(Item).get(month).add(monthSum);
-                                      }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsValue(month)){
+                                      }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
                                           forEntry.get(Item).get(month).add(monthSum);
                                       }
                                   };

@@ -20,6 +20,7 @@ import java.util.*;
 
 import Controller.Gets.GetFunctions;
 import com.jfoenix.controls.JFXButton;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.time.LocalDate;
@@ -28,13 +29,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.commons.lang3.StringUtils;
 import Controller.Gets.GetEntries;
 import Controller.Gets.GetRevCenter;
+import revenue_report.Main;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -149,6 +157,14 @@ public class Revenue_EntriesController  implements Initializable {
           lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
       });
         GetRevenueItems();
+        if (app.getRevGroup().getSelectionModel().getSelectedItem().toString().toLowerCase(Locale.ROOT).
+                equals("sub-metros")){
+            btnComm.setVisible(true);
+            ccCheck = true;
+        }else{
+            btnComm.setVisible(false);
+            ccCheck = false;
+        }
   }
 
     
@@ -365,6 +381,7 @@ public class Revenue_EntriesController  implements Initializable {
             }else {
                 totAmount -= deduction;
                 revTable.getItems().clear();
+                lblTotalAmount.setText(getFunctions.getAmount(Float.toString(totAmount)));
             }
         }
     }
@@ -417,8 +434,22 @@ public class Revenue_EntriesController  implements Initializable {
     }
 
     @FXML
-    void showCommission(ActionEvent event) {
-
+    void showCommission(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        Main st = new Main();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Views/fxml/commissionEntries.fxml"));
+        loader.setController(new commissionEntriesController());
+        commissionEntriesController bnkDtls = (commissionEntriesController) loader.getController();
+        bnkDtls.setappController(this);
+        Parent root = loader.load();
+        Scene s = new Scene(root);
+        Stage stg = new Stage();
+        bnkDtls.setStage(stg);
+        stg.initModality(Modality.APPLICATION_MODAL);
+        stg.initOwner(st.stage);
+        stg.initStyle(StageStyle.UTILITY);
+        stg.setScene(s);
+        stg.show();
     }
 
     

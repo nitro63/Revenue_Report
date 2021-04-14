@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="620.0" prefWidth="1132.0" style="-fx-background-color: #f0f6f8;" stylesheets="@../Stylesheets/updateEntries.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="620.0" prefWidth="1132.0" style="-fx-background-color: #edfff7;" stylesheets="@../Stylesheets/updateEntries.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Separator layoutX="306.0" layoutY="34.0" orientation="VERTICAL" prefHeight="553.0" prefWidth="0.0" style="-fx-background-color: #263238;" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="34.0" />
       <TableView fx:id="tblValueBookStocks" layoutX="331.0" layoutY="46.0" prefHeight="530.0" prefWidth="771.0" visible="false" AnchorPane.leftAnchor="331.0" AnchorPane.rightAnchor="23.0">
@@ -210,21 +210,21 @@
       </AnchorPane>
       <AnchorPane layoutX="9.0" layoutY="490.0" AnchorPane.bottomAnchor="84.0">
          <children>
-            <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" style="-fx-background-radius: 10 10 10 10;" text="Clear">
+            <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="15.0" layoutY="9.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" style="-fx-background-radius: 10 10 10 10;" text="Clear">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
                <effect>
                   <DropShadow />
                </effect></JFXButton>
-            <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="211.0" layoutY="11.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" style="-fx-background-radius: 10 10 10 10;" text="Update">
+            <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="211.0" layoutY="9.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" style="-fx-background-radius: 10 10 10 10;" text="Update">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
                <effect>
                   <DropShadow />
                </effect></JFXButton>
-            <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="117.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" style="-fx-background-radius: 10 10 10 10;" text="Delete">
+            <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="117.0" layoutY="9.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" style="-fx-background-radius: 10 10 10 10;" text="Delete">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>

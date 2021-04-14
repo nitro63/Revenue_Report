@@ -484,7 +484,7 @@ public class Payment_EntriesController implements Initializable {
                                 "'" + fini + "' ");
                         ResultSet rt = stmnt.executeQuery();
                         while (rt.next()) {
-                            dup.add(rt.getString("ID"));
+                            dup.add(rt.getString("pay_ID"));
                         }
                         if (dup.contains(fini)) {
                             fini = getID();

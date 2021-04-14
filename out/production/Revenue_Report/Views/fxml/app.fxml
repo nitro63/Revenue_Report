@@ -16,7 +16,7 @@
 
 <!--fx:controller="Controller.appController"-->
 
-<BorderPane fx:id="border_pane" prefHeight="730.0" prefWidth="1330.0" style="-fx-background-color: #f5f6f7;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="border_pane" prefHeight="730.0" prefWidth="1355.0" style="-fx-background-color: #f5f6f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="569.0" BorderPane.alignment="CENTER">
          <content>
@@ -25,7 +25,7 @@
       </ScrollPane>
    </left>
    <center>
-      <VBox fx:id="centerPane" alignment="CENTER" fillWidth="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="1100.0" style="-fx-background-color: #edfff7;" />
+      <VBox fx:id="centerPane" alignment="CENTER" fillWidth="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1137.0" style="-fx-background-color: #edfff7;" />
    </center>
    <top>
       <HBox prefHeight="81.0" prefWidth="876.0" style="-fx-background-color: #dddcf7; -fx-background-color: #f5f6f7;">
@@ -135,7 +135,7 @@
                               <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
                               <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
                                  <children>
-                                    <Button fx:id="btnSDRI" mnemonicParsing="false" onAction="#showSDRI" prefHeight="26.0" prefWidth="143.0" style="-fx-background-color: transparent;" text="REVENUE ITEMS" textFill="#11124a">
+                                    <Button fx:id="btnSDRI" mnemonicParsing="false" onAction="#showSDRI" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="ADD / DELELTE" textFill="#11124a">
                                        <font>
                                           <Font name="Century" size="13.0" />
                                        </font>
@@ -201,7 +201,7 @@
                </children></VBox>
          </children>
          <BorderPane.margin>
-            <Insets bottom="5.0" />
+            <Insets bottom="2.0" />
          </BorderPane.margin></HBox>
    </top>
 </BorderPane>

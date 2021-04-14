@@ -90,7 +90,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblQuarter" layoutX="91.0" layoutY="-1.0" prefHeight="28.0" prefWidth="50.0" text="NAN">
+            <Label fx:id="lblQuarter" layoutX="91.0" layoutY="-1.0" prefHeight="28.0" prefWidth="223.0" text="NAN">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
