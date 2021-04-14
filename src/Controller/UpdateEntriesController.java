@@ -13,20 +13,27 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.lang3.StringUtils;
 import revenue_report.DBConnection;
+import revenue_report.Main;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -279,7 +286,7 @@ public class UpdateEntriesController implements Initializable {
     private final GetRevCenter GetCenter;
     private final Connection con;
     private PreparedStatement stmnt;
-    boolean targetCondition, collectionCondition, paymentCondition, bankCondition, valueBookCondition, Condition;
+    boolean targetCondition, collectionCondition, paymentCondition, bankCondition, valueBookCondition, Condition, saved, ccCheck;
     String revCenter, entryTypeMonth, entryTypeYear, oldTargetAmount,  oldTargetyear, entry_ID, paymentGcr;
     float newTargetAmount;
     int newTargetYear;
@@ -290,16 +297,19 @@ public class UpdateEntriesController implements Initializable {
     LocalDate date;
     Map<String, Float> priceBook = new HashMap<>();
     Map<String, String> codeItem = new HashMap<>();
+    Map<String, String> GCR_ID = new HashMap<>();
     Map<String, String> gcrID = new HashMap<>();
     Map<String, ArrayList<String>> typeSerials = new HashMap<>();
     ObservableList<String> Item = FXCollections.observableArrayList();
 
+    public String getEntryYear(){return cmbEntryYear.getSelectionModel().getSelectedItem();}
+    public String getEntryMonth(){return cmbEntryMonth.getSelectionModel().getSelectedItem();}
     public UpdateEntriesController(GetRevCenter getRevCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getRevCenter;
         this.con = DBConnection.getConn();
         revCenter = GetCenter.getRevCenter();
     }
-
+    public  String getRevCenter(){return GetCenter.getRevCenter();}
     public void setappController(entries_sideController app){
         this.app = app;
     }
@@ -313,6 +323,14 @@ public class UpdateEntriesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (app.getRevGroup().getSelectionModel().getSelectedItem().toString().toLowerCase(Locale.ROOT).
+                equals("sub-metros")){
+            btnComm.setVisible(true);
+            ccCheck = true;
+        }else{
+            btnComm.setVisible(false);
+            ccCheck = false;
+        }
         try {
             stmnt = con.prepareStatement("SELECT `revenue_item`, `revenue_item_ID` FROM `revenue_items` WHERE 1");
             ResultSet rs = stmnt.executeQuery();
@@ -580,8 +598,22 @@ public class UpdateEntriesController implements Initializable {
     }
 
     @FXML
-    void showCommission(ActionEvent event) {
-
+    void showCommission(ActionEvent event) throws SQLException, ClassNotFoundException, IOException {
+        Main st = new Main();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Views/fxml/commissionUpdate.fxml"));
+        loader.setController(new commissionUpdateController());
+        commissionUpdateController bnkDtls = (commissionUpdateController) loader.getController();
+        bnkDtls.setappController(this);
+        Parent root = loader.load();
+        Scene s = new Scene(root);
+        Stage stg = new Stage();
+        bnkDtls.setStage(stg);
+        stg.initModality(Modality.APPLICATION_MODAL);
+        stg.initOwner(st.stage);
+        stg.initStyle(StageStyle.UTILITY);
+        stg.setScene(s);
+        stg.show();
     }
 
     void toggleViews(){
@@ -709,7 +741,7 @@ public class UpdateEntriesController implements Initializable {
     }
 
     @FXML
-    private void updateEntries(ActionEvent event) throws SQLException, FileNotFoundException, JRException {
+    private void updateEntries(ActionEvent event) throws SQLException, IOException, JRException, ClassNotFoundException {
         if (entry_ID != null) {
             if (paneTarget.isVisible()) {
                 updateTarget();
@@ -953,7 +985,7 @@ public class UpdateEntriesController implements Initializable {
             Month = rs.getString("revenueMonth");
             Week = rs.getString("revenueWeek");
             Year = rs.getString("revenueYear");
-            Qtr = rs.getString("revenueYear");
+            Qtr = rs.getString("revenueQuarter");
             Amount = getFunctions.getAmount(rs.getString("revenueAmount"));
             getCollectionData = new GetEntries(Code, rs.getString("entries_ID"), Item, Date, Month, Amount, Week, Year, Qtr);
             tblCollectionEntries.getItems().add(getCollectionData);
@@ -1225,7 +1257,7 @@ public class UpdateEntriesController implements Initializable {
         cmbPaymentType.getSelectionModel().select(paymentDetails.getpaymentType());
     }
 
-    void updatePaymentEntries() throws SQLException, FileNotFoundException, JRException {
+    void updatePaymentEntries() throws SQLException, IOException, JRException, ClassNotFoundException {
         ArrayList<String> dupGCR = new ArrayList<>();
         String payDate = getFunctions.getDate(entDatePckPayment.getValue()),
                 payGCR = txtPaymentGCR.getText(),
@@ -1306,6 +1338,7 @@ public class UpdateEntriesController implements Initializable {
                         resetPaymentEntries();
                         loadPaymentTable();
                         Condition = false;
+
                     }
                 }
             }
@@ -1367,8 +1400,8 @@ public class UpdateEntriesController implements Initializable {
         dtpckChequeDate.setValue(date);
         }else {
             dtpckChequeDate.setValue(null);
+            txtChqNmb.setText(getBankData.getChequeNumber());
         }
-        txtChqNmb.setText(getBankData.getChequeNumber());
         txtBankName.setText(getBankData.getBank());
         m = p.matcher(getBankData.getAmount());
         String amount = m.replaceAll("");

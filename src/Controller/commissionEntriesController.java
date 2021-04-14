@@ -138,6 +138,7 @@ public class commissionEntriesController implements Initializable {
         commTable.setOnMouseClicked(e ->{
             lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
         });
+        commTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     @FXML
@@ -211,7 +212,8 @@ public class commissionEntriesController implements Initializable {
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(getData.getAmount());
             float ccAmount = Float.parseFloat(m.replaceAll(""));
-            int week = Integer.parseInt(getData.getWeek()), year = Integer.parseInt(getData.getYear());
+            int week = Integer.parseInt(getData.getWeek()), year = Integer.parseInt(getData.getYear()),
+                qtr = Integer.parseInt(getData.getQuarter());
             String date = getData.getDate(), month = getData.getMonth(), fini = getID();
             PreparedStatement stmnt = con.prepareStatement("SELECT `commission_date` FROM `commission_details`" +
                     " WHERE `commission_center` = '"+RevCent+"'");
@@ -242,8 +244,8 @@ public class commissionEntriesController implements Initializable {
                     deduction += ccAmount;
                     stmnt = con.prepareStatement("INSERT INTO `commission_details`(`commission_ID`, " +
                             "`commission_center`, `commission_amount`, `commission_date`, `commission_week`," +
-                            " `commission_month`, `commission_year`) VALUES ('"+fini+"', '"+RevCent+"', '"+ccAmount
-                            +"', '"+date+"', '"+week+"', '"+month+"', '"+year+"')");
+                            " `commission_month`,`commission_quarter`, `commission_year`) VALUES ('"+fini+"', '"+RevCent+"', '"+ccAmount
+                            +"', '"+date+"', '"+week+"', '"+month+"', '"+qtr+"', '"+year+"')");
                     stmnt.executeUpdate();
             }
         }else {

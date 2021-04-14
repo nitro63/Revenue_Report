@@ -1,5 +1,7 @@
 package Controller;
 
+import Controller.Gets.GetBankDetails;
+import Controller.Gets.GetFunctions;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -12,8 +14,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import revenue_report.DBConnection;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class BankDetailsUpdateController implements Initializable {
@@ -98,6 +104,29 @@ public class BankDetailsUpdateController implements Initializable {
 
         @FXML
         private JFXButton btnSaveEntries;
+
+    GetBankDetails getReport, getData;
+
+    UpdateEntriesController colUpdate ;
+    GetFunctions getFunctions = new GetFunctions();
+
+    private  boolean Condition = true;
+    private final Connection con;
+
+    public BankDetailsUpdateController() throws SQLException, ClassNotFoundException {
+        this.con = DBConnection.getConn();
+    }
+    public TableView getTableView(){
+        return tblCollectUpdate;
+    }
+
+    public void setAppController(UpdateEntriesController app){
+        this.colUpdate = app;
+    }
+    Stage stage =  new Stage()/*anchBankDetails.getScene().getWindow()*/;
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
 
 
     @Override

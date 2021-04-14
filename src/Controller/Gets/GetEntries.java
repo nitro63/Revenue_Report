@@ -14,7 +14,7 @@ import javafx.beans.property.StringProperty;
  */
 public class GetEntries {
     private String code, center, item, date, month, amount, week, year, quarter;
-   private  StringProperty Code, Center, Item, Date, Month, Amount, Week, Year, Quarter;
+   private  StringProperty Code, Center, Item, Date, Month, Amount, Week, Year, Quarter, ID;
 //   private float Amount;
 //    int Week;
    
@@ -26,6 +26,16 @@ public class GetEntries {
         this.Code = new SimpleStringProperty(Code);
         this.Item = new  SimpleStringProperty(Item);
         this.Center = new  SimpleStringProperty(Center);
+        this.Date = new SimpleStringProperty(Date);
+        this.Month =new SimpleStringProperty( Month);
+        this.Amount = new SimpleStringProperty(Amount) ;
+        this.Week = new SimpleStringProperty(Week);
+        this.Year = new SimpleStringProperty(Year);
+        this.Quarter = new SimpleStringProperty(Quarter);
+    }
+
+    public GetEntries(String ID, String Date, String Month, String Week, String Year, String Quarter, String Amount) {
+        this.ID = new SimpleStringProperty(ID);
         this.Date = new SimpleStringProperty(Date);
         this.Month =new SimpleStringProperty( Month);
         this.Amount = new SimpleStringProperty(Amount) ;
@@ -52,6 +62,18 @@ public class GetEntries {
         this.Week = new SimpleStringProperty(Week);
         this.Year = new SimpleStringProperty(Year);
         this.Quarter = new SimpleStringProperty(Quarter);
+    }
+
+    public String getID() {
+        return ID.get();
+    }
+
+    public StringProperty IDProperty() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID.set(ID);
     }
 
     public StringProperty CodeProperty() {

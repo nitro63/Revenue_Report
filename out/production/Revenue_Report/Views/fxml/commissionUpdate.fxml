@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchPane" prefHeight="453.0" prefWidth="917.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchPane" prefHeight="453.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane fx:id="topPane" layoutX="5.0" layoutY="5.0" prefHeight="41.0" prefWidth="1005.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,8 +23,9 @@
             </Label>
          </children>
       </AnchorPane>
-      <TableView fx:id="commTable" layoutX="314.0" layoutY="91.0" prefHeight="332.0" prefWidth="588.0">
+      <TableView fx:id="commTable" layoutX="259.0" layoutY="91.0" prefHeight="332.0" prefWidth="643.0">
          <columns>
+            <TableColumn fx:id="colID" editable="false" minWidth="0.0" prefWidth="88.0" text="ID" />
             <TableColumn fx:id="colDate" editable="false" minWidth="0.0" prefWidth="88.0" text="Date" />
             <TableColumn fx:id="colWeek" editable="false" prefWidth="56.0" text="Week" />
             <TableColumn fx:id="colMonth" editable="false" prefWidth="121.0" text="Month" />
@@ -45,7 +47,7 @@
       </Label>
       <TextField fx:id="txtEntCCAmt" alignment="CENTER" layoutX="84.0" layoutY="262.0" onKeyTyped="#processKeyEvent" prefHeight="26.0" prefWidth="118.0" promptText="CC AMOUNT" />
       <DatePicker fx:id="entDatePck" editable="false" layoutX="86.0" layoutY="187.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Date" />
-      <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="25.0" layoutY="403.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" style="-fx-background-radius: 10 10 10 10;" text="Clear">
+      <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="25.0" layoutY="429.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" style="-fx-background-radius: 10 10 10 10;" text="Clear">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
@@ -53,7 +55,7 @@
             <DropShadow />
          </effect>
       </JFXButton>
-      <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="221.0" layoutY="403.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" style="-fx-background-radius: 10 10 10 10;" text="Update">
+      <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="221.0" layoutY="429.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" style="-fx-background-radius: 10 10 10 10;" text="Update">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
@@ -61,7 +63,7 @@
             <DropShadow />
          </effect>
       </JFXButton>
-      <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="127.0" layoutY="403.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" style="-fx-background-radius: 10 10 10 10;" text="Delete">
+      <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="127.0" layoutY="429.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" style="-fx-background-radius: 10 10 10 10;" text="Delete">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
@@ -79,5 +81,14 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
+      <Label fx:id="lblControlWarn" layoutX="470.0" layoutY="441.0" text="Please select a row on the table!" textFill="#f20d0d" visible="false">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
+   <stylesheets>
+      <URL value="@../Stylesheets/EntriesStyle.css" />
+      <URL value="@../Stylesheets/updateEntries.css" />
+   </stylesheets>
 </AnchorPane>

@@ -399,4 +399,77 @@ Vodafone is committed to attracting, developing and retaining the very best peop
 
 
 
+BankUpdate in update entries(
+                        if (payType.equals("Cheque") || payType.equals("Cheque Deposit Slip")){
+                            saved = false;
+                            Main st = new Main();
+                                FXMLLoader bankDetails = new FXMLLoader();
+                                bankDetails.setLocation(getClass().getResource("/Views/fxml/Bank_DetailsUpdate.fxml"));
+                                bankDetails.setController(new BankDetailsUpdateController());
+                                BankDetailsUpdateController bnkDtls = (BankDetailsUpdateController)bankDetails.getController();
+                                bnkDtls.setAppController(this);
+                                Parent root = bankDetails.load();
+                                Scene s = new Scene(root);
+                                Stage stg = new Stage();
+                                bnkDtls.setStage(stg);
+                                stg.initModality(Modality.APPLICATION_MODAL);
+                                stg.initOwner(st.stage);
+                                stg.initStyle(StageStyle.UTILITY);
+                                stg.setScene(s);
+                                stg.show();
+                                stg.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                    public void handle(WindowEvent we) {
+                                        Alert closeConfirmation = new Alert(
+                                                Alert.AlertType.CONFIRMATION,
+                                                "Are you sure you want to exit?"
+                                        );
+                                        Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                                                ButtonType.OK
+                                        );
+                                        Button cancelButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                                                ButtonType.CANCEL
+                                        );
+                                        exitButton.setText("Yes");
+                                        cancelButton.setText("No");
+                                        closeConfirmation.setHeaderText("Confirm Exit");
+                                        if(!bnkDtls.getTableView().getItems().isEmpty()) {
+                                            closeConfirmation.setContentText("Are you sure you want to exit without saving cheque details? ");
+                                            System.out.println(saved);
+                                        }else{
+                                            closeConfirmation.setContentText("Are you sure you want to Exit");
+                                            saved = true;
+                                            System.out.println(saved);
+                                        }
+                                        closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+                                        closeConfirmation.initOwner(stg);
+                                        Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+                                        if (!ButtonType.OK.equals(closeResponse.get())) {
+                                            we.consume();
+                                        }else{
+                                            GCR_ID.clear();
 
+                                        }
+                                    }
+                                });
+                            if (!saved){
+                                stmnt = con.prepareStatement("UPDATE `collection_payment_entries` SET  " +
+                                        "`Date`= '"+payDate+"',`GCR`= '"+payGCR+"'," +
+                                        "`Month` = '"+payMonth+"', `payment_type` = '"+payType+"'" +
+                                        ",`Amount` = '"+payAmount+"', `Year` = '"+payYear+"' WHERE   " +
+                                        "`pay_ID`= '"+entry_ID+"' AND `pay_revCenter`= '"+revCenter+"' ");
+                                stmnt.executeUpdate();
+                                resetPaymentEntries();
+                                loadPaymentTable();
+                                Condition = false;
+                            }
+                            else {
+                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                alert.setTitle("Warning Dialog");
+                                alert.setHeaderText("Update Unsuccessful");
+                                alert.setContentText("Please input '"+payType+"' details.");
+                                alert.showAndWait();
+                                loadPaymentTable();
+                                Condition = false;
+                            }
+                            }else {}
+).
