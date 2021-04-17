@@ -39,6 +39,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -264,6 +265,10 @@ public class UpdateEntriesController implements Initializable {
     @FXML
     private Label lblGetMonthWarn;
     @FXML
+    private Label lblGCRWarn;
+    @FXML
+    private JFXComboBox<String> cmbCheqGCR;
+    @FXML
     private AnchorPane paneNothing;
     @FXML
     private AnchorPane paneUpdateNothing;
@@ -361,6 +366,9 @@ public class UpdateEntriesController implements Initializable {
         });
         cmbPaymentType.setOnMouseClicked(e ->{
             lblPayTpeWarn.setVisible(false);
+        });
+        cmbCheqGCR.setOnMouseClicked(e ->{
+            lblGCRChqWarn.setVisible(false);
         });
         cmbCollectionMonth.setOnMouseClicked(e ->{
             lblColMonthWarn.setVisible(false);
@@ -754,7 +762,9 @@ public class UpdateEntriesController implements Initializable {
             }else if (paneCheque.isVisible()){
                 updateBankDetails();
             }
-        }else{
+        }else if (paneCheque.isVisible()){
+            saveBankDetails();
+        } else{
             lblControlWarn.setVisible(true);
         }
     }
@@ -813,6 +823,27 @@ public class UpdateEntriesController implements Initializable {
     }
 
     void getBankDetails() throws SQLException {
+        String month = cmbEntryMonth.getSelectionModel().getSelectedItem(), year = cmbEntryYear.getSelectionModel().
+                getSelectedItem(), center = revCenter;
+        if (cmbEntryMonth.getSelectionModel().isEmpty()){
+            stmnt = con.prepareStatement("SELECT`pay_ID`,`GCR`,`payment_type`FROM `collection_payment_entries` WHERE " +
+                    "`payment_type` = 'Cheque' OR `payment_type` = 'Cheque Deposit Slip' AND `Year` = '"+year+"' AND `pay_revCenter` = '"+
+                    center+"'");
+        }else {
+        stmnt = con.prepareStatement("SELECT`pay_ID`,`GCR`,`payment_type`FROM `collection_payment_entries` WHERE " +
+                "`payment_type` = 'Cheque' OR `payment_type` = 'Cheque Deposit Slip' AND `Year` = '"+year+"' AND `pay_revCenter` = '"+
+                center+"' AND `Month` = '"+month+"'");
+        }
+        ResultSet rs = stmnt.executeQuery();
+        while (rs.next()){
+            if (rs.getString("payment_type").equals("Cheque")) {
+                cmbCheqGCR.getItems().add("Cheq-"+rs.getString("GCR"));
+                GCR_ID.put("Cheq-"+rs.getString("GCR"), rs.getString("pay_ID"));
+            }else if (rs.getString("payment_type").equals("Cheque Deposit Slip")){
+                cmbCheqGCR.getItems().add("CheqD-"+rs.getString("GCR"));
+                GCR_ID.put("CheqD-"+rs.getString("GCR"), rs.getString("pay_ID"));
+            }
+        }
         paneNothing.setVisible(false);
         paneUpdateNothing.setVisible(false);
         dtpckChequeDate.setValue(null);
@@ -839,7 +870,7 @@ public class UpdateEntriesController implements Initializable {
         colChqNmb.setCellValueFactory(d -> d.getValue().chequeNumberProperty());
         colPayChqDate.setCellValueFactory(d -> d.getValue().dateProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
-            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
+            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`GCR`, " +
                     "`collection_payment_entries`.`date`, `collection_payment_entries`.`payment_type`, " +
                     "`cheque_details`.`cheque_date`, `cheque_details`." +
                     "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`cheque_ID`, `cheque_details`.`amount`, " +
@@ -848,7 +879,7 @@ public class UpdateEntriesController implements Initializable {
                     " AND `collection_payment_entries`.`year` = '"+cmbEntryYear.getSelectionModel().
                     getSelectedItem()+"' AND `collection_payment_entries`.`pay_ID` = `cheque_details`.`payment_ID`");
         }else{
-            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`gcr`, " +
+            stmnt = con.prepareStatement("SELECT `collection_payment_entries`.`GCR`, " +
                     "`collection_payment_entries`.`date`, `collection_payment_entries`.`payment_type`, " +
                     "`cheque_details`.`cheque_date`, `cheque_details`." +
                     "`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount`, `cheque_details`.`cheque_ID`," +
@@ -861,7 +892,11 @@ public class UpdateEntriesController implements Initializable {
         }
         rs = stmnt.executeQuery();
         while(rs.next()) {
-            GCR = rs.getString("gcr");
+            if (rs.getString("payment_type").equals("Cheque")) {
+                GCR = ("Cheq-"+rs.getString("GCR"));
+            }else if (rs.getString("payment_type").equals("Cheque Deposit Slip")){
+                GCR = ("CheqD-"+rs.getString("GCR"));
+            }
             date = rs.getString("date");
             chqDate = rs.getString("cheque_date");
             chqNumber = rs.getString("cheque_number");
@@ -1396,12 +1431,16 @@ public class UpdateEntriesController implements Initializable {
         entry_ID = getBankData.getID();
         paymentGcr = getBankData.getGCR();
         date = LocalDate.parse(getBankData.getDate(), format);
-        if (!typeSerials.get("Cheque Deposit Slip").contains(bankControll.getGcrID(paymentGcr, gcrID))){
+        cmbCheqGCR.getSelectionModel().select(getBankData.getGCR());
+        cmbCheqGCR.setDisable(true);
+           String Che = cmbCheqGCR.getSelectionModel().getSelectedItem().substring(0, cmbCheqGCR.getSelectionModel().
+                    getSelectedItem().indexOf("-"));
+        if (!Che.equals("CheqD")){
         dtpckChequeDate.setValue(date);
         }else {
             dtpckChequeDate.setValue(null);
-            txtChqNmb.setText(getBankData.getChequeNumber());
         }
+        txtChqNmb.setText(getBankData.getChequeNumber());
         txtBankName.setText(getBankData.getBank());
         m = p.matcher(getBankData.getAmount());
         String amount = m.replaceAll("");
@@ -1412,7 +1451,7 @@ public class UpdateEntriesController implements Initializable {
 
     void updateBankDetails() throws SQLException {
         ArrayList<String> dupChq = new ArrayList<>();
-        String chqNumber = txtChqNmb.getText(), chqDate, Bank = txtBankName.getText();
+        String chqNumber = txtChqNmb.getText(), chqDate, Bank = txtBankName.getText(), Che = "";
         date = dtpckChequeDate.getValue();
         stmnt = con.prepareStatement("SELECT `cheque_number` FROM `cheque_details` WHERE `bank` = '"+
                 Bank+"' AND `cheque_ID` != '"+entry_ID+"'AND `cheque_number` = '"+chqNumber+"'");
@@ -1420,15 +1459,23 @@ public class UpdateEntriesController implements Initializable {
         while (rt.next()){
             dupChq.add(rt.getString("cheque_number"));
         }
-        if(!typeSerials.get("Cheque Deposit Slip").contains(bankControll.getGcrID(paymentGcr, gcrID)) && date == null){
-        lblChequeDateWarn.setVisible(true);
-        Condition = false;
-    }else{
-        Condition =true;
-        if (!typeSerials.get("Cheque Deposit Slip").contains(bankControll.getGcrID(paymentGcr, gcrID))){
-            chqDate = getFunctions.getDate(date);
+        if (cmbCheqGCR.getSelectionModel().getSelectedItem().isEmpty()){
+            lblGCRChqWarn.setVisible(true);
+            Condition = false;
         }else {
-            chqDate = "NA";
+            Che = cmbCheqGCR.getSelectionModel().getSelectedItem().substring(0, cmbCheqGCR.getSelectionModel().
+                    getSelectedItem().indexOf("-"));
+//            ID = getGcrID(getData.getGCR(), colEnt.gcrID);
+        }
+        if(!Che.equals("CheqD") && date == null){
+            lblChequeDateWarn.setVisible(true);
+            Condition = false;
+        }else{
+            Condition =true;
+            if (!Che.equals("CheqD")){
+                chqDate = getFunctions.getDate(date);
+            }else {
+                chqDate = "NA";
         }
         while(Condition) {
             if(dupChq.contains(chqNumber)){
@@ -1475,19 +1522,160 @@ public class UpdateEntriesController implements Initializable {
                     resetBankDetails();
                     loadBankDetailsTable();
                     Condition = false;
+                    cmbCheqGCR.getSelectionModel().clearSelection();
+                    cmbCheqGCR.setDisable(false);
+                }
+            }
+        }
+    }
+    }
+
+    @FXML
+    void selectedCheqType(ActionEvent event) {
+    }
+
+    public String getID(){
+        Date day = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(day);
+        String milli = Integer.toString(cal.get(Calendar.MILLISECOND)),
+                date = Integer.toString(cal.get(Calendar.DATE)),
+                month = Integer.toString(cal.get(Calendar.MONTH)+1),
+                Day = Integer.toString(cal.get(Calendar.DAY_OF_WEEK)),
+                year = Integer.toString(cal.get(Calendar.YEAR)),
+                second = Integer.toString(cal.get(Calendar.SECOND)),
+                minute = Integer.toString(cal.get(Calendar.MINUTE)),
+                hour = Integer.toString(cal.get(Calendar.HOUR_OF_DAY));
+        String id = UUID.randomUUID().toString(),
+                is = id.replace("-", "").substring(9,12),
+                ID = id.replace("-", "").substring(17,20),
+                si = id.replace("-", "").substring(23,25),
+                fini = is+ID+si.concat(Day).concat(date).concat(month).
+                        concat(year).concat(hour).concat(minute).concat(second).concat(milli);
+        return fini;
+    }
+
+    void saveBankDetails() throws SQLException {
+        ArrayList<String> dupChq = new ArrayList<>();
+        ArrayList<String> dupPayID = new ArrayList<>();
+        boolean condition = true;
+        ArrayList<String> dup = new ArrayList<>();String fini = "";
+        String chqNumber = txtChqNmb.getText(), chqDate,ID="", Bank = txtBankName.getText(), gcr = "", chqID = "",  Che = "";
+        date = dtpckChequeDate.getValue();
+        stmnt = con.prepareStatement("SELECT `cheque_number` FROM `cheque_details` WHERE `bank` = '"+
+                Bank+"' AND `cheque_ID` != '"+entry_ID+"'AND `cheque_number` = '"+chqNumber+"'");
+        ResultSet rt = stmnt.executeQuery();
+        while (rt.next()){
+            dupChq.add(rt.getString("cheque_number"));
+        }
+        if (cmbCheqGCR.getSelectionModel().getSelectedItem().isEmpty()){
+            lblGCRChqWarn.setVisible(true);
+            Condition = false;
+        }else {
+            gcr = cmbCheqGCR.getSelectionModel().getSelectedItem();
+            chqID = GCR_ID.get(cmbCheqGCR.getSelectionModel().getSelectedItem());
+            fini = "chq"+getID();
+            Che = cmbCheqGCR.getSelectionModel().getSelectedItem().substring(0, cmbCheqGCR.getSelectionModel().
+                    getSelectedItem().indexOf("-"));
+//            ID = getGcrID(getData.getGCR(), colEnt.gcrID);
+            stmnt = con.prepareStatement("SELECT `payment_ID` FROM `cheque_details` WHERE `payment_ID` = '"+chqID+"'");
+            rt = stmnt.executeQuery();
+            while (rt.next()) {
+                dupPayID.add(rt.getString("payment_ID"));
+            }
+        }
+        if(!Che.equals("CheqD") && date == null){
+            lblChequeDateWarn.setVisible(true);
+            Condition = false;
+        }else{
+            Condition =true;
+            if (!Che.equals("CheqD")){
+                chqDate = getFunctions.getDate(date);
+            }else {
+                chqDate = "NA";
+            }
+            while(Condition) {
+                if (dupPayID.contains(chqID)){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("This record for '"+gcr+" already exists");
+                    alert.showAndWait();
+                    Condition =false;
+                }
+                else if(dupChq.contains(chqNumber)){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("'"+chqNumber+"' already exists");
+                    alert.showAndWait();
+                    Condition =false;
+                }else
+                if(txtBankName.getText().isEmpty() || Bank.matches("\\s+")){
+                    lblBankNameWarn.setVisible(true);
+                    Condition =false;
+                }else if(!typeSerials.get("Cheque Deposit Slip").contains(bankControll.getGcrID(paymentGcr, gcrID)) && chqDate == null){
+                    lblChequeDateWarn.setVisible(true);
+                    Condition =false;
+
+                }else if(txtChqNmb.getText().isEmpty() || chqNumber.matches("\\s+")){
+                    lblChqNmbWarn.setVisible(true);
+                    Condition =false;
+                }else if(txtChqAmount.getText().isEmpty()){
+                    lblChqAmtWarn.setVisible(true);
+                    Condition =false;
+                }else if(StringUtils.countMatches(txtChqAmount.getText(), ".") >1){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Please Enter Amount");
+                    alert.setContentText("Please check the number of '.' in the amount");
+                    alert.showAndWait();
+                    Condition =false;
+                }else{
+                    float Amount = Float.parseFloat(txtChqAmount.getText());
+                    if(Amount == 0){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning Dialog");
+                        alert.setHeaderText("Please Amount cannot be '0'");
+                        alert.showAndWait();
+                        Condition =false;
+                    }else{
+                        while (condition){
+                            stmnt = con.prepareStatement("SELECT `cheque_ID` FROM `cheque_details` WHERE `cheque_ID` = " +
+                                    "'" + fini + "' ");
+                            rt = stmnt.executeQuery();
+                            while (rt.next()){
+                                dup.add(rt.getString("cheque_ID"));
+                            }
+                            if (dup.contains(fini)){
+                                fini = "chq"+getID();
+                            }else {
+                                condition = false;
+                            }
+                        }
+                        stmnt = con.prepareStatement("INSERT INTO  `cheque_details`" +
+                            "( `cheque_ID`, `cheque_date`, `cheque_number`, `bank`," +
+                            " `amount`, `payment_ID`) VALUES ('" + fini + "','" + chqDate + "', " +
+                            "'" + chqNumber + "', '" + Bank + "', '" + Amount + "',  '" + chqID + "')");
+                        stmnt.executeUpdate();
+                        resetBankDetails();
+                        loadBankDetailsTable();
+                        Condition = false;
+                    }
                 }
             }
         }
     }
 
-    }
-
-    void deleteBankDetails(){
-
+    void deleteBankDetails() throws SQLException {
+        stmnt = con.prepareStatement("DELETE FROM `cheque_details` WHERE `cheque_ID` = '"+entry_ID+"'");
+        stmnt.executeUpdate();
+        resetBankDetails();
+        loadBankDetailsTable();
     }
 
     void resetBankDetails(){
         entry_ID = null;
+        cmbCheqGCR.getSelectionModel().clearSelection();
+        cmbCheqGCR.setDisable(false);
         dtpckChequeDate.setValue(null);
         txtChqNmb.clear();
         txtBankName.clear();

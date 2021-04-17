@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -15,7 +16,7 @@
 
 <!--fx:controller="Controller.appController"-->
 
-<BorderPane fx:id="border_pane" prefHeight="650.0" prefWidth="1200.0" style="-fx-background-color: #f5f6f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="border_pane" prefHeight="730.0" prefWidth="1355.0" style="-fx-background-color: #f5f6f7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="569.0" BorderPane.alignment="CENTER">
          <content>
@@ -24,11 +25,7 @@
       </ScrollPane>
    </left>
    <center>
-      <VBox fx:id="centerPane" alignment="CENTER" prefHeight="586.0" prefWidth="701.0" style="-fx-background-color: #f2f2f2; -fx-background-color: #f5f6f7;" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </VBox>
+      <VBox fx:id="centerPane" alignment="CENTER" fillWidth="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1137.0" style="-fx-background-color: #edfff7;" />
    </center>
    <top>
       <HBox prefHeight="81.0" prefWidth="876.0" style="-fx-background-color: #dddcf7; -fx-background-color: #f5f6f7;">
@@ -40,7 +37,7 @@
                <children>
                   <ImageView fitHeight="80.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@875kma%20logo.png" />
+                        <Image url="@../../Assets/kmalogo.png" />
                      </image>
                   </ImageView>
                   <Line endY="64.60984802246094" />
@@ -61,122 +58,123 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox alignment="TOP_RIGHT" prefHeight="93.0" prefWidth="519.0" style="-fx-background-color: #e4f2f2; -fx-background-radius: 15; -fx-border-width: 0px; -fx-border-color: #a6a6ff; -fx-border-radius: 15;" HBox.hgrow="ALWAYS">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="41.0" prefWidth="463.0" style="-fx-background-color: transparent;">
-                     <children>
-                        <VBox alignment="CENTER" fillWidth="false" prefHeight="26.0" prefWidth="519.0" style="-fx-background-radius: 5; -fx-background-color: #d4dfe4a8;">
-                           <children>
-                              <Text fill="#055b18" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: monteserat;" text="FINANCE DEPARTMENT" textAlignment="CENTER" wrappingWidth="232.0">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="18.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#055b18" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="REVENUE UNIT" textAlignment="CENTER" wrappingWidth="136.0">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="2.0" />
-                                 </VBox.margin>
-                              </Text>
-                           </children>
-                           <VBox.margin>
-                              <Insets right="2.0" top="5.0" />
-                           </VBox.margin>
-                        </VBox>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER" prefHeight="40.0" prefWidth="497.0" style="-fx-blend-mode: darken;" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets bottom="2.0" top="5.0" />
-                     </VBox.margin>
-                     <children>
-                        <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                           <children>
-                              <Button fx:id="btnSDHME" mnemonicParsing="false" onAction="#showSDHME" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: transparent;" text="HOME" textFill="#11124a">
-                                 <font>
-                                    <Font name="Century" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="156.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                           <children>
-                              <Button fx:id="btnSGRE" mnemonicParsing="false" onAction="#showSGRE" prefHeight="26.0" prefWidth="151.0" style="-fx-background-color: transparent;" text="REVENUE ENTRIES" textFill="#11124a">
-                                 <font>
-                                    <Font name="Century" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="156.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                           <children>
-                              <Button fx:id="btnSDRR" mnemonicParsing="false" onAction="#showSDRR" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: transparent;" text="REVENUE REPORTS" textFill="#11124a">
-                                 <font>
-                                    <Font name="Century" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                           <children>
-                              <Button fx:id="btnSDRI" mnemonicParsing="false" onAction="#showSDRI" prefHeight="26.0" prefWidth="143.0" style="-fx-background-color: transparent;" text="REVENUE ITEMS" textFill="#11124a">
-                                 <font>
-                                    <Font name="Century" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                           <children>
-                              <Button fx:id="btnSDHelp" mnemonicParsing="false" onAction="#showSDHELP" prefHeight="26.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="HELP" textFill="#11124a">
-                                 <font>
-                                    <Font name="Century" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
+            <AnchorPane minWidth="-Infinity" prefHeight="82.0" prefWidth="868.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
-               <opaqueInsets>
-                  <Insets bottom="5.0" left="5.0" right="5.0" />
-               </opaqueInsets>
-            </VBox>
-            <VBox alignment="BASELINE_CENTER" prefHeight="76.0" prefWidth="180.0" style="-fx-border-radius: 80; -fx-border-width: 1.5px 1.5px 1.5px 1.5px; -fx-border-color: #565656; -fx-background-color: #ededfb; -fx-background-radius: 80;">
+               <children>
+                  <VBox alignment="TOP_RIGHT" prefHeight="82.0" prefWidth="899.0" style="-fx-background-color: #e4f2f2; -fx-background-radius: 15; -fx-border-width: 0px; -fx-border-color: #a6a6ff; -fx-border-radius: 15;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="41.0" prefWidth="463.0" style="-fx-background-color: transparent;">
+                           <children>
+                              <VBox alignment="CENTER" fillWidth="false" prefHeight="26.0" prefWidth="519.0" style="-fx-background-radius: 5; -fx-background-color: #d4dfe4a8;">
+                                 <children>
+                                    <Text fill="#055b18" strokeType="OUTSIDE" strokeWidth="0.0" text="FINANCE DEPARTMENT" textAlignment="CENTER" wrappingWidth="232.0">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#055b18" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="REVENUE UNIT" textAlignment="CENTER" wrappingWidth="136.0">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="2.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets right="2.0" top="5.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER" prefHeight="40.0" prefWidth="497.0" style="-fx-blend-mode: darken;" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="2.0" top="5.0" />
+                           </VBox.margin>
+                           <children>
+                              <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
+                                 <children>
+                                    <Button fx:id="btnSDHME" mnemonicParsing="false" onAction="#showSDHME" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: transparent;" text="HOME" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                              <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="156.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
+                                 <children>
+                                    <Button fx:id="btnSGRE" mnemonicParsing="false" onAction="#showSGRE" prefHeight="26.0" prefWidth="151.0" style="-fx-background-color: transparent;" text="REVENUE ENTRIES" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                              <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="156.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
+                                 <children>
+                                    <Button fx:id="btnSDRR" mnemonicParsing="false" onAction="#showSDRR" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: transparent;" text="REVENUE REPORTS" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                              <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
+                                 <children>
+                                    <Button fx:id="btnSDRI" mnemonicParsing="false" onAction="#showSDRI" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="ADD / DELELTE" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                              <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
+                                 <children>
+                                    <Button fx:id="btnSDHelp" mnemonicParsing="false" onAction="#showSDHELP" prefHeight="26.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="HELP" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <VBox alignment="BASELINE_CENTER" prefHeight="79.0" prefWidth="154.0" style="-fx-border-radius: 80; -fx-border-width: 1.5px 1.5px 1.5px 1.5px; -fx-border-color: #565656; -fx-background-color: #ededfb; -fx-background-radius: 80;">
                <HBox.margin>
                   <Insets top="3.0" />
                </HBox.margin>
                <children>
                   <HBox alignment="CENTER">
                      <children>
-                        <ImageView fx:id="imgAvatar" fitHeight="31.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgAvatar" fitHeight="22.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@user.png" />
+                              <Image url="@../../Assets/user.png" />
                            </image>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
                         </ImageView>
                         <Text fx:id="txtUser" strokeType="OUTSIDE" strokeWidth="0.0" text="USER" textAlignment="CENTER" wrappingWidth="63.0">
                            <font>
@@ -203,7 +201,7 @@
                </children></VBox>
          </children>
          <BorderPane.margin>
-            <Insets bottom="5.0" />
+            <Insets bottom="2.0" />
          </BorderPane.margin></HBox>
    </top>
 </BorderPane>

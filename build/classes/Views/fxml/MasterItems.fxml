@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox fx:id="masterItemsTemplate" alignment="CENTER" prefHeight="518.0" prefWidth="950.0" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="620.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" prefHeight="67.0" prefWidth="1030.0" VBox.vgrow="ALWAYS">
+      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="980.0" layoutY="581.0" onAction="#printReport" text="PRINT">
+         <effect>
+            <DropShadow />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <HBox alignment="CENTER" layoutX="70.0" layoutY="42.0" prefHeight="41.0" prefWidth="950.0">
          <children>
             <Pane prefHeight="55.0" prefWidth="124.0" />
             <HBox alignment="CENTER">
                <children>
-                  <ComboBox fx:id="cmbMasterItemsYear" onAction="#SelectedYear" prefHeight="25.0" prefWidth="167.0" promptText="Year" />
+                  <AnchorPane>
+                     <children>
+                        <ComboBox fx:id="cmbMasterItemsYear" layoutY="7.0" onAction="#SelectedYear" prefHeight="25.0" prefWidth="167.0" promptText="Year" />
+                        <Label fx:id="lblYearWarn" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
                </children>
             </HBox>
             <Pane prefHeight="200.0" prefWidth="100.0" />
@@ -29,38 +52,61 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <ScrollPane hbarPolicy="ALWAYS" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+      <ScrollPane hbarPolicy="ALWAYS" layoutX="12.0" layoutY="108.0" prefHeight="466.0" prefWidth="1060.0" vbarPolicy="NEVER">
          <content>
             <TableView fx:id="revenueItemsTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="1460.0">
                <columns>
-                  <TableColumn fx:id="revenueItems" maxWidth="865.0000076293945" prefWidth="848.0000076293945" text="REVENUE ITEMS">
-                     <columns>
-                        <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
-                        <TableColumn fx:id="year" prefWidth="618.0" text="YEAR: #">
-                           <columns>
-                              <TableColumn fx:id="january" prefWidth="100.0" text="January" />
-                              <TableColumn fx:id="february" prefWidth="100.0" text="February" />
-                              <TableColumn fx:id="march" prefWidth="100.0" text="March" />
-                              <TableColumn fx:id="april" prefWidth="100.0" text="April" />
-                              <TableColumn fx:id="may" prefWidth="100.0" text="May" />
-                              <TableColumn fx:id="june" prefWidth="100.0" text="June" />
-                              <TableColumn fx:id="july" prefWidth="100.0" text="July" />
-                              <TableColumn fx:id="august" prefWidth="100.0" text="August" />
-                              <TableColumn fx:id="september" prefWidth="100.0" text="September" />
-                              <TableColumn fx:id="october" prefWidth="100.0" text="October" />
-                              <TableColumn fx:id="november" prefWidth="100.0" text="November" />
-                              <TableColumn fx:id="december" prefWidth="100.0" text="December" />
-                              <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
-                           </columns>
-                        </TableColumn>
-                     </columns>
+                  <TableColumn fx:id="revenueItem" prefWidth="126.0">
+                     <graphic>
+                        <Label prefHeight="50.0" prefWidth="98.0" text="REVENUE ITEM " textAlignment="CENTER" wrapText="true" />
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn fx:id="january" prefWidth="100.0" text="January" />
+                  <TableColumn fx:id="february" prefWidth="100.0" text="February" />
+                  <TableColumn fx:id="march" prefWidth="100.0" text="March" />
+                  <TableColumn fx:id="april" prefWidth="100.0" text="April" />
+                  <TableColumn fx:id="may" prefWidth="100.0" text="May" />
+                  <TableColumn fx:id="june" prefWidth="100.0" text="June" />
+                  <TableColumn fx:id="july" prefWidth="100.0" text="July" />
+                  <TableColumn fx:id="august" prefWidth="100.0" text="August" />
+                  <TableColumn fx:id="september" prefWidth="100.0" text="September" />
+                  <TableColumn fx:id="october" prefWidth="100.0" text="October" />
+                  <TableColumn fx:id="november" prefWidth="100.0" text="November" />
+                  <TableColumn fx:id="december" prefWidth="100.0" text="December" />
+                  <TableColumn fx:id="totalAmount" prefWidth="100.0">
+                     <graphic>
+                        <Label prefHeight="50.0" text="TOTAL AMOUNT" textAlignment="CENTER" wrapText="true" />
+                     </graphic>
                   </TableColumn>
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
          </content>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </VBox.margin>
       </ScrollPane>
+      <Text layoutX="300.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MASTER REVENUE ITEMS' REPORT" textAlignment="CENTER" wrappingWidth="577.13671875">
+         <font>
+            <Font name="System Bold" size="31.0" />
+         </font>
+      </Text>
+      <AnchorPane layoutX="532.0" layoutY="80.0">
+         <children>
+            <Label layoutY="2.0" text="YEAR:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblYear" layoutX="57.0" text="NAN">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
-</VBox>
+   <stylesheets>
+      <URL value="@../Stylesheets/report.css" />
+      <URL value="@../Stylesheets/tableview.css" />
+   </stylesheets>
+</AnchorPane>

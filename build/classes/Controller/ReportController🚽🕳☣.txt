@@ -158,3 +158,51 @@
 //            }
 //        }
 //            System.out.println(data+""+""+col);
+
+
+
+
+JoBS
+Crossover is hiring for multiple Subsystem CTO positions for our client, DevFactory.
+
+Are you the best software architect in your company? Can you identify patterns in complex systems and see ways to make them 10x simpler? Do you enjoy designing software that maximizes use of existing code? Do you wish you could expand your technical career without requiring more and more time on HR and project management? If so, you’ll love our approach of driving the direction of products starting with the core technology.
+
+In this role you will join a very passionate and experienced team responsible for all of the important technical decisions on every product in our large portfolio of enterprise software solutions. You’ll spend your time making the most important technical design decisions, such as:
+What are the core data structures used by the app? Why were they chosen? How are they mapped or applied to the domain of the problem? What were the tradeoffs or alternatives?
+Are there any important or valuable algorithms? What insights led to choosing them?
+Are important third-party components/technologies used? Why were they selected? Are they the right ones today? Were they ever?
+Are there any components of the system that create valuable and differentiated capability relative to competitors? Why? (we call this “TechDiff”)
+What was the design and reasoning behind the important internal and external APIs?
+Identify and explain the rationale behind important technical dependencies or limitations this product has. Can you think of new and creative ways to overcome them?
+Can the product be broken down logically into smaller, more manageable components? Are there well-defined interfaces, or seams, between those components? Or are they all interconnected?
+What is the critical opinion of a fresh set of eyes when looking at old decisions? Are there architecture or design anti-patterns present in the fundamental technical decisions?
+
+In this role you will also learn and practice the high-impact skill of clear written communication, as this enables your scale and broad impact across the organization.
+
+What You Will Be Doing
+
+Each week you will have a different design problem to work on and technical spec to create. The assignments may make iterative progress on a larger problem, or be smaller and targeted design problems. You will have the opportunity to learn and work on a wide variety of products with distinct tech stacks and business domains so you will be continuously challenged. You will uncover the “high-order bit” decisions by interviewing other product CTOs, analyzing the data structures and analyzing code and design documents. Finally, you will make the important design decisions that specify how to rearchitect products in a cloud-first way on systems like AWS and GCP, and how leveraging the latest powerful cloud services can enable ten-fold improvements in the product.
+
+What You Won’t Be Doing
+
+You will not be making technical decisions based primarily on saving money. You will focus on designing the best solution for the problem, in the simplest way possible, and with maximum leverage of existing assets. This is a strategic technical design position - making the important technical decisions and providing clear leadership for our engineering organization to execute on. Therefore, in this role you won’t be:
+Participating in daily scrum meetings or providing day-to-day direction to an engineering team
+Making low-level decisions about what coding language to use or choosing frameworks and libraries
+Performing code reviews, debugging or investigating bugs and outages
+Talking to customers to develop a backlog of features they wish our products had
+Directly managing people
+
+Subsystem CTO Key Responsibilities
+Make clear, simple, and technically superior design decisions
+Simplify designs that others have made complicated
+Apply a particularly high-quality bar to what we believe are the core technical design decisions - data structures, algorithms, architectural patterns, and the leverage of third-party implementations
+Utilize other architects as force-multipliers, mentoring them by providing high-quality feedback on their work
+Synthesize your decisions and designs into clear and structured written specs
+
+Basic Requirements
+A university degree that includes the study of data structures and algorithms
+At least 2 years of experience shipping production quality code
+At least 4 years of experience making the important architecture and design decisions on software projects, such as the application of architecture design patterns or significant open source technologies
+At least 2 years of experience as the decision-maker for design decisions involving the use of cloud computing services (primarily AWS)
+Experience as the most senior decision-maker regarding technical design decisions for software products for a dev team of at least 10 people
+The ability to simplify complex ideas and communicate them with clear, logical thinking.

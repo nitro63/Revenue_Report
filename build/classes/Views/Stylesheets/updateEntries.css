@@ -1,0 +1,152 @@
+.button {
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-font-size: 15;
+    -fx-border-radius:  1 1 1 1;
+}
+
+.jfx-date-picker .input-line{
+    -fx-border-color:  #0fc649;
+}
+.spinner {
+    -fx-prompt-text-fill: black;
+    -fx-text-fill: black;
+    -fx-background-color: none;
+    -fx-padding: 0 0 3 0;
+}
+.spinner .increment-arrow-button{
+    -fx-border-radius: 0 15 0 0;
+    -fx-border-width: 0 0 0 0;
+}
+.spinner .decrement-arrow-button{
+    -fx-border-radius: 0 0 15 0;
+    -fx-border-width: 0 0 0 0;
+}
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed,
+.spinner .text-field{
+
+    -fx-background-color: #F5F6F7;
+    -fx-border-width: 0 0 5 0;
+
+}
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button{
+    -fx-background-color: transparent;
+    -fx-border-color: #007d09;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #007d09;
+    -fx-font-size: 15px;
+}
+
+.spinner .text-field {
+    -fx-background-color: #F5F6F7;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #0aab27;
+    -fx-border-radius: 0 0 0 0;
+}
+#lblYear{
+    -fx-text-alignment: center;
+    -fx-text-fill: #025B24;
+    -fx-font-weight: bold;
+    -fx-font-size: 13;
+    -fx-background-radius: 15 0 0 15;
+    -fx-border-radius: 15 0 0 15;
+}
+
+#btnGetEntries {
+    -fx-background-color: #007d09;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+
+#btnGetEntries:hover {
+    -fx-background-color: #045516;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+
+#btnGetEntries:pressed:hover {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-color: #0e150c;
+
+}
+#btnComm {
+    -fx-background-color: #08cd3a;
+    -fx-text-fill:  #ffffff;
+    -fx-font-weight: bold;
+}
+#btnComm:hover {
+    -fx-background-color: #045a01;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+#btnComm:hover:pressed {
+    -fx-background-color: #015a17;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+#btnClear {
+    -fx-background-color: #0484bf;
+    -fx-text-fill:  #ffffff;
+    -fx-font-weight: bold;
+}
+#btnClear:hover {
+    -fx-background-color: #01415a;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+#btnClear:hover:pressed {
+    -fx-background-color: #01415a;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+
+#btnDelete {
+    -fx-background-color: #e72e27;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
+#btnDelete:hover {
+    -fx-background-color: #bf0505;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
+#btnDelete:hover:pressed {
+    -fx-background-color: #9b2526;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
+#btnUpdateEntries{
+    -fx-background-color: #007d07;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+#btnUpdateEntries:hover {
+    -fx-background-color:#03531e;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
+#btnUpdateEntries:pressed:hover {
+    -fx-background-color:#0e150c;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+#btnReload{
+    -fx-background-radius: 35 35 35 35;
+}
+
+#bunny{
+-fx-background-color: #455167,
+#0e150c,
+#73e778,
+#033C10,
+ #055B18,
+ #d4dfe4a8,
+  #e4f2f2,
+  #1ea82e;}
