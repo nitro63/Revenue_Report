@@ -372,6 +372,7 @@ public class ReportController implements Initializable {
           * Retrieving Revenue Items from database per week selected
           * Put Revenue Items into a list for later use
          ***/
+
         stmnt = con.prepareStatement(" SELECT `revenueItem`   FROM `daily_entries` WHERE   `revenueWeek` = '"+
                 cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.
                 getSelectionModel().getSelectedItem()+"' AND `revenueMonth` = '"+cmbReportMonth.getSelectionModel().

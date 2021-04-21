@@ -152,7 +152,7 @@ public class entries_sideController  implements Initializable {
 
    
     @FXML
-    private void ShowRevenue_Entries(ActionEvent event) throws IOException {
+    private void ShowRevenue_Entries(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         if(cmbRevCent.getSelectionModel().getSelectedItem() == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");

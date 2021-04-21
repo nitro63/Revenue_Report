@@ -109,8 +109,15 @@ public  appController() {
     }
 
     @FXML
-    private void showSDRI(ActionEvent event) {
+    private void showSDRI(ActionEvent event) throws IOException {
+        FXMLLoader load = new FXMLLoader();
+        load.setLocation(getClass().getResource("/Views/fxml/add_side.fxml"));
+        load.setController(new add_sideController());
+        add_sideController rep = (add_sideController)load.getController();
+        rep.setappController(this);
+        leftPane.getChildren().clear();
         centerPane.getChildren().clear();
+        leftPane.getChildren().add(load.load());
     }
 
     @FXML

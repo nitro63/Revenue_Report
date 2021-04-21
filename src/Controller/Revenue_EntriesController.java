@@ -41,6 +41,7 @@ import javafx.stage.StageStyle;
 import org.apache.commons.lang3.StringUtils;
 import Controller.Gets.GetEntries;
 import Controller.Gets.GetRevCenter;
+import revenue_report.DBConnection;
 import revenue_report.Main;
 
 import java.util.regex.Matcher;
@@ -94,21 +95,19 @@ public class Revenue_EntriesController  implements Initializable {
      * @param app
      */
     
-    Map <String, String> RevenueMap = new HashMap<String, String>()
-        {{
-            put("Market Tolls","1423001");
-            put("Reg. of Marriage/Divorce", "1423011");
-            put("Burial Permits and Cemetry", "13425");
-            put("Sub Metro Managed Toilets / Surtax","685894");
-        }};
-        ObservableList<String> RevenueItems = FXCollections.observableArrayList(RevenueMap.keySet());
+    Map <String, String> RevenueMap = new HashMap<>();
+        ObservableList<String> RevenueItems = FXCollections.observableArrayList();
         ObservableList<String> ItemsCode = FXCollections.observableArrayList(RevenueMap.values());
         
         Map<String, ArrayList<String>> registerItem=new HashMap<>();
 
-        
-        
-        
+
+
+
+    PreparedStatement stmnt;
+    ResultSet rs;
+    ResultSetMetaData metaData;
+    private final Connection con;
          boolean Condition = true, ccCheck;
          float totAmount = 0;
         
@@ -137,7 +136,8 @@ public class Revenue_EntriesController  implements Initializable {
 
 
     
-  public Revenue_EntriesController(GetRevCenter GetCenter){
+  public Revenue_EntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
+      this.con = DBConnection.getConn();
        this.GetCenter = GetCenter;
     }
   
@@ -151,12 +151,17 @@ public class Revenue_EntriesController  implements Initializable {
         
     @Override
     public void initialize(URL url, ResourceBundle rb)  {
+        RevCent = GetCenter.getRevCenter();
       revTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
       registerItem.put("", new ArrayList());
       revTable.setOnMouseClicked(e -> {
           lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
       });
-        GetRevenueItems();
+        try {
+            GetRevenueItems();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         if (app.getRevGroup().getSelectionModel().getSelectedItem().toString().toLowerCase(Locale.ROOT).
                 equals("sub-metros")){
             btnComm.setVisible(true);
@@ -168,7 +173,13 @@ public class Revenue_EntriesController  implements Initializable {
   }
 
     
-    private void GetRevenueItems(){
+    private void GetRevenueItems() throws SQLException {
+      stmnt = con.prepareStatement("SELECT `assign_item`, `assign_code` FROM `center_items` WHERE `assign_center` = '"+RevCent+"'");
+      rs = stmnt.executeQuery();
+      while (rs.next()){
+          RevenueItems.add(rs.getString("assign_item"));
+          RevenueMap.put(rs.getString("assign_item"), rs.getString("assign_code"));
+      }
         cmbEntRevItem.getItems().clear();
         cmbEntRevItem.getItems().addAll(RevenueItems);
     }
@@ -179,9 +190,6 @@ public class Revenue_EntriesController  implements Initializable {
    
     @FXML
     private void saveEntries(ActionEvent event) throws IOException {
-      RevCent = GetCenter.getRevCenter();
-      Code = RevenueMap.get(cmbEntRevItem.getSelectionModel().getSelectedItem());// Getting the Code of the Revenue Items
-      Item = cmbEntRevItem.getSelectionModel().getSelectedItem();// Assigning Selected Revenue Item to the Item Variable
         
       LocalDate date = entDatePck.getValue();// Assigning the date picker value to a variable
       //Making sure Datepicker is never empty :)
@@ -264,6 +272,8 @@ public class Revenue_EntriesController  implements Initializable {
                 txtEntAmt.clear();
                 Condition =false;
             }else{
+            Code = RevenueMap.get(cmbEntRevItem.getSelectionModel().getSelectedItem());// Getting the Code of the Revenue Items
+            Item = cmbEntRevItem.getSelectionModel().getSelectedItem();// Assigning Selected Revenue Item to the Item Variable
             totAmount += Float.parseFloat(txtEntAmt.getText());
             totalAmount = getFunctions.getAmount(Float.toString(totAmount));
             lblTotalAmount.setText(totalAmount);
@@ -316,15 +326,6 @@ public class Revenue_EntriesController  implements Initializable {
       float deduction = 0;
         GetEntries getData = new GetEntries();
         ObservableList<String> duplicate = FXCollections.observableArrayList();
-        String Username = "root";
-        String Password = "";
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/"
-                + "revenue_monitoring"+"?useTimezone=true&serverTimezone=UTC", Username, Password);
-        PreparedStatement stmnt;
-        ResultSet rs;
-        ResultSetMetaData metaData;
-        
         List <List<String>> arrList = new ArrayList<>();
         Map<String, ArrayList<String>> forDatabase = new HashMap<>();
                     forDatabase.put("revCenter", new ArrayList<>() );
@@ -352,7 +353,7 @@ public class Revenue_EntriesController  implements Initializable {
             int acWeek = Integer.parseInt(getData.getWeek());
             String acMonth = getData.getMonth();
             int acYear = Integer.parseInt(getData.getYear());
-            stmnt = connection.prepareStatement("SELECT * FROM `daily_entries` WHERE `Code` = '"+acCode+"'" +
+            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `Code` = '"+acCode+"'" +
                     " AND `revenueDate` = '"+acDate+"' AND `daily_revCenter` = '"+RevCent+"' ");
             rs = stmnt.executeQuery();       
             metaData = rs.getMetaData();
@@ -371,7 +372,7 @@ public class Revenue_EntriesController  implements Initializable {
                 i = revTable.getItems().size() + 1;
             }else{
                 deduction += acAmount;
-                stmnt = connection.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, " +
+                stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, " +
                         "`Code`, `revenueItem`, `revenueAmount`, `revenueDate`, `revenueWeek`, `revenueMonth`," +
                         " `revenueYear`, `revenueQuarter`) VALUES('"+RevCent+"', '"+acCode+"'," +
                         " '"+acItem+"', '"+acAmount+"', '"+acDate+"', '"+acWeek+"','"+acMonth+"', '"+acYear+"'," +
