@@ -88,7 +88,7 @@ public  appController() {
     private void showSGRE(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader loadsgre = new FXMLLoader();
         loadsgre.setLocation(getClass().getResource( "/Views/fxml/entries_side.fxml"));
-        loadsgre.setController(new entries_sideController(GetCenter));
+        loadsgre.setController(new entries_sideController(/*GetCenter*/));
         entries_sideController cont = (entries_sideController)loadsgre.getController();
         cont.setappController(this);
         leftPane.getChildren().clear();

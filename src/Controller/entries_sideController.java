@@ -10,6 +10,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,14 +51,14 @@ public class entries_sideController  implements Initializable {
     private Button btnEntriesUpdate;
     
        
-    private final GetRevCenter GetCenter;
+    private final GetRevCenter GetCenter = new GetRevCenter();
     
     public  ObservableList<String> RevenueCenters = FXCollections.observableArrayList("KMA MAIN","OUTSOURCED","SUB-METROS","OTHER REVENUES");
     private final Connection con;
     private PreparedStatement stmnt;
-      String SelItem ;
-      String SelRev;
+      String SelItem, SelRev ;
      GetRevCenter u = new GetRevCenter();
+     private final Map<String, String> centerID = new HashMap<>();
      
      appController app;
     @FXML
@@ -67,11 +69,10 @@ public class entries_sideController  implements Initializable {
     private Button btnPaymentDetails;
 
      /***
-    * @param GetCenter
       */
-     public entries_sideController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
+     public entries_sideController(/*GetRevCenter GetCenter*/) throws SQLException, ClassNotFoundException {
          this.con = DBConnection.getConn();
-         this.GetCenter = GetCenter;
+//         this.GetCenter = GetCenter;
      }
      public void setRevCenter(String revCenter){
          GetCenter.setRevCenter(revCenter);
@@ -121,12 +122,13 @@ public class entries_sideController  implements Initializable {
     
     private void SetCenters() throws SQLException {
         String Center = cmbRevGroup.getSelectionModel().getSelectedItem();
-        stmnt = con.prepareStatement("SELECT `revenue_center` FROM `revenue_centers` WHERE `revenue_category` = '"+
+        stmnt = con.prepareStatement("SELECT `revenue_center`, `CenterID` FROM `revenue_centers` WHERE `revenue_category` = '"+
                 Center+"'");
         ResultSet rt = stmnt.executeQuery();
         cmbRevCent.getItems().clear();
         while (rt.next()){
             cmbRevCent.getItems().add(rt.getString("revenue_center"));
+            centerID.put(rt.getString("revenue_center"), rt.getString("CenterID"));
         }
 //        switch(Center){
 //
@@ -182,7 +184,10 @@ public class entries_sideController  implements Initializable {
                app.getCenterPane().getChildren().clear();
            }
         SelItem = cmbRevCent.getSelectionModel().getSelectedItem();
+           SelRev = centerID.get(cmbRevCent.getSelectionModel().getSelectedItem());
         GetCenter.setRevCenter(SelItem);
+        GetCenter.setCenterID(SelRev);
+        System.out.println(GetCenter.getCenterID());
     }
 
     @FXML

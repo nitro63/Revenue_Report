@@ -110,7 +110,8 @@ public class commissionEntriesController implements Initializable {
     float amount;
     boolean Condition;
     private final Connection con;
-    public commissionEntriesController() throws SQLException, ClassNotFoundException {
+    public commissionEntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
+        this.GetCenter = GetCenter;
         this.con = DBConnection.getConn();
     }
 
@@ -199,9 +200,7 @@ public class commissionEntriesController implements Initializable {
 
     @FXML
     void SaveToDatabase(ActionEvent event) throws SQLException {
-        RevCent = getRevenue_EntriesController().getentries_sideController().getRevCent().getSelectionModel().
-                getSelectedItem().toString();
-        System.out.println(RevCent);
+        RevCent = GetCenter.getCenterID();
         float deduction = 0;
         GetEntries getData = new GetEntries();
         ObservableList<String> duplicate = FXCollections.observableArrayList();

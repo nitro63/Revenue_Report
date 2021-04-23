@@ -31,7 +31,7 @@
       <JFXButton fx:id="btnAdd" layoutX="52.0" layoutY="404.0" onAction="#addItem" prefHeight="30.0" text="ADD" />
       <JFXButton fx:id="btnDelete" layoutX="153.0" layoutY="405.0" onAction="#deleteItem" prefHeight="30.0" text="DELETE" />
       <JFXButton fx:id="btnUpdate" layoutX="250.0" layoutY="406.0" onAction="#UpdateItem" prefHeight="30.0" text="UPDATE" />
-      <JFXTextField fx:id="txtCode" alignment="CENTER" layoutX="115.0" layoutY="145.0" prefHeight="25.0" prefWidth="139.0" promptText="CODE" />
+      <JFXTextField fx:id="txtCode" alignment="CENTER" layoutX="115.0" layoutY="145.0" onKeyTyped="#codeKey" prefHeight="25.0" prefWidth="139.0" promptText="CODE" />
       <Label fx:id="lblCentWarn" layoutX="70.0" layoutY="260.0" prefHeight="21.0" prefWidth="103.0" text="Field required" textFill="#e11414" visible="false">
          <font>
             <Font name="System Bold" size="11.0" />

@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="482.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="570.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXTextField fx:id="txtCenter" layoutX="46.0" layoutY="272.0" prefHeight="25.0" prefWidth="275.0" promptText="CENTER" />
-      <JFXComboBox fx:id="cmbCategory" layoutX="116.0" layoutY="206.0" prefHeight="25.0" prefWidth="139.0" promptText="CATEGORY" />
-      <TableView fx:id="tblCenters" layoutX="390.0" layoutY="65.0" prefHeight="367.0" prefWidth="579.0">
+      <JFXTextField fx:id="txtCenter" layoutX="46.0" layoutY="283.0" prefHeight="25.0" prefWidth="275.0" promptText="CENTER" />
+      <JFXComboBox fx:id="cmbCategory" layoutX="116.0" layoutY="217.0" prefHeight="25.0" prefWidth="139.0" promptText="CATEGORY" />
+      <TableView fx:id="tblCenters" layoutX="390.0" layoutY="76.0" prefHeight="367.0" prefWidth="579.0">
          <columns>
             <TableColumn fx:id="colID" prefWidth="75.0" text="CODE" />
             <TableColumn fx:id="colCenter" prefWidth="75.0" text="CENTER" />
@@ -23,15 +23,15 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label alignment="CENTER" layoutX="1.0" layoutY="2.0" prefHeight="71.0" prefWidth="794.0" text="REVENUE CENTERS" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Label alignment="CENTER" layoutX="1.0" layoutY="2.0" prefHeight="71.0" prefWidth="794.0" text="REVENUE CENTERS" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btnAdd" layoutX="52.0" layoutY="393.0" onAction="#addItem" prefHeight="30.0" text="ADD" />
-      <JFXButton fx:id="btnDelete" layoutX="153.0" layoutY="394.0" onAction="#deleteItem" prefHeight="30.0" text="DELETE" />
-      <JFXButton fx:id="btnUpdate" layoutX="250.0" layoutY="395.0" onAction="#UpdateItem" prefHeight="30.0" text="UPDATE" />
-      <JFXTextField fx:id="txtCode" alignment="CENTER" layoutX="115.0" layoutY="134.0" prefHeight="25.0" prefWidth="139.0" promptText="CODE" />
+      <JFXButton fx:id="btnAdd" layoutX="52.0" layoutY="404.0" onAction="#addItem" prefHeight="30.0" text="ADD" />
+      <JFXButton fx:id="btnDelete" layoutX="153.0" layoutY="405.0" onAction="#deleteItem" prefHeight="30.0" text="DELETE" />
+      <JFXButton fx:id="btnUpdate" layoutX="250.0" layoutY="406.0" onAction="#UpdateItem" prefHeight="30.0" text="UPDATE" />
+      <JFXTextField fx:id="txtCode" alignment="CENTER" layoutX="115.0" layoutY="145.0" onKeyTyped="#codeKey" prefHeight="25.0" prefWidth="139.0" promptText="CODE" />
       <Label fx:id="lblCentWarn" layoutX="70.0" layoutY="260.0" prefHeight="21.0" prefWidth="103.0" text="Field required" textFill="#e11414" visible="false">
          <font>
             <Font name="System Bold" size="11.0" />

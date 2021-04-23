@@ -111,7 +111,7 @@ public class Revenue_EntriesController  implements Initializable {
          boolean Condition = true, ccCheck;
          float totAmount = 0;
         
-        String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, Qtr, totalAmount;
+        String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, RevCentID,Qtr, totalAmount;
         
         
                 
@@ -151,7 +151,10 @@ public class Revenue_EntriesController  implements Initializable {
         
     @Override
     public void initialize(URL url, ResourceBundle rb)  {
-        RevCent = GetCenter.getRevCenter();
+        RevCent = GetCenter.getCenterID();
+        String cent = GetCenter.centerIDProperty().getValue();
+        System.out.println(cent +"\n"+GetCenter.getRevCenter());
+//        RevCentID = GetCenter.getCenterID();
       revTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
       registerItem.put("", new ArrayList());
       revTable.setOnMouseClicked(e -> {
@@ -174,11 +177,11 @@ public class Revenue_EntriesController  implements Initializable {
 
     
     private void GetRevenueItems() throws SQLException {
-      stmnt = con.prepareStatement("SELECT `assign_item`, `assign_code` FROM `center_items` WHERE `assign_center` = '"+RevCent+"'");
+      stmnt = con.prepareStatement("SELECT `revenue_items`.`revenue_item`, `center_items`.`assign_item` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"+RevCent+"' AND `revenue_items`.`revenue_item_ID` = `center_items`.`assign_item`");
       rs = stmnt.executeQuery();
       while (rs.next()){
-          RevenueItems.add(rs.getString("assign_item"));
-          RevenueMap.put(rs.getString("assign_item"), rs.getString("assign_code"));
+          RevenueItems.add(rs.getString("revenue_item"));
+          RevenueMap.put(rs.getString("revenue_item"), rs.getString("assign_item"));
       }
         cmbEntRevItem.getItems().clear();
         cmbEntRevItem.getItems().addAll(RevenueItems);
@@ -225,12 +228,6 @@ public class Revenue_EntriesController  implements Initializable {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please enter Amount");
-                alert.showAndWait();
-                Condition =false;
-            }else if(RevCent == null){
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Please Select Revenue Center");
                 alert.showAndWait();
                 Condition =false;
             }else if(txtEntAmt.getText().isEmpty() || cmbEntRevItem.getSelectionModel().isEmpty() ){
@@ -327,14 +324,6 @@ public class Revenue_EntriesController  implements Initializable {
         GetEntries getData = new GetEntries();
         ObservableList<String> duplicate = FXCollections.observableArrayList();
         List <List<String>> arrList = new ArrayList<>();
-        Map<String, ArrayList<String>> forDatabase = new HashMap<>();
-                    forDatabase.put("revCenter", new ArrayList<>() );
-            forDatabase.put("revCode", new ArrayList<>());
-            forDatabase.put("revItem", new ArrayList<>());
-            forDatabase.put("revDate", new ArrayList<>());
-            forDatabase.put("revMonth", new ArrayList<>());
-            forDatabase.put("revAmount", new ArrayList<>());
-            forDatabase.put("revWeek", new ArrayList<>());   
         
         
         for(int i = 0; i <= revTable.getItems().size(); i++){
@@ -342,7 +331,7 @@ public class Revenue_EntriesController  implements Initializable {
                 getData = revTable.getItems().get(i);
             String acDate = getData.getDate();
             String acCode = getData.getCode();
-            String acItem = getData.getItem();
+            String acItem = getData.getCode();
             String acQtr = getData.getQuarter();
             String CcAmt;
             String regex = "(?<=[\\d])(,)(?=[\\d])";
@@ -353,16 +342,16 @@ public class Revenue_EntriesController  implements Initializable {
             int acWeek = Integer.parseInt(getData.getWeek());
             String acMonth = getData.getMonth();
             int acYear = Integer.parseInt(getData.getYear());
-            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `Code` = '"+acCode+"'" +
+            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `revenueItem` = '"+acCode+"'" +
                     " AND `revenueDate` = '"+acDate+"' AND `daily_revCenter` = '"+RevCent+"' ");
             rs = stmnt.executeQuery();       
             metaData = rs.getMetaData();
             int columns = metaData.getColumnCount();
             while(rs.next()){
 
-                        String dup = rs.getString("Code");
+                        String dup = rs.getString("revenueItem");
                         duplicate.add(dup);
-                        System.out.println("Fred"+duplicate);
+
 
 
             }
@@ -373,8 +362,8 @@ public class Revenue_EntriesController  implements Initializable {
             }else{
                 deduction += acAmount;
                 stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, " +
-                        "`Code`, `revenueItem`, `revenueAmount`, `revenueDate`, `revenueWeek`, `revenueMonth`," +
-                        " `revenueYear`, `revenueQuarter`) VALUES('"+RevCent+"', '"+acCode+"'," +
+                        "`revenueItem`, `revenueAmount`, `revenueDate`, `revenueWeek`, `revenueMonth`," +
+                        " `revenueYear`, `revenueQuarter`) VALUES('"+RevCent+"'," +
                         " '"+acItem+"', '"+acAmount+"', '"+acDate+"', '"+acWeek+"','"+acMonth+"', '"+acYear+"'," +
                         " '"+acQtr+"')");
                 stmnt.executeUpdate();
@@ -439,7 +428,7 @@ public class Revenue_EntriesController  implements Initializable {
         Main st = new Main();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/commissionEntries.fxml"));
-        loader.setController(new commissionEntriesController());
+        loader.setController(new commissionEntriesController(GetCenter));
         commissionEntriesController bnkDtls = (commissionEntriesController) loader.getController();
         bnkDtls.setappController(this);
         Parent root = loader.load();

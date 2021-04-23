@@ -312,7 +312,6 @@ public class UpdateEntriesController implements Initializable {
     public UpdateEntriesController(GetRevCenter getRevCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getRevCenter;
         this.con = DBConnection.getConn();
-        revCenter = GetCenter.getRevCenter();
     }
     public  String getRevCenter(){return GetCenter.getRevCenter();}
     public void setappController(entries_sideController app){
@@ -328,6 +327,7 @@ public class UpdateEntriesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        revCenter = GetCenter.getCenterID();
         if (app.getRevGroup().getSelectionModel().getSelectedItem().toString().toLowerCase(Locale.ROOT).
                 equals("sub-metros")){
             btnComm.setVisible(true);
@@ -341,7 +341,7 @@ public class UpdateEntriesController implements Initializable {
             ResultSet rs = stmnt.executeQuery();
             while (rs.next()){
                 Item.add(rs.getString("revenue_item"));
-                codeItem.put(rs.getString("revenue_item_ID"), rs.getString("revenue_item"));
+                codeItem.put(rs.getString("revenue_item"), rs.getString("revenue_item_ID"));
             }
             cmbRevenueItem.getItems().clear();
             cmbRevenueItem.setItems(Item);
@@ -1006,16 +1006,16 @@ public class UpdateEntriesController implements Initializable {
         colRevQuarter.setCellValueFactory(d -> d.getValue().QuarterProperty());
         colRevYear.setCellValueFactory(d -> d.getValue().YearProperty());
         if (cmbEntryMonth.getSelectionModel().isEmpty()){
-            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"' " +
-                    "AND `daily_revCenter` = '"+revCenter+"'");
+            stmnt = con.prepareStatement("SELECT `revenue_items`.`revenue_item`, `daily_entries`.`revenueItem`, `daily_entries`.`revenueDate`, `daily_entries`.`revenueMonth`, `daily_entries`.`revenueWeek`, `daily_entries`.`revenueYear`, `daily_entries`.`revenueQuarter`, `daily_entries`.`revenueAmount`, `daily_entries`.`entries_ID` FROM `daily_entries`, `revenue_items` WHERE  `daily_entries`.`revenueYear` = '"+entryTypeYear+"' " +
+                                        "  AND `daily_entries`.`daily_revCenter` = '"+revCenter+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem`");
         }else{
-            stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE  `revenueYear` = '"+entryTypeYear+"'" +
-                    " AND `revenueMonth` = '"+entryTypeMonth+"' AND `daily_revCenter` = '"+revCenter+"'");
+            stmnt = con.prepareStatement("SELECT `revenue_items`.`revenue_item`, `daily_entries`.`revenueItem`, `daily_entries`.`revenueDate`, `daily_entries`.`revenueMonth`, `daily_entries`.`revenueWeek`, `daily_entries`.`revenueYear`, `daily_entries`.`revenueQuarter`, `daily_entries`.`revenueAmount`, `daily_entries`.`entries_ID` FROM `daily_entries`, `revenue_itemscmb` WHERE  `daily_entries`.`revenueYear` = '"+entryTypeYear+"'" +
+                    " AND `daily_entries`.`revenueMonth` = '"+entryTypeMonth+"' AND `daily_entries`.`daily_revCenter` = '"+revCenter+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem`");
         }
         rs = stmnt.executeQuery();
         while (rs.next()){
-            Code = rs.getString("Code");
-            Item = rs.getString("revenueItem");
+            Code = rs.getString("revenueItem");
+            Item = rs.getString("revenue_item");
             Date = rs.getString("revenueDate");
             Month = rs.getString("revenueMonth");
             Week = rs.getString("revenueWeek");
@@ -1131,7 +1131,7 @@ public class UpdateEntriesController implements Initializable {
         Qtr = getFunctions.getQuarter(entDatePckRevCol.getValue()),
         Week = getFunctions.getWeek(entDatePckRevCol.getValue()),
         Month = getFunctions.getMonth(entDatePckRevCol.getValue());
-        String revItem = cmbRevenueItem.getSelectionModel().getSelectedItem();
+        String revItem = codeItem.get(cmbRevenueItem.getSelectionModel().getSelectedItem());
         stmnt = con.prepareStatement("SELECT `revenueItem` FROM `daily_entries` WHERE `revenueItem` = '"+
                 revItem+"' AND `entries_ID` != '"+entry_ID+"'AND `revenueDate` = '"+Date+"' AND `daily_revCenter` = '"+
                 revCenter+"'");
@@ -1169,7 +1169,7 @@ public class UpdateEntriesController implements Initializable {
             else{
         stmnt = con.prepareStatement("UPDATE `daily_entries` SET  " +
                 "`revenueAmount`= '"+Float.parseFloat(txtRevenueAmount.getText())+"',`revenueYear`= '"+Year+"'," +
-                "`revenueDate` = '"+Date+"', `revenueItem` = '"+cmbRevenueItem.getSelectionModel().getSelectedItem()+"'" +
+                "`revenueDate` = '"+Date+"', `revenueItem` = '"+codeItem.get(cmbRevenueItem.getSelectionModel().getSelectedItem())+"'" +
                 ",`revenueWeek` = '"+Week+"', `revenueMonth` = '"+Month+"', `revenueQuarter` = '"+Qtr+"' WHERE   " +
                 "`entries_ID`= '"+entry_ID+"' AND `daily_revCenter`= '"+revCenter+"'");
         stmnt.executeUpdate();

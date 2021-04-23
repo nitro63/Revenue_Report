@@ -13,7 +13,20 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetRevCenter {
-    private  StringProperty RevCenter = new SimpleStringProperty();
+    private final StringProperty RevCenter = new SimpleStringProperty();
+    private final StringProperty CenterID = new SimpleStringProperty();
+
+    public String getCenterID() {
+        return CenterID.get();
+    }
+
+    public StringProperty centerIDProperty() {
+        return CenterID;
+    }
+
+    public void setCenterID(String centerID) {
+        this.CenterID.set(centerID);
+    }
 
     public StringProperty RevCenterProperty() {
         return RevCenter;

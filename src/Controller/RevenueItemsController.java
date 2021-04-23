@@ -34,7 +34,7 @@ import revenue_report.DBConnection;
 public class RevenueItemsController implements Initializable {
 
     @FXML
-    private JFXTextArea txtItem;
+    private JFXTextField txtItem;
     @FXML
     private JFXComboBox<String> cmbCategory;
     @FXML

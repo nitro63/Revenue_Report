@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyEvent;
 import revenue_report.DBConnection;
 
 import java.net.URL;
@@ -73,7 +74,7 @@ public class RevenueCenterController implements Initializable {
     boolean Condition;
     GetDetails getData;
     String entryID;
-    ObservableList<String> centers = FXCollections.observableArrayList("KMA MAIN", "OUTSOURCED", "SUB-METROS", "PROPERTY RATE");
+    ObservableList<String> centers = FXCollections.observableArrayList("KMA MAIN", "OUTSOURCED", "SUB-METROS", "PROPERTY RATE SECTION");
 
     public RevenueCenterController() throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -231,6 +232,16 @@ public class RevenueCenterController implements Initializable {
             lblControlWarn.setVisible(true);
         }
     }
+
+    @FXML
+    void codeKey(KeyEvent event) {
+        String c = event.getCharacter();
+        if("1234567890K".contains(c)) {}
+        else {
+            event.consume();
+        }
+    }
+
 
     private void resetFields() {
         txtCode.setText(null);
