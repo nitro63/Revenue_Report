@@ -72,6 +72,7 @@
             <TableColumn fx:id="month1" prefWidth="165.0" text="MONTH" />
             <TableColumn fx:id="month2" prefWidth="165.0" text="MONTH" />
             <TableColumn fx:id="month3" prefWidth="165.0" text="MONTH" />
+            <TableColumn fx:id="month4" prefWidth="165.0" text="MONTH" />
             <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
          </columns>
          <columnResizePolicy>

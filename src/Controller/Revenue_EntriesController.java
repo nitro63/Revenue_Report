@@ -277,7 +277,7 @@ public class Revenue_EntriesController  implements Initializable {
                addEntries = new GetEntries(Code, Item, Date, Month, Amount, Week, Year, Qtr);
                 revTable.getItems().add(addEntries);
                 if(!registerItem.containsKey(Date)){
-                    registerItem.put(Date, new ArrayList());
+                    registerItem.put(Date, new ArrayList<>());
                     registerItem.get(Date).add(i);
                 }else if(registerItem.containsKey(Date) && !registerItem.get(Date).contains(i)){
                     registerItem.get(Date).add(i);
