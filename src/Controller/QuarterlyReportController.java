@@ -72,6 +72,8 @@ public class QuarterlyReportController implements Initializable {
     @FXML
     private TableColumn<GetQuarterReport, String> month3;
     @FXML
+    private TableColumn<GetQuarterReport, String> month4;
+    @FXML
     private TableColumn<GetQuarterReport, String> totalAmount;
     @FXML
     private Label lblYear;
@@ -355,8 +357,8 @@ public class QuarterlyReportController implements Initializable {
           NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-           String mon1 = "0.00", mon2 = "0.00", mon3 = "0.00", totalAmnt = "0.00";
-           float Mon1 = 0, Mon2 = 0, Mon3 = 0, total_amount;
+           String mon1 = "0.00", mon2 = "0.00", mon3 = "0.00", mon4 = "0.00", totalAmnt = "0.00";
+           float Mon1 = 0, Mon2 = 0, Mon3 = 0, Mon4 = 0, total_amount;
            for(Map.Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
                String reveItem = Items.getKey();
                if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
@@ -372,6 +374,10 @@ public class QuarterlyReportController implements Initializable {
                    mon3 = formatter.format(forEntry.get(Items.getKey()).get(month3.getText()).get(0));
                    Mon3 = forEntry.get(Items.getKey()).get(month3.getText()).get(0);
                }
+               else if(Dates.getKey() == null ? month4.getText() == null : Dates.getKey().equals(month4.getText())){
+                   mon4 = formatter.format(forEntry.get(Items.getKey()).get(month4.getText()).get(0));
+                   Mon4 = forEntry.get(Items.getKey()).get(month4.getText()).get(0);
+               }
            } else{
                    if( Dates.getKey().equals("1")){
                        mon1 = formatter.format(forEntry.get(Items.getKey()).get("1").get(0));
@@ -385,16 +391,21 @@ public class QuarterlyReportController implements Initializable {
                        mon3 = formatter.format(forEntry.get(Items.getKey()).get("3").get(0));
                        Mon3 = forEntry.get(Items.getKey()).get("3").get(0);
                    }
+                   else if(Dates.getKey().equals("4")){
+                       mon4 = formatter.format(forEntry.get(Items.getKey()).get("4").get(0));
+                       Mon4 = forEntry.get(Items.getKey()).get("4").get(0);
+                   }
                }
            }
-           total_amount = Mon3 + Mon2 + Mon1;
+           total_amount = Mon3 + Mon2 + Mon1 + Mon4;
            totalAmnt = formatter.format(total_amount);       
            revenueItem.setCellValueFactory(data -> data.getValue().revenueItemProperty());
            month1.setCellValueFactory(data -> data.getValue().firstMonthProperty());
            month2.setCellValueFactory(data -> data.getValue().secondMonthProperty());
            month3.setCellValueFactory(data -> data.getValue().thirdMonthProperty());
+           month4.setCellValueFactory(data -> data.getValue().fourthMonthProperty());
            totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
-           getReport = new GetQuarterReport( mon1, mon2, mon3, Items.getKey(), totalAmnt);
+           getReport = new GetQuarterReport( mon1, mon2, mon3, mon4, Items.getKey(), totalAmnt);
            quarterTable.getItems().add(getReport);                                           
        }
     }

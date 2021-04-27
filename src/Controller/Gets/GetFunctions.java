@@ -45,11 +45,11 @@ public class GetFunctions {
     }
 
     public String getQuarter(LocalDate date){
-       int actMonth = date.getMonthValue()-1 ;//Converting Datepicker month value from 1-12 format to 0-11 format
-    Calendar cal = Calendar.getInstance();
-        cal.set(date.getYear(), actMonth, date.getDayOfMonth());
-        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
-        cal.setTime(setDate);//Setting time to Calendar variable
+//       int actMonth = date.getMonthValue()-1 ;//Converting Datepicker month value from 1-12 format to 0-11 format
+//    Calendar cal = Calendar.getInstance();
+//        cal.set(date.getYear(), actMonth, date.getDayOfMonth());
+//        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
+//        cal.setTime(setDate);//Setting time to Calendar variable
         String Quarter = Integer.toString(date.get(IsoFields.QUARTER_OF_YEAR));
         System.out.println(date);
         return Quarter;
