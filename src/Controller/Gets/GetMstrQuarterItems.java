@@ -13,20 +13,33 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetMstrQuarterItems {
-    private StringProperty FirstMonth, SecondMonth, ThirdMonth, RevenueItem, TotalAmount;
-    private String firstMonth, secondMonth, thirdMonth, revenueItem, totalAmount;
+    private StringProperty FirstMonth, SecondMonth, ThirdMonth, FourthMonth, RevenueItem, TotalAmount;
+    private String firstMonth, secondMonth, thirdMonth, fourthMonth, revenueItem, totalAmount;
     
     public GetMstrQuarterItems(){
         
     }
     
-    public GetMstrQuarterItems(String firstMonth, String secondMonth, String thirdMonth, String revenueItem, String totalAmount){
+    public GetMstrQuarterItems(String firstMonth, String secondMonth, String thirdMonth, String fourthMonth, String revenueItem, String totalAmount){
         this.FirstMonth = new SimpleStringProperty(firstMonth);
         this.SecondMonth = new SimpleStringProperty(secondMonth);
         this.ThirdMonth = new SimpleStringProperty(thirdMonth);
+        this.FourthMonth = new SimpleStringProperty(fourthMonth);
         this.RevenueItem = new SimpleStringProperty(revenueItem);
         this.TotalAmount = new SimpleStringProperty(totalAmount);
         
+    }
+
+    public String getfourthMonth() {
+        return FourthMonth.get();
+    }
+
+    public StringProperty fourthMonthProperty() {
+        return FourthMonth;
+    }
+
+    public void setfourthMonth(String fourthMonth) {
+        this.FourthMonth.set(fourthMonth);
     }
    
     public StringProperty firstMonthProperty(){
