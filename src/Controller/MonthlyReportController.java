@@ -5,23 +5,7 @@
  */
 package Controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import Controller.Gets.GetItemsReport;
+import Controller.Gets.GetMonthlyReport;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +21,20 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
-import Controller.Gets.GetMonthlyReport;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -146,8 +143,6 @@ public class MonthlyReportController implements Initializable {
     private Label lblAmtDueKMA;
 
 
-    private GetMonthlyReport getReport;
-
     /**
      * Initializes the controller class.
      */
@@ -160,7 +155,7 @@ public class MonthlyReportController implements Initializable {
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
     Map<String, String> centerID = new HashMap<>();
-    int Year; boolean subMetroPR, Condition;
+    private boolean subMetroPR, Condition;
     
     public MonthlyReportController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -168,17 +163,11 @@ public class MonthlyReportController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cmbReportCent.setOnMouseClicked(e -> {
-            lblCenterWarn.setVisible(false);
-        });
-        cmbReportYear.setOnMouseClicked(e -> {
-            lblYearWarn.setVisible(false);
-        });
+        cmbReportCent.setOnMouseClicked(e -> lblCenterWarn.setVisible(false));
+        cmbReportYear.setOnMouseClicked(e -> lblYearWarn.setVisible(false));
         try {
             getRevCenters();
-        } catch (SQLException ex) {
-            Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
@@ -205,12 +194,6 @@ public class MonthlyReportController implements Initializable {
         if (subMetroPR){
             cmbReportCent.getItems().add("PROPERTY RATE SUB-METROS");
         }
-//            stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
-//          rs = stmnt.executeQuery();
-//
-//         while(rs.next()){
-//                 rowCent.add(value);
-//         }
          cmbReportCent.getItems().addAll(rowCent);
          cmbReportCent.setVisibleRowCount(5);
     
@@ -272,12 +255,8 @@ public class MonthlyReportController implements Initializable {
         }
           Map<String, ArrayList<Float>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
           Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
-          rowItems.forEach((rowItem) -> {
-              forEntry.put(rowItem, new HashMap<>());
-      });
-          rowMonths.forEach((rowMonth) -> {
-              monthAmount.put(rowMonth, new ArrayList<>());
-          });
+          rowItems.forEach((rowItem) -> forEntry.put(rowItem, new HashMap<>()));
+          rowMonths.forEach((rowMonth) -> monthAmount.put(rowMonth, new ArrayList<>()));
           try {
           for(String month : rowMonths) {
               for(String Item : rowItems) {
@@ -292,8 +271,8 @@ public class MonthlyReportController implements Initializable {
                                   }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
                                       forEntry.get(Item).get(month).add(monthSum);
                                   } 
-                              };
-                          };
+                              }
+                          }
                       }
                   
               }
@@ -306,10 +285,9 @@ public class MonthlyReportController implements Initializable {
          
        for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
            String jan1 = "0.00", feb1 = "0.00", apr1 = "0.00", mai1 = "0.00", jun1 = "0.00", jul1 = "0.00", aug1 = "0.00", sep1 = "0.00",
-                   oct1 = "0.00", mar1 = "0.00", nov1 = "0.00", dec1 = "0.00", totalAmnt = "0.00";
+                   oct1 = "0.00", mar1 = "0.00", nov1 = "0.00", dec1 = "0.00", totalAmnt;
            float jan = 0, feb = 0, apr = 0, mai = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, mar = 0, nov = 0, dec = 0, total_amount;
            for(Map.Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
-               String reveItem = Items.getKey();
                if(Dates.getKey() == null ? january.getText() == null : Dates.getKey().equals(january.getText())){
                    jan1 = formatter.format(forEntry.get(Items.getKey()).get(january.getText()).get(0));
                    jan = forEntry.get(Items.getKey()).get(january.getText()).get(0);
@@ -375,7 +353,7 @@ public class MonthlyReportController implements Initializable {
            november.setCellValueFactory(data -> data.getValue().NovProperty());
            december.setCellValueFactory(data -> data.getValue().DecProperty());
            totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
-           getReport = new GetMonthlyReport(Items.getKey(), jan1, feb1, mar1, apr1, mai1, jun1, jul1, aug1, sep1, oct1, nov1, dec1, totalAmnt);
+           GetMonthlyReport getReport = new GetMonthlyReport(Items.getKey(), jan1, feb1, mar1, apr1, mai1, jun1, jul1, aug1, sep1, oct1, nov1, dec1, totalAmnt);
            monthlyTable.getItems().add(getReport);                                           
        }
           
@@ -399,9 +377,9 @@ public class MonthlyReportController implements Initializable {
            Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
        }
         totalAmunt = 0;
-        for(int i = 0; i < Amount.size(); i++){
-            totalAmunt += Amount.get(i);
-        }
+           for (Float aFloat : Amount) {
+               totalAmunt += aFloat;
+           }
         return totalAmunt;
     }
 
@@ -429,12 +407,7 @@ public class MonthlyReportController implements Initializable {
             event.consume();
         }else {
             Date date = new Date();
-            List<GetMonthlyReport> items = new ArrayList<GetMonthlyReport>();
-            for (int j = 0; j < monthlyTable.getItems().size(); j++) {
-                GetMonthlyReport getdata = new GetMonthlyReport();
-                getdata = monthlyTable.getItems().get(j);
-                items.add(getdata);
-            }
+            List<GetMonthlyReport> items = new ArrayList<>(monthlyTable.getItems());
             URL url = this.getClass().getResource("/Assets/kmalogo.png"),
                     file = this.getClass().getResource("/Assets/monthlyPotrait.jrxml");
 
@@ -443,7 +416,7 @@ public class MonthlyReportController implements Initializable {
             center = cmbReportCent.getSelectionModel().getSelectedItem();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url);
             parameters.put("year", year);
@@ -451,7 +424,7 @@ public class MonthlyReportController implements Initializable {
             parameters.put("center", center);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = new FileInputStream(file.getPath());
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

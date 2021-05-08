@@ -60,11 +60,7 @@ public class QuarterlyReportController implements Initializable {
     @FXML
     private VBox quarterlyTemplate;
     @FXML
-    private TableColumn<?, ?> revenueCenter;
-    @FXML
     private TableColumn<GetQuarterReport, String> revenueItem;
-    @FXML
-    private TableColumn<?, ?> quarter;
     @FXML
     private TableColumn<GetQuarterReport, String> month1;
     @FXML
@@ -72,9 +68,21 @@ public class QuarterlyReportController implements Initializable {
     @FXML
     private TableColumn<GetQuarterReport, String> month3;
     @FXML
-    private TableColumn<GetQuarterReport, String> month4;
-    @FXML
     private TableColumn<GetQuarterReport, String> totalAmount;
+    @FXML
+    private TableView<GetQuarterReport> quarterTableAll;
+    @FXML
+    private TableColumn<GetQuarterReport, String> revenueItemAll;
+    @FXML
+    private TableColumn<GetQuarterReport, String> month1All;
+    @FXML
+    private TableColumn<GetQuarterReport, String> month2All;
+    @FXML
+    private TableColumn<GetQuarterReport, String> month3All;
+    @FXML
+    private TableColumn<GetQuarterReport, String> month4All;
+    @FXML
+    private TableColumn<GetQuarterReport, String> totalAmountAll;
     @FXML
     private Label lblYear;
     @FXML
@@ -214,6 +222,8 @@ public class QuarterlyReportController implements Initializable {
         if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
             allQuarters = false;
             singleQuarter = true;
+            quarterTableAll.setVisible(false);
+            quarterTable.setVisible(true);
             if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
                 stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueMonth` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `daily_entries`.`revenueMonth`");
             } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
@@ -230,32 +240,34 @@ public class QuarterlyReportController implements Initializable {
         month1.setText("MONTH");
         month2.setText("MONTH");
         month3.setText("MONTH");
-        int rowSize = rowMonths.size();
+        String rowSize = cmbReportQuarter.getSelectionModel().getSelectedItem();
         switch(rowSize){
-            case 1:
+            case "1":
                 month1.setText("January");
                 month2.setText("February");
                 month3.setText("March");
                 break;
-            case 2:
-                month1.setText(rowMonths.get(0));
-                month2.setText(rowMonths.get(1));
-                month3.setText(rowMonths.get(2));
+            case "2":
+                month1.setText("April");
+                month2.setText("May");
+                month3.setText("June");
                 break;
-            case 3:
-                month1.setText(rowMonths.get(0));
-                month2.setText(rowMonths.get(1));
-                month3.setText(rowMonths.get(2));
+            case "3":
+                month1.setText("July");
+                month2.setText("August");
+                month3.setText("September");
                 break;
-            case 4:
-                month1.setText(rowMonths.get(0));
-                month2.setText(rowMonths.get(1));
-                month3.setText(rowMonths.get(2));
+            case "4":
+                month1.setText("October");
+                month2.setText("November");
+                month3.setText("December");
                 break;
         }
         }else {
             allQuarters = true;
             singleQuarter = false;
+            quarterTableAll.setVisible(true);
+            quarterTable.setVisible(false);
             rowMonths.addAll("1", "2", "3", "4");
         }
     }
@@ -329,7 +341,7 @@ public class QuarterlyReportController implements Initializable {
                   
               }
           }
-              } else {
+              } else if (allQuarters){
                   for(String month : rowMonths) {
                       for(String Item : rowItems) {
                           float monthSum = 0;
@@ -372,7 +384,7 @@ public class QuarterlyReportController implements Initializable {
                        mon3 = formatter.format(forEntry.get(Items.getKey()).get(month3.getText()).get(0));
                        Mon3 = forEntry.get(Items.getKey()).get(month3.getText()).get(0);
                    }
-               } else {
+               } else if (allQuarters){
                    if (Dates.getKey().equals("1")) {
                        mon1 = formatter.format(forEntry.get(Items.getKey()).get("1").get(0));
                        Mon1 = forEntry.get(Items.getKey()).get("1").get(0);
@@ -398,7 +410,7 @@ public class QuarterlyReportController implements Initializable {
            totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
            getReport = new GetQuarterReport(mon1, mon2, mon3, Items.getKey(), totalAmnt);
            quarterTable.getItems().add(getReport);
-           }else {
+           }else if (allQuarters){
                total_amount = Mon3 + Mon2 + Mon1 + Mon4;
                totalAmnt = formatter.format(total_amount);
                revenueItemAll.setCellValueFactory(data -> data.getValue().revenueItemProperty());
@@ -408,7 +420,7 @@ public class QuarterlyReportController implements Initializable {
                month4All.setCellValueFactory(data -> data.getValue().fourthMonthProperty());
                totalAmountAll.setCellValueFactory(data -> data.getValue().totalAmountProperty());
                getReport = new GetQuarterReport( mon1, mon2, mon3, mon4, Items.getKey(), totalAmnt);
-               quarterTable.getItems().add(getReport);
+               quarterTableAll.getItems().add(getReport);
            }
        }
     }

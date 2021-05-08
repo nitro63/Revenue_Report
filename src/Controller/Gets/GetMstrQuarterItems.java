@@ -19,6 +19,15 @@ public class GetMstrQuarterItems {
     public GetMstrQuarterItems(){
         
     }
+
+    public GetMstrQuarterItems(String firstMonth, String secondMonth, String thirdMonth, String revenueItem, String totalAmount){
+        this.FirstMonth = new SimpleStringProperty(firstMonth);
+        this.SecondMonth = new SimpleStringProperty(secondMonth);
+        this.ThirdMonth = new SimpleStringProperty(thirdMonth);
+        this.RevenueItem = new SimpleStringProperty(revenueItem);
+        this.TotalAmount = new SimpleStringProperty(totalAmount);
+
+    }
     
     public GetMstrQuarterItems(String firstMonth, String secondMonth, String thirdMonth, String fourthMonth, String revenueItem, String totalAmount){
         this.FirstMonth = new SimpleStringProperty(firstMonth);

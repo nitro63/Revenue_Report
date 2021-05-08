@@ -5,25 +5,7 @@
  */
 package Controller;
 
-import Controller.Gets.GetQuarterReport;
 import Controller.Gets.GetYearlyReport;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,6 +20,20 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -59,8 +55,6 @@ public class YearlyReportController implements Initializable {
     private Button btnShowReport;
     @FXML
     private TableView<GetYearlyReport> yearlyTable;
-    @FXML
-    private TableColumn<?, ?> yearRange;
     @FXML
     private VBox yearlyTemplate;
     @FXML
@@ -91,12 +85,13 @@ public class YearlyReportController implements Initializable {
     
     private final Connection con;
     private PreparedStatement stmnt;
-    ObservableList<String> rowDate =FXCollections.observableArrayList();
     ObservableList<String> rowCent =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowYear1 =FXCollections.observableArrayList();
     ObservableList<String> rowYear2 =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
+    Map<String, String> centerID = new HashMap<>();
+    private boolean subMetroPR, Condition;
     
     public YearlyReportController() throws ClassNotFoundException, SQLException{
         this.con = DBConnection.getConn();
@@ -109,48 +104,50 @@ public class YearlyReportController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             getRevCenters();
-        } catch (SQLException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(QuarterlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(QuarterlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        }       
+        }
     }
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
+            stmnt = con.prepareStatement("SELECT `daily_entries`.`daily_revCenter`, `revenue_centers`.`revenue_category`, `revenue_centers`.`revenue_center` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` GROUP BY `daily_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
-         ResultSetMetaData metadata = rs.getMetaData();
-         int columns = metadata.getColumnCount();
-         
+        rowCent.clear();
+        cmbReportCent.getItems().clear();
          while(rs.next()){
-             for(int i= 1; i<=columns; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 rowCent.add(value);
-                 
+             rowCent.add(rs.getString("revenue_center"));
+             centerID.put(rs.getString("daily_revCenter"), rs.getString("revenue_center"));
+             if (rs.getString("revenue_category").equals("PROPERTY RATE SECTION")){
+                 Condition = true;
+             }
+             if (rs.getString("daily_revCenter").equals("K0201") || rs.getString("daily_revCenter").equals("K0202") || rs.getString("daily_revCenter").equals("K0203") || rs.getString("daily_revCenter").equals("K0204") || rs.getString("daily_revCenter").equals("K0205")){
+                 subMetroPR = true;
              }
          }
-         cmbReportCent.getItems().clear();
-         cmbReportCent.setItems(rowCent);
+        if (Condition){
+            cmbReportCent.getItems().add("PROPERTY RATE ALL");
+        }
+        if (subMetroPR){
+            cmbReportCent.getItems().add("PROPERTY RATE SUB-METROS");
+        }
+         cmbReportCent.getItems().addAll(rowCent);
          cmbReportCent.setVisibleRowCount(5);     
     }
     
     private void getReportYear1() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `daily_entries`.`revenueYear`");
+        } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' GROUP BY `daily_entries`.`revenueYear`");
+        }
+        else {
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        }
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowYear1.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowYear1.add(value);
-                 
-             }
+            rowYear1.add(rs.getString("revenueYear"));
         }
         cmbReportYear1.getItems().clear();
         cmbReportYear1.getItems().setAll(rowYear1);
@@ -158,21 +155,18 @@ public class YearlyReportController implements Initializable {
     }
     
     private void getReportYear2() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+
-                cmbReportYear1.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueYear` LIMIT 5");
+        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' GROUP BY `daily_entries`.`revenueYear` LIMIT 5");
+        } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' GROUP BY `daily_entries`.`revenueYear` LIMIT 5");
+        }
+        else {
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueYear` LIMIT 5");
+        }
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowYear2.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowYear2.add(value);
-                 
-             }
+            rowYear2.add(rs.getString("revenueYear"));
         }
         cmbReportYear2.getItems().clear();
         cmbReportYear2.getItems().setAll(rowYear2);
@@ -180,28 +174,24 @@ public class YearlyReportController implements Initializable {
     }
     
     private void getYears() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+cmbReportYear1.
-                getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().
-                getSelectedItem()+"' GROUP BY `revenueYear` ");
+        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `daily_entries`.`revenueYear`");
+        } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `daily_entries`.`revenueYear`");
+        }
+        else {
+            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueYear`");
+        }
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowYear.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowYear.add(value);
-                 
-             }
+            rowYear.add(rs.getString("revenueYear"));
         }
-        year1.setText("Year 1");
-        year2.setText("Year 2");
-        year3.setText("Year 3");
-        year4.setText("Year 4");
-        year5.setText("Year 5");
+        year1.setText("Year");
+        year2.setText("Year");
+        year3.setText("Year");
+        year4.setText("Year");
+        year5.setText("Year");
         int rowSize = rowYear.size();
         switch(rowSize){
             case 1:
@@ -239,47 +229,40 @@ public class YearlyReportController implements Initializable {
     }
     
       private void setItems() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` >= '"+
-                cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+
-                cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
+          if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+              stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+          } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+              stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+          }
+          else {
+              stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+          }
+//        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int col = meta.getColumnCount();
         rowItems.clear();
         while(rs.next()){
-            for(int i=1; i<=col; i++){
-                if(i == 1){
-                    
-                    rowItems.add(rs.getObject(i).toString());
-                    
-                }
-            }
+            rowItems.add(rs.getString("revenue_item"));
         }        
-          Map<String, ArrayList<Float>> weekAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
+          Map<String, ArrayList<Float>> yearAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective years
           Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
-          rowItems.forEach((rowItem) -> {
-              forEntry.put(rowItem, new HashMap());
-      });
-          rowYear.forEach((rowDates) -> {
-              weekAmount.put(rowDates, new ArrayList());
-          });
+          rowItems.forEach((rowItem) -> forEntry.put(rowItem, new HashMap<>()));
+          rowYear.forEach((rowDates) -> yearAmount.put(rowDates, new ArrayList<>()));
           try {
           for(String year : rowYear) {
               for(String Item : rowItems) {
                   float weekSum;
                    weekSum = setYearSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, year);
-                      for(Map.Entry<String, ArrayList<Float>> Dates : weekAmount.entrySet()){
+                      for(Map.Entry<String, ArrayList<Float>> Dates : yearAmount.entrySet()){
                           for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
                               if (Items.getKey().equals(Item)  && Dates.getKey().equals(year)){
-                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsValue(year)){
-                                      forEntry.get(Item).put(year, new ArrayList());
+                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(year)){
+                                      forEntry.get(Item).put(year, new ArrayList<>());
                                       forEntry.get(Item).get(year).add(weekSum);
-                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsValue(year)){
+                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(year)){
                                       forEntry.get(Item).get(year).add(weekSum);
                                   } 
-                              };
-                          };
+                              }
+                          }
                       }
                   
               }
@@ -291,7 +274,7 @@ public class YearlyReportController implements Initializable {
           NumberFormat formatter = new DecimalFormat("#,##0.00");
          
        for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-           String yer1 = "0.00", yer2 = "0.00", yer3 = "0.00", yer4 = "0.00", yer5 = "0.00", totalAmnt = "0.00";
+           String yer1 = "0.00", yer2 = "0.00", yer3 = "0.00", yer4 = "0.00", yer5 = "0.00", totalAmnt ;
            float yr1 = 0, yr2 = 0, yr3 = 0, yr4 = 0, yr5 = 0, total_amount;
            for(Map.Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
                String reveItem = Items.getKey();
@@ -323,33 +306,32 @@ public class YearlyReportController implements Initializable {
            year5.setCellValueFactory(data -> data.getValue().year5Property());
            totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
            getReport = new GetYearlyReport(yer1, yer2, yer3, yer4, yer5, Items.getKey(),  totalAmnt);
+           yearlyTable.getItems().clear();
            yearlyTable.getItems().add(getReport);                                           
        }
           
       }
       
       
-       public Float setYearSum(String Center, String item, String Year1) throws SQLException{
+       public Float setYearSum(String Center, String item, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+
-               item+"' AND `revenueYear` = '"+Year1+"'AND `daily_revCenter` = '"+Center+"'");
-       ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
-       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
-       while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-               if(j == 1){
-           String revitem =rs.getObject(j).toString();
-           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
+           if (Center.equals("PROPERTY RATE ALL")) {
+               stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION'  AND `revenueYear` = '"+Year+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"'");
+           } else if (Center.equals("PROPERTY RATE SUB-METROS")){
+               stmnt = con.prepareStatement("  SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+Year+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' ");
            }
-           }     
+           else {
+               stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' ");
+           }
+       ResultSet rs = stmnt.executeQuery();
+       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+       while(rs.next()){
+           Amount.add(rs.getFloat("revenueAmount"));
        }
         totalAmunt = 0;
-        for(int i = 0; i < Amount.size(); i++){
-            totalAmunt += Amount.get(i);
-        }
+           for (Float aFloat : Amount) {
+               totalAmunt += aFloat;
+           }
         return totalAmunt;
     }
 
@@ -377,12 +359,7 @@ public class YearlyReportController implements Initializable {
             event.consume();
         }else {
             Date date = new Date();
-            List<GetYearlyReport> items = new ArrayList<GetYearlyReport>();
-            for (int j = 0; j < yearlyTable.getItems().size(); j++) {
-                GetYearlyReport getdata = new GetYearlyReport();
-                getdata = yearlyTable.getItems().get(j);
-                items.add(getdata);
-            }
+            List<GetYearlyReport> items = new ArrayList<>(yearlyTable.getItems());
             URL url = this.getClass().getResource("/Assets/kmalogo.png"),
                     file = this.getClass().getResource("/Assets/yearlyPotrait.jrxml");
 
@@ -397,7 +374,7 @@ public class YearlyReportController implements Initializable {
                     fifth = year5.getText();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url); parameters.put("firstYear", first);
             parameters.put("year", year); parameters.put("secondYear", second);
@@ -406,7 +383,7 @@ public class YearlyReportController implements Initializable {
             parameters.put("year2", secondyear); parameters.put("fifthYear", fifth);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = new FileInputStream(file.getPath());
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

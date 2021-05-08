@@ -61,8 +61,6 @@ public class MasterQuarterItemsController implements Initializable {
     @FXML
     private TableColumn<GetMstrQuarterItems, String> revenueItem;
     @FXML
-    private TableColumn<?, ?> year;
-    @FXML
     private TableColumn<GetMstrQuarterItems, String> quarter;
     @FXML
     private TableColumn<GetMstrQuarterItems, String> month1;
@@ -71,11 +69,23 @@ public class MasterQuarterItemsController implements Initializable {
     @FXML
     private TableColumn<GetMstrQuarterItems, String> month3;
     @FXML
-    private TableColumn<GetMstrQuarterItems, String> month4;
-    @FXML
     private TableColumn<GetMstrQuarterItems, String> totalAmount;
     @FXML
-    private TableColumn<?, ?> revenueItems;
+    private TableView<GetMstrQuarterItems> quarterMastItemsTableAll;
+    @FXML
+    private TableColumn<GetMstrQuarterItems, String> revenueItemAll;
+    @FXML
+    private TableColumn<GetMstrQuarterItems, String> quarterAll;
+    @FXML
+    private TableColumn<GetMstrQuarterItems, String> month1All;
+    @FXML
+    private TableColumn<GetMstrQuarterItems, String> month2All;
+    @FXML
+    private TableColumn<GetMstrQuarterItems, String> month3All;
+    @FXML
+    private TableColumn<GetMstrQuarterItems, String> month4All;
+    @FXML
+    private TableColumn<GetMstrQuarterItems, String> totalAmountAll;
     @FXML
     private Label lblYearWarn;
     @FXML
@@ -85,7 +95,7 @@ public class MasterQuarterItemsController implements Initializable {
     @FXML
     private Label lblYear;
 
-    GetMstrQuarterItems getReport;
+    private GetMstrQuarterItems getReport;
 
     /**
      * Initializes the controller class.
@@ -98,6 +108,7 @@ public class MasterQuarterItemsController implements Initializable {
     ObservableList<String> rowMonths =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
+    private boolean allQuarters, singleQuarters;
     int Year;
     
     public MasterQuarterItemsController() throws SQLException, ClassNotFoundException{
@@ -158,6 +169,10 @@ public class MasterQuarterItemsController implements Initializable {
     
     private void getMonths() throws SQLException{
         if (!cmbMstItemsQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
+            allQuarters = false;
+            singleQuarters = true;
+            quarterMastItemsTable.setVisible(true);
+            quarterMastItemsTableAll.setVisible(false);
         stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE   `revenueYear` = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbMstItemsQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet Rs = stmnt.executeQuery();
         rowMonths.clear();
@@ -167,33 +182,34 @@ public class MasterQuarterItemsController implements Initializable {
         month1.setText("MONTH");
         month2.setText("MONTH");
         month3.setText("MONTH");
-        month4.setText("MONTH");
-        int rowSize = rowMonths.size();
+        String rowSize = cmbMstItemsQuarter.getSelectionModel().getSelectedItem();
         switch(rowSize){
-            case 1:
-                month1.setText(rowMonths.get(0));
+            case "1":
+                month1.setText("January");
+                month2.setText("February");
+                month3.setText("March");
                 break;
-            case 2: 
-                month1.setText(rowMonths.get(0));
-                month2.setText(rowMonths.get(1));
+            case "2":
+                month1.setText("April");
+                month2.setText("May");
+                month3.setText("June");
                 break;
-            case 3:
-                month1.setText(rowMonths.get(0));
-                month2.setText(rowMonths.get(1));
-                month3.setText(rowMonths.get(2));
+            case "3":
+                month1.setText("July");
+                month2.setText("August");
+                month3.setText("September");
                 break;
-            case 4:
-                month1.setText(rowMonths.get(0));
-                month2.setText(rowMonths.get(1));
-                month3.setText(rowMonths.get(2));
-                month4.setText(rowMonths.get(3));
+            case "4":
+                month1.setText("October");
+                month2.setText("November");
+                month3.setText("December");
                 break;
         }
         }else {
-            month1.setText("1st Quarter");
-            month2.setText("2nd Quarter");
-            month3.setText("3rd Quarter");
-            month4.setText("4th Quarter");
+            allQuarters = true;
+            singleQuarters = false;
+            quarterMastItemsTableAll.setVisible(true);
+            quarterMastItemsTable.setVisible(false);
             rowMonths.addAll("1", "2", "3","4");
         }
     }
@@ -249,7 +265,7 @@ public class MasterQuarterItemsController implements Initializable {
                   
               }
           }
-              }else {
+              }else if (allQuarters){
                   for(String month : rowMonths) {
                       for(String Item : rowItems) {
                           float monthSum;
@@ -295,11 +311,7 @@ public class MasterQuarterItemsController implements Initializable {
                    mon3 = formatter.format(forEntry.get(Items.getKey()).get(month3.getText()).get(0));
                    Mon3 = forEntry.get(Items.getKey()).get(month3.getText()).get(0);
                }
-               else if(Dates.getKey() == null ? month4.getText() == null : Dates.getKey().equals(month4.getText())){
-                   mon4 = formatter.format(forEntry.get(Items.getKey()).get(month4.getText()).get(0));
-                   Mon4 = forEntry.get(Items.getKey()).get(month4.getText()).get(0);
-               }
-           }else {
+           }else if (allQuarters){
                    if( Dates.getKey().equals("1")){
                        mon1 = formatter.format(forEntry.get(Items.getKey()).get("1").get(0));
                        Mon1 = forEntry.get(Items.getKey()).get("1").get(0);
@@ -318,16 +330,28 @@ public class MasterQuarterItemsController implements Initializable {
                    }
                }
            }
-           total_amount = Mon3 + Mon2 + Mon1 + Mon4;
+           if (singleQuarters){
+           total_amount = Mon3 + Mon2 + Mon1;
            totalAmnt = formatter.format(total_amount);       
            revenueItem.setCellValueFactory(data -> data.getValue().revenueItemProperty());
            month1.setCellValueFactory(data -> data.getValue().firstMonthProperty());
            month2.setCellValueFactory(data -> data.getValue().secondMonthProperty());
            month3.setCellValueFactory(data -> data.getValue().thirdMonthProperty());
-           month4.setCellValueFactory(data -> data.getValue().fourthMonthProperty());
            totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
-           getReport = new GetMstrQuarterItems( mon1, mon2, mon3, mon4, Items.getKey(), totalAmnt);
-           quarterMastItemsTable.getItems().add(getReport);                                           
+           getReport = new GetMstrQuarterItems( mon1, mon2, mon3, Items.getKey(), totalAmnt);
+           quarterMastItemsTable.getItems().add(getReport);
+           }else if (allQuarters){
+               total_amount = Mon3 + Mon2 + Mon1 + Mon4;
+               totalAmnt = formatter.format(total_amount);
+               revenueItemAll.setCellValueFactory(data -> data.getValue().revenueItemProperty());
+               month1All.setCellValueFactory(data -> data.getValue().firstMonthProperty());
+               month2All.setCellValueFactory(data -> data.getValue().secondMonthProperty());
+               month3All.setCellValueFactory(data -> data.getValue().thirdMonthProperty());
+               month4All.setCellValueFactory(data -> data.getValue().fourthMonthProperty());
+               totalAmountAll.setCellValueFactory(data -> data.getValue().totalAmountProperty());
+               getReport = new GetMstrQuarterItems( mon1, mon2, mon3, mon4, Items.getKey(), totalAmnt);
+               quarterMastItemsTableAll.getItems().add(getReport);
+           }
        }
     }
 

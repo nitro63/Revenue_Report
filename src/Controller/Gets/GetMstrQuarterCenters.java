@@ -13,8 +13,8 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetMstrQuarterCenters {
-    private StringProperty FirstMonth, SecondMonth, ThirdMonth, RevenueCenter, TotalAmount;
-    private String firstMonth, secondMonth, thirdMonth, revenueCenter, totalAmount;
+    private StringProperty FirstMonth, SecondMonth, ThirdMonth, FourthMonth, RevenueCenter, TotalAmount;
+    private String firstMonth, secondMonth, thirdMonth, fourthMonth, revenueCenter, totalAmount;
     
     public GetMstrQuarterCenters(){
         
@@ -24,6 +24,15 @@ public class GetMstrQuarterCenters {
         this.FirstMonth = new SimpleStringProperty(firstMonth);
         this.SecondMonth = new SimpleStringProperty(secondMonth);
         this.ThirdMonth = new SimpleStringProperty(thirdMonth);
+        this.RevenueCenter = new SimpleStringProperty(revenueItem);
+        this.TotalAmount = new SimpleStringProperty(totalAmount);
+    }
+
+    public GetMstrQuarterCenters(String firstMonth, String secondMonth, String thirdMonth, String fourthMonth, String revenueItem, String totalAmount){
+        this.FirstMonth = new SimpleStringProperty(firstMonth);
+        this.SecondMonth = new SimpleStringProperty(secondMonth);
+        this.ThirdMonth = new SimpleStringProperty(thirdMonth);
+        this.FourthMonth = new SimpleStringProperty(fourthMonth);
         this.RevenueCenter = new SimpleStringProperty(revenueItem);
         this.TotalAmount = new SimpleStringProperty(totalAmount);
     }
@@ -74,6 +83,19 @@ public class GetMstrQuarterCenters {
     public final String gettotalAmount(){
         totalAmount = totalAmountProperty().get();
         return totalAmount;
+    }
+
+    public StringProperty fourthMonthProperty(){
+        return FourthMonth;
+    }
+
+    public final String getfourthMonth(){
+        fourthMonth = fourthMonthProperty().get();
+        return fourthMonth;
+    }
+
+    public final void setfourthMonth(String fourthMonth){
+        fourthMonthProperty().set(fourthMonth);
     }
     
     public StringProperty revenueCenterProperty(){

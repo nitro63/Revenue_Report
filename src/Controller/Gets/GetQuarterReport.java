@@ -19,6 +19,13 @@ public class GetQuarterReport {
     public GetQuarterReport(){
         
     }
+    public GetQuarterReport(String firstMonth, String secondMonth, String thirdMonth, String revenueItem, String totalAmount){
+        this.FirstMonth = new SimpleStringProperty(firstMonth);
+        this.SecondMonth = new SimpleStringProperty(secondMonth);
+        this.ThirdMonth = new SimpleStringProperty(thirdMonth);
+        this.RevenueItem = new SimpleStringProperty(revenueItem);
+        this.TotalAmount = new SimpleStringProperty(totalAmount);
+    }
     public GetQuarterReport(String firstMonth, String secondMonth, String thirdMonth, String fourthMonth, String revenueItem, String totalAmount){
         this.FirstMonth = new SimpleStringProperty(firstMonth);
         this.SecondMonth = new SimpleStringProperty(secondMonth);
