@@ -104,9 +104,7 @@ public class Payment_ReportController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             getRevCenters();
-        } catch (SQLException ex) {
-            Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
