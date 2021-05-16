@@ -153,41 +153,25 @@ public class MasterCentersController implements Initializable {
     }
     
    private void setItems() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `daily_revCenter` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY `daily_revCenter`");
+        stmnt = con.prepareStatement(" SELECT `revenue_center` FROM `revenue_centers`,`daily_entries` WHERE  `CenterID` = `daily_revCenter` AND `revenueYear` = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_center`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int col = meta.getColumnCount();
         rowCent.clear();
         while(rs.next()){
-            for(int i=1; i<=col; i++){
-                if(i == 1){
-                    
-                    rowCent.add(rs.getObject(i).toString());
-                    
-                }
-            }
+            rowCent.add(rs.getString("revenue_center"));
         }        
         stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet Rs = stmnt.executeQuery();
-        ResultSetMetaData Meta = Rs.getMetaData();
-        int Col = Meta.getColumnCount();
         rowMonths.clear();
         while(Rs.next()){
-            for(int i=1; i<=Col; i++){
-                if(i == 1){
-                    
-                    rowMonths.add(Rs.getObject(i).toString());
-                    
-                }
-            }
+                    rowMonths.add(Rs.getString("revenueMonth"));
         }        
           Map<String, ArrayList<Float>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
           Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
           rowCent.forEach((Center) -> {
-              forEntry.put(Center, new HashMap());
+              forEntry.put(Center, new HashMap<>());
       });
           rowMonths.forEach((rowMonth) -> {
-              monthAmount.put(rowMonth, new ArrayList());
+              monthAmount.put(rowMonth, new ArrayList<>());
           });
           try {
           for(String month : rowMonths) {
@@ -197,10 +181,10 @@ public class MasterCentersController implements Initializable {
                   for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
                           for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
                               if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
-                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsValue(month)){
-                                      forEntry.get(Item).put(month, new ArrayList());
+                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(month)){
+                                      forEntry.get(Item).put(month, new ArrayList<>());
                                       forEntry.get(Item).get(month).add(monthSum);
-                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsValue(month)){
+                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
                                       forEntry.get(Item).get(month).add(monthSum);
                                   } 
                               };
@@ -296,7 +280,7 @@ public class MasterCentersController implements Initializable {
    
        public Float setCentersSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `daily_revCenter` = '"+Center+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"'  ");
+       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries`, `revenue_centers` WHERE `CenterID` = `daily_revCenter` AND `revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenueMonth` = '"+Month+"' ");
        ResultSet rs = stmnt.executeQuery();
        ResultSetMetaData meta= rs.getMetaData();
        int row = 0 ;        

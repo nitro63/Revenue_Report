@@ -131,6 +131,7 @@ public class valueBooksEntriesController implements Initializable {
     Bank_DetailsEntriesController bnkDtls = new Bank_DetailsEntriesController();
     GetFunctions getDates = new GetFunctions();
     private final GetRevCenter GetCenter;
+    Payment_EntriesController pay ;
     boolean Condition = true;
     private final Connection con;
     float amount =0, cumuamount, puramount;
@@ -138,10 +139,11 @@ public class valueBooksEntriesController implements Initializable {
     Pattern p = Pattern.compile(regex);
     Matcher mac;
     Map<String, ArrayList<String>> regValSerial = new HashMap<>();
-    String revCent, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount,
+    String revCent, revCentID, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount,
             purAmount, Quarter, Week;
     String remarks = "Initial Entry";
     Map<String, Float> priceBook = new HashMap<>();
+    Map<String, String> valueBookID = new HashMap<>();
 
 
     public valueBooksEntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
@@ -160,13 +162,16 @@ public class valueBooksEntriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         PreparedStatement stmnt = null;
+        revCent = GetCenter.getRevCenter();
+        revCentID = GetCenter.getCenterID();
         try {
             stmnt = con.prepareStatement("SELECT * FROM `value_books_details`");
             ResultSet res = stmnt.executeQuery();
             cmbTypeOfValueBook.getItems().clear();
             while (res.next()){
                 cmbTypeOfValueBook.getItems().add(res.getString("value_books"));
-                priceBook.put(res.getString("value_books"), res.getFloat("price"));
+                valueBookID.put(res.getString("value_books"), res.getString("value_book_ID"));
+                priceBook.put(res.getString("value_book_ID"), res.getFloat("price"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -200,7 +205,6 @@ public class valueBooksEntriesController implements Initializable {
 
     public void saveEntries(ActionEvent actionEvent) throws SQLException {
         regValSerial.put("", new ArrayList<>());
-        revCent = GetCenter.getRevCenter();
         LocalDate date = entDatePck.getValue();
         typeOfValBk = cmbTypeOfValueBook.getSelectionModel().getSelectedItem();
         firstSerial = txtSerialFrom.getText();
@@ -267,7 +271,7 @@ public class valueBooksEntriesController implements Initializable {
                     }else {
                         Quantity = Integer.toString(quantity);
                         for (Map.Entry<String, Float> calValAmount : priceBook.entrySet()){
-                            if (calValAmount.getKey().equals(typeOfValBk)){
+                            if (calValAmount.getKey().equals(valueBookID.get(typeOfValBk))){
                                 amount = quantity * calValAmount.getValue() * 100;
                             }
                         }
@@ -287,7 +291,7 @@ public class valueBooksEntriesController implements Initializable {
                         } else {
                             colYear.setCellValueFactory(data -> data.getValue().yearProperty());
                             colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
-                            colQuarter.setCellValueFactory(data -> data.getValue().monthProperty());
+                            colQuarter.setCellValueFactory(data -> data.getValue().quarterProperty());
                             colWeek.setCellValueFactory(data -> data.getValue().dateProperty());
                             colDATE.setCellValueFactory(data -> data.getValue().dateProperty());
                             colTypeVB.setCellValueFactory(data -> data.getValue().valueBookProperty());
@@ -392,23 +396,39 @@ public class valueBooksEntriesController implements Initializable {
             float acAmount = Float.parseFloat(m.replaceAll(""));
             m = p.matcher(getData.getPurAmount());
             float acPurAmount = Float.parseFloat(m.replaceAll(""));
-            PreparedStatement stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record` WHERE " +
-                    "`value_stock_revCenter` = '"+revCent+"' AND `value_book` = '"+typeOfValBk+"' AND `first_serial` = " +
-                    "'"+acFirstSerial+"' AND `last_serial` = '"+acLastSerial+"'");
+            PreparedStatement stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record`, `revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+revCent+"' AND `value_book` = '"+valueBookID.get(typeOfValBk)+"'");
             ResultSet res = stmnt.executeQuery();
             while (res.next()){
-                duplicate.add(res.getString("first_serial"));
+                if(res.getInt("first_serial")<=Integer.parseInt(getData.getFirstSerial()) && Integer.parseInt(getData.getFirstSerial())<= res.getInt("last_serial")&& !duplicate.contains(getData.getFirstSerial())){
+                duplicate.add(getData.getFirstSerial());
+                }
+                if(res.getInt("first_serial")<=Integer.parseInt(getData.getLastSerial()) && Integer.parseInt(getData.getLastSerial())<= res.getInt("last_serial") && !duplicate.contains(getData.getLastSerial())){
+                    duplicate.add(getData.getLastSerial());
+                }
+                System.out.println("dup" +duplicate+""+acFirstSerial+""+acLastSerial);
             }
+            if (duplicate.contains(getData.getFirstSerial()) && duplicate.contains(getData.getLastSerial())){
+                lblDup.setText("Range of Serials for "+'"'+typeOfValBk+'"'+"" +
+                        " already exist. Please select row of duplicate data to Edit or Delete." );
+                lblDup.setVisible(true);
+                f = tblValueBookStocks.getItems().size() + 1;
+            }else
+            if (duplicate.contains(getData.getLastSerial())){
+                lblDup.setText("Last Serial"+'"'+acLastSerial+'"'+" for "+'"'+typeOfValBk+'"'+"" +
+                        " already exist. Please select row of duplicate data to Edit or Delete." );
+                lblDup.setVisible(true);
+                f = tblValueBookStocks.getItems().size() + 1;
+            }else
             if (duplicate.contains(getData.getFirstSerial())){
-                lblDup.setText('"'+acFirstSerial+'"'+" to "+'"'+acLastSerial+'"'+" for "+'"'+typeOfValBk+'"'+"" +
+                lblDup.setText("First Serial"+'"'+acFirstSerial+'"'+" for "+'"'+typeOfValBk+'"'+"" +
                         " already exist. Please select row of duplicate data to Edit or Delete." );
                 lblDup.setVisible(true);
                 f = tblValueBookStocks.getItems().size() + 1;
             }else {
                 stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`value_stock_revCenter`, `year`, " +
                         "`month`,`quarter`, `week`, `date`, `value_book`, `first_serial`, `last_serial`, `quantity`," +
-                        " `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCent + "', '" + acYear + "', '" +
-                        acMonth + "', '" + acQuarter + "', '" + acWeek + "', '" + acDate + "', '" + typeOfValBk
+                        " `amount`, `purchase_amount`, `remarks`) VALUES ('" + revCentID + "', '" + acYear + "', '" +
+                        acMonth + "', '" + acQuarter + "', '" + acWeek + "', '" + acDate + "', '" + valueBookID.get(typeOfValBk)
                         + "', '" + acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount
                         + "', '" + acPurAmount + "','" + remarks + "')");
                 stmnt.executeUpdate();

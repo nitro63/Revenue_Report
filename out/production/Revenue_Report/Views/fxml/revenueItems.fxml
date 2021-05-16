@@ -13,7 +13,7 @@
    <children>
       <JFXTextField fx:id="txtCode" alignment="CENTER" layoutX="46.0" layoutY="134.0" onKeyTyped="#onlyNumbers" prefHeight="25.0" prefWidth="145.0" promptText="CODE" />
       <JFXTextField fx:id="txtItem" layoutX="46.0" layoutY="271.0" prefHeight="25.0" prefWidth="145.0" promptText="ITEM" />
-      <JFXComboBox fx:id="cmbCategory" editable="true" layoutX="46.0" layoutY="206.0" prefHeight="25.0" prefWidth="145.0" promptText="CATEGORY" />
+      <JFXComboBox fx:id="cmbCategory" layoutX="46.0" layoutY="206.0" prefHeight="25.0" prefWidth="145.0" promptText="CATEGORY" />
       <TableView fx:id="tblAddItem" layoutX="329.0" layoutY="83.0" prefHeight="401.0" prefWidth="686.0" AnchorPane.rightAnchor="38.0">
         <columns>
             <TableColumn fx:id="colID" prefWidth="75.0" text="CODE" />

@@ -93,14 +93,12 @@ public class MasterItemsController implements Initializable {
     private Label lblRevenueCenter;
     @FXML
     private Label lblYearWarn;
-    
-    private GetItemsReport getReport;
-    
+
     /**
      * Initializes the controller class.
      */
     
-    private  Connection con;
+    private final Connection con;
     private PreparedStatement stmnt;
     ObservableList<String> rowCent =FXCollections.observableArrayList();
     ObservableList<String> rowMonths =FXCollections.observableArrayList();
@@ -118,11 +116,9 @@ public class MasterItemsController implements Initializable {
         });
         try {
             getRevenueYears();
-        } catch (SQLException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     } 
     
     private void getRevenueYears() throws SQLException, ClassNotFoundException{
@@ -152,19 +148,13 @@ public class MasterItemsController implements Initializable {
     }
     
    private void setItems() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbMasterItemsYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
+        stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `revenue_items`,`daily_entries` WHERE  `revenue_item_ID` = `revenueItem` AND `revenueYear` = '"+cmbMasterItemsYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int col = meta.getColumnCount();
         rowItems.clear();
         while(rs.next()){
-            for(int i=1; i<=col; i++){
-                if(i == 1){
-                    
-                    rowItems.add(rs.getObject(i).toString());
-                    
-                }
-            }
+            rowItems.add(rs.getString("revenue_item"));
         }        
         stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbMasterItemsYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet Rs = stmnt.executeQuery();
@@ -183,10 +173,10 @@ public class MasterItemsController implements Initializable {
           Map<String, ArrayList<Float>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
           Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
           rowItems.forEach((Center) -> {
-              forEntry.put(Center, new HashMap());
+              forEntry.put(Center, new HashMap<>());
       });
           rowMonths.forEach((rowMonth) -> {
-              monthAmount.put(rowMonth, new ArrayList());
+              monthAmount.put(rowMonth, new ArrayList<>());
           });
           try {
           for(String month : rowMonths) {
@@ -196,10 +186,10 @@ public class MasterItemsController implements Initializable {
                   for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
                           for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
                               if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
-                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsValue(month)){
-                                      forEntry.get(Item).put(month, new ArrayList());
+                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(month)){
+                                      forEntry.get(Item).put(month, new ArrayList<>());
                                       forEntry.get(Item).get(month).add(monthSum);
-                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsValue(month)){
+                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
                                       forEntry.get(Item).get(month).add(monthSum);
                                   } 
                               };
@@ -286,7 +276,7 @@ public class MasterItemsController implements Initializable {
            november.setCellValueFactory(data -> data.getValue().NovProperty());
            december.setCellValueFactory(data -> data.getValue().DecProperty());
            totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
-           getReport = new GetItemsReport(Items.getKey(), jan1, feb1, mar1, apr1, mai1, jun1, jul1, aug1, sep1, oct1, nov1, dec1, totalAmnt);
+           GetItemsReport getReport = new GetItemsReport(Items.getKey(), jan1, feb1, mar1, apr1, mai1, jun1, jul1, aug1, sep1, oct1, nov1, dec1, totalAmnt);
            revenueItemsTable.getItems().add(getReport);                                           
        }
           
@@ -295,19 +285,11 @@ public class MasterItemsController implements Initializable {
    
        public Float setCentersSum(String Item, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+Item+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"'  ");
+       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_items`,`daily_entries` WHERE `revenue_item_ID` = `revenueItem` AND `revenue_item` = '"+Item+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-               if(j == 1){
-           String revitem =rs.getObject(j).toString();
-           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
-           }
-           }     
+           Amount.add(rs.getFloat("revenueAmount"));
        }
         totalAmunt = 0;
         for(int i = 0; i < Amount.size(); i++){

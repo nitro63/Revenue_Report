@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 import Controller.Gets.GetDetails;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import revenue_report.DBConnection;
 
@@ -88,6 +88,9 @@ public class RevenueItemsController implements Initializable {
 
         cmbCategory.getItems().addAll(categories);
         tblAddItem.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        txtCode.setOnMouseClicked(e -> lblCodeWarn.setVisible(false));
+        txtItem.setOnMouseClicked(e -> lblItemWarn.setVisible(false));
+        cmbCategory.setOnMouseClicked(e -> lblCategWarn.setVisible(false));
         tblAddItem.setOnMouseClicked(e ->{
             if (!tblAddItem.getSelectionModel().isEmpty() && e.getClickCount() > 1){
                 setItems();
@@ -134,34 +137,34 @@ public class RevenueItemsController implements Initializable {
             lblCategWarn.setVisible(true);
         }else if (txtItem.getText().isEmpty()){
             lblItemWarn.setVisible(true);
-        }else {
+        } else {
             stmnt = con.prepareStatement("SELECT `revenue_item`, `revenue_Item_ID` FROM `revenue_items` WHERE" +
                     " `revenue_Item_ID` = '"+txtCode.getText()+"' OR `revenue_item` = '"+txtItem.getText().trim()+"'");
             rs = stmnt.executeQuery();
             while (rs.next()){
                 dup.addAll(rs.getString("revenue_item"), rs.getString("revenue_Item_ID"));
             }
-            if (dup.contains(txtItem.getText())){
+            if (dup.contains(txtItem.getText()) && dup.contains(txtCode.getText())){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Duplicate Entry");
                 alert.setHeaderText("DUPLICATE");
                 alert.setContentText("Please '"+txtItem.getText()+"' already exist");
                 alert.showAndWait();
-            }else if (dup.contains(txtCode.getText())){
+            }/*else if (dup.contains(txtCode.getText())){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Duplicate Entry");
                 alert.setHeaderText("DUPLICATE");
                 alert.setContentText("Please '"+txtCode.getText()+"' already exist");
                 alert.showAndWait();
-            }else {
+            }*/else {
             stmnt = con.prepareStatement("UPDATE `revenue_items`SET `revenue_Item_ID` = '"+txtCode.getText()
                     +"', `revenue_item` = '"+txtItem.getText().trim()+"', `item_category` = '"+
                     cmbCategory.getSelectionModel().getSelectedItem()+"' WHERE `revenue_Item_ID` = '"+entryID+"'");
             stmnt.executeUpdate();
+                resetFields();
+                loadTable();
             }
         }
-        resetFields();
-        loadTable();
     }
 
     void resetFields(){
@@ -173,6 +176,10 @@ public class RevenueItemsController implements Initializable {
 
     @FXML
     void addItem(ActionEvent event) throws SQLException {
+        subAddItem();
+    }
+
+   private void subAddItem() throws SQLException {
         ObservableList<String> dup = FXCollections.observableArrayList();
         if (txtCode.getText().isEmpty() || txtCode.getText().contains("\\s+")){
             lblCodeWarn.setVisible(true);
@@ -180,6 +187,12 @@ public class RevenueItemsController implements Initializable {
             lblCategWarn.setVisible(true);
         }else if (txtItem.getText().isEmpty()){
             lblItemWarn.setVisible(true);
+        }else if(entryID != null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("WARNING");
+            alert.setHeaderText("WRONG BUTTON CLICK");
+            alert.setContentText("Please click on Update Button to update Item.");
+            alert.showAndWait();
         }else {
             stmnt = con.prepareStatement("SELECT `revenue_item`, `revenue_Item_ID` FROM `revenue_items` WHERE" +
                     " `revenue_Item_ID` = '"+txtCode.getText()+"' OR `revenue_item` = '"+txtItem.getText().trim()+"'");
@@ -200,10 +213,10 @@ public class RevenueItemsController implements Initializable {
                 alert.setContentText("Please '"+txtCode.getText()+"' already exist");
                 alert.showAndWait();
             }else {
-            stmnt = con.prepareStatement("INSERT INTO `revenue_items`(`revenue_Item_ID`, `revenue_item`," +
-                    " `item_category`) VALUES ('"+txtCode.getText()+"', '"+txtItem.getText().trim()+"', '"+cmbCategory.
-                    getSelectionModel().getSelectedItem()+"') ");
-            stmnt.executeUpdate();
+                stmnt = con.prepareStatement("INSERT INTO `revenue_items`(`revenue_Item_ID`, `revenue_item`," +
+                        " `item_category`) VALUES ('"+txtCode.getText()+"', '"+txtItem.getText().trim()+"', '"+cmbCategory.
+                        getSelectionModel().getSelectedItem()+"') ");
+                stmnt.executeUpdate();
                 resetFields();
                 loadTable();
             }
@@ -212,7 +225,7 @@ public class RevenueItemsController implements Initializable {
 
     @FXML
     void deleteItem(ActionEvent event) throws SQLException {
-        if (!entryID.isEmpty()){
+        if (entryID != null){
             stmnt = con.prepareStatement("DELETE FROM `revenue_items` WHERE `revenue_Item_ID` = '"+entryID+"'");
             stmnt.executeUpdate();
             resetFields();
@@ -223,18 +236,24 @@ public class RevenueItemsController implements Initializable {
     }
 
     @FXML
-    void onlyVarChar(KeyEvent event) {
+    void onlyVarChar (KeyEvent event) {
         String c = event.getCharacter();
-        if("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ".contains(c)) {}
-        else {
+        if (!"1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".contains(c)) {
             event.consume();
         }
-    }@FXML
+    }
+    @FXML
     void onlyNumbers (KeyEvent event) {
         String c = event.getCharacter();
-        if("1234567890".contains(c)) {}
-        else {
+        if (!"1234567890".contains(c)) {
             event.consume();
+        }
+    }
+
+    @FXML
+    void onEnterKey(KeyEvent event) throws SQLException {
+        if(event.getCode().equals(KeyCode.ENTER)) {
+            subAddItem();
         }
     }
 

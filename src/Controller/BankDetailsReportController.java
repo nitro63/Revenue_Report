@@ -194,7 +194,7 @@ public class BankDetailsReportController implements Initializable {
                 "`collection_payment_entries`.`date`, `cheque_details`.`cheque_date`, " +
                 "`cheque_details`.`cheque_number`, `cheque_details`.`bank`, `cheque_details`.`amount` FROM" +
                 " `cheque_details`, `collection_payment_entries` WHERE `collection_payment_entries`.`pay_revCenter` =" +
-                " '"+payRep.Center+"' AND `collection_payment_entries`.`year`" +
+                " '"+payRep.RevCenterID+"' AND `collection_payment_entries`.`year`" +
                 " = '"+payRep.Year+"' AND `collection_payment_entries`.`month` " +
                 "= '"+payRep.Month+"' AND `collection_payment_entries`.`pay_ID` =" +
                 " `cheque_details`.`payment_ID`");

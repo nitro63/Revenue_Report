@@ -80,11 +80,8 @@ public class Target_AnalysisController implements Initializable {
     private TableColumn<GetTargAnalReport, String> colAmtOut;
     @FXML
     private TableColumn<GetTargAnalReport, String> colPercOut;
-    
-    private GetTargAnalReport getReport;
-    
-    
-     
+
+
     private final Connection con;
     private PreparedStatement stmnt;
     ObservableList<String> rowCent =FXCollections.observableArrayList();
@@ -92,6 +89,8 @@ public class Target_AnalysisController implements Initializable {
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
     String targ;
+    Map<String, String> centerID = new HashMap<>();
+    boolean subMetroPR, Condition;
     
     public Target_AnalysisController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -104,9 +103,7 @@ public class Target_AnalysisController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             getRevCenters();
-        } catch (SQLException ex) {
-            Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
@@ -114,20 +111,24 @@ public class Target_AnalysisController implements Initializable {
     
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
-        
-            stmnt = con.prepareStatement("SELECT `target_revCenter` FROM `target_entries` WHERE 1 GROUP BY `target_revCenter` ");
+            stmnt = con.prepareStatement("SELECT `target_revCenter`, `revenue_centers`.`revenue_category`, `revenue_centers`.`revenue_center` FROM `target_entries`, `revenue_centers` WHERE `revenue_centers`.`CenterID` = `target_revCenter` GROUP BY `target_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
-         ResultSetMetaData metadata = rs.getMetaData();
-         int columns = metadata.getColumnCount();
-         
          while(rs.next()){
-             for(int i= 1; i<=columns; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 rowCent.add(value);
-                 
+             rowCent.add(rs.getString("revenue_center"));
+             centerID.put(rs.getString("revenue_center"), rs.getString("target_revCenter"));
+             if (rs.getString("revenue_category").equals("PROPERTY RATE SECTION")){
+                 Condition = true;
+             }
+             if (rs.getString("target_revCenter").equals("K0201") || rs.getString("target_revCenter").equals("K0202") || rs.getString("target_revCenter").equals("K0203") || rs.getString("target_revCenter").equals("K0204") || rs.getString("target_revCenter").equals("K0205")){
+                 subMetroPR = true;
              }
          }
+        if (Condition){
+            rowCent.add("PROPERTY RATE ALL");
+        }
+        if (subMetroPR){
+            rowCent.add("PROPERTY RATE SUB-METROS");
+        }
          cmbReportCent.getItems().clear();
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);
@@ -137,20 +138,19 @@ public class Target_AnalysisController implements Initializable {
     
      
     private void getReportYear() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `Year` FROM `target_entries` WHERE `target_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
+        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+            stmnt = con.prepareStatement(" SELECT `Year` FROM `revenue_centers`,`target_entries` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `Year`");
+        } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+            stmnt = con.prepareStatement(" SELECT `Year` FROM `target_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `target_revCenter` = 'K0201' OR `target_revCenter` = 'K0202' OR `target_revCenter` = 'K0203' OR `target_revCenter` = 'K0204' OR `target_revCenter` = 'K0205' GROUP BY `Year`");
+        }
+        else {
+            stmnt = con.prepareStatement(" SELECT `Year` FROM `target_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `Year`");
+        }
+//        stmnt = con.prepareStatement(" SELECT `Year` FROM `target_entries`, `revenue_centers` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `Year`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowYear.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowYear.add(value);
-                 
-             }
+            rowYear.add(rs.getString("Year"));
         }
         cmbReportYear.getItems().clear();
         cmbReportYear.getItems().setAll(rowYear);
@@ -163,29 +163,25 @@ public class Target_AnalysisController implements Initializable {
     } 
     
     private void setItems() throws SQLException {
-        stmnt = con.prepareStatement(" SELECT `Amount`   FROM `target_entries` WHERE  `target_revCenter` = '"+
-                cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.
-                getSelectionModel().getSelectedItem()+"'  ");
+        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+            stmnt = con.prepareStatement(" SELECT `Amount` FROM `revenue_centers`,`target_entries` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'");
+        } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+            stmnt = con.prepareStatement(" SELECT `Amount` FROM `target_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `target_revCenter` = 'K0201' OR `target_revCenter` = 'K0202' OR `target_revCenter` = 'K0203' OR `target_revCenter` = 'K0204' OR `target_revCenter` = 'K0205' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'");
+        }
+        else {
+            stmnt = con.prepareStatement(" SELECT `Amount` FROM `target_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'");
+        }
+//        stmnt = con.prepareStatement(" SELECT `Amount`   FROM `target_entries`,`revenue_centers` WHERE  `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
        float targAmount=0 ;
        String acTargAmount="";
         NumberFormat formatter = new DecimalFormat("#,##0.00");
-        NumberFormat percent = new DecimalFormat("0.0000%");
+        NumberFormat percent = new DecimalFormat("0.00%");
 //        NumberFormat percent = NumberFormat.getPercentInstance();
 //        percent.setMinimumFractionDigits(4);
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        while(rs.next()){
-           for (int g = 1; g<= col; g++){
-               if(g==1){
-                   String amount = rs.getObject(g).toString();
-                   targAmount = Float.parseFloat(amount);
-                   
-               }
-           }
+                   targAmount = rs.getFloat("Amount");
        }
-           BigDecimal rp= new BigDecimal(targAmount);
        acTargAmount = formatter.format(targAmount);
        targ = acTargAmount;
        txtAnnualTarget.setText(acTargAmount);
@@ -224,7 +220,7 @@ public class Target_AnalysisController implements Initializable {
            colPercAchv.setCellValueFactory(data -> data.getValue().achvPercentProperty());
            colAmtOut.setCellValueFactory(data -> data.getValue().outAmtProperty());
            colPercOut.setCellValueFactory(data -> data.getValue().outPercentProperty());
-           getReport = new GetTargAnalReport(month, actotRevenue, acCumuRevenue, acCumPercent,acOutRevenue, acOutPercent);
+            GetTargAnalReport getReport = new GetTargAnalReport(month, actotRevenue, acCumuRevenue, acCumPercent, acOutRevenue, acOutPercent);
            tblColPayAnalysis.getItems().add(getReport);
            totRevenue = 0;
            }
@@ -233,24 +229,19 @@ public class Target_AnalysisController implements Initializable {
          
        public Float setReptMonthSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+
-               Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
+           if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueMonth`= '"+Month+"'");
+           } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `target_revCenter` = 'K0201' OR `target_revCenter` = 'K0202' OR `target_revCenter` = 'K0203' OR `target_revCenter` = 'K0204' OR `target_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueMonth`= '"+Month+"'");
+           }
+           else {
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+Center+"'AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueMonth`= '"+Month+"'");
+           }
+//       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-               if(j == 1){
-           String revitem =rs.getObject(j).toString();
-           BigDecimal rp= new BigDecimal(Float.parseFloat(revitem));
-           rp.stripTrailingZeros().toPlainString();
-//           int rev = Integer.parseInt(revitem);
-           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
-           System.out.println(rp.stripTrailingZeros().toPlainString());
-           }
-           }     
+           Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
        }
         totalAmunt = 0;
         if(Amount.isEmpty()){

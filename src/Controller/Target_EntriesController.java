@@ -80,7 +80,7 @@ public class Target_EntriesController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
         
-        String RevCent, Amount, Year;
+        String RevCent, RevCentID, Amount, Year;
     
 
     /**
@@ -103,6 +103,7 @@ public class Target_EntriesController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        RevCentID = GetCenter.getCenterID();
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         Calendar cal = Calendar.getInstance();
         spnTargYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get(Calendar.YEAR)));
@@ -157,7 +158,7 @@ public class Target_EntriesController implements Initializable {
                 Condition =false;
                 
                 
-            }else if(txtEntAmt.getText().isEmpty()||  registerItem.contains(Year)){
+            }else if(txtEntAmt.getText().isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please Make All Entries");
@@ -171,15 +172,14 @@ public class Target_EntriesController implements Initializable {
                 alert.showAndWait();
 
                 Condition =false;
-            }
+                }
             else{
                 colCenter.setCellValueFactory( data -> data.getValue().CenterProperty());
                 colAmount.setCellValueFactory( data -> data.getValue().AmountProperty());
                 colYear.setCellValueFactory( data -> data.getValue().YearProperty());
         double initeAmount = Double.parseDouble(txtEntAmt.getText());
         NumberFormat formatter = new DecimalFormat("#,###.00");
-        String initAmount = formatter.format(initeAmount);
-        Amount= initAmount;
+                Amount= formatter.format(initeAmount);
         if("0.00".equals(Amount)){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
@@ -223,9 +223,8 @@ public class Target_EntriesController implements Initializable {
         getData = new GetTargetEnt();
         Map<String, ArrayList<String>> duplicate = new HashMap<>();
         ResultSet rs;
-        ResultSetMetaData rm;
         
-        for(int j=0; j<tblCollectEnt.getItems().size(); j++){
+        for(int j=0; j<=tblCollectEnt.getItems().size(); j++){
             if (j != tblCollectEnt.getItems().size()){
             getData = tblCollectEnt.getItems().get(j);
             String acCenter = getData.getCenter();
@@ -236,11 +235,11 @@ public class Target_EntriesController implements Initializable {
             amount = m.replaceAll("");
             float acAmount = Float.parseFloat(amount);
             int acYear = Integer.parseInt(getData.getYear());
-            stmnt = con.prepareStatement("SELECT * FROM `target_entries` WHERE `target_revCenter` = '"+
+            stmnt = con.prepareStatement("SELECT `revenue_center`, `Year` FROM `target_entries`, `revenue_centers` WHERE `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_center`  = '"+
                     acCenter+"' AND `Year` = '"+acYear+"'");
             rs = stmnt.executeQuery();
             while(rs.next()){
-                        String cent = rs.getString("target_revCenter");
+                        String cent = rs.getString("revenue_center");
                         duplicate.put(cent, new ArrayList<>());
 
                         String year = rs.getString("Year");
@@ -249,13 +248,13 @@ public class Target_EntriesController implements Initializable {
             }
             if(duplicate.containsKey(acCenter)){
                 if(duplicate.get(acCenter).contains(getData.getYear())){
-                    lblDup.setText("REVENUE TARGET Amount for "+'"'+acCenter+'"'+" for "+'"'+getData.getYear()+'"'+". Please select duplicate data in the table to edit or delete.");
+                    lblDup.setText("There is REVENUE TARGET Amount for "+'"'+acCenter+'"'+" for "+'"'+getData.getYear()+'"'+" already. Please select duplicate data in the table to edit or delete.");
                     lblDup.setVisible(true);
                     j = tblCollectEnt.getItems().size() + 1;
                 }
             }else{
                 stmnt = con.prepareStatement("INSERT INTO `target_entries`(`target_revCenter`, `Amount`," +
-                        " `Year`) VALUES ('"+acCenter+"', '"+acAmount+"', '"+acYear+"')");
+                        " `Year`) VALUES ('"+RevCentID+"', '"+acAmount+"', '"+acYear+"')");
                 stmnt.executeUpdate();
             }
             } else {

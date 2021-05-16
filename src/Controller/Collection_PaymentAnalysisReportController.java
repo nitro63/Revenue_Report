@@ -81,18 +81,15 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     private Label lblCenterWarn;
     @FXML
     private Label lblYearWarn;
-    
-    private GetColPay getReport;
-    
-    
-     
+
+
     private final Connection con;
     private PreparedStatement stmnt;
     ObservableList<String> rowCent =FXCollections.observableArrayList();
     ObservableList<String> rowMonths =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
-    ObservableList<String> rowItems =FXCollections.observableArrayList();
-    int Year;
+    Map<String, String> centerID = new HashMap<>();
+    private boolean subMetroPR, Condition;
     
     public Collection_PaymentAnalysisReportController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -111,9 +108,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
         });
         try {
             getRevCenters();
-        } catch (SQLException ex) {
-            Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
@@ -121,20 +116,25 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     
     private void getRevCenters() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
+            stmnt = con.prepareStatement("SELECT `revenue_center`, `daily_revCenter`, `revenue_category` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` GROUP BY `daily_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
-         ResultSetMetaData metadata = rs.getMetaData();
-         int columns = metadata.getColumnCount();
-         
+        cmbReportCent.getItems().clear();
          while(rs.next()){
-             for(int i= 1; i<=columns; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 rowCent.add(value);
-                 
-             }
+            rowCent.add(rs.getString("revenue_center"));
+            centerID.put(rs.getString("daily_revCenter"), rs.getString("revenue_center"));
+            if (rs.getString("revenue_category").equals("PROPERTY RATE SECTION")){
+                Condition = true;
+            }
+            if (rs.getString("daily_revCenter").equals("K0201") || rs.getString("daily_revCenter").equals("K0202") || rs.getString("daily_revCenter").equals("K0203") || rs.getString("daily_revCenter").equals("K0204") || rs.getString("daily_revCenter").equals("K0205")){
+                subMetroPR = true;
+            }
          }
-         cmbReportCent.getItems().clear();
+        if (Condition){
+            rowCent.add("PROPERTY RATE ALL");
+        }
+        if (subMetroPR){
+            rowCent.add("PROPERTY RATE SUB-METROS");
+        }
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);
     
@@ -143,19 +143,19 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     
      
     private void getReportYear() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+            stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `revenueYear`");
+        } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+            stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND `daily_revCenter` = 'K0201' OR `daily_revCenter` = 'K0202' OR `daily_revCenter` = 'K0203' OR `daily_revCenter` = 'K0204' OR `daily_revCenter` = 'K0205' GROUP BY `revenueYear`");
+        }
+        else {
+            stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+        }
+//        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         ResultSet rs = stmnt.executeQuery();
-        ResultSetMetaData meta = rs.getMetaData();
-        int colum = meta.getColumnCount();
         rowYear.clear();
         while(rs.next()){
-            for(int i= 1; i<=colum; i++)
-             {
-                 String value = rs.getObject(i).toString();
-                 
-                 rowYear.add(value);
-                 
-             }
+            rowYear.add(rs.getString("revenueYear"));
         }
         cmbReportYear.getItems().clear();
         cmbReportYear.getItems().setAll(rowYear);
@@ -192,7 +192,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
            colAmtPayed.setCellValueFactory(data -> data.getValue().AmtPayedProperty());
            colDiff.setCellValueFactory(data -> data.getValue().DiffProperty());
            colRemarks.setCellValueFactory(data -> data.getValue().RmksProperty());
-           getReport = new GetColPay(month, acRepMonth, acPayMonth, acDiff, rmks);
+            GetColPay getReport = new GetColPay(month, acRepMonth, acPayMonth, acDiff, rmks);
            tblColPayAnalysis.getItems().add(getReport);
            repMonth = 0;
            payMonth = 0;
@@ -203,23 +203,19 @@ public class Collection_PaymentAnalysisReportController implements Initializable
         
        public Float setReptMonthSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
+           if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+Year+"' AND `revenueMonth` = '"+Month+"' ");
+           } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenueYear` = '"+Year+"' AND `revenueMonth` = '"+Month+"' AND `CenterID` = `daily_revCenter` AND `daily_revCenter` = 'K0201' OR `daily_revCenter` = 'K0202' OR `daily_revCenter` = 'K0203' OR `daily_revCenter` = 'K0204' OR `daily_revCenter` = 'K0205' ");
+           }
+           else {
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenueMonth` = '"+Month+"' ");
+           }
+//       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-               if(j == 1){
-           String revitem =rs.getObject(j).toString();
-           BigDecimal rp= new BigDecimal(Float.parseFloat(revitem));
-           rp.stripTrailingZeros().toPlainString();
-//           int rev = Integer.parseInt(revitem);
-           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
-           System.out.println(rp.stripTrailingZeros().toPlainString());
-           }
-           }     
+           Amount.add(rs.getFloat("revenueAmount"));
        }
         totalAmunt = 0;
         if(Amount.isEmpty()){
@@ -234,19 +230,19 @@ public class Collection_PaymentAnalysisReportController implements Initializable
         
        public Float setPayMonthSum(String Center, String Month, String Year) throws SQLException{
         float totalAmunt;
-       stmnt = con.prepareStatement(" SELECT `Amount`   FROM `collection_payment_entries` WHERE `Month` = '"+Month+"' AND `pay_revCenter` = '"+Center+"' AND `Year` = '"+Year+"'  ");
+           if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+               stmnt = con.prepareStatement(" SELECT `Amount` FROM `revenue_centers`,`collection_payment_entries` WHERE `CenterID` = `pay_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' AND `Year` = '"+Year+"' AND `Month` = '"+Month+"'  ");
+           } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+               stmnt = con.prepareStatement(" SELECT `Amount` FROM `revenue_centers`,`collection_payment_entries` WHERE `Year` = '"+Year+"' AND `Month` = '"+Month+"' AND `pay_revCenter` = `CenterID` AND `pay_revCenter` = 'K0201' OR `pay_revCenter` = 'K0202' OR `pay_revCenter` = 'K0203' OR `pay_revCenter` = 'K0204' OR `pay_revCenter` = 'K0205' ");
+           }
+           else {
+               stmnt = con.prepareStatement(" SELECT `Amount` FROM `revenue_centers`,`collection_payment_entries` WHERE `CenterID` = `pay_revCenter` AND`revenue_center` = '"+Center+"' AND `Year` = '"+Year+"' AND `Month` = '"+Month+"'  ");
+           }
+//       stmnt = con.prepareStatement(" SELECT `Amount`   FROM `collection_payment_entries` WHERE  `pay_revCenter` = '"+Center+"' AND `Year` = '"+Year+"' AND `Month` = '"+Month+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ResultSetMetaData meta= rs.getMetaData();
-       int row = 0 ;        
-       int col = meta.getColumnCount();
        ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           for(int j=1; j<=col; j++){
-               if(j == 1){
-           String revitem =rs.getObject(j).toString();
-           Amount.add(Float.parseFloat(revitem));//adding revenue items to list
-           }
-           }     
+           Amount.add(rs.getFloat("Amount"));
        }
         totalAmunt = 0;
         if(Amount.isEmpty()){

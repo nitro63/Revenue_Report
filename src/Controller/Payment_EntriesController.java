@@ -108,7 +108,7 @@ public class Payment_EntriesController implements Initializable {
    public Pattern p = Pattern.compile(regex);
 //    public  Stage stg;
         
-        String Date, Item, Code, Month, Amount, Week, Year, RevCent, GCR, Type;
+        String Date, Item, Code, Month, Amount, Week, Year, RevCent, RevCentID, GCR, Type;
     Map<String, ArrayList<String>> regGcr = new HashMap<>();
     Map<String, ArrayList<String>> monthGCR = new HashMap<>();
     Map<String, Map<String, ArrayList<String>>> dateGCR = new HashMap<>();
@@ -153,6 +153,8 @@ public class Payment_EntriesController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        RevCent = GetCenter.getRevCenter();
+        RevCentID = GetCenter.getCenterID();
         Calendar cal = Calendar.getInstance();
         spnColYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get
                 (Calendar.YEAR)));
@@ -186,10 +188,9 @@ public class Payment_EntriesController implements Initializable {
 
     @FXML
     private void saveEntries(ActionEvent event) {
-      RevCent = GetCenter.getRevCenter();
       GCR = txtEntGCR.getText();
       Type = cmbPayType.getSelectionModel().getSelectedItem();
-      registerItem.put("", new ArrayList());
+      registerItem.put("", new ArrayList<>());
                
         LocalDate date = entDatePck.getValue();// Assigning the date picker value to a variable 
         //Making sure Datepicker is never empty :)
@@ -302,8 +303,7 @@ public class Payment_EntriesController implements Initializable {
         colPayType.setCellValueFactory(data -> data.getValue().TypeProperty());
         double initeAmount = Double.parseDouble(txtEntAmt.getText());
         NumberFormat formatter = new DecimalFormat("#,###.00");
-        String initAmount = formatter.format(initeAmount);
-        Amount= initAmount;
+               Amount= formatter.format(initeAmount);
         if("0.00".equals(Amount)){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
@@ -322,7 +322,7 @@ public class Payment_EntriesController implements Initializable {
             cmbPayType.getSelectionModel().clearSelection();
 
                 if(!registerItem.containsKey(Type)){
-                    registerItem.put(Type, new ArrayList());
+                    registerItem.put(Type, new ArrayList<>());
                     registerItem.get(Type).add(i);
                 }else if(registerItem.containsKey(Type) && !registerItem.get(Type).contains(i)){
                     registerItem.get(Type).add(i);
@@ -349,9 +349,7 @@ public class Payment_EntriesController implements Initializable {
                     DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             txtEntAmt.setText(m.replaceAll(""));
             txtEntGCR.setText(tblCollection.getSelectionModel().getSelectedItem().getGCR());
-            if (registerItem.get(cmbPayType.getSelectionModel().getSelectedItem()).contains(txtEntGCR.getText())){
-                registerItem.get(cmbPayType.getSelectionModel().getSelectedItem()).remove(txtEntGCR.getText());
-            }
+            registerItem.get(cmbPayType.getSelectionModel().getSelectedItem()).remove(txtEntGCR.getText());
             ObservableList<GetCollectEnt> selectedRows = tblCollection.getSelectionModel().getSelectedItems();
             ArrayList<GetCollectEnt> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblCollection.getItems().remove(row));
@@ -373,10 +371,9 @@ public class Payment_EntriesController implements Initializable {
         String id = UUID.randomUUID().toString(),
                 is = id.replace("-", "").substring(9,12),
                 ID = id.replace("-", "").substring(17,20),
-                si = id.replace("-", "").substring(23,25),
-                fini = is+ID+si.concat(Day).concat(date).concat(month).
-                        concat(year).concat(hour).concat(minute).concat(second).concat(milli);
-        return fini;
+                si = id.replace("-", "").substring(23,25);
+        return is+ID+si.concat(Day).concat(date).concat(month).
+                concat(year).concat(hour).concat(minute).concat(second).concat(milli);
     }
 
     @FXML
@@ -465,8 +462,7 @@ public class Payment_EntriesController implements Initializable {
                             codeGCR.put("ChqDpS-" + getData.getGCR(), getData.getGCR());
                     }
                 }
-                stmnt = con.prepareStatement("SELECT * FROM `collection_payment_entries` WHERE  " +
-                        "`pay_revCenter` = '" + acCENTER + "' AND `GCR` = '" + acGCR + "' AND `payment_type` = '" + acType + "'");
+                stmnt = con.prepareStatement("SELECT `GCR` FROM `revenue_centers`,`collection_payment_entries` WHERE `revenue_centers`.`CenterID` = `collection_payment_entries`.`pay_revCenter` AND `revenue_centers`.`revenue_center`= '" + acCENTER + "' AND `GCR` = '" + acGCR + "' AND `payment_type` = '" + acType + "'");
                 ResultSet res = stmnt.executeQuery();
                 while (res.next()) {
                     duplicate.add(res.getString("GCR"));
@@ -480,8 +476,7 @@ public class Payment_EntriesController implements Initializable {
                     boolean condition = true;
                     ArrayList<String> dup = new ArrayList<>();
                     while (condition) {
-                        stmnt = con.prepareStatement("SELECT `pay_ID` FROM `collection_payment_entries` WHERE `pay_ID` = " +
-                                "'" + fini + "' ");
+                        stmnt = con.prepareStatement("SELECT `pay_ID` FROM `collection_payment_entries` WHERE `pay_ID` = '" + fini + "' ");
                         ResultSet rt = stmnt.executeQuery();
                         while (rt.next()) {
                             dup.add(rt.getString("pay_ID"));
@@ -505,7 +500,7 @@ public class Payment_EntriesController implements Initializable {
                         }
                     }
                     stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`pay_revCenter`, `GCR`," +
-                            " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `pay_ID`) VALUES ('" + acCENTER + "', '" +
+                            " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `pay_ID`) VALUES ('" + RevCentID + "', '" +
                             acGCR + "' ,'" + acAMOUNT + "', '" + acDate + "', '" + acMonth + "', '" + acYEAR + "', '" +
                             acType + "', '" + fini + "')");
                     stmnt.executeUpdate();
@@ -521,7 +516,7 @@ public class Payment_EntriesController implements Initializable {
                 FXMLLoader bankDetails = new FXMLLoader();
                 bankDetails.setLocation(getClass().getResource("/Views/fxml/Bank_DetailsEntries.fxml"));
                 bankDetails.setController(new Bank_DetailsEntriesController());
-                Bank_DetailsEntriesController bnkDtls = (Bank_DetailsEntriesController)bankDetails.getController();
+                Bank_DetailsEntriesController bnkDtls = bankDetails.getController();
                 bnkDtls.setAppController(this);
                 Parent root = bankDetails.load();
                 Scene s = new Scene(root);

@@ -193,7 +193,6 @@ public class Revenue_EntriesController  implements Initializable {
    
     @FXML
     private void saveEntries(ActionEvent event) throws IOException {
-        
       LocalDate date = entDatePck.getValue();// Assigning the date picker value to a variable
       //Making sure Datepicker is never empty :)
       if(entDatePck.getValue() == null){
@@ -324,8 +323,6 @@ public class Revenue_EntriesController  implements Initializable {
         GetEntries getData = new GetEntries();
         ObservableList<String> duplicate = FXCollections.observableArrayList();
         List <List<String>> arrList = new ArrayList<>();
-        
-        
         for(int i = 0; i <= revTable.getItems().size(); i++){
             if (i != revTable.getItems().size()){
                 getData = revTable.getItems().get(i);
@@ -344,16 +341,10 @@ public class Revenue_EntriesController  implements Initializable {
             int acYear = Integer.parseInt(getData.getYear());
             stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `revenueItem` = '"+acCode+"'" +
                     " AND `revenueDate` = '"+acDate+"' AND `daily_revCenter` = '"+RevCent+"' ");
-            rs = stmnt.executeQuery();       
-            metaData = rs.getMetaData();
-            int columns = metaData.getColumnCount();
+            rs = stmnt.executeQuery();
             while(rs.next()){
-
                         String dup = rs.getString("revenueItem");
                         duplicate.add(dup);
-
-
-
             }
             if(duplicate.contains(acCode)){
                 lblDup.setText("Revenue for "+'"'+getData.getItem()+'"'+ " on "+'"'+ getData.getDate()+'"'+" already exist. Please delete or edit duplicate.");
@@ -429,7 +420,7 @@ public class Revenue_EntriesController  implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/commissionEntries.fxml"));
         loader.setController(new commissionEntriesController(GetCenter));
-        commissionEntriesController bnkDtls = (commissionEntriesController) loader.getController();
+        commissionEntriesController bnkDtls = loader.getController();
         bnkDtls.setappController(this);
         Parent root = loader.load();
         Scene s = new Scene(root);
