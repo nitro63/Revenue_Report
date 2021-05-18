@@ -1,0 +1,5 @@
+Check if database connection is successful
+if not prompt dialog request for connection
+Check if there is a saved session from last login
+if yes preload fields with username and password
+if no input fields check for errors and empty fields
