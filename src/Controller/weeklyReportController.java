@@ -279,7 +279,7 @@ public class weeklyReportController implements Initializable {
     ObservableList<String> rowWeek =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
     int Year;
-    boolean condSubMetro, subMetroPR, Condition;
+    public boolean condSubMetro, subMetroPR, Condition;
     GetFunctions getFunctions = new GetFunctions();
     
     public weeklyReportController() throws SQLException, ClassNotFoundException{

@@ -24,3 +24,18 @@ public Stage stage;
         stage.setScene(scene);
         stage.show();
     }
+
+
+    public Stage stage;
+        @Override
+        public void start(Stage stage) throws Exception {
+            this.stage = stage;
+            FXMLLoader firstLoader = new FXMLLoader(getClass().getResource("/Views/fxml/Login.fxml"));
+            firstLoader.setController(new LogInController());
+            Parent root = firstLoader.load();
+            Scene scene = new Scene(root);
+            stage.setTitle("Login Prompt");
+            stage.getIcons().add(new Image("/Assets/kmalogo.png"));
+            stage.setScene(scene);
+            stage.show();
+        }

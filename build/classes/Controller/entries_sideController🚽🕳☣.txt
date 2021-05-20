@@ -473,8 +473,12 @@ BankUpdate in update entries(
                             }
                             }else {}
 ).
-
+bc5qpejl
 
 
 PASSWORD FOR EDNA OPOKU GOOGLE ACCOUNT: ednaopoku105@gmail.com
 edd!ebab7
+
+AND `first_serial` = '"+acFirstSerial+"' AND `last_serial` = '"+acLastSerial+"'
+
+KEityibBetN8-ebit account

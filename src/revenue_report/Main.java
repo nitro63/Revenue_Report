@@ -6,6 +6,7 @@
 package revenue_report;
 
 import Controller.LogInController;
+import Controller.appController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,21 +14,27 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 /**
  *
  * @author NiTrO
  */
 public class Main extends Application {
 
-public Stage stage;
+    public Stage stage;
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        FXMLLoader firstLoader = new FXMLLoader(getClass().getResource("/Views/fxml/Login.fxml"));
-        firstLoader.setController(new LogInController());
+        initial(stage);
+    }
+
+    public void initial(Stage stage) throws IOException {
+        FXMLLoader firstLoader = new FXMLLoader(getClass().getResource("/Views/fxml/app.fxml"));
+        firstLoader.setController(new appController());
         Parent root = firstLoader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Login Prompt");
+        stage.setTitle("Revenue Monitoring System");
         stage.getIcons().add(new Image("/Assets/kmalogo.png"));
         stage.setScene(scene);
         stage.show();

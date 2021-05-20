@@ -38,18 +38,6 @@
                         <Insets bottom="10.0" top="10.0" />
                     </VBox.margin>
                 </HBox>
-                <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="103.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
-                    <children>
-                        <Button fx:id="btnView" mnemonicParsing="false" onAction="#showView" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="VIEW">
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                        </Button>
-                    </children>
-                    <VBox.margin>
-                        <Insets top="20.0" />
-                    </VBox.margin>
-                </HBox>
                 <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="107.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
                     <children>
                         <Button fx:id="btnAssignItem" mnemonicParsing="false" onAction="#showAssignItem" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="ASSIGN ITEM" textAlignment="CENTER" wrapText="true">
