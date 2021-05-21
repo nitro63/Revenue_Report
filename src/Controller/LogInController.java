@@ -68,8 +68,8 @@ public class LogInController implements Initializable {
     public static String loggerCenter = null;
     public static boolean userCenter, submetro, admin, OverAllAdmin, Accountant, clerk;
 
-    public LogInController() throws SQLException, ClassNotFoundException {
-    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Connection con = DBConnection.getConn();
