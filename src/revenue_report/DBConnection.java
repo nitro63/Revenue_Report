@@ -5,6 +5,8 @@
  */
 package revenue_report;
 
+import Controller.PromptDialogController;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,9 +20,23 @@ public class DBConnection {
     private static final String Password = "";
 
 
-    public static Connection getConn() throws SQLException, ClassNotFoundException{        
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/"
-                + "revenue_monitoring" + "?useTimezone=true&serverTimezone=UTC&autoReconnect=true", Username, Password);
+    public static Connection getConn() {
+        Connection con ;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/"
+                    + "revenue_monitoring" + "?useTimezone=true&serverTimezone=UTC&autoReconnect=true", Username, Password);
+        }catch (SQLException e) {
+            e.printStackTrace();
+            if (e.getErrorCode() == 0) { //Error Code 0: database server offline
+                new PromptDialogController("Error!", "Database server is offline!");
+            }
+            return null;
+        }
+        return con;
     }
 }
