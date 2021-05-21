@@ -63,10 +63,10 @@ public class LogInController implements Initializable {
     private Label warnlabel;
 //    private final Connection con;
     private PreparedStatement stmnt;
-    public static String loggerUsername = null;
-    public static String loggerAccessLevel = null;
-    public static String loggerCenter = null;
-    public static boolean userCenter, submetro, admin, OverAllAdmin, Accountant, clerk;
+    public static String loggerUsername = "";
+    public static String loggerAccessLevel = "";
+    public static String loggerCenter = "";
+    public static boolean hasCenter, submetro, admin, OverAllAdmin, Accountant, clerk;
 
 
 
@@ -151,12 +151,11 @@ public class LogInController implements Initializable {
                         logIn.setScene(s);
                         login.close();
                         logIn.show();
-                    System.out.println(username+"\n"+password);
                 } else {
                     warnlabel.setVisible(true);
                 }
-                if (!loggerCenter.isEmpty()){
-                    userCenter = true;
+                if (loggerCenter != null){
+                    hasCenter = true;
                 }
         }
     }

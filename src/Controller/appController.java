@@ -65,6 +65,7 @@ public  appController() {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    System.out.println(LogInController.userCenter);
         ActionEvent event = null;
         txtUser.setText(LogInController.loggerUsername);
         try {

@@ -51,7 +51,6 @@ public class GetFunctions {
 //        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
 //        cal.setTime(setDate);//Setting time to Calendar variable
         String Quarter = Integer.toString(date.get(IsoFields.QUARTER_OF_YEAR));
-        System.out.println(date);
         return Quarter;
     }
 

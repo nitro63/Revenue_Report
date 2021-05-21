@@ -28,51 +28,52 @@ public class InitializerController implements Initializable {
     private static final int THREAD_SLEEP_INTERVAL = 50;
     @FXML
     private JFXProgressBar progressIndicator;
-    Stage currentSatge;
+    Stage currentSatge, appStage;
     @FXML
     private Label taskName;
     public String sessionUser = LogInController.loggerUsername;
+    public static final String userCenter = null;
                                                    //The field is initiated from LogInController Class
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        LoadRecords initializerTask = new LoadRecords();
+//        LoadRecords initializerTask = new LoadRecords();
         progressIndicator.progressProperty().unbind();
        // progressIndicator.progressProperty().bind(t.progressProperty());
         taskName.textProperty().unbind();
-        taskName.textProperty().bind(initializerTask.messageProperty());
+//        taskName.textProperty().bind(initializerTask.messageProperty());
 
-        new Thread(initializerTask).start();
+//        new Thread(initializerTask).start();
 
         //Loading Main Application upon initializer task's succession
-        initializerTask.setOnSucceeded(e -> {
+//        initializerTask.setOnSucceeded(e -> {
             //Closing Current Stage
             currentSatge = (Stage) taskName.getScene().getWindow();
             currentSatge.close();
             loadApplication();
-        });
+//        });
     }
 
     private void loadApplication() {
         //Creating a new stage for main application
         Parent root = null;
         Stage base = new Stage();
-
         try {
-            root = FXMLLoader.load(getClass().getResource("/main/resources/view/base.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/fxml/app.fxml"));
+            loader.setController(new appController());
+            root = loader.load();
             Scene scene = new Scene(root);
-            String css = this.getClass().getResource("/main/resources/css/base.css").toExternalForm();
-            scene.getStylesheets().add(css);
-            base.setTitle("Inventory System");
-            base.getIcons().add(new Image("/main/resources/icons/Logo.png"));
+            base.setTitle("Revenue Monitoring System");
+            base.getIcons().add(new Image("/Assets/kmalogo.png"));
             base.setScene(scene);
             base.setMaximized(true);
             base.show();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        this.appStage = base;
     }
 
-    class LoadRecords extends Task {
+   /* class LoadRecords extends Task {
         @Override
         protected Object call() throws Exception {
             Connection connection = DBConnection.getConn();
@@ -350,5 +351,5 @@ public class InitializerController implements Initializable {
 
             return null;
         }
-    }
+    }*/
 }
