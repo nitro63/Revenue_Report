@@ -48,7 +48,7 @@ public class Main extends Application {
         firstLoader.setController(new LogInController());
         Parent root = firstLoader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Login Prompt");
+        stage.setTitle("Revenue Monitoring System");
         stage.getIcons().add(new Image("/Assets/kmalogo.png"));
         stage.setScene(scene);
         stage.show();

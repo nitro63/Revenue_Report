@@ -17,7 +17,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import revenue_report.DBConnection;
-import revenue_report.Main;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,7 +57,6 @@ public class LogInController implements Initializable {
 
     @FXML
     private JFXCheckBox chkSaveCredentials;
-
     @FXML
     private Label warnlabel;
 //    private final Connection con;
@@ -68,8 +66,8 @@ public class LogInController implements Initializable {
     public static String loggerCenter = null;
     public static boolean userCenter, submetro, admin, OverAllAdmin, Accountant, clerk;
 
-
-
+    public LogInController() throws SQLException, ClassNotFoundException {
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Connection con = DBConnection.getConn();
@@ -160,6 +158,7 @@ public class LogInController implements Initializable {
                 }
         }
     }
+
 
 
     @FXML
