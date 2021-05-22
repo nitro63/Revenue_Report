@@ -65,11 +65,10 @@ public  appController() {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    System.out.println(LogInController.userCenter);
-        ActionEvent event = null;
+    System.out.println(LogInController.admin);
         txtUser.setText(LogInController.loggerUsername);
         try {
-            showSDHME(event);
+            showSDHME(null);
         } catch (IOException ex) {
             Logger.getLogger(appController.class.getName()).log(Level.SEVERE, null, ex);
         }

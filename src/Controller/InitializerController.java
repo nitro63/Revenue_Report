@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.Gets.GetUser;
 import com.jfoenix.controls.JFXProgressBar;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,8 +32,10 @@ public class InitializerController implements Initializable {
     Stage currentSatge, appStage;
     @FXML
     private Label taskName;
+    private PreparedStatement stmnt;
+    private ResultSet rs;
     public String sessionUser = LogInController.loggerUsername;
-    public static final String userCenter = null;
+    public static String userCenter, userCategory;
                                                    //The field is initiated from LogInController Class
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,6 +74,41 @@ public class InitializerController implements Initializable {
             ex.printStackTrace();
         }
         this.appStage = base;
+    }
+
+    class LoadRecords extends Task{
+        @Override
+        protected Object call() throws Exception{
+            Connection con = DBConnection.getConn();
+            ObservableList<GetUser> usersList = FXCollections.observableArrayList();
+            ObservableList<GetUser> userList = FXCollections.observableArrayList();
+            if (LogInController.hasCenter){
+                stmnt = con.prepareStatement("SELECT `revenue_category`, `revenue_center` FROM `user`, `revenue_centers` WHERE `username` = '"+LogInController.loggerUsername+"' `center` = `CenterID`");
+                rs = stmnt.executeQuery();
+                while (rs.next()){
+                   userCenter = rs.getString("revenue_center");
+                   userCategory = rs.getString("revenue_category");
+                }
+            }
+            if (LogInController.OverAllAdmin && !LogInController.hasCenter){
+                this.updateMessage("Loading users details....");
+                Thread.sleep(THREAD_SLEEP_INTERVAL);
+                stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `access_level` = `access_ID`");
+                rs = stmnt.executeQuery();
+                while (rs.next()){
+                    GetUser newUser =new GetUser(
+                            rs.getString("username"),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("level")
+                    );
+                    usersList.add(newUser);
+                }
+            }
+            return null;
+        }
     }
 
    /* class LoadRecords extends Task {

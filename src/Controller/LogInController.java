@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import revenue_report.DBConnection;
 import revenue_report.Main;
 
+import javax.sql.rowset.spi.SyncResolver;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -63,10 +64,11 @@ public class LogInController implements Initializable {
     private Label warnlabel;
 //    private final Connection con;
     private PreparedStatement stmnt;
-    public static String loggerUsername = "";
-    public static String loggerAccessLevel = "";
-    public static String loggerCenter = "";
-    public static boolean hasCenter, submetro, admin, OverAllAdmin, Accountant, clerk;
+    public static String loggerUsername;
+    public static String loggerAccessLevel;
+    public static String loggerCenter;
+    public static String accessID;
+    public static boolean hasCenter, admin, OverAllAdmin, Accountant, clerk, supervisor;
 
 
 
@@ -84,7 +86,8 @@ public class LogInController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        btnLogIn.setOnMouseClicked(e -> warnlabel.setVisible(false));
+        if (warnlabel.isVisible()){
+        btnLogIn.setOnMouseClicked(e -> warnlabel.setVisible(false));}
         txtPasswordShown.setVisible(false);
         txtUsername.setOnMouseClicked(event -> lblWarnUsername.setVisible(false));
         txtPasswordShown.setOnMouseClicked(event -> lblWarnPassword.setVisible(false));
@@ -124,6 +127,7 @@ public class LogInController implements Initializable {
                     loggerUsername = rs.getString("username");
                     loggerAccessLevel = rs.getString("level");
                     loggerCenter = rs.getString("center");
+                    accessID = rs.getString("access_level");
 
 
                     //Checking for Save Credential CheckBox
@@ -135,7 +139,17 @@ public class LogInController implements Initializable {
                         PreparedStatement saveCredents = con.prepareStatement("INSERT INTO `usercredent`(`username`, `password`) VALUES ('"+username+"', '"+password+"')");
                         saveCredents.executeUpdate();
                     }
-
+                    //Checking to see if we could exclude Overall Admin and Yah we have a way to do that
+                    /*
+                    stmnt = con.prepareStatement("SELECT `level`, `username`, `access_level` FROM `user`, `access_levels` WHERE `access_level` != 'Lvl_1' AND `access_ID` = `access_level`");
+                    rs = stmnt.executeQuery();
+                    while (rs.next()){
+                        if (rs.getString("access_level").equals("Lvl_1")){
+                            System.out.println("Shit it got selected");
+                        }else {
+                            System.out.println("less Privileged " + rs.getString("username"));
+                        }
+                    }*/
                     Stage login = (Stage) btnLogIn.getScene().getWindow(); //Getting current window
 //                    Stage logIn = new Main().stage;
                     Stage logIn = new Stage();
@@ -151,12 +165,31 @@ public class LogInController implements Initializable {
                         logIn.setScene(s);
                         login.close();
                         logIn.show();
+                    if (loggerCenter != null){
+                        hasCenter = true;
+                    }
+                    switch (accessID){
+                        case "Lvl_1":
+                            OverAllAdmin = true;
+                            break;
+                        case "Lvl_2":
+                            admin = true;
+                            break;
+                        case "Lvl_3":
+                            Accountant = true;
+                            break;
+                        case "Lvl_4":
+                            clerk = true;
+                            break;
+                        case "Lvl_5":
+                            supervisor = true;
+                            break;
+
+                    }
                 } else {
                     warnlabel.setVisible(true);
                 }
-                if (loggerCenter != null){
-                    hasCenter = true;
-                }
+
         }
     }
 
