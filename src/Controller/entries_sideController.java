@@ -67,6 +67,7 @@ public class entries_sideController  implements Initializable {
     private Button btnTargEntries;
     @FXML
     private Button btnPaymentDetails;
+    InitializerController init = new InitializerController();
 
      /***
       */
@@ -105,8 +106,18 @@ public class entries_sideController  implements Initializable {
             SetRevenueCenters();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }try {
+            if (LogInController.hasCenter){
+            cmbRevGroup.getSelectionModel().select(InitializerController.userCategory);
+            cmbRevGroup.setDisable(true);
+            SetCenters();
+            cmbRevCent.getSelectionModel().select(InitializerController.userCenter);
+            cmbRevCent.setDisable(true);
+            }
+        } catch (SQLException throwables) {
+                throwables.printStackTrace();
         }
-    }  
+    }
     
     
     public void SetRevenueCenters() throws SQLException {

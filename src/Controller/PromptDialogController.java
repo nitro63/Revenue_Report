@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class PromptDialogController {
     /**
@@ -28,7 +29,7 @@ public class PromptDialogController {
         stg.setResizable(false);
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Views/fxml/dialog.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Views/fxml/dialog.fxml")));
             Scene s = new Scene(root);
 
             //Getting useful nodes from FXML to set error report

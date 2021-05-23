@@ -156,8 +156,8 @@ public class LogInController implements Initializable {
                     Parent root = null;
 
                     //Moving to InitializerController Class to load all required main.resources
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/fxml/app.fxml"));
-                        loader.setController(new appController());
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/fxml/Initializer.fxml"));
+                        loader.setController(new InitializerController());
                         root = loader.load();
                         Scene s = new Scene(root);
                         logIn.setTitle("Revenue Monitoring System");
@@ -165,9 +165,7 @@ public class LogInController implements Initializable {
                         logIn.setScene(s);
                         login.close();
                         logIn.show();
-                    if (loggerCenter != null){
-                        hasCenter = true;
-                    }
+                    hasCenter = loggerCenter != null;
                     switch (accessID){
                         case "Lvl_1":
                             OverAllAdmin = true;

@@ -52,8 +52,11 @@ public class appController  implements Initializable{
     @FXML
     private VBox leftPane;
     GetRevCenter GetCenter = new GetRevCenter();
-    LogInController getLogin ;
-    
+    LogInController getLogin ;/*
+     InitializerController app;
+     public void setappController(InitializerController app){
+         this.app = app;
+     }*/
 
 public  appController() {
          }
@@ -65,7 +68,7 @@ public  appController() {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    System.out.println(LogInController.admin);
+        System.out.println(InitializerController.userCategory+"\t"+ InitializerController.userCenter);
         txtUser.setText(LogInController.loggerUsername);
         try {
             showSDHME(null);

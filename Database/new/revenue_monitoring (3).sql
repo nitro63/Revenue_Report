@@ -30,7 +30,7 @@ USE `revenue_monitoring`;
 -- Table structure for table `access_levels`
 --
 
-DROP TABLE IF EXISTS `access_levels`;
+
 CREATE TABLE IF NOT EXISTS `access_levels` (
   `access_ID` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `level` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -54,7 +54,7 @@ INSERT INTO `access_levels` (`access_ID`, `level`) VALUES
 -- Table structure for table `center_items`
 --
 
-DROP TABLE IF EXISTS `center_items`;
+
 CREATE TABLE IF NOT EXISTS `center_items` (
   `assign_center` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `assign_item` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -81,7 +81,7 @@ INSERT INTO `center_items` (`assign_center`, `assign_item`, `assign_code`) VALUE
 -- Table structure for table `cheque_details`
 --
 
-DROP TABLE IF EXISTS `cheque_details`;
+
 CREATE TABLE IF NOT EXISTS `cheque_details` (
   `cheque_ID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `payment_ID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `cheque_details` (
 -- Table structure for table `collection_payment_entries`
 --
 
-DROP TABLE IF EXISTS `collection_payment_entries`;
+
 CREATE TABLE IF NOT EXISTS `collection_payment_entries` (
   `pay_ID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pay_revCenter` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -128,7 +128,7 @@ INSERT INTO `collection_payment_entries` (`pay_ID`, `pay_revCenter`, `GCR`, `Amo
 -- Table structure for table `commission_details`
 --
 
-DROP TABLE IF EXISTS `commission_details`;
+
 CREATE TABLE IF NOT EXISTS `commission_details` (
   `commission_center` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `commission_ID` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -155,7 +155,7 @@ INSERT INTO `commission_details` (`commission_center`, `commission_ID`, `commiss
 -- Table structure for table `daily_entries`
 --
 
-DROP TABLE IF EXISTS `daily_entries`;
+
 CREATE TABLE IF NOT EXISTS `daily_entries` (
   `daily_revCenter` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `revenueItem` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -192,7 +192,7 @@ INSERT INTO `daily_entries` (`daily_revCenter`, `revenueItem`, `revenueAmount`, 
 -- Table structure for table `revenue_centers`
 --
 
-DROP TABLE IF EXISTS `revenue_centers`;
+
 CREATE TABLE IF NOT EXISTS `revenue_centers` (
   `CenterID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `revenue_category` varchar(70) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -216,7 +216,7 @@ INSERT INTO `revenue_centers` (`CenterID`, `revenue_category`, `revenue_center`)
 -- Table structure for table `revenue_items`
 --
 
-DROP TABLE IF EXISTS `revenue_items`;
+
 CREATE TABLE IF NOT EXISTS `revenue_items` (
   `revenue_item_ID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `revenue_item` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -329,7 +329,6 @@ INSERT INTO `revenue_items` (`revenue_item_ID`, `revenue_item`, `item_category`)
 -- Table structure for table `target_entries`
 --
 
-DROP TABLE IF EXISTS `target_entries`;
 CREATE TABLE IF NOT EXISTS `target_entries` (
   `target_revCenter` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Amount` float NOT NULL,
@@ -404,7 +403,6 @@ INSERT INTO `usercredent` (`username`, `password`) VALUES
 -- Table structure for table `value_books_details`
 --
 
-DROP TABLE IF EXISTS `value_books_details`;
 CREATE TABLE IF NOT EXISTS `value_books_details` (
   `value_book_ID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value_books` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
