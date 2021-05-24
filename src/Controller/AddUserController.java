@@ -1,4 +1,5 @@
 package Controller;
+import Controller.Gets.Conditioner;
 import Controller.Gets.GetUser;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -13,6 +14,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import revenue_report.DBConnection;
 
@@ -76,6 +80,26 @@ public class AddUserController  implements Initializable {
     @FXML
     private TableColumn<GetUser, String> colPass;
 
+    @FXML
+    private TableColumn<GetUser, String> colRevenueCenter;
+
+    @FXML
+    private JFXTextField txtLname;
+
+    @FXML
+    private JFXTextField txtFname;
+
+    @FXML
+    private JFXComboBox<?> cmbRevenueCenter;
+
+    private final Connection con;
+    private PreparedStatement stmnt;
+    private String username;
+
+    public AddUserController ()throws SQLException, ClassNotFoundException {
+        this.con = DBConnection.getConn();
+    }
+
     /**
      * Initializes the controller class.
      * @param url
@@ -83,6 +107,14 @@ public class AddUserController  implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+
+    }
+
+    public void setAddUser() throws SQLException {
+        username = LogInController.loggerUsername;
+        if (LogInController.OverAllAdmin)
+        stmnt = con.prepareStatement("SELECT ");
 
     }
 
