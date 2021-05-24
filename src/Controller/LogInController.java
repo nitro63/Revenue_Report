@@ -83,8 +83,8 @@ public class LogInController implements Initializable {
                 txtUsername.setText(resultSet.getString("username")); //Getting Saved Username
                 txtPassword.setText(resultSet.getString("password")); //Getting Saved Password
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException  e) {
+            e.printStackTrace();
         }
         if (warnlabel.isVisible()){
         btnLogIn.setOnMouseClicked(e -> warnlabel.setVisible(false));}
@@ -94,7 +94,7 @@ public class LogInController implements Initializable {
         txtPassword.setOnMouseClicked(event -> lblWarnPassword.setVisible(false));
     }
 
-        void userLogger() throws SQLException, IOException {
+        void userLogger() throws SQLException, ClassNotFoundException, IOException {
         //Taking input from the username & password fields
         String username = txtUsername.getText();
         String password;
@@ -207,12 +207,12 @@ public class LogInController implements Initializable {
     }
 
     @FXML
-    void ctrlLogInCheck(ActionEvent event) throws SQLException, IOException {
+    void ctrlLogInCheck(ActionEvent event) throws SQLException, IOException, ClassNotFoundException {
         userLogger();
     }
 
     @FXML
-    void onEnterKey(KeyEvent event) throws SQLException, IOException {
+    void onEnterKey(KeyEvent event) throws SQLException, IOException, ClassNotFoundException {
         if(event.getCode().equals(KeyCode.ENTER)) {
             userLogger();
         }
