@@ -222,7 +222,8 @@ public class AddUserController  implements Initializable {
                 txtPassConf.getText().matches("\\s+") || txtPasswordConfirmShown.getText().matches("\\s+") ||
                 txtFname.getText().matches("\\s+") || txtLname.getText().matches("\\s+") ||
                 txtFname.getText().equals("") || txtLname.getText().equals("") ||
-                txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")) {
+                txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")
+                || cboAccessLevel.getSelectionModel().isEmpty()) {
             flag = false;
             JFXSnackbar s = new JFXSnackbar(empPane);
             s.setStyle("-fx-background-color: red");
@@ -233,9 +234,22 @@ public class AddUserController  implements Initializable {
             JFXSnackbar s = new JFXSnackbar(empPane);
             s.setStyle("-fx-background-color: red");
             s.show("Passwords did not match", 5000);
-        }else
+        } else if (LogInController.hasCenter && cmbRevenueCenter.getSelectionModel().isEmpty()){
+            flag = false;
+            JFXSnackbar s = new JFXSnackbar(empPane);
+            s.setStyle("-fx-background-color: red");
+            s.show("Select Center!", 5000);
+        }
 
         if (flag) {
+            String levelID = cboAccessLevel.getSelectionModel().getSelectedItem(), lname = txtLname.getText(),
+                    fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password ;
+            if(chkPasswordMask.isSelected()) {
+                password = txtPasswordShown.getText();
+            }
+            else{
+                password = txtPass.getText();
+            }
             stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");
             rs = stmnt.executeQuery();
             String dupUser = "";
@@ -247,7 +261,13 @@ public class AddUserController  implements Initializable {
                 s.setStyle("-fx-background-color: red");
                 s.show("Username "+txtUsername.getText()+" already exists.", 5000);
             }else {
-                stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`) VALUES()");
+                if (LogInController.hasCenter){
+                    String center = cmbRevenueCenter.getSelectionModel().getSelectedItem();
+                    stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', '"+center+"')");
+                }else {
+                    stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', NULL)");
+                }
+                rs = stmnt.executeUpdate();
             }
         }
     }
