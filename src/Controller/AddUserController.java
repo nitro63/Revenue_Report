@@ -212,7 +212,7 @@ public class AddUserController  implements Initializable {
     }
 
     @FXML
-    void saveUser(ActionEvent event) {
+    void saveUser(ActionEvent event) throws SQLException {
         boolean flag = true;
 
         if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
@@ -233,10 +233,22 @@ public class AddUserController  implements Initializable {
             JFXSnackbar s = new JFXSnackbar(empPane);
             s.setStyle("-fx-background-color: red");
             s.show("Passwords did not match", 5000);
-        }
+        }else
 
         if (flag) {
-            
+            stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");
+            rs = stmnt.executeQuery();
+            String dupUser = "";
+            while (rs.next()){
+                dupUser = rs.getString("username");
+            }
+            if (dupUser.equals(txtUsername.getText())){
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-background-color: red");
+                s.show("Username "+txtUsername.getText()+" already exists.", 5000);
+            }else {
+                stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`) VALUES()");
+            }
         }
     }
 
