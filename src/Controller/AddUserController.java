@@ -95,9 +95,11 @@ public class AddUserController  implements Initializable {
     private PreparedStatement stmnt;
     private ResultSet rs;
     private String username;
+    private boolean user;
     private InitializerController Init = new InitializerController();
     Map<String, String> centerID = new HashMap<>();
     Map<String, String> LevelID = new HashMap<>();
+    GetUser newUser;
 
     public AddUserController ()throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -112,6 +114,12 @@ public class AddUserController  implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         txtPasswordConfirmShown.setVisible(false);
         txtPasswordShown.setVisible(false);
+        tblAddUser.setOnMouseClicked(e -> {
+            if (tblAddUser.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
+                cleanUp();
+                setUser();
+            }
+        });
         try {
             setCenters();
             setLevel();
@@ -138,6 +146,45 @@ public class AddUserController  implements Initializable {
         }
     }
 
+    void cleanUp(){
+        username = null;
+        user = false;
+        txtFname.clear();
+        txtLname.clear();
+        txtUsername.clear();
+        txtEmail.clear();
+        if (chkPasswordMask.isSelected()){
+            txtPasswordShown.clear();
+            txtPasswordConfirmShown.clear();
+        }else {
+            txtPassConf.clear();
+            txtPass.clear();
+        }
+        cmbRevenueCenter.getSelectionModel().clearSelection();
+        cboAccessLevel.getSelectionModel().clearSelection();
+    }
+
+    void setUser(){
+        user = true;
+        newUser = tblAddUser.getSelectionModel().getSelectedItem();
+        username = newUser.getUsername();
+        txtUsername.setText(newUser.getUsername());
+        txtEmail.setText(newUser.getEmail());
+        if (!chkPasswordMask.isSelected()){
+        txtPass.setText(newUser.getPassword());
+        txtPassConf.setText(newUser.getPassword());
+        }else{
+            txtPasswordShown.setText(newUser.getPassword());
+            txtPasswordConfirmShown.setText(newUser.getPassword());
+        }
+        txtFname.setText(newUser.getFirstName());
+        txtLname.setText(newUser.getLastName());
+        cboAccessLevel.getSelectionModel().select(newUser.getLevel());
+        if (!newUser.getUser_center().equals("NA")){
+        cmbRevenueCenter.getSelectionModel().select(newUser.getUser_center());
+        }
+    }
+
     private void setAddUser() throws SQLException {
         username = LogInController.loggerUsername;
         if (LogInController.OverAllAdmin)
@@ -153,7 +200,7 @@ public class AddUserController  implements Initializable {
             stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `center` IS NOT NULL AND `center` = `CenterID` AND `access_level` = `access_ID`");
         rs = stmnt.executeQuery();
         while (rs.next()){
-            GetUser newUser =new GetUser(
+            newUser =new GetUser(
                     rs.getString("username"),
                     rs.getString("first_name"),
                     rs.getString("last_name"),
@@ -167,7 +214,7 @@ public class AddUserController  implements Initializable {
         stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `center` IS NULL AND `access_level` = `access_ID`");
         rs = stmnt.executeQuery();
         while (rs.next()){
-            GetUser newUser =new GetUser(
+            newUser =new GetUser(
                     rs.getString("username"),
                     rs.getString("first_name"),
                     rs.getString("last_name"),
@@ -202,8 +249,21 @@ public class AddUserController  implements Initializable {
     }
 
     @FXML
-    void deleteUserDetails(ActionEvent event) {
+    void deleteUserDetails(ActionEvent event) throws SQLException {
+        delUser();
+    }
 
+    void delUser() throws SQLException {
+        if (user){
+            stmnt = con.prepareStatement("DELETE FROM `user` WHERE `username` = '"+username+"'");
+            stmnt.executeUpdate();
+            cleanUp();
+            setAddUser();
+        }else {
+            JFXSnackbar s = new JFXSnackbar(empPane);
+            s.setStyle("-fx-text-fill: red");
+            s.show("Double-Click a row to edit 🙄!", 2000);
+        }
     }
 
     @FXML
@@ -213,72 +273,146 @@ public class AddUserController  implements Initializable {
 
     @FXML
     void saveUser(ActionEvent event) throws SQLException {
-        if (entryId == null){
-        boolean flag = true;
+        addUser(event);
+    }
 
-        if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
-                txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
-                txtPass.getText().matches("\\s+") || txtPass.getText().equals("") ||
-                txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") ||
-                txtPassConf.getText().matches("\\s+") || txtPasswordConfirmShown.getText().matches("\\s+") ||
-                txtFname.getText().matches("\\s+") || txtLname.getText().matches("\\s+") ||
-                txtFname.getText().equals("") || txtLname.getText().equals("") ||
-                txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")
-                || cboAccessLevel.getSelectionModel().isEmpty()) {
-            flag = false;
-            JFXSnackbar s = new JFXSnackbar(empPane);
-            s.setStyle("-fx-background-color: red");
-            s.show("Fields can not be empty!", 5000);
-        } else if(!txtPass.getText().equals(txtPassConf.getText()) || !txtPasswordShown.getText().equals
-                (txtPasswordConfirmShown.getText())) {
-            flag = false;
-            JFXSnackbar s = new JFXSnackbar(empPane);
-            s.setStyle("-fx-background-color: red");
-            s.show("Passwords did not match", 5000);
-        } else if (LogInController.hasCenter && cmbRevenueCenter.getSelectionModel().isEmpty()){
-            flag = false;
-            JFXSnackbar s = new JFXSnackbar(empPane);
-            s.setStyle("-fx-background-color: red");
-            s.show("Select Center!", 5000);
-        }
+    void addUser(ActionEvent event) throws SQLException{
+        if (!user){
+            boolean flag = true;
 
-        if (flag) {
-            String levelID = cboAccessLevel.getSelectionModel().getSelectedItem(), lname = txtLname.getText(),
-                    fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password ;
-            if(chkPasswordMask.isSelected()) {
-                password = txtPasswordShown.getText();
-            }
-            else{
-                password = txtPass.getText();
-            }
-            stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");
-            rs = stmnt.executeQuery();
-            String dupUser = "";
-            while (rs.next()){
-                dupUser = rs.getString("username");
-            }
-            if (dupUser.equals(txtUsername.getText())){
+            if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
+                    txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
+                    txtPass.getText().matches("\\s+") || txtPass.getText().equals("") ||
+                    txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") ||
+                    txtPassConf.getText().matches("\\s+") || txtPasswordConfirmShown.getText().matches("\\s+") ||
+                    txtFname.getText().matches("\\s+") || txtLname.getText().matches("\\s+") ||
+                    txtFname.getText().equals("") || txtLname.getText().equals("") ||
+                    txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")
+                    || cboAccessLevel.getSelectionModel().isEmpty()) {
+                flag = false;
                 JFXSnackbar s = new JFXSnackbar(empPane);
-                s.setStyle("-fx-background-color: red");
-                s.show("Username "+txtUsername.getText()+" already exists.", 5000);
-            }else {
-                if (LogInController.hasCenter){
-                    String center = cmbRevenueCenter.getSelectionModel().getSelectedItem();
-                    stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', '"+center+"')");
-                }else {
-                    stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', NULL)");
-                }
-                stmnt.executeUpdate();
+                s.setStyle("-fx-text-fill: red");
+                s.show("Fields can not be empty!", 2000);
+            } else if(!txtPass.getText().equals(txtPassConf.getText()) || !txtPasswordShown.getText().equals
+                    (txtPasswordConfirmShown.getText())) {
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-text-fill: red");
+                s.show("Passwords did not match", 2000);
+            } else if (LogInController.hasCenter && cmbRevenueCenter.getSelectionModel().isEmpty()){
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-text-fill: red");
+                s.show("Select Center!", 2000);
             }
-        }
+
+            if (flag) {
+                String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText(),
+                        fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password ;
+                if(chkPasswordMask.isSelected()) {
+                    password = txtPasswordShown.getText();
+                }
+                else{
+                    password = txtPass.getText();
+                }
+                stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");
+                rs = stmnt.executeQuery();
+                String dupUser = "";
+                while (rs.next()){
+                    dupUser = rs.getString("username");
+                }
+                if (dupUser.equals(txtUsername.getText())){
+                    JFXSnackbar s = new JFXSnackbar(empPane);
+                    s.setStyle("-fx-text-fill: red");
+                    s.show("Username "+txtUsername.getText()+" already exists.", 2000);
+                }else {
+                    if (LogInController.hasCenter){
+                        String center = cmbRevenueCenter.getSelectionModel().getSelectedItem();
+                        stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', '"+center+"')");
+                    }else {
+                        stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', NULL)");
+                    }
+                    stmnt.executeUpdate();
+                    cleanUp();
+                    setAddUser();
+                }
+            }
         }else {
             event.consume();
         }
     }
 
     @FXML
-    void updateUserDetails(ActionEvent event) {
+    void updateUserDetails(ActionEvent event) throws SQLException {
+        UpdateUser();
+    }
 
+    void UpdateUser() throws SQLException {
+        if (user){
+            boolean flag = true;
+
+            if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
+                    txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
+                    txtPass.getText().matches("\\s+") || txtPass.getText().equals("") ||
+                    txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") ||
+                    txtPassConf.getText().matches("\\s+") || txtPasswordConfirmShown.getText().matches("\\s+") ||
+                    txtFname.getText().matches("\\s+") || txtLname.getText().matches("\\s+") ||
+                    txtFname.getText().equals("") || txtLname.getText().equals("") ||
+                    txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")
+                    || cboAccessLevel.getSelectionModel().isEmpty()) {
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-text-fill: red");
+                s.show("Fields can not be empty!", 2000);
+            } else if(!txtPass.getText().equals(txtPassConf.getText()) || !txtPasswordShown.getText().equals
+                    (txtPasswordConfirmShown.getText())) {
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-text-fill: red");
+                s.show("Passwords did not match", 2000);
+            } else if (LogInController.hasCenter && cmbRevenueCenter.getSelectionModel().isEmpty()){
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-text-fill: red");
+                s.show("Select Center!", 2000);
+            }
+            if (flag){
+                String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText(),
+                        fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password ;
+                if(chkPasswordMask.isSelected()) {
+                    password = txtPasswordShown.getText();
+                }
+                else{
+                    password = txtPass.getText();
+                }
+                stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");
+                rs = stmnt.executeQuery();
+                String dupUser = "";
+                while (rs.next()){
+                    dupUser = rs.getString("username");
+                }
+                if (dupUser.equals(txtUsername.getText())){
+                    JFXSnackbar s = new JFXSnackbar(empPane);
+                    s.setStyle("-fx-text-fill: red");
+                    s.show("Username "+txtUsername.getText()+" already exists.", 2000);
+                }else {
+                    if (!cmbRevenueCenter.getSelectionModel().isEmpty()){
+                        String center = cmbRevenueCenter.getSelectionModel().getSelectedItem();
+                        stmnt = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+password+"', `access_level` = '"+levelID+"', `username` = '"+uname+"', `center` = '"+center+"' WHERE `username` =  '"+username+"'");
+                }else {
+                        stmnt = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+password+"', `access_level` = '"+levelID+"', `username` = '"+uname+"', `center` = NULL WHERE `username` =  '"+username+"'");
+                 }
+                    stmnt.executeUpdate();
+                    cleanUp();
+                    setAddUser();
+                 }
+            }
+
+        }else {
+            JFXSnackbar s = new JFXSnackbar(empPane);
+            s.setStyle("-fx-text-fill: red");
+            s.show("Double-Click a row to edit 🙄!", 2000);
+        }
     }
 }
 
