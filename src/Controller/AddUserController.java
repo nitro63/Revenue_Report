@@ -213,6 +213,7 @@ public class AddUserController  implements Initializable {
 
     @FXML
     void saveUser(ActionEvent event) throws SQLException {
+        if (entryId == null){
         boolean flag = true;
 
         if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
@@ -267,8 +268,11 @@ public class AddUserController  implements Initializable {
                 }else {
                     stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', NULL)");
                 }
-                rs = stmnt.executeUpdate();
+                stmnt.executeUpdate();
             }
+        }
+        }else {
+            event.consume();
         }
     }
 
