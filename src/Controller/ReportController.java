@@ -287,7 +287,7 @@ public class ReportController implements Initializable {
 
     public String getDate(int day, int month, int year, int week){
         Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setFirstDayOfWeek(Calendar.SUNDAY);
         calendar.set(Calendar.WEEK_OF_MONTH, week);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.YEAR, year);
@@ -295,7 +295,7 @@ public class ReportController implements Initializable {
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
         calendar.setFirstDayOfWeek(1);
-        calendar.setMinimalDaysInFirstWeek(2);
+        calendar.setMinimalDaysInFirstWeek(1);
         calendar.set(Calendar.DAY_OF_WEEK, day);
 
         return df.format(calendar.getTime());

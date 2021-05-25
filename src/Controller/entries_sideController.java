@@ -112,6 +112,10 @@ public class entries_sideController  implements Initializable {
             cmbRevGroup.setDisable(true);
             SetCenters();
             cmbRevCent.getSelectionModel().select(InitializerController.userCenter);
+                SelItem = cmbRevCent.getSelectionModel().getSelectedItem();
+                SelRev = centerID.get(cmbRevCent.getSelectionModel().getSelectedItem());
+                GetCenter.setRevCenter(SelItem);
+                GetCenter.setCenterID(SelRev);
             cmbRevCent.setDisable(true);
             }
         } catch (SQLException throwables) {
