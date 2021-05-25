@@ -20,6 +20,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class InitializerController implements Initializable {
@@ -34,6 +35,9 @@ public class InitializerController implements Initializable {
     private ResultSet rs;
     public String sessionUser = LogInController.loggerUsername;
     public static String userCenter, userCategory;
+    GetUser getUser;
+    ObservableList<GetUser> usersList = FXCollections.observableArrayList();
+    ObservableList<GetUser> userList = FXCollections.observableArrayList();
                                                    //The field is initiated from LogInController Class
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,10 +54,18 @@ public class InitializerController implements Initializable {
             //Closing Current Stage
             currentSatge = (Stage) taskName.getScene().getWindow();
             currentSatge.close();
+            try {
+                loadRecords();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             loadApplication();
         });
     }
 
+    public ObservableList<GetUser> getUsersList(){
+        return this.usersList;
+    }
     private void loadApplication() {
         //Creating a new stage for main application
         Parent root = null;
@@ -75,22 +87,136 @@ public class InitializerController implements Initializable {
         this.appStage = base;
     }
 
+    public void loadRecords() throws SQLException {
+        Connection con = DBConnection.getConn();
+        InitializerController init = new InitializerController();
+        if (LogInController.hasCenter){
+            stmnt = con.prepareStatement("SELECT `revenue_category`, `revenue_center` FROM `user`, `revenue_centers` WHERE `username` = '"+LogInController.loggerUsername+"' AND `center` = `CenterID`");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+               userCenter = rs.getString("revenue_center");
+                userCategory = rs.getString("revenue_category");
+            }
+        }
+        if (LogInController.OverAllAdmin){
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `center` IS NOT NULL AND `center` = `CenterID` AND `access_level` = `access_ID`");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("level"),
+                        rs.getString("revenue_center")
+                );
+                usersList.add(newUser);
+            }
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `center` IS NULL AND `access_level` = `access_ID`");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("level"),
+                        "NA"
+                );
+                usersList.add(newUser);
+            }
+        }
+        if (LogInController.admin){
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `center` IS NOT NULL AND `center` = `CenterID` AND `access_level` != 'Lvl_1' AND `access_level` = `access_ID`");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("level"),
+                        rs.getString("revenue_center")
+                );
+                usersList.add(newUser);
+            }
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username` FROM `access_levels`, `user` WHERE `center` IS NULL AND `access_level` != 'Lvl_1' AND `access_level` = `access_ID`");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("level")
+                );
+                usersList.add(newUser);
+            }
+        }
+        if (LogInController.Accountant || LogInController.clerk){
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `center` IS NOT NULL AND `center` = `CenterID` AND `access_level` != 'Lvl_1' AND `access_level` = `access_ID` AND `username` = '"+LogInController.loggerUsername+"'");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("level"),
+                        rs.getString("revenue_center")
+                );
+                userList.add(newUser);
+            }
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username` FROM `access_levels`, `user` WHERE `center` IS NULL AND `access_level` != 'Lvl_1' AND `access_level` = `access_ID` AND `username` = '"+LogInController.loggerUsername+"'");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("level")
+                );
+                userList.add(newUser);
+            }
+        }
+        if (LogInController.supervisor){
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `center` IS NOT NULL AND `center` = `CenterID` AND `access_level` != 'Lvl_1' AND `access_level` = `access_ID` AND `access_level` = 'Lvl_4' OR `access_level` = 'Lvl_5'");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("level"),
+                        rs.getString("revenue_center")
+                );
+                usersList.add(newUser);
+            }
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username` FROM `access_levels`, `user` WHERE `center` IS NULL AND `access_level` != 'Lvl_1' AND `access_level` = `access_ID` AND `access_level` = 'Lvl_4' OR `access_level` = 'Lvl_5'");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                GetUser newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("level")
+                );
+                usersList.add(newUser);
+            }
+        }
+    }
+
     class LoadRecords extends Task{
         @Override
         protected Object call() throws Exception{
             Connection con = DBConnection.getConn();
             ObservableList<GetUser> usersList = FXCollections.observableArrayList();
             ObservableList<GetUser> userList = FXCollections.observableArrayList();
-            if (LogInController.hasCenter){
-                this.updateMessage("Loading center details....");
-                Thread.sleep(THREAD_SLEEP_INTERVAL);
-                stmnt = con.prepareStatement("SELECT `revenue_category`, `revenue_center` FROM `user`, `revenue_centers` WHERE `username` = '"+LogInController.loggerUsername+"' `center` = `CenterID`");
-                rs = stmnt.executeQuery();
-                while (rs.next()){
-                  InitializerController.userCenter = rs.getString("revenue_center");
-                   InitializerController.userCategory = rs.getString("revenue_category");
-                }
-            }
             if (LogInController.OverAllAdmin){
                 this.updateMessage("Loading users details....");
                 Thread.sleep(THREAD_SLEEP_INTERVAL);

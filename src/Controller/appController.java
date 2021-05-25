@@ -67,8 +67,8 @@ public  appController() {
       
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        System.out.println(InitializerController.userCategory+"\t"+ InitializerController.userCenter);
+    public void initialize(URL url, ResourceBundle rb) {/*
+        System.out.println(InitializerController.userCategory+"\t"+ InitializerController.userCenter);*/
         txtUser.setText(LogInController.loggerUsername);
         try {
             showSDHME(null);
@@ -84,6 +84,8 @@ public  appController() {
         FXMLLoader loadsdhme = new FXMLLoader();
         loadsdhme.setLocation(getClass().getResource( "/Views/fxml/home_side.fxml"));
         loadsdhme.setController(new home_sideController());
+        home_sideController home = loadsdhme.getController();
+        home.setappController(this);
         leftPane.getChildren().clear();
         centerPane.getChildren().clear();
         leftPane.getChildren().add(loadsdhme.load());
