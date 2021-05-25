@@ -101,6 +101,7 @@ public class AddUserController  implements Initializable {
     private String username;
     private InitializerController Init = new InitializerController();
     Map<String, String> centerID = new HashMap<>();
+    Map<String, String> LevelID = new HashMap<>();
 
     public AddUserController ()throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -123,8 +124,13 @@ public class AddUserController  implements Initializable {
             throwables.printStackTrace();
         }
     }
-    private void setLevel(){
-        stmnt = con.prepareStatement("SELECT `level`, ");
+    private void setLevel() throws SQLException {
+        stmnt = con.prepareStatement("SELECT `level`, `access_ID` FROM `access_levels` WHERE 1");
+        rs = stmnt.executeQuery();
+        while (rs.next()){
+            LevelID.put(rs.getString("level"), rs.getString("access_ID"));
+            cboAccessLevel.getItems().add(rs.getString("level"));
+        }
     }
     private void setCenters() throws SQLException {
         stmnt = con.prepareStatement("SELECT `CenterID`, `revenue_center` FROM `revenue_centers` WHERE 1");
