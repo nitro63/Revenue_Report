@@ -1,11 +1,7 @@
 package Controller;
 import Controller.Gets.Conditioner;
 import Controller.Gets.GetUser;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -120,6 +116,7 @@ public class AddUserController  implements Initializable {
             setCenters();
             setLevel();
             setAddUser();
+            System.out.println(tblAddUser.getItems().get(0).getEmail());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -144,7 +141,8 @@ public class AddUserController  implements Initializable {
     private void setAddUser() throws SQLException {
         username = LogInController.loggerUsername;
         if (LogInController.OverAllAdmin)
-            colEmail.setCellValueFactory(data -> data.getValue().emailProperty());
+            tblAddUser.getItems().clear();
+            colEmail.setCellValueFactory(d -> d.getValue().emailProperty());
         colFirstName.setCellValueFactory(d -> d.getValue().firstNameProperty());
         colLastName.setCellValueFactory(d -> d.getValue().lastNameProperty());
         colUserName.setCellValueFactory(d -> d.getValue().usernameProperty());
@@ -215,7 +213,31 @@ public class AddUserController  implements Initializable {
 
     @FXML
     void saveUser(ActionEvent event) {
+        boolean flag = true;
 
+        if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
+                txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
+                txtPass.getText().matches("\\s+") || txtPass.getText().equals("") ||
+                txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") ||
+                txtPassConf.getText().matches("\\s+") || txtPasswordConfirmShown.getText().matches("\\s+") ||
+                txtFname.getText().matches("\\s+") || txtLname.getText().matches("\\s+") ||
+                txtFname.getText().equals("") || txtLname.getText().equals("") ||
+                txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")) {
+            flag = false;
+            JFXSnackbar s = new JFXSnackbar(empPane);
+            s.setStyle("-fx-background-color: red");
+            s.show("Fields can not be empty!", 5000);
+        } else if(!txtPass.getText().equals(txtPassConf.getText()) || !txtPasswordShown.getText().equals
+                (txtPasswordConfirmShown.getText())) {
+            flag = false;
+            JFXSnackbar s = new JFXSnackbar(empPane);
+            s.setStyle("-fx-background-color: red");
+            s.show("Passwords did not match", 5000);
+        }
+
+        if (flag) {
+            
+        }
     }
 
     @FXML
@@ -223,3 +245,38 @@ public class AddUserController  implements Initializable {
 
     }
 }
+
+/*
+    boolean flag = true;
+
+        if(txtUser.getText().equals("") || txtEmail.getText().equals("") || txtPass.equals("") || txtPass.equals("")) {
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-background-color: red");
+                s.show("Fields can not be empty!", 3000);
+                } else if(!txtPass.getText().equals(txtPassConf.getText())) {
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-background-color: red");
+                s.show("Passwords did not match", 3000);
+                }
+
+                if (flag) {
+                Connection con = DBConnection.getConnection();
+                try {
+                PreparedStatement ps = con.prepareStatement("INSERT INTO user VALUES(?, ?, ?, ?)");
+                ps.setString(1, txtUser.getText());
+                ps.setString(2, txtPass.getText());
+                ps.setString(3, txtEmail.getText());
+                ps.setString(4, cboAccessLevel.getValue());
+
+                ps.executeUpdate();
+
+                txtPass.getScene().getWindow().hide();
+                new PromptDialogController("Operation Successful", "New Employee added! You can now log in with the given credentials.");
+                } catch (SQLException e) {
+                if(e.getErrorCode() == 1062) {
+                new PromptDialogController("Operation failed", "This username is already taken. Try another!");
+                }
+                }
+                }*/
