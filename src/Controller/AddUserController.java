@@ -117,10 +117,14 @@ public class AddUserController  implements Initializable {
         txtPasswordShown.setVisible(false);
         try {
             setCenters();
+            setLevel();
             setAddUser();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    private void setLevel(){
+        stmnt = con.prepareStatement("SELECT `level`, ");
     }
     private void setCenters() throws SQLException {
         stmnt = con.prepareStatement("SELECT `CenterID`, `revenue_center` FROM `revenue_centers` WHERE 1");
