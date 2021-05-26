@@ -78,6 +78,8 @@ public  appController() {
         txtUser.setText(LogInController.loggerUsername);
         if (!LogInController.OverAllAdmin){
             btnSDRI.setVisible(false);
+            btnSDHelp.setLayoutX(567);
+            btnSDHelp.setLayoutY(4);
         }
         try {
             showSDHME(null);

@@ -28,7 +28,7 @@ public class InitializerController implements Initializable {
     private static final int THREAD_SLEEP_INTERVAL = 200;
     @FXML
     private JFXProgressBar progressIndicator;
-    Stage currentSatge, appStage;
+    Stage currentStage, appStage;
     @FXML
     private Label taskName;
     private PreparedStatement stmnt;
@@ -53,8 +53,8 @@ public class InitializerController implements Initializable {
         //Loading Main Application upon initializer task's succession
         initializerTask.setOnSucceeded(e -> {
             //Closing Current Stage
-            currentSatge = (Stage) taskName.getScene().getWindow();
-            currentSatge.close();
+            currentStage = (Stage) taskName.getScene().getWindow();
+            currentStage.close();
             try {
                 loadRecords();
             } catch (SQLException throwables) {

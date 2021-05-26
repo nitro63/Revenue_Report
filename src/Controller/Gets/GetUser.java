@@ -16,11 +16,11 @@ public class GetUser {
         this.password = new SimpleStringProperty(password);
         this.username = new SimpleStringProperty(username);
     }
-    public GetUser(String username, String firstName, String lastName, String email, String level, String user_center){
+    public GetUser(String username, String firstName, String lastName, String email, String level, String password){
         this.email = new SimpleStringProperty(email);
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
-        this.user_center = new SimpleStringProperty(user_center);
+        this.password = new SimpleStringProperty(password);
         this.level = new SimpleStringProperty(level);
         this.username = new SimpleStringProperty(username);
     }

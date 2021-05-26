@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="empPane" prefHeight="569.0" prefWidth="931.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane fx:id="empPane" prefHeight="569.0" prefWidth="931.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="78.0" prefWidth="600.0" style="-fx-background-color: #263238;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -26,11 +26,6 @@
       </AnchorPane>
       <AnchorPane fx:id="paneUpdate" layoutX="128.0" layoutY="108.0" prefHeight="380.0" prefWidth="724.0" visible="false">
          <children>
-            <JFXTextField fx:id="txtUser" alignment="CENTER" focusColor="#263238" layoutX="263.0" layoutY="82.0" prefHeight="31.0" prefWidth="232.0">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </JFXTextField>
             <JFXPasswordField fx:id="txtPass" alignment="CENTER" focusColor="#263238" layoutX="264.0" layoutY="131.0" prefHeight="25.0" prefWidth="232.0" />
             <Label layoutX="120.0" layoutY="124.0" prefHeight="44.0" prefWidth="134.0" text="password:">
                <font>
@@ -101,6 +96,11 @@
             <Label layoutX="120.0" layoutY="-3.0" prefHeight="44.0" prefWidth="134.0" text="first name:">
                <font>
                   <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblUsernameUp" alignment="CENTER" contentDisplay="CENTER" layoutX="267.0" layoutY="84.0" prefHeight="31.0" prefWidth="232.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="17.0" />
                </font>
             </Label>
          </children>
