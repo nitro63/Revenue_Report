@@ -74,7 +74,11 @@ public class ViewUserController implements Initializable {
 
     @FXML
     private JFXCheckBox chkUpdateMask;
+    home_sideController app;
 
+    public void setController(home_sideController app){
+        this.app = app;
+    }
     /**
      * Initializes the controller class.
      * @param url

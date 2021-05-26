@@ -74,6 +74,8 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        hasCenter = false; admin = false; OverAllAdmin = false; Accountant = false; clerk = false;
+                supervisor = false;
         Connection con = DBConnection.getConn();
         try {
             stmnt = con.prepareStatement("SELECT * FROM `usercredent` WHERE 1");
@@ -176,10 +178,10 @@ public class LogInController implements Initializable {
                         case "Lvl_3":
                             Accountant = true;
                             break;
-                        case "Lvl_4":
+                        case "Lvl_5":
                             clerk = true;
                             break;
-                        case "Lvl_5":
+                        case "Lvl_4":
                             supervisor = true;
                             break;
 

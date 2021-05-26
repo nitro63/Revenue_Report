@@ -50,6 +50,12 @@ public class home_sideController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (LogInController.OverAllAdmin || LogInController.admin || LogInController.supervisor){
+            btnAddUser.setVisible(true);
+        }else {
+            btnAddUser.setVisible(false);
+        }
+        System.out.println("Admin: "+ LogInController.admin+"\t"+"Supervisor: "+ LogInController.supervisor+"\t"+"OverAll admin: "+LogInController.OverAllAdmin+"\t"+"Has a center: "+LogInController.hasCenter);
         showDashboard(null);
     }
 
@@ -69,8 +75,13 @@ public class home_sideController implements Initializable {
     }
 
     @FXML
-    void showUserProfile(ActionEvent event) {
-
+    void showUserProfile(ActionEvent event) throws SQLException, ClassNotFoundException, IOException {
+        FXMLLoader loadAddUser = new FXMLLoader();
+        loadAddUser.setLocation(getClass().getResource("/Views/fxml/viewUser.fxml"));
+        loadAddUser.setController(new ViewUserController());
+        AnchorPane root = loadAddUser.load();
+        app.getCenterPane().getChildren().clear();
+        app.getCenterPane().getChildren().add(root);
     }
     
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="empPane" prefHeight="632.0" prefWidth="1100.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="empPane" prefHeight="632.0" prefWidth="1100.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="78.0" prefWidth="600.0" style="-fx-background-color: #263238;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -66,7 +66,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <JFXButton fx:id="addUser" buttonType="RAISED" layoutX="110.0" layoutY="556.0" onAction="#saveUser" prefHeight="31.0" prefWidth="83.0" ripplerFill="WHITE" style="-fx-background-color: #263238;" text="Add User" textFill="WHITE">
+      <JFXButton fx:id="addUser" buttonType="RAISED" layoutX="183.0" layoutY="556.0" onAction="#saveUser" prefHeight="31.0" prefWidth="83.0" ripplerFill="WHITE" style="-fx-background-color: #263238;" text="Add User" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -86,12 +86,12 @@
             <Tooltip text="Show/Hide Password" />
          </tooltip>
       </JFXCheckBox>
-      <JFXButton fx:id="updateUser" buttonType="RAISED" layoutX="202.0" layoutY="556.0" onAction="#updateUserDetails" prefHeight="31.0" prefWidth="83.0" ripplerFill="WHITE" style="-fx-background-color: #263238;" text="Update" textFill="WHITE">
+      <JFXButton fx:id="updateUser" buttonType="RAISED" layoutX="275.0" layoutY="556.0" onAction="#updateUserDetails" prefHeight="31.0" prefWidth="83.0" ripplerFill="WHITE" style="-fx-background-color: #263238;" text="Update" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="deleteUser" buttonType="RAISED" layoutX="296.0" layoutY="557.0" onAction="#deleteUserDetails" prefHeight="31.0" prefWidth="83.0" ripplerFill="WHITE" style="-fx-background-color: #263238;" text="Delete" textFill="WHITE">
+      <JFXButton fx:id="deleteUser" buttonType="RAISED" layoutX="369.0" layoutY="557.0" onAction="#deleteUserDetails" prefHeight="31.0" prefWidth="83.0" ripplerFill="WHITE" style="-fx-background-color: #263238;" text="Delete" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -140,5 +140,10 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="90.0" layoutY="557.0" onAction="#clearEntries" prefHeight="31.0" prefWidth="83.0" ripplerFill="WHITE" style="-fx-background-color: #263238;" text="Clear" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

@@ -16,8 +16,7 @@
 
 <!--fx:controller="Controller.appController"-->
 
-
-<ScrollPane xmlns="http://javafx.com/javafx/8.0.271" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <BorderPane fx:id="border_pane" prefHeight="730.0" prefWidth="1355.0" style="-fx-background-color: #f5f6f7;">
          <left>
@@ -136,9 +135,9 @@
                                        </HBox.margin>
                                     </HBox>
                                     <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
+                                    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="139.0">
                                        <children>
-                                          <Button fx:id="btnSDRI" mnemonicParsing="false" onAction="#showSDRI" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="ADD / DELELTE" textFill="#11124a">
+                                          <Button fx:id="btnSDRI" mnemonicParsing="false" onAction="#showSDRI" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: transparent; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-color: #11c3c3;" text="ADD / DELELTE" textFill="#11124a">
                                              <font>
                                                 <Font name="Century" size="13.0" />
                                              </font>

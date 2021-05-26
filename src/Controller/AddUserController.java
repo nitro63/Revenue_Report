@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import revenue_report.DBConnection;
@@ -91,6 +92,9 @@ public class AddUserController  implements Initializable {
     @FXML
     private JFXComboBox<String> cmbRevenueCenter;
 
+    @FXML
+    private JFXButton btnClear;
+
     private final Connection con;
     private PreparedStatement stmnt;
     private ResultSet rs;
@@ -118,13 +122,13 @@ public class AddUserController  implements Initializable {
             if (tblAddUser.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
                 cleanUp();
                 setUser();
+                addUser.setDisable(true);
             }
         });
         try {
             setCenters();
             setLevel();
             setAddUser();
-            System.out.println(tblAddUser.getItems().get(0).getEmail());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -132,9 +136,18 @@ public class AddUserController  implements Initializable {
     private void setLevel() throws SQLException {
         stmnt = con.prepareStatement("SELECT `level`, `access_ID` FROM `access_levels` WHERE 1");
         rs = stmnt.executeQuery();
+        cboAccessLevel.getItems().clear();
         while (rs.next()){
             LevelID.put(rs.getString("level"), rs.getString("access_ID"));
             cboAccessLevel.getItems().add(rs.getString("level"));
+        }
+        if (LogInController.admin){
+            cboAccessLevel.getItems().remove("Overall Administrator");
+        }
+        if (LogInController.supervisor){
+            cboAccessLevel.getItems().remove("Overall Administrator");
+            cboAccessLevel.getItems().remove("Administrator");
+            cboAccessLevel.getItems().remove("Accountant");
         }
     }
     private void setCenters() throws SQLException {
@@ -144,6 +157,12 @@ public class AddUserController  implements Initializable {
             centerID.put(rs.getString("revenue_center"), rs.getString("CenterID"));
             cmbRevenueCenter.getItems().add(rs.getString("revenue_center"));
         }
+    }
+
+    @FXML
+    void clearEntries(ActionEvent event) {
+        cleanUp();
+        addUser.setDisable(false);
     }
 
     void cleanUp(){
@@ -187,7 +206,7 @@ public class AddUserController  implements Initializable {
 
     private void setAddUser() throws SQLException {
         username = LogInController.loggerUsername;
-        if (LogInController.OverAllAdmin)
+        if (LogInController.OverAllAdmin){
             tblAddUser.getItems().clear();
             colEmail.setCellValueFactory(d -> d.getValue().emailProperty());
         colFirstName.setCellValueFactory(d -> d.getValue().firstNameProperty());
@@ -199,8 +218,8 @@ public class AddUserController  implements Initializable {
 
             stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `center` IS NOT NULL AND `center` = `CenterID` AND `access_level` = `access_ID`");
         rs = stmnt.executeQuery();
-        while (rs.next()){
-            newUser =new GetUser(
+        while (rs.next()) {
+            newUser = new GetUser(
                     rs.getString("username"),
                     rs.getString("first_name"),
                     rs.getString("last_name"),
@@ -210,6 +229,7 @@ public class AddUserController  implements Initializable {
                     rs.getString("revenue_center")
             );
             tblAddUser.getItems().add(newUser);
+
         }
         stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `center` IS NULL AND `access_level` = `access_ID`");
         rs = stmnt.executeQuery();
@@ -224,6 +244,90 @@ public class AddUserController  implements Initializable {
                     "NA"
             );
             tblAddUser.getItems().add(newUser);
+        }
+        }else if (LogInController.admin){
+            tblAddUser.getItems().clear();
+            colEmail.setCellValueFactory(d -> d.getValue().emailProperty());
+            colFirstName.setCellValueFactory(d -> d.getValue().firstNameProperty());
+            colLastName.setCellValueFactory(d -> d.getValue().lastNameProperty());
+            colUserName.setCellValueFactory(d -> d.getValue().usernameProperty());
+            colLevel.setCellValueFactory(d ->d.getValue().levelProperty());
+            colRevenueCenter.setCellValueFactory(d -> d.getValue().user_centerProperty());
+            colPass.setCellValueFactory(d -> d.getValue().passwordProperty());
+                if (LogInController.hasCenter){
+                    String Center = LogInController.loggerCenter;
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `access_level` != 'Lvl_1' AND `center` = '"+Center+"' AND `center` = `CenterID` AND `access_level` = `access_ID`");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                newUser = new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("level"),
+                        rs.getString("revenue_center")
+                );
+                tblAddUser.getItems().add(newUser);
+
+            }
+                }else {
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `access_level` != 'Lvl_1' AND `center` IS NULL AND `access_level` = `access_ID`");
+            rs = stmnt.executeQuery();
+            while (rs.next()){
+                newUser =new GetUser(
+                        rs.getString("username"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("level"),
+                        "NA"
+                );
+                tblAddUser.getItems().add(newUser);
+            }
+                }
+        }else if (LogInController.supervisor){
+                tblAddUser.getItems().clear();
+                colEmail.setCellValueFactory(d -> d.getValue().emailProperty());
+                colFirstName.setCellValueFactory(d -> d.getValue().firstNameProperty());
+                colLastName.setCellValueFactory(d -> d.getValue().lastNameProperty());
+                colUserName.setCellValueFactory(d -> d.getValue().usernameProperty());
+                colLevel.setCellValueFactory(d ->d.getValue().levelProperty());
+                colRevenueCenter.setCellValueFactory(d -> d.getValue().user_centerProperty());
+                colPass.setCellValueFactory(d -> d.getValue().passwordProperty());
+                if (LogInController.hasCenter){
+                    String Center = LogInController.loggerCenter;
+                stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `access_level` != 'Lvl_1' AND `access_level` != 'Lvl_2' AND `access_level` != 'Lvl_3' AND`center` = '"+Center+"' AND  `access_level` = `access_ID` AND `center` = `CenterID`");
+                rs = stmnt.executeQuery();
+                while (rs.next()) {
+                    newUser = new GetUser(
+                            rs.getString("username"),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("level"),
+                            rs.getString("revenue_center")
+                    );
+                    tblAddUser.getItems().add(newUser);
+                }
+                }else {
+                stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `access_level` != 'Lvl_1' AND `access_level` != 'Lvl_2' AND `access_level` != 'Lvl_3' AND`center` IS NULL AND  `access_level` = `access_ID`");
+                rs = stmnt.executeQuery();
+                while (rs.next()){
+                    newUser =new GetUser(
+                            rs.getString("username"),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("level"),
+                            "NA"
+                    );
+                    tblAddUser.getItems().add(newUser);
+                }
+                }
         }
 
     }
@@ -259,6 +363,7 @@ public class AddUserController  implements Initializable {
             stmnt.executeUpdate();
             cleanUp();
             setAddUser();
+            addUser.setDisable(false);
         }else {
             JFXSnackbar s = new JFXSnackbar(empPane);
             s.setStyle("-fx-text-fill: red");
@@ -282,17 +387,13 @@ public class AddUserController  implements Initializable {
 
             if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
                     txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
-                    txtPass.getText().matches("\\s+") || txtPass.getText().equals("") ||
-                    txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") ||
-                    txtPassConf.getText().matches("\\s+") || txtPasswordConfirmShown.getText().matches("\\s+") ||
                     txtFname.getText().matches("\\s+") || txtLname.getText().matches("\\s+") ||
-                    txtFname.getText().equals("") || txtLname.getText().equals("") ||
-                    txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")
+                    txtFname.getText().equals("") || txtLname.getText().equals("")
                     || cboAccessLevel.getSelectionModel().isEmpty()) {
                 flag = false;
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
-                s.show("Fields can not be empty!", 2000);
+                s.show("Fields can not be empty!3", 2000);
             } else if(!txtPass.getText().equals(txtPassConf.getText()) || !txtPasswordShown.getText().equals
                     (txtPasswordConfirmShown.getText())) {
                 flag = false;
@@ -304,6 +405,22 @@ public class AddUserController  implements Initializable {
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
                 s.show("Select Center!", 2000);
+            }else if (chkPasswordMask.isSelected()){
+                if (txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") || txtPasswordConfirmShown.getText().matches("\\s+") || txtPasswordConfirmShown.getText().equals("") )
+                {
+                    flag = false;
+                    JFXSnackbar s = new JFXSnackbar(empPane);
+                    s.setStyle("-fx-text-fill: red");
+                    s.show("Fields can not be empty1!", 2000);
+                }
+            }else if (!chkPasswordMask.isSelected()){
+                if (txtPass.getText().matches("\\s+") || txtPass.getText().equals("") || txtPassConf.getText().matches("\\s+") || txtPassConf.getText().equals("")
+                ){
+                    flag = false;
+                    JFXSnackbar s = new JFXSnackbar(empPane);
+                    s.setStyle("-fx-text-fill: red");
+                    s.show("Fields can not be empty2!", 2000);
+                }
             }
 
             if (flag) {
@@ -319,15 +436,15 @@ public class AddUserController  implements Initializable {
                 rs = stmnt.executeQuery();
                 String dupUser = "";
                 while (rs.next()){
-                    dupUser = rs.getString("username");
+                    dupUser = rs.getString("username").toLowerCase(Locale.ROOT);
                 }
-                if (dupUser.equals(txtUsername.getText())){
+                if (dupUser.equals(txtUsername.getText().toLowerCase(Locale.ROOT))){
                     JFXSnackbar s = new JFXSnackbar(empPane);
                     s.setStyle("-fx-text-fill: red");
                     s.show("Username "+txtUsername.getText()+" already exists.", 2000);
                 }else {
-                    if (LogInController.hasCenter){
-                        String center = cmbRevenueCenter.getSelectionModel().getSelectedItem();
+                    if (LogInController.hasCenter || !cmbRevenueCenter.getSelectionModel().isEmpty()){
+                        String center = centerID.get(cmbRevenueCenter.getSelectionModel().getSelectedItem());
                         stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', '"+center+"')");
                     }else {
                         stmnt = con.prepareStatement("INSERT INTO `user`(`last_name`, `first_name`, `email`, `password`, `access_level`, `username`, `center`) VALUES ('"+lname+"', '"+fname+"', '"+mail+"', '"+password+"', '"+levelID+"', '"+uname+"', NULL)");
@@ -353,17 +470,13 @@ public class AddUserController  implements Initializable {
 
             if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
                     txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
-                    txtPass.getText().matches("\\s+") || txtPass.getText().equals("") ||
-                    txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") ||
-                    txtPassConf.getText().matches("\\s+") || txtPasswordConfirmShown.getText().matches("\\s+") ||
                     txtFname.getText().matches("\\s+") || txtLname.getText().matches("\\s+") ||
-                    txtFname.getText().equals("") || txtLname.getText().equals("") ||
-                    txtPasswordConfirmShown.getText().equals("") || txtPassConf.getText().equals("")
+                    txtFname.getText().equals("") || txtLname.getText().equals("")
                     || cboAccessLevel.getSelectionModel().isEmpty()) {
                 flag = false;
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
-                s.show("Fields can not be empty!", 2000);
+                s.show("Fields can not be empty!3", 2000);
             } else if(!txtPass.getText().equals(txtPassConf.getText()) || !txtPasswordShown.getText().equals
                     (txtPasswordConfirmShown.getText())) {
                 flag = false;
@@ -375,6 +488,22 @@ public class AddUserController  implements Initializable {
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
                 s.show("Select Center!", 2000);
+            }else if (chkPasswordMask.isSelected()){
+                if (txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") || txtPasswordConfirmShown.getText().matches("\\s+") || txtPasswordConfirmShown.getText().equals("") )
+            {
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-text-fill: red");
+                s.show("Fields can not be empty1!", 2000);
+            }
+            }else if (!chkPasswordMask.isSelected()){
+                if (txtPass.getText().matches("\\s+") || txtPass.getText().equals("") || txtPassConf.getText().matches("\\s+") || txtPassConf.getText().equals("")
+            ){
+                flag = false;
+                JFXSnackbar s = new JFXSnackbar(empPane);
+                s.setStyle("-fx-text-fill: red");
+                s.show("Fields can not be empty2!", 2000);
+                }
             }
             if (flag){
                 String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText(),
@@ -391,13 +520,13 @@ public class AddUserController  implements Initializable {
                 while (rs.next()){
                     dupUser = rs.getString("username");
                 }
-                if (dupUser.equals(txtUsername.getText())){
+                if (dupUser.equals(txtUsername.getText()) && !dupUser.equals(username)){
                     JFXSnackbar s = new JFXSnackbar(empPane);
                     s.setStyle("-fx-text-fill: red");
                     s.show("Username "+txtUsername.getText()+" already exists.", 2000);
                 }else {
                     if (!cmbRevenueCenter.getSelectionModel().isEmpty()){
-                        String center = cmbRevenueCenter.getSelectionModel().getSelectedItem();
+                        String center = centerID.get(cmbRevenueCenter.getSelectionModel().getSelectedItem());
                         stmnt = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+password+"', `access_level` = '"+levelID+"', `username` = '"+uname+"', `center` = '"+center+"' WHERE `username` =  '"+username+"'");
                 }else {
                         stmnt = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+password+"', `access_level` = '"+levelID+"', `username` = '"+uname+"', `center` = NULL WHERE `username` =  '"+username+"'");
@@ -405,6 +534,7 @@ public class AddUserController  implements Initializable {
                     stmnt.executeUpdate();
                     cleanUp();
                     setAddUser();
+                    addUser.setDisable(false);
                  }
             }
 

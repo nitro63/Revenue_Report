@@ -35,6 +35,7 @@ public class InitializerController implements Initializable {
     private ResultSet rs;
     public String sessionUser = LogInController.loggerUsername;
     public static String userCenter, userCategory;
+    Stage base = new Stage();
     GetUser getUser;
     ObservableList<GetUser> usersList = FXCollections.observableArrayList();
     ObservableList<GetUser> userList = FXCollections.observableArrayList();
@@ -69,7 +70,6 @@ public class InitializerController implements Initializable {
     private void loadApplication() {
         //Creating a new stage for main application
         Parent root = null;
-        Stage base = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/fxml/app.fxml"));
             loader.setController(new appController());

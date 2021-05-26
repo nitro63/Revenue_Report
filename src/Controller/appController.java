@@ -15,12 +15,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import Controller.Gets.GetRevCenter;
+import javafx.stage.Stage;
+import revenue_report.Main;
+
 /**
  *
  * @author NiTrO
@@ -70,6 +76,9 @@ public  appController() {
     public void initialize(URL url, ResourceBundle rb) {/*
         System.out.println(InitializerController.userCategory+"\t"+ InitializerController.userCenter);*/
         txtUser.setText(LogInController.loggerUsername);
+        if (!LogInController.OverAllAdmin){
+            btnSDRI.setVisible(false);
+        }
         try {
             showSDHME(null);
         } catch (IOException ex) {
@@ -134,5 +143,22 @@ public  appController() {
 
     @FXML
     private void LOGOUT(ActionEvent event) {
+    Stage current = (Stage)txtUser.getScene().getWindow();
+    current.close();
+        try {
+            // Setting login window
+            Main st = new Main();
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/fxml/Login.fxml"));
+            loader.setController(new LogInController());
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setTitle("Login Prompt");
+            stage.getIcons().add(new Image("/Assets/kmalogo.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            new PromptDialogController("Error!", "Error Occured. Failed to initialize system.");
+        }
     }
 }

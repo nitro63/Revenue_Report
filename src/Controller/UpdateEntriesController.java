@@ -607,7 +607,7 @@ public class UpdateEntriesController implements Initializable {
 
     @FXML
     void showCommission(ActionEvent event) throws SQLException, ClassNotFoundException, IOException {
-        Main st = new Main();
+        InitializerController st = new InitializerController();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/commissionUpdate.fxml"));
         loader.setController(new commissionUpdateController());
@@ -618,7 +618,7 @@ public class UpdateEntriesController implements Initializable {
         Stage stg = new Stage();
         bnkDtls.setStage(stg);
         stg.initModality(Modality.APPLICATION_MODAL);
-        stg.initOwner(st.stage);
+        stg.initOwner(st.base);
         stg.initStyle(StageStyle.UTILITY);
         stg.setScene(s);
         stg.show();
