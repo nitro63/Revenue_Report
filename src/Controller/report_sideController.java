@@ -17,12 +17,15 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import Controller.Gets.Conditioner;
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import revenue_report.DBConnection;
 
 /**
@@ -33,37 +36,40 @@ import revenue_report.DBConnection;
 public class report_sideController implements Initializable {
 
     @FXML
-    private Button btnViewReport;
+    private AnchorPane paneReport;
+
+    @FXML
+    private JFXButton btnViewReport;
     
     private appController app;
     @FXML
-    private Button btnWeeklyReport;
+    private JFXButton btnWeeklyReport;
     @FXML
-    private Button btnMonthlyReport;
+    private JFXButton btnMonthlyReport;
     @FXML
-    private Button btnQuarterlyReport;
+    private JFXButton btnQuarterlyReport;
     @FXML
-    private Button btnYearlyReport;
+    private JFXButton btnYearlyReport;
     @FXML
-    private Button btnBankDetails;
+    private JFXButton btnBankDetails;
     @FXML
-    private Button btnRevenueTarget;
+    private JFXButton btnRevenueTarget;
     @FXML
-    private Button btnRevenueItemsMaster;
+    private JFXButton btnRevenueItemsMaster;
     @FXML
-    private Button btnRevenueCenters;
+    private JFXButton btnRevenueCenters;
     @FXML
-    private Button btnCollectionPayment;
+    private JFXButton btnCollectionPayment;
     @FXML
-    private HBox Master;
+    private AnchorPane paneMaster;
     @FXML
-    private Button btnRevenueItemsQuarterly;
+    private JFXButton btnRevenueItemsQuarterly;
     @FXML
-    private Button btnRevenueCenters1;
+    private JFXButton btnQuarterlyCentersBasis;
     @FXML
-    private Button btnPaymentDetails;
+    private JFXButton btnPaymentDetails;
     @FXML
-    private Button btnValueBooksReport;
+    private JFXButton btnValueBooksReport;
     Conditioner conditioner = new Conditioner();
 
     private final Connection con;
@@ -82,6 +88,10 @@ public class report_sideController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (LogInController.hasCenter){
+            paneMaster.setVisible(false);
+            paneReport.setPrefHeight(480);
+        }
         try {
             PreparedStatement stmnt = con.prepareStatement("SELECT `revenue_category` FROM `revenue_centers` WHERE 1 GROUP BY `revenue_category`");
             ResultSet rt = stmnt.executeQuery();

@@ -50,7 +50,7 @@ public class home_sideController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (LogInController.OverAllAdmin || LogInController.admin || LogInController.supervisor){
+        if (LogInController.OverAllAdmin || LogInController.admin){
             btnAddUser.setVisible(true);
         }else {
             btnAddUser.setVisible(false);

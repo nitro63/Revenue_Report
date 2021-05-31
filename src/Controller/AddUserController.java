@@ -143,10 +143,6 @@ public class AddUserController  implements Initializable {
         }
         if (LogInController.admin){
             cboAccessLevel.getItems().remove("Overall Administrator");
-        }
-        if (LogInController.supervisor){
-            cboAccessLevel.getItems().remove("Overall Administrator");
-            cboAccessLevel.getItems().remove("Administrator");
             cboAccessLevel.getItems().remove("Accountant");
         }
     }
@@ -256,7 +252,7 @@ public class AddUserController  implements Initializable {
             colPass.setCellValueFactory(d -> d.getValue().passwordProperty());
                 if (LogInController.hasCenter){
                     String Center = LogInController.loggerCenter;
-            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `access_level` != 'Lvl_1' AND `center` = '"+Center+"' AND `center` = `CenterID` AND `access_level` = `access_ID`");
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `access_level` != 'Lvl_1' AND `access_level` != 'Lvl_3' AND `center` = '"+Center+"' AND `center` = `CenterID` AND `access_level` = `access_ID`");
             rs = stmnt.executeQuery();
             while (rs.next()) {
                 newUser = new GetUser(
@@ -272,7 +268,7 @@ public class AddUserController  implements Initializable {
 
             }
                 }else {
-            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `access_level` != 'Lvl_1' AND `center` IS NULL AND `access_level` = `access_ID`");
+            stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `access_level` != 'Lvl_1' AND `access_level` != 'Lvl_3' AND `center` IS NULL AND `access_level` = `access_ID`");
             rs = stmnt.executeQuery();
             while (rs.next()){
                 newUser =new GetUser(
@@ -286,47 +282,6 @@ public class AddUserController  implements Initializable {
                 );
                 tblAddUser.getItems().add(newUser);
             }
-                }
-        }else if (LogInController.supervisor){
-                tblAddUser.getItems().clear();
-                colEmail.setCellValueFactory(d -> d.getValue().emailProperty());
-                colFirstName.setCellValueFactory(d -> d.getValue().firstNameProperty());
-                colLastName.setCellValueFactory(d -> d.getValue().lastNameProperty());
-                colUserName.setCellValueFactory(d -> d.getValue().usernameProperty());
-                colLevel.setCellValueFactory(d ->d.getValue().levelProperty());
-                colRevenueCenter.setCellValueFactory(d -> d.getValue().user_centerProperty());
-                colPass.setCellValueFactory(d -> d.getValue().passwordProperty());
-                if (LogInController.hasCenter){
-                    String Center = LogInController.loggerCenter;
-                stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password`, `revenue_center` FROM `access_levels`, `revenue_centers`, `user` WHERE `access_level` != 'Lvl_1' AND `access_level` != 'Lvl_2' AND `access_level` != 'Lvl_3' AND`center` = '"+Center+"' AND  `access_level` = `access_ID` AND `center` = `CenterID`");
-                rs = stmnt.executeQuery();
-                while (rs.next()) {
-                    newUser = new GetUser(
-                            rs.getString("username"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getString("email"),
-                            rs.getString("password"),
-                            rs.getString("level"),
-                            rs.getString("revenue_center")
-                    );
-                    tblAddUser.getItems().add(newUser);
-                }
-                }else {
-                stmnt = con.prepareStatement("SELECT `first_name`, `last_name`, `email`, `level`, `username`, `password` FROM `access_levels`, `user` WHERE `access_level` != 'Lvl_1' AND `access_level` != 'Lvl_2' AND `access_level` != 'Lvl_3' AND`center` IS NULL AND  `access_level` = `access_ID`");
-                rs = stmnt.executeQuery();
-                while (rs.next()){
-                    newUser =new GetUser(
-                            rs.getString("username"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getString("email"),
-                            rs.getString("password"),
-                            rs.getString("level"),
-                            "NA"
-                    );
-                    tblAddUser.getItems().add(newUser);
-                }
                 }
         }
 
@@ -425,11 +380,11 @@ public class AddUserController  implements Initializable {
 
             if (flag) {
                 String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText(),
-                        fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password ;
+                        fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password = "";
                 if(chkPasswordMask.isSelected()) {
                     password = txtPasswordShown.getText();
                 }
-                else{
+                else if (!chkPasswordMask.isSelected()){
                     password = txtPass.getText();
                 }
                 stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");

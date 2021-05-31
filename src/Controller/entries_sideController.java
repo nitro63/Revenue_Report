@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,13 +44,13 @@ public class entries_sideController  implements Initializable {
     private ComboBox<String> cmbRevCent;
 
     @FXML
-    private Button btnDailies;
+    private JFXButton btnDailies;
 
     @FXML
-    private Button btnVLBStcxEntries;
+    private JFXButton btnVLBStcxEntries;
 
     @FXML
-    private Button btnEntriesUpdate;
+    private JFXButton btnEntriesUpdate;
     
        
     private final GetRevCenter GetCenter = new GetRevCenter();
@@ -62,11 +64,11 @@ public class entries_sideController  implements Initializable {
      
      appController app;
     @FXML
-    private Button btnPaymentEntries;
+    private JFXButton btnPaymentEntries;
     @FXML
-    private Button btnTargEntries;
+    private JFXButton btnTargEntries;
     @FXML
-    private Button btnPaymentDetails;
+    private JFXButton btnPaymentDetails;
     InitializerController init = new InitializerController();
 
      /***
@@ -120,6 +122,11 @@ public class entries_sideController  implements Initializable {
             }
         } catch (SQLException throwables) {
                 throwables.printStackTrace();
+        }
+        if (LogInController.OverAllAdmin || LogInController.Accountant){
+            btnEntriesUpdate.setVisible(true);
+        }else {
+            btnEntriesUpdate.setVisible(false);
         }
     }
     

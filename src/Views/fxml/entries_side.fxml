@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="565.0" prefWidth="215.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="565.0" prefWidth="215.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutY="5.0">
+      <AnchorPane layoutY="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <AnchorPane layoutY="4.423828125" prefHeight="46.0" prefWidth="215.0">
                <children>
@@ -35,47 +35,15 @@
                   <ComboBox fx:id="cmbRevCent" onAction="#SelectedCenter" prefHeight="35.0" prefWidth="195.0" promptText="Revenue Centers" style="-fx-background-color: transparent; -fx-border-radius: 30;" visibleRowCount="5" />
                </children>
             </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="45.0" layoutY="172.423828125" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
-               <children>
-                  <Button fx:id="btnDailies" mnemonicParsing="false" onAction="#ShowRevenue_Entries" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Revenue Entries" />
-               </children>
-            </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="45.0" layoutY="235.423828125" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
-               <children>
-                  <Button fx:id="btnPaymentEntries" mnemonicParsing="false" onAction="#showPaymentEntries" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Payment Entries">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="45.0" layoutY="298.423828125" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
-               <children>
-                  <Button fx:id="btnTargEntries" mnemonicParsing="false" onAction="#showTargetEntries" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Target Entries">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="45.0" layoutY="361.423828125" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
-               <children>
-                  <Button fx:id="btnVLBStcxEntries" mnemonicParsing="false" onAction="#showStocksEntries" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Value Books Stock Entries" textAlignment="CENTER" wrapText="true">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="BASELINE_CENTER" layoutX="45.0" layoutY="424.423828125" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="126.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-background-color: #e6e2e4;">
-               <children>
-                  <Button fx:id="btnEntriesUpdate" mnemonicParsing="false" onAction="#showEntriesUpdate" prefHeight="43.0" prefWidth="142.0" style="-fx-background-color: transparent;" text="Update Entries">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
+            <JFXButton fx:id="btnEntriesUpdate" buttonType="RAISED" layoutX="44.5" layoutY="431.0" onAction="#showEntriesUpdate" prefHeight="43.0" prefWidth="126.0" ripplerFill="#8d8b8b" style="-fx-background-color: #e6e2e4; -fx-background-radius: 50; -fx-border-radius: 50;" text="Update Entries" AnchorPane.leftAnchor="44.5" AnchorPane.rightAnchor="44.5" />
+            <JFXButton fx:id="btnVLBStcxEntries" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="46.0" layoutY="366.0" onAction="#showStocksEntries" prefHeight="43.0" prefWidth="126.0" ripplerFill="#8d8b8b" style="-fx-background-color: #e6e2e4; -fx-background-radius: 50; -fx-border-radius: 50;" text=" " AnchorPane.leftAnchor="44.5" AnchorPane.rightAnchor="44.5">
+               <graphic>
+                  <Label prefHeight="41.0" prefWidth="111.0" text="Value Books Stock Entries" textAlignment="CENTER" wrapText="true" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnTargEntries" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="47.0" layoutY="300.0" onAction="#showTargetEntries" prefHeight="43.0" prefWidth="126.0" ripplerFill="#8d8b8b" style="-fx-background-color: #e6e2e4; -fx-background-radius: 50; -fx-border-radius: 50;" text="Target Entries" AnchorPane.leftAnchor="44.5" AnchorPane.rightAnchor="44.5" />
+            <JFXButton fx:id="btnPaymentEntries" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="45.0" layoutY="236.0" onAction="#showPaymentEntries" prefHeight="43.0" prefWidth="126.0" ripplerFill="#8d8b8b" style="-fx-background-color: #e6e2e4; -fx-background-radius: 50; -fx-border-radius: 50;" text="Payment Entries" AnchorPane.leftAnchor="44.5" AnchorPane.rightAnchor="44.5" />
+            <JFXButton fx:id="btnDailies" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="46.0" layoutY="172.0" onAction="#ShowRevenue_Entries" prefHeight="43.0" prefWidth="126.0" ripplerFill="#8d8b8b" style="-fx-background-color: #e6e2e4; -fx-background-radius: 50; -fx-border-radius: 50;" text="Revenue Entries" AnchorPane.leftAnchor="44.5" AnchorPane.rightAnchor="44.5" />
          </children>
       </AnchorPane>
    </children>

@@ -5,17 +5,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import revenue_report.DBConnection;
 
+import javax.xml.stream.Location;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ViewUserController implements Initializable {
@@ -28,6 +37,12 @@ public class ViewUserController implements Initializable {
 
     @FXML
     private Label lblUsernameUp;
+
+    @FXML
+    private JFXPasswordField txtOldPass;
+
+    @FXML
+    private JFXTextField txtOldPasswordShown;
 
     @FXML
     private JFXPasswordField txtPass;
@@ -72,6 +87,9 @@ public class ViewUserController implements Initializable {
     private Label lblAccessLevel;
 
     @FXML
+    private JFXCheckBox chkPasswordMask;
+
+    @FXML
     private Label lblLastName;
 
     @FXML
@@ -79,6 +97,9 @@ public class ViewUserController implements Initializable {
 
     @FXML
     private JFXCheckBox chkUpdateMask;
+
+    @FXML
+    private Label lblnice;
 
     private final Connection con;
     private PreparedStatement stmnt;
@@ -144,18 +165,66 @@ public class ViewUserController implements Initializable {
 
 //        lblFirstName.setText();
     }
+    void setPaneUpdate(){
+        for (GetUser i : user){
+            txtLastName.setText(i.getLastName());
+            txtFirstName.setText(i.getFirstName());
+            txtEmail.setText(i.getEmail());
+            lblUsernameUp.setText(i.getUsername());
+            lblAccessLevelUpdate.setText(i.getLevel());
+        }
+    }
 
     @FXML
-    void chkUpdateMaskAction(ActionEvent event) throws SQLException {
+    void chkUpdateMaskAction(ActionEvent event) throws SQLException, IOException {
         if (chkUpdateMask.isSelected())
         {
-            setPas();
-            setPaneView();
+            /*Stage btn = (Stage) chkUpdateMask.getScene().getWindow();
+            FXMLLoader loada = new FXMLLoader();
+            loada.setLocation(getClass().getResource("/Views/fxml/passwordPrompt.fxml"));
+            loada.setController(this);
+            Parent root = loada.load();
+            Scene s = new Scene(root);
+            Stage stg = new Stage();
+            stg.initModality(Modality.APPLICATION_MODAL);
+            stg.initOwner(btn);
+            stg.initStyle(StageStyle.UTILITY);
+            stg.setScene(s);
+            stg.show();*/
             paneUpdate.setVisible(true);
             paneView.setVisible(false);
-        } else {
+            setPaneUpdate();
+        } else if (!chkUpdateMask.isSelected()){
+            setPas();
+            setPaneView();
             paneView.setVisible(true);
             paneUpdate.setVisible(false);
+        }
+    }
+
+    @FXML
+    void chkPasswordMaskAction(ActionEvent event) {
+        if (chkPasswordMask.isSelected())
+        {
+            txtPasswordShown.setText(txtPass.getText());
+            txtPasswordShown.setVisible(true);
+            txtPasswordConfirmShown.setText(txtPassConf.getText());
+            txtPasswordConfirmShown.setVisible(true);
+            txtOldPasswordShown.setText(txtOldPass.getText());
+            txtOldPasswordShown.setVisible(true);
+            txtPass.setVisible(false);
+            txtPassConf.setVisible(false);
+            txtOldPass.setVisible(false);
+        } else {
+            txtOldPass.setText(txtOldPasswordShown.getText());
+            txtOldPass.setVisible(true);
+            txtOldPasswordShown.setVisible(false);
+            txtPass.setText(txtPasswordShown.getText());
+            txtPass.setVisible(true);
+            txtPasswordShown.setVisible(false);
+            txtPassConf.setText(txtPasswordConfirmShown.getText());
+            txtPassConf.setVisible(true);
+            txtPasswordConfirmShown.setVisible(false);
         }
     }
 
@@ -165,7 +234,7 @@ public class ViewUserController implements Initializable {
     }
 
     @FXML
-    void updateUser(ActionEvent event) {
+    void updateUser(ActionEvent event) throws SQLException {
             boolean flag = true;
 
             if(txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
@@ -174,7 +243,7 @@ public class ViewUserController implements Initializable {
                 flag = false;
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
-                s.show("Fields can not be empty!3", 2000);
+                s.show("Fields can not be empty!", 2000);
             } else if(!txtPass.getText().equals(txtPassConf.getText()) || !txtPasswordShown.getText().equals
                     (txtPasswordConfirmShown.getText())) {
                 flag = false;
@@ -182,21 +251,39 @@ public class ViewUserController implements Initializable {
                 s.setStyle("-fx-text-fill: red");
                 s.show("Passwords did not match", 2000);
             }else if (chkUpdateMask.isSelected()){
-                if (txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") || txtPasswordConfirmShown.getText().matches("\\s+") || txtPasswordConfirmShown.getText().equals("") )
+                if (txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") || txtPasswordConfirmShown.getText().matches("\\s+") || txtPasswordConfirmShown.getText().equals("") || txtOldPasswordShown.getText().matches("\\s+") || txtOldPasswordShown.getText().equals(""))
                 {
                     flag = false;
                     JFXSnackbar s = new JFXSnackbar(empPane);
                     s.setStyle("-fx-text-fill: red");
-                    s.show("Fields can not be empty1!", 2000);
+                    s.show("Fields can not be empty!", 2000);
                 }
             }else if (!chkUpdateMask.isSelected()){
-                if (txtPass.getText().matches("\\s+") || txtPass.getText().equals("") || txtPassConf.getText().matches("\\s+") || txtPassConf.getText().equals("")
+                if (txtPass.getText().matches("\\s+") || txtPass.getText().equals("") || txtPassConf.getText().matches("\\s+") || txtPassConf.getText().equals("") || txtOldPass.getText().matches("\\s+") || txtOldPass.getText().equals("")
                 ){
                     flag = false;
                     JFXSnackbar s = new JFXSnackbar(empPane);
                     s.setStyle("-fx-text-fill: red");
-                    s.show("Fields can not be empty2!", 2000);
+                    s.show("Fields can not be empty!", 2000);
                 }
+            }
+
+            if (flag){
+                String  lname = txtLastName.getText(),
+                        fname = txtFirstName.getText(), mail = txtEmail.getText(), newpassword = "", oldpassword = "";
+                if(chkPasswordMask.isSelected()) {
+                    newpassword = txtPasswordShown.getText();
+                    oldpassword = txtOldPasswordShown.getText();
+                }
+                else if (!chkPasswordMask.isSelected()){
+                    newpassword = txtPass.getText();
+                    oldpassword = txtOldPass.getText();
+                }
+                    stmnt = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+newpassword+"' WHERE `username` =  '"+username+"'");
+
+
+
+
             }
 
     }
