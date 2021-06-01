@@ -24,15 +24,15 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneUpdate" layoutX="128.0" layoutY="108.0" prefHeight="380.0" prefWidth="724.0">
+      <AnchorPane fx:id="paneUpdate" layoutX="128.0" layoutY="108.0" prefHeight="380.0" prefWidth="724.0" visible="false">
          <children>
-            <JFXPasswordField fx:id="txtPass" alignment="CENTER" focusColor="#263238" layoutX="264.0" layoutY="175.0" prefHeight="25.0" prefWidth="232.0" />
+            <JFXPasswordField fx:id="txtPass" focusColor="#263238" layoutX="264.0" layoutY="175.0" prefHeight="25.0" prefWidth="232.0" promptText="new password" />
             <Label layoutX="120.0" layoutY="168.0" prefHeight="44.0" prefWidth="134.0" text="new password:">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXPasswordField fx:id="txtPassConf" alignment="CENTER" focusColor="#263238" layoutX="264.0" layoutY="224.0" prefHeight="25.0" prefWidth="232.0" />
+            <JFXPasswordField fx:id="txtPassConf" focusColor="#263238" layoutX="264.0" layoutY="224.0" prefHeight="25.0" prefWidth="232.0" promptText="repeat password" />
             <JFXTextField fx:id="txtEmail" alignment="CENTER" focusColor="#263238" layoutX="264.0" layoutY="271.0" prefHeight="31.0" prefWidth="232.0">
                <font>
                   <Font size="15.0" />
@@ -63,12 +63,12 @@
                   <Font size="14.0" />
                </font>
             </JFXButton>
-            <JFXTextField fx:id="txtPasswordShown" focusColor="#243035" layoutX="264.0" layoutY="170.0" onKeyPressed="#onEnterKey" prefHeight="30.0" prefWidth="232.0" promptText="new password">
+            <JFXTextField fx:id="txtPasswordShown" focusColor="#243035" layoutX="264.0" layoutY="170.0" onKeyPressed="#onEnterKey" prefHeight="30.0" prefWidth="232.0" promptText="new password" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="txtPasswordConfirmShown" focusColor="#243035" layoutX="263.0" layoutY="219.0" onKeyPressed="#onEnterKey" prefHeight="30.0" prefWidth="232.0" promptText="repeat password">
+            <JFXTextField fx:id="txtPasswordConfirmShown" focusColor="#243035" layoutX="263.0" layoutY="219.0" onKeyPressed="#onEnterKey" prefHeight="30.0" prefWidth="232.0" promptText="repeat password" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
@@ -103,20 +103,25 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <JFXPasswordField fx:id="txtOldPass" alignment="CENTER" focusColor="#263238" layoutX="263.0" layoutY="127.0" prefHeight="25.0" prefWidth="232.0" />
+            <JFXPasswordField fx:id="txtOldPass" focusColor="#263238" layoutX="263.0" layoutY="127.0" prefHeight="25.0" prefWidth="232.0" promptText="old password" />
             <Label layoutX="119.0" layoutY="120.0" prefHeight="44.0" prefWidth="134.0" text="old password:">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="txtOldPasswordShown" focusColor="#243035" layoutX="263.0" layoutY="122.0" onKeyPressed="#onEnterKey" prefHeight="30.0" prefWidth="232.0" promptText="old password">
+            <JFXTextField fx:id="txtOldPasswordShown" focusColor="#243035" layoutX="263.0" layoutY="122.0" onKeyPressed="#onEnterKey" prefHeight="30.0" prefWidth="232.0" promptText="old password" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXTextField>
+            <JFXCheckBox fx:id="chkPasswordMask" checkedColor="#263238" layoutX="531.0" layoutY="182.0" onAction="#chkPasswordMaskAction" prefHeight="8.0" prefWidth="4.0" text=" ">
+               <tooltip>
+                  <Tooltip text="Show/Hide Password" />
+               </tooltip>
+            </JFXCheckBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneView" layoutX="117.0" layoutY="111.0" prefHeight="394.0" prefWidth="724.0" visible="false">
+      <AnchorPane fx:id="paneView" layoutX="117.0" layoutY="111.0" prefHeight="394.0" prefWidth="724.0">
          <children>
             <Label layoutX="120.0" layoutY="158.0" prefHeight="44.0" prefWidth="134.0" text="password:">
                <font>
@@ -186,10 +191,5 @@
          </tooltip>
       </JFXCheckBox>
       <Label layoutX="584.0" layoutY="79.0" prefHeight="25.0" prefWidth="60.0" text="Update" />
-      <JFXCheckBox fx:id="chkPasswordMask" checkedColor="#263238" layoutX="650.0" layoutY="292.0" onAction="#chkPasswordMaskAction" prefHeight="8.0" prefWidth="4.0" text=" ">
-         <tooltip>
-            <Tooltip text="Show/Hide Password" />
-         </tooltip>
-      </JFXCheckBox>
    </children>
 </AnchorPane>

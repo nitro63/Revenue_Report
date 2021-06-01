@@ -85,7 +85,6 @@ public class RevenueItemsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         cmbCategory.getItems().addAll(categories);
         tblAddItem.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         txtCode.setOnMouseClicked(e -> lblCodeWarn.setVisible(false));
@@ -105,6 +104,7 @@ public class RevenueItemsController implements Initializable {
             throwables.printStackTrace();
         }
     }
+    
 
     void loadTable() throws SQLException {
         stmnt = con.prepareStatement("SELECT * FROM `revenue_items` WHERE 1");

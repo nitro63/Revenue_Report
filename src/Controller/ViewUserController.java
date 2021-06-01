@@ -104,7 +104,8 @@ public class ViewUserController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
     private ResultSet rs;
-    private String username = LogInController.loggerUsername;
+    private final String username = LogInController.loggerUsername;
+    String genPass;
     ObservableList<GetUser> user = FXCollections.observableArrayList();
     home_sideController app;
     GetUser User;
@@ -172,6 +173,7 @@ public class ViewUserController implements Initializable {
             txtEmail.setText(i.getEmail());
             lblUsernameUp.setText(i.getUsername());
             lblAccessLevelUpdate.setText(i.getLevel());
+            genPass = i.getPassword();
         }
     }
 
@@ -235,6 +237,7 @@ public class ViewUserController implements Initializable {
 
     @FXML
     void updateUser(ActionEvent event) throws SQLException {
+        PreparedStatement stmntp = null;
             boolean flag = true;
 
             if(txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
@@ -250,7 +253,7 @@ public class ViewUserController implements Initializable {
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
                 s.show("Passwords did not match", 2000);
-            }else if (chkUpdateMask.isSelected()){
+            }/*else if (chkUpdateMask.isSelected()){
                 if (txtPasswordShown.getText().matches("\\s+") || txtPasswordShown.getText().equals("") || txtPasswordConfirmShown.getText().matches("\\s+") || txtPasswordConfirmShown.getText().equals("") || txtOldPasswordShown.getText().matches("\\s+") || txtOldPasswordShown.getText().equals(""))
                 {
                     flag = false;
@@ -266,24 +269,61 @@ public class ViewUserController implements Initializable {
                     s.setStyle("-fx-text-fill: red");
                     s.show("Fields can not be empty!", 2000);
                 }
-            }
+            }*/
 
             if (flag){
-                String  lname = txtLastName.getText(),
-                        fname = txtFirstName.getText(), mail = txtEmail.getText(), newpassword = "", oldpassword = "";
+                String  lname = txtLastName.getText().trim(),
+                        fname = txtFirstName.getText().trim(), mail = txtEmail.getText().trim(), newpassword = "", oldpassword = "";
                 if(chkPasswordMask.isSelected()) {
-                    newpassword = txtPasswordShown.getText();
-                    oldpassword = txtOldPasswordShown.getText();
+                    newpassword = txtPasswordShown.getText().trim();
+                    oldpassword = txtOldPasswordShown.getText().trim();
                 }
                 else if (!chkPasswordMask.isSelected()){
-                    newpassword = txtPass.getText();
-                    oldpassword = txtOldPass.getText();
+                    newpassword = txtPass.getText().trim();
+                    oldpassword = txtOldPass.getText().trim();
                 }
-                    stmnt = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+newpassword+"' WHERE `username` =  '"+username+"'");
-
-
-
-
+                if ( oldpassword.isEmpty()){
+                    JFXSnackbar s = new JFXSnackbar(empPane);
+                    s.setStyle("-fx-text-fill: red");
+                    s.show("Please enter Old Password", 2000);
+                }else if (newpassword.isEmpty() && oldpassword.equals(genPass)){
+                    stmntp = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+oldpassword+"' WHERE `username` =  '"+username+"'");
+                }else if (!newpassword.isEmpty() && oldpassword.equals(genPass)){
+                    stmntp = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+newpassword+"' WHERE `username` =  '"+username+"'");
+                }else{
+                    JFXSnackbar s = new JFXSnackbar(empPane);
+                    s.setStyle("-fx-text-fill: red");
+                    s.show("Old Password is Incorrect", 2000);
+                }
+                if (stmntp != null) {
+                    stmntp.executeUpdate();
+                    txtLastName.setText(null);
+                    txtFirstName.setText(null);
+                    txtEmail.setText(null);
+                    lblUsernameUp.setText(null);
+                    lblAccessLevelUpdate.setText(null);
+                    if (chkPasswordMask.isSelected()){
+                        txtPasswordShown.setText(null);
+                        txtPasswordShown.setVisible(true);
+                        txtPasswordConfirmShown.setText(null);
+                        txtPasswordConfirmShown.setVisible(true);
+                        txtOldPasswordShown.setText(null);
+                        txtOldPasswordShown.setVisible(true);
+                        txtPass.setVisible(true);
+                        txtPassConf.setVisible(true);
+                        txtOldPass.setVisible(true);
+                        chkPasswordMask.setSelected(false);
+                    }else {
+                        txtOldPass.setText(null);
+                        txtPass.setText(null);
+                        txtPassConf.setText(null);
+                    }
+                    chkUpdateMask.setSelected(false);
+                    paneUpdate.setVisible(false);
+                    paneView.setVisible(true);
+                    setPas();
+                    setPaneView();
+                }
             }
 
     }

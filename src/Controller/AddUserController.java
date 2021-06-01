@@ -379,13 +379,13 @@ public class AddUserController  implements Initializable {
             }
 
             if (flag) {
-                String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText(),
-                        fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password = "";
+                String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText().trim(),
+                        fname = txtFname.getText().trim(), mail = txtEmail.getText().trim(), uname = txtUsername.getText().trim(), password = "";
                 if(chkPasswordMask.isSelected()) {
-                    password = txtPasswordShown.getText();
+                    password = txtPasswordShown.getText().trim();
                 }
                 else if (!chkPasswordMask.isSelected()){
-                    password = txtPass.getText();
+                    password = txtPass.getText().trim();
                 }
                 stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");
                 rs = stmnt.executeQuery();
@@ -461,13 +461,13 @@ public class AddUserController  implements Initializable {
                 }
             }
             if (flag){
-                String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText(),
-                        fname = txtFname.getText(), mail = txtEmail.getText(), uname = txtUsername.getText(), password ;
+                String levelID = LevelID.get(cboAccessLevel.getSelectionModel().getSelectedItem()), lname = txtLname.getText().trim(),
+                        fname = txtFname.getText().trim(), mail = txtEmail.getText().trim(), uname = txtUsername.getText().trim(), password ;
                 if(chkPasswordMask.isSelected()) {
-                    password = txtPasswordShown.getText();
+                    password = txtPasswordShown.getText().trim();
                 }
                 else{
-                    password = txtPass.getText();
+                    password = txtPass.getText().trim();
                 }
                 stmnt = con.prepareStatement("SELECT `username` FROM `user` WHERE `username` = '"+txtUsername.getText()+"'");
                 rs = stmnt.executeQuery();
@@ -478,7 +478,7 @@ public class AddUserController  implements Initializable {
                 if (dupUser.equals(txtUsername.getText()) && !dupUser.equals(username)){
                     JFXSnackbar s = new JFXSnackbar(empPane);
                     s.setStyle("-fx-text-fill: red");
-                    s.show("Username "+txtUsername.getText()+" already exists.", 2000);
+                    s.show("Username "+txtUsername.getText().trim()+" already exists.", 2000);
                 }else {
                     if (!cmbRevenueCenter.getSelectionModel().isEmpty()){
                         String center = centerID.get(cmbRevenueCenter.getSelectionModel().getSelectedItem());

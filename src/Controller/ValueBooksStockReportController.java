@@ -209,12 +209,12 @@ public class ValueBooksStockReportController implements Initializable {
             float cumuamount = 0;
             String amount;
             if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-                stmnt = con.prepareStatement(" SELECT * FROM `revenue_centers`,`value_books_stock_record` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "'");
+                stmnt = con.prepareStatement(" SELECT * FROM `revenue_centers`,`value_books_stock_record`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "' AND `value_book` = `value_book_ID`");
             } else if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = 'K0204' OR `value_stock_revCenter` = 'K0205' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "'");
+                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = 'K0204' OR `value_stock_revCenter` = 'K0205' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "' AND `value_book` = `value_book_ID`");
             }
             else {
-                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"'AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "'");
+                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"'AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "' AND `value_book` = `value_book_ID`");
             }
 //            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record`, `revenue_centers` WHERE `year`= '" +cmbYear.getSelectionModel().getSelectedItem() + "' AND `revenue_center`.`revenue_centers` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '" +cmbRevCenter.getSelectionModel().getSelectedItem() + "' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "'");
             ResultSet rs = stmnt.executeQuery();
@@ -229,7 +229,7 @@ public class ValueBooksStockReportController implements Initializable {
             colRemarks.setCellValueFactory(data -> data.getValue().remarksProperty());
             while (rs.next()) {
                 Date = rs.getString("date");
-                valBook = rs.getString("value_book");
+                valBook = rs.getString("value_books");
                 remarks = rs.getString("remarks");
                 firstSerial = rs.getString("first_serial");
                 lastSerial = rs.getString("last_serial");
