@@ -33,6 +33,7 @@
 		<parameter name="FirstMonth" class="java.lang.String"/>
 		<parameter name="SecondMonth" class="java.lang.String"/>
 		<parameter name="ThirdMonth" class="java.lang.String"/>
+		<parameter name="FourthMonth" class="java.lang.String"/>
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
@@ -41,6 +42,7 @@
 		<field name="firstMonth" class="java.lang.String"/>
 		<field name="secondMonth" class="java.lang.String"/>
 		<field name="thirdMonth" class="java.lang.String"/>
+		<field name="fourthMonth" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="logo" class="java.net.URL"/>
 	<parameter name="CollectionBean" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
@@ -77,7 +79,7 @@
 				<textFieldExpression><![CDATA[$P{year}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="372" y="94" width="192" height="17" uuid="a5b00df1-fcc4-4ad9-a35f-3d63aa00b4a5"/>
+				<reportElement x="373" y="94" width="192" height="17" uuid="a5b00df1-fcc4-4ad9-a35f-3d63aa00b4a5"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -132,11 +134,12 @@
 		<band height="403" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<componentElement>
-				<reportElement x="4" y="5" width="540" height="285" uuid="3514dde2-6491-422a-afb0-829bd3fd7900">
+				<reportElement x="-6" y="5" width="565" height="285" uuid="3514dde2-6491-422a-afb0-829bd3fd7900">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="TestDataset" uuid="39d7fc83-c9b2-4629-a3ae-23a0f70c8cae">
@@ -151,12 +154,12 @@
 						</datasetParameter>
 						<dataSourceExpression><![CDATA[$P{CollectionBean}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="120" uuid="bfbffbbf-e442-478d-8374-faee450f7d46">
+					<jr:column width="100" uuid="bfbffbbf-e442-478d-8374-faee450f7d46">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="120" height="30" uuid="ffc19f1a-d646-407b-a005-d91c9c932382"/>
+								<reportElement x="0" y="0" width="100" height="30" uuid="ffc19f1a-d646-407b-a005-d91c9c932382"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
@@ -165,7 +168,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField textAdjust="StretchHeight">
-								<reportElement x="0" y="0" width="120" height="30" uuid="adfba710-e820-4384-9700-364363ee1a78"/>
+								<reportElement x="0" y="0" width="100" height="30" uuid="adfba710-e820-4384-9700-364363ee1a78"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
@@ -173,12 +176,12 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="100" uuid="ae783317-6837-4b18-910d-83aaa5f6c693">
+					<jr:column width="90" uuid="ae783317-6837-4b18-910d-83aaa5f6c693">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<textField>
-								<reportElement x="0" y="0" width="100" height="30" uuid="dd8b0c10-f169-4edc-8783-354cc2c3858a"/>
+								<reportElement x="0" y="0" width="90" height="30" uuid="dd8b0c10-f169-4edc-8783-354cc2c3858a"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10"/>
 								</textElement>
@@ -187,7 +190,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="100" height="30" uuid="cf010ba0-f6a7-4868-a5ee-23dcc0c8f9c9"/>
+								<reportElement x="0" y="0" width="90" height="30" uuid="cf010ba0-f6a7-4868-a5ee-23dcc0c8f9c9"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
@@ -237,12 +240,32 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="120" uuid="83b4fb0f-c082-4441-b181-29c130fa3aea">
+					<jr:column width="90" uuid="e74173b3-cf8c-497f-9822-2718c320edab">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
 						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField>
+								<reportElement x="0" y="0" width="90" height="30" uuid="6e8b120d-3469-45f4-adee-d626392c46d0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$P{FourthMonth}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="30" uuid="b269ef00-ffd9-48d4-9807-b4a98e2598b4"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{fourthMonth}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="85" uuid="83b4fb0f-c082-4441-b181-29c130fa3aea">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="120" height="30" uuid="5cc6be39-ca13-40d6-a669-911221052789"/>
+								<reportElement x="0" y="0" width="85" height="30" uuid="5cc6be39-ca13-40d6-a669-911221052789">
+									<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10" isBold="true"/>
 								</textElement>
@@ -251,7 +274,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField textAdjust="StretchHeight">
-								<reportElement x="0" y="0" width="120" height="30" uuid="06355830-b58b-434e-a2a6-0d791e332f7a"/>
+								<reportElement x="0" y="0" width="85" height="30" uuid="06355830-b58b-434e-a2a6-0d791e332f7a"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
@@ -329,7 +352,7 @@
 				<textFieldExpression><![CDATA[$P{timeStamp}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="353" y="354" width="73" height="20" uuid="9896d7af-6bf2-4db3-b7d6-c4c9cd736e23">
+				<reportElement positionType="FixRelativeToBottom" x="355" y="353" width="73" height="20" uuid="9896d7af-6bf2-4db3-b7d6-c4c9cd736e23">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
@@ -345,7 +368,7 @@
 				<text><![CDATA[DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="254" y="354" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="d13fe275-076c-4cdd-a932-3d6d8bd1ccdb">
+				<reportElement positionType="FixRelativeToBottom" x="256" y="353" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="d13fe275-076c-4cdd-a932-3d6d8bd1ccdb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
