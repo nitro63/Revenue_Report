@@ -16,12 +16,15 @@ import Controller.Gets.GetDetails;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import com.sun.glass.ui.Clipboard;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import revenue_report.DBConnection;
@@ -52,8 +55,11 @@ public class RevenueItemsController implements Initializable {
     @FXML
     private JFXButton btnUpdate;
     @FXML
-    private JFXTextField txtCode;
-
+    private final JFXTextField txtCode = new JFXTextField() {
+        @Override
+        public void paste(){
+        }
+    } ;
     @FXML
     private Label lblItemWarn;
 
@@ -87,7 +93,6 @@ public class RevenueItemsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cmbCategory.getItems().addAll(categories);
         tblAddItem.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        txtCode.setOnMouseClicked(e -> lblCodeWarn.setVisible(false));
         txtItem.setOnMouseClicked(e -> lblItemWarn.setVisible(false));
         cmbCategory.setOnMouseClicked(e -> lblCategWarn.setVisible(false));
         tblAddItem.setOnMouseClicked(e ->{
@@ -103,6 +108,15 @@ public class RevenueItemsController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+        /*txtCode.setAlignment(Pos.CENTER);
+        txtCode.setLayoutX(46.0);
+        txtCode.setLayoutY(134.0);
+        txtCode.setOnKeyTyped(this::onlyNumbers);
+        txtCode.setPrefHeight(25.0);
+        txtCode.setPrefWidth(145.0);
+        txtCode.setPromptText("DEm");*/
+        txtCode.setOnMouseClicked(e -> lblCodeWarn.setVisible(false));
     }
     
 

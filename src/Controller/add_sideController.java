@@ -29,6 +29,7 @@ public class add_sideController implements Initializable {
         this.app = app;
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle rb){
 
