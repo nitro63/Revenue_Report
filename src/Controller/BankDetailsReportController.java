@@ -7,11 +7,17 @@ package Controller;
 
 import Controller.Gets.GetBankDetails;
 import Controller.Gets.GetFunctions;
+import Controller.Gets.GetPaymentDetails;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
-import java.util.ResourceBundle;
+import java.sql.Date;
+import java.util.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +29,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import revenue_report.DBConnection;
 
 /**
@@ -221,24 +232,24 @@ public class BankDetailsReportController implements Initializable {
 
 
     @FXML
-    void printReport(ActionEvent event) {
+    void printReport(ActionEvent event) throws JRException, FileNotFoundException {
         if (tblBankDetails.getItems().isEmpty()){
             event.consume();
         }else {
-            Date date = new Date();
-            List<GetPaymentDetails> items = new ArrayList<>();
-            for (int j = 0; j < tblPaymentDetails.getItems().size(); j++) {
-                new GetPaymentDetails();
-                GetPaymentDetails getdata = tblPaymentDetails.getItems().get(j);
+            Date date = null;
+            List<GetBankDetails> items = new ArrayList<>();
+            for (int j = 0; j < tblBankDetails.getItems().size(); j++) {
+                new GetBankDetails();
+                GetBankDetails getdata = tblBankDetails.getItems().get(j);
                 items.add(getdata);
             }
             URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/paymentPotrait.jrxml");
+                    file = this.getClass().getResource("/Assets/bankDetailsPotrait.jrxml");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
-            String year = cmbYear.getSelectionModel().getSelectedItem(),
-                    center = cmbRevCenter.getSelectionModel().getSelectedItem(),
-                    month = cmbMonth.getSelectionModel().getSelectedItem();
+            String year = lblYear.getText(),
+                    center = lblRevenueCenter.getText(),
+                    month = lblMonth.getText();
 
             /* Map to hold Jasper report Parameters */
             Map<String, Object> parameters = new HashMap<>();

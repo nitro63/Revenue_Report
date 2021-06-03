@@ -406,31 +406,71 @@ public class MasterQuarterCentersController implements Initializable {
 
     @FXML
     void printReport(ActionEvent event) throws JRException, FileNotFoundException {
-        if (quarterMastCentersTable.getItems().isEmpty()){
+        if (quarterMastCentersTable.getItems().isEmpty() || quarterMastCentersTableAll.getItems().isEmpty()){
             event.consume();
-        }else {
+        }else if (!quarterMastCentersTable.getItems().isEmpty()){
             Date date = new Date();
             List<GetMstrQuarterCenters> items = new ArrayList<GetMstrQuarterCenters>();
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"), file = null;
             for (int j = 0; j < quarterMastCentersTable.getItems().size(); j++) {
                 GetMstrQuarterCenters getdata = new GetMstrQuarterCenters();
                 getdata = quarterMastCentersTable.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/masterQuarterCentersPotrait.jrxml");
+            file = this.getClass().getResource("/Assets/masterQuarterCentersPotrait.jrxml");
 
-            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmMstCentersYear.getSelectionModel().getSelectedItem(),
                     first = month1.getText(),
                     second = month2.getText(),
                     third = month3.getText();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url); parameters.put("FirstMonth", first);
             parameters.put("year", year); parameters.put("SecondMonth", second);
             parameters.put("timeStamp", date); parameters.put("ThirdMonth", third);
+
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(new File(file.getPath()));
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
+        }else if (!quarterMastCentersTableAll.getItems().isEmpty()){
+            Date date = new Date();
+            List<GetMstrQuarterCenters> items = new ArrayList<GetMstrQuarterCenters>();
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"), file = null;
+            for (int j = 0; j < quarterMastCentersTableAll.getItems().size(); j++) {
+                GetMstrQuarterCenters getdata = new GetMstrQuarterCenters();
+                getdata = quarterMastCentersTableAll.getItems().get(j);
+                items.add(getdata);
+            }
+            file = this.getClass().getResource("/Assets/masterAllQuarterCentersPotrait.jrxml");
+
+            String year = cmMstCentersYear.getSelectionModel().getSelectedItem(),
+                    first = month1All.getText(),
+                    second = month2All.getText(),
+                    third = month3All.getText(),
+                    fourth = month4All.getText();
+
+            /* Map to hold Jasper report Parameters */
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url); parameters.put("FirstMonth", first);
+            parameters.put("year", year); parameters.put("SecondMonth", second);
+            parameters.put("timeStamp", date); parameters.put("ThirdMonth", third); parameters.put("FourthMonth", fourth);
+
 
             //read jrxml file and creating jasperdesign object
             InputStream input = new FileInputStream(new File(file.getPath()));
