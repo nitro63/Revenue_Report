@@ -222,7 +222,47 @@ public class BankDetailsReportController implements Initializable {
 
     @FXML
     void printReport(ActionEvent event) {
+        if (tblBankDetails.getItems().isEmpty()){
+            event.consume();
+        }else {
+            Date date = new Date();
+            List<GetPaymentDetails> items = new ArrayList<>();
+            for (int j = 0; j < tblPaymentDetails.getItems().size(); j++) {
+                new GetPaymentDetails();
+                GetPaymentDetails getdata = tblPaymentDetails.getItems().get(j);
+                items.add(getdata);
+            }
+            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                    file = this.getClass().getResource("/Assets/paymentPotrait.jrxml");
 
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+            String year = cmbYear.getSelectionModel().getSelectedItem(),
+                    center = cmbRevCenter.getSelectionModel().getSelectedItem(),
+                    month = cmbMonth.getSelectionModel().getSelectedItem();
+
+            /* Map to hold Jasper report Parameters */
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("CollectionBean", itemsJRBean);
+            parameters.put("logo", url);
+            parameters.put("year", year);
+            parameters.put("timeStamp", date); parameters.put("month", month);
+            parameters.put("center", center);
+
+
+            //read jrxml file and creating jasperdesign object
+            InputStream input = new FileInputStream(file.getPath());
+
+            JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+            /*compiling jrxml with help of JasperReport class*/
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            /* Using jasperReport object to generate PDF */
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            /*call jasper engine to display report in jasperviewer window*/
+            JasperViewer.viewReport(jasperPrint, false);
+        }
     }
 
 }
