@@ -1035,7 +1035,7 @@ public class weeklyReportController implements Initializable {
               par.put("ADS7", AS7);par.put("ADK1", AK1);par.put("ADK2", AK2);par.put("ADK3", AK3);par.put("ADK4", AK4);par.put("ADK5", AK5);par.put("ADK6", AK6);par.put("ADK7", AK7);
 
               //read jrxml file and creating jasperdesign object
-              InputStream input = new FileInputStream(new File(file.getPath()));
+              InputStream input = new FileInputStream(file.getPath());
 
               JasperDesign jasperDesign = JRXmlLoader.load(input);
 
