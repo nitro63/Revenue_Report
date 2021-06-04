@@ -95,7 +95,7 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="77" splitType="Stretch">
+		<band height="62" splitType="Stretch">
 			<staticText>
 				<reportElement x="10" y="10" width="130" height="17" uuid="2aae4935-2705-446b-b7e7-d0d902103e5d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">

@@ -55,6 +55,7 @@
 	<parameter name="FirstMonth" class="java.lang.String"/>
 	<parameter name="SecondMonth" class="java.lang.String"/>
 	<parameter name="ThirdMonth" class="java.lang.String"/>
+	<parameter name="FourthMonth" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -83,7 +84,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[QUARTERLY ITEM REVENUE REPORT ]]></text>
+				<text><![CDATA[ALL QUARTERS REVENUE ITEMS REPORT ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="310" y="96" width="92" height="17" uuid="91e88734-02d3-45f8-8dde-cb12608eb1df"/>
@@ -150,6 +151,9 @@
 						</datasetParameter>
 						<datasetParameter name="ThirdMonth">
 							<datasetParameterExpression><![CDATA[$P{ThirdMonth}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FourthMonth">
+							<datasetParameterExpression><![CDATA[$P{FourthMonth}]]></datasetParameterExpression>
 						</datasetParameter>
 						<dataSourceExpression><![CDATA[$P{CollectionBean}]]></dataSourceExpression>
 					</datasetRun>

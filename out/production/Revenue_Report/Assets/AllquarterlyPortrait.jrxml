@@ -55,6 +55,7 @@
 	<parameter name="FirstMonth" class="java.lang.String"/>
 	<parameter name="SecondMonth" class="java.lang.String"/>
 	<parameter name="ThirdMonth" class="java.lang.String"/>
+	<parameter name="FourthMonth" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -156,6 +157,9 @@
 						</datasetParameter>
 						<datasetParameter name="ThirdMonth">
 							<datasetParameterExpression><![CDATA[$P{ThirdMonth}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FourthMonth">
+							<datasetParameterExpression><![CDATA[$P{FourthMonth}]]></datasetParameterExpression>
 						</datasetParameter>
 						<dataSourceExpression><![CDATA[$P{CollectionBean}]]></dataSourceExpression>
 					</datasetRun>

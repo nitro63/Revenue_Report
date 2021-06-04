@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.*;
 
 import javafx.collections.FXCollections;
@@ -236,7 +236,7 @@ public class BankDetailsReportController implements Initializable {
         if (tblBankDetails.getItems().isEmpty()){
             event.consume();
         }else {
-            Date date = null;
+            Date date = new Date();
             List<GetBankDetails> items = new ArrayList<>();
             for (int j = 0; j < tblBankDetails.getItems().size(); j++) {
                 new GetBankDetails();

@@ -941,11 +941,13 @@ public class weeklyReportController implements Initializable {
         if (condSubMetro){
             subPane.setVisible(true);
             generalPane.setVisible(false);
+            weekTable.getItems().clear();
             weekTableSub.getItems().clear();
             setItemsSub();
         } else {
             generalPane.setVisible(true);
             subPane.setVisible(false);
+            weekTableSub.getItems().clear();
         weekTable.getItems().clear();
         setItems();
         }
@@ -954,9 +956,7 @@ public class weeklyReportController implements Initializable {
 
     @FXML
     void printReport(ActionEvent event) throws JRException, FileNotFoundException {
-          if (weekTable.getItems().isEmpty()){
-              event.consume();
-          }else {
+          if (!weekTable.getItems().isEmpty()){
               Date date = new Date();
               List<GetReportgen> items = new ArrayList<GetReportgen>();
               for (int j = 0; j < weekTable.getItems().size(); j++) {
@@ -970,8 +970,8 @@ public class weeklyReportController implements Initializable {
               System.out.println(items + "\n" + url);
               JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
               String center = cmbReportCent.getSelectionModel().getSelectedItem(),
-              year = cmbReportYear.getSelectionModel().getSelectedItem(),
-              month = cmbReportMonth.getSelectionModel().getSelectedItem();
+                      year = cmbReportYear.getSelectionModel().getSelectedItem(),
+                      month = cmbReportMonth.getSelectionModel().getSelectedItem();
 
               /* Map to hold Jasper report Parameters */
               Map<String, Object> parameters = new HashMap<String, Object>();
@@ -995,6 +995,60 @@ public class weeklyReportController implements Initializable {
 
               /*call jasper engine to display report in jasperviewer window*/
               JasperViewer.viewReport(jasperPrint, false);
+          }else if (!weekTableSub.getItems().isEmpty()){
+              Date date = new Date();
+              List<GetReportgen> items = new ArrayList<GetReportgen>();
+              for (int j = 0; j < weekTableSub.getItems().size(); j++) {
+                  GetReportgen getdata = new GetReportgen();
+                  getdata = weekTableSub.getItems().get(j);
+                  items.add(getdata);
+              }
+              URL url = this.getClass().getResource("/Assets/kmalogo.png"),
+                      file = this.getClass().getResource("/Assets/weeklySubMetroPotrait.jrxml");
+
+              System.out.println(items + "\n" + url);
+              JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+              String center = cmbReportCent.getSelectionModel().getSelectedItem(),tot1 = lblWk1SumSub.getText(),tot2 = lblWk2SumSub.getText(),
+                      tot3 = lblWk3SumSub.getText(), tot4 = lblWk4SumSub.getText(), tot5 = lblWk5SumSub.getText(), tot6 = lblWk6SumSub.getText(),
+                      tot7 = lblTotalSumSub.getText(), CC1 = lblCCAmount1.getText(), CC2 = lblCCAmount2.getText(), CC3 = lblCCAmount3.getText(),
+                      CC4 = lblCCAmount4.getText(), CC5 = lblCCAmount5.getText(), CC6 = lblCCAmount6.getText(), CC7 = lblCCAmountTot.getText(),
+                      CO1 = lblCommission1.getText(),CO2 = lblCommission2.getText(),CO3 = lblCommission3.getText(),CO4 = lblCommission4.getText(),
+                      CO5 = lblCommission5.getText(),CO6 = lblCommission6.getText(), CO7 = lblCommissionTot.getText(),CV1 = lblCostValueBooks1.getText(),
+                      CV2 = lblCostValueBooks2.getText(),CV3 = lblCostValueBooks3.getText(),CV4 = lblCostValueBooks4.getText(),CV5 = lblCostValueBooks5.getText(),
+                      CV6 = lblCostValueBooks6.getText(),CV7 = lblCostValueBooksTot.getText(), NR1 = lblNetRevenue1.getText(), NR2 = lblNetRevenue2.getText(),
+                      NR3 = lblNetRevenue3.getText(), NR4 = lblNetRevenue4.getText(), NR5 = lblNetRevenue5.getText(), NR6 = lblNetRevenue6.getText(), NR7 = lblNetRevenueTot.getText(),
+                      AS1 = lblAmtDueSub1.getText(), AS2 = lblAmtDueSub2.getText(), AS3 = lblAmtDueSub3.getText(), AS4 = lblAmtDueSub4.getText(), AS5 = lblAmtDueSub5.getText(),
+                      AS6 = lblAmtDueSub6.getText(), AS7 = lblAmtDueSubTot.getText(), AK1 = lblAmtDueKMA1.getText(), AK2 = lblAmtDueKMA2.getText(), AK3 = lblAmtDueKMA3.getText(),
+                      AK4 = lblAmtDueKMA4.getText(), AK5 = lblAmtDueKMA5.getText(), AK6 = lblAmtDueKMA6.getText(), AK7 = lblAmtDueKMATot.getText(),
+                      TC1 = lblDiff1.getText(), TC2 = lblDiff2.getText(), TC3 = lblDiff3.getText(), TC4 = lblDiff4.getText(), TC5 = lblDiff5.getText(), TC6 = lblDiff6.getText(),
+                      TC7 = lblDiffTot.getText(), year = cmbReportYear.getSelectionModel().getSelectedItem(), month = cmbReportMonth.getSelectionModel().getSelectedItem();
+
+              /* Map to hold Jasper report Parameters */
+              Map<String, Object> par = new HashMap<String, Object>();
+              par.put("CollectionBean", itemsJRBean);par.put("logo", url);par.put("center",center);par.put("month", month);par.put("year", year);par.put("timeStamp", date);
+              par.put("TT1", tot1);par.put("TT2", tot2);par.put("TT3", tot3);par.put("TT4", tot4);par.put("TT5", tot5);par.put("TT6", tot6);par.put("TT7", tot7);par.put("TC1", TC1);
+              par.put("TC2", TC2);par.put("TC3", TC3);par.put("TC4", TC4);par.put("TC5", TC5);par.put("TC6", TC6);par.put("TC7", TC7);par.put("NR1", NR1);par.put("NR2", NR2);
+              par.put("NR3", NR3);par.put("NR4", NR4);par.put("NR5", NR5);par.put("NR6", NR6);par.put("NR7", NR7);par.put("CCA1", CC1);par.put("CCA2", CC2);par.put("CCA3", CC3);
+              par.put("CCA4", CC4);par.put("CCA5", CC5);par.put("CCA6", CC6);par.put("CCA7", CC7);par.put("COM1", CO1);par.put("COM2", CO2);par.put("COM3", CO3);par.put("COM4", CO4);
+              par.put("COM5", CO5);par.put("COM6", CO6);par.put("COM7", CO7);par.put("COV1", CV1);par.put("COV2", CV2);par.put("COV3", CV3);par.put("COV4", CV4);par.put("COV5", CV5);
+              par.put("COV6", CV6);par.put("COV7", CV7);par.put("ADS1", AS1);par.put("ADS2", AS2);par.put("ADS3", AS3);par.put("ADS4", AS4);par.put("ADS5", AS5);par.put("ADS6", AS6);
+              par.put("ADS7", AS7);par.put("ADK1", AK1);par.put("ADK2", AK2);par.put("ADK3", AK3);par.put("ADK4", AK4);par.put("ADK5", AK5);par.put("ADK6", AK6);par.put("ADK7", AK7);
+
+              //read jrxml file and creating jasperdesign object
+              InputStream input = new FileInputStream(new File(file.getPath()));
+
+              JasperDesign jasperDesign = JRXmlLoader.load(input);
+
+              /*compiling jrxml with help of JasperReport class*/
+              JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+              /* Using jasperReport object to generate PDF */
+              JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, par, new JREmptyDataSource());
+
+              /*call jasper engine to display report in jasperviewer window*/
+              JasperViewer.viewReport(jasperPrint, false);
+          }else {
+              event.consume();
           }
     }
 
