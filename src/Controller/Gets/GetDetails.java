@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetDetails {
-    private StringProperty Center, ID, Category;
+    private StringProperty Center, ID, Category, SubItem;
 
     public GetDetails(){}
 
@@ -12,6 +12,25 @@ public class GetDetails {
         this.Category = new SimpleStringProperty(Category);
         this.ID = new SimpleStringProperty(ID);
         this.Center = new SimpleStringProperty(center);
+    }
+
+    public GetDetails(String center,String subItem, String ID, String Category){
+        this.Category = new SimpleStringProperty(Category);
+        this.SubItem = new SimpleStringProperty(subItem);
+        this.ID = new SimpleStringProperty(ID);
+        this.Center = new SimpleStringProperty(center);
+    }
+
+    public String getSubItem() {
+        return SubItem.get();
+    }
+
+    public StringProperty subItemProperty() {
+        return SubItem;
+    }
+
+    public void setSubItem(String subItem) {
+        this.SubItem.set(subItem);
     }
 
     public String getCenter() {

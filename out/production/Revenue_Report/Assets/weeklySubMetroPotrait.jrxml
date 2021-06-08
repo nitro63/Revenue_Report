@@ -6,7 +6,6 @@
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-
 	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
@@ -411,466 +410,6 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="135" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="8c916ad1-fd9c-42ec-a4d1-4994bab051cc"/>
-				<textElement textAlignment="Center">
-					<font size="13.5"/>
-				</textElement>
-				<text><![CDATA[TOTAL]]></text>
-			</staticText>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="135" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="10881551-94b6-4290-8265-b967df0814a2"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TT1}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="ebd69f1c-e83f-4d8d-8456-a8dc0ae1a0f1"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TT2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="f9d84c2b-ea03-452c-a998-91703c2d5993"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TT3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="64669851-269f-47d1-b940-a028539cb093"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TT4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="7041ed33-785d-4fc8-978b-e4448ee86e39"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TT5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="983378d4-13a3-4585-b242-bf77fe17fe7a"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TT6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="9477dffa-9818-43ea-9469-0610f2cb0a66"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TT7}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8f2a7d87-f1b7-4d32-99bc-93d1d49b41a4"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{CCA7}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="f33dacbd-35e4-434e-8520-d8ce47c6bce7"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{CCA6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="50819903-6139-4310-a77f-f84e313f250c"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{CCA5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="d62c5595-7b46-4961-bb4e-b245c7c5a3a8"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{CCA4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="873f0784-3265-4c81-b7f1-2081725d1c6e"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{CCA3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="2c5870ca-9a86-4047-8b67-55cc1c012437"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{CCA2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="160" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="2b581f86-0c08-4378-b3d0-86956ecb6e94"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{CCA1}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="160" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="22e749f8-5d34-408d-a650-daff2c3d3323"/>
-				<textElement textAlignment="Center">
-					<font size="9.5"/>
-				</textElement>
-				<text><![CDATA[Com Colct Amount:]]></text>
-			</staticText>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a935c832-12a7-4850-93c9-c3a1c5a59f07"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COM7}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="6d9ee550-4a96-4a59-b60b-bc877d38d7fa"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COM6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a048dd52-ac4a-49e0-899a-e22131a744be"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COM5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="341fbdc5-f9a6-40fa-82a6-7598a49f6038"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COM4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a1fe3ce5-3f1b-4381-a294-b7cee45073a2"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COM3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="b2bf4f96-ee6a-4c13-9a97-527d65b2b638"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COM2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="184" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="5f107e67-317b-4fcf-ad47-80a9e6726a11"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COM1}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="184" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="f97bf59b-1e7f-4f9c-b7c3-bdceef127705"/>
-				<textElement textAlignment="Center">
-					<font size="13.5"/>
-				</textElement>
-				<text><![CDATA[18% Comm.]]></text>
-			</staticText>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="6eb2b45d-d92a-486a-a9fa-18cea5bbe678"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COV7}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="4a933844-6ca5-4cf6-849d-128a156b81ed"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COV6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="f1b14d16-28d0-4097-89a9-6d6a0b02d742"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COV5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="ab9ae153-24ed-4495-a165-ccb44aee086e"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COV4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="e29090cb-7e0e-416b-a9c0-7c6902311d50"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COV3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="5f79e836-73c0-4c8d-97ac-2f165f27d41d"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COV2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="208" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="16d4c340-05bc-478d-b70b-05c3de1cd27b"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{COV1}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="208" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="0ef90376-a0af-4280-a332-d2b21b05c339"/>
-				<textElement textAlignment="Center">
-					<font size="11.5"/>
-				</textElement>
-				<text><![CDATA[Cost of V. Books]]></text>
-			</staticText>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="64cceff8-8101-42ff-a3af-c33ea0a7187b"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TC7}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="c00b5411-cc85-4e02-b46d-7e6a1fd99545"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TC6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="dbba4c43-c7a3-4d6f-93ec-0e32b03a0f41"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TC5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="df8c575b-64bc-44b3-b2e1-c162f52728df"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TC4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="23652663-d3c0-4e53-bd2d-7cb4d8b68b3f"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TC3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="0243431a-1e9a-416b-b193-f6ce746f1872"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TC2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="231" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="334c0569-601d-4a6b-b5a7-c60864991d22"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{TC1}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="231" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="607238b0-62bc-45f0-b461-43ec765aa1db"/>
-				<textElement textAlignment="Center">
-					<font size="13.5"/>
-				</textElement>
-				<text><![CDATA[Total Cost]]></text>
-			</staticText>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="6adcfe3a-4d08-4447-a933-96bb8a1ca711"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NR7}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8a70514f-d9c2-4954-9c28-f9e66b8e0bd3"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NR6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a89e86fb-4d79-44b4-b426-da271bddce27"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NR5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="bfde1b84-cb2e-4b84-954b-8c4802591211"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NR4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8cc91de6-d81e-429f-b7cb-0ec51cc9d4c9"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NR3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="136f5d2e-5eb1-42d3-baf0-3590bc7d3602"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NR2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="255" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8889b855-ada6-46d5-ae6d-12e55d81d085"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NR1}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="255" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="7e794462-82c9-4cf0-90db-5a115b374a1b"/>
-				<textElement textAlignment="Center">
-					<font size="13.5"/>
-				</textElement>
-				<text><![CDATA[Net Revenue:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="276" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="7a03e155-52d2-40fa-9407-dbbf34930757"/>
-				<textElement textAlignment="Center">
-					<font size="9.5"/>
-				</textElement>
-				<text><![CDATA[Amt. Due Sub-Metro]]></text>
-			</staticText>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="276" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="86a94ea4-877a-4d7b-9bc0-500680a2908d"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADS1}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="1630ddee-c730-4eea-bf27-0f230e5b03f0"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADS2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="9c7da7d4-8665-4eb7-86d7-df8a833a1c65"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADS3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="887373a3-e5cf-4cab-8b1e-f885ba5aa09f"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADS4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a72b6a72-7857-4f59-aada-849ca2de6f38"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADS5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="bb28927e-8110-415b-90bc-903de485b5ce"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADS6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="03ffc0e3-a165-4948-8940-37854a2a1a31"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADS7}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="33" y="298" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="2cd8b3f1-3578-465a-81e4-82d0ca3a479b"/>
-				<textElement textAlignment="Center">
-					<font size="11.5"/>
-				</textElement>
-				<text><![CDATA[Amt. Due KMA:]]></text>
-			</staticText>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="140" y="298" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="7126f737-170c-4979-898e-30cc70f051ce"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADK1}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="225" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="261410e2-3e21-4789-a2cc-139cd506b6f7"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADK2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="314" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="76ca4207-dda8-41b7-8a8d-8f56b45476a6"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADK3}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="408" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="c9b2a1d7-fdbf-41f7-ac9c-ad1c899b1dcf"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADK4}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="498" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="126a7a51-9ea6-4c00-8448-cc5b40f486f5"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADK5}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="588" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="7ff2a568-d5cb-44f5-9f85-97248355126a"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADK6}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="ScaleFont">
-				<reportElement positionType="FixRelativeToBottom" x="679" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="ca7e302e-8acf-4c78-87d2-a5044f3af4a8"/>
-				<textElement textAlignment="Center" markup="">
-					<font size="10.5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ADK7}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="42" y="332" width="138" height="20" isPrintWhenDetailOverflows="true" uuid="1630bf39-5695-4ce3-adf8-50b2aced99bb"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[REVENUE SUPERVISOR]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement positionType="FixRelativeToBottom" x="174" y="333" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="04130e32-b37a-4707-abec-208d6e68ed22">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{revenueSupervisor}]]></textFieldExpression>
-			</textField>
-			<staticText>
 				<reportElement positionType="FixRelativeToBottom" x="451" y="331" width="123" height="20" isPrintWhenDetailOverflows="true" uuid="b9e00cc3-a7b2-4de3-942e-072cca600790"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[ACCOUNTANT]]></text>
@@ -928,6 +467,468 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Static Text]]></text>
 			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="135" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="8c916ad1-fd9c-42ec-a4d1-4994bab051cc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="13.5"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="135" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="10881551-94b6-4290-8265-b967df0814a2"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TT1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="ebd69f1c-e83f-4d8d-8456-a8dc0ae1a0f1"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TT2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="f9d84c2b-ea03-452c-a998-91703c2d5993"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TT3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="64669851-269f-47d1-b940-a028539cb093"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TT4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="7041ed33-785d-4fc8-978b-e4448ee86e39"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TT5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="983378d4-13a3-4585-b242-bf77fe17fe7a"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TT6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="134" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="9477dffa-9818-43ea-9469-0610f2cb0a66"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TT7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8f2a7d87-f1b7-4d32-99bc-93d1d49b41a4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CCA7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="f33dacbd-35e4-434e-8520-d8ce47c6bce7"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CCA6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="50819903-6139-4310-a77f-f84e313f250c"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CCA5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="d62c5595-7b46-4961-bb4e-b245c7c5a3a8"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CCA4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="873f0784-3265-4c81-b7f1-2081725d1c6e"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CCA3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="159" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="2c5870ca-9a86-4047-8b67-55cc1c012437"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CCA2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="160" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="2b581f86-0c08-4378-b3d0-86956ecb6e94"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CCA1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="160" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="22e749f8-5d34-408d-a650-daff2c3d3323"/>
+				<textElement textAlignment="Center">
+					<font size="9.5"/>
+				</textElement>
+				<text><![CDATA[Com Colct Amount:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a935c832-12a7-4850-93c9-c3a1c5a59f07"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COM7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="6d9ee550-4a96-4a59-b60b-bc877d38d7fa"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COM6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a048dd52-ac4a-49e0-899a-e22131a744be"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COM5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="341fbdc5-f9a6-40fa-82a6-7598a49f6038"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COM4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a1fe3ce5-3f1b-4381-a294-b7cee45073a2"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COM3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="183" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="b2bf4f96-ee6a-4c13-9a97-527d65b2b638"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COM2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="184" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="5f107e67-317b-4fcf-ad47-80a9e6726a11"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COM1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="184" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="f97bf59b-1e7f-4f9c-b7c3-bdceef127705"/>
+				<textElement textAlignment="Center">
+					<font size="13.5"/>
+				</textElement>
+				<text><![CDATA[18% Comm.]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="6eb2b45d-d92a-486a-a9fa-18cea5bbe678"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COV7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="4a933844-6ca5-4cf6-849d-128a156b81ed"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COV6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="f1b14d16-28d0-4097-89a9-6d6a0b02d742"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COV5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="ab9ae153-24ed-4495-a165-ccb44aee086e"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COV4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="e29090cb-7e0e-416b-a9c0-7c6902311d50"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COV3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="207" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="5f79e836-73c0-4c8d-97ac-2f165f27d41d"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COV2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="208" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="16d4c340-05bc-478d-b70b-05c3de1cd27b"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COV1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="208" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="0ef90376-a0af-4280-a332-d2b21b05c339"/>
+				<textElement textAlignment="Center">
+					<font size="11.5"/>
+				</textElement>
+				<text><![CDATA[Cost of V. Books]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="64cceff8-8101-42ff-a3af-c33ea0a7187b"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TC7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="c00b5411-cc85-4e02-b46d-7e6a1fd99545"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TC6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="dbba4c43-c7a3-4d6f-93ec-0e32b03a0f41"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TC5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="df8c575b-64bc-44b3-b2e1-c162f52728df"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TC4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="23652663-d3c0-4e53-bd2d-7cb4d8b68b3f"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TC3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="230" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="0243431a-1e9a-416b-b193-f6ce746f1872"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TC2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="231" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="334c0569-601d-4a6b-b5a7-c60864991d22"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TC1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="231" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="607238b0-62bc-45f0-b461-43ec765aa1db"/>
+				<textElement textAlignment="Center">
+					<font size="13.5"/>
+				</textElement>
+				<text><![CDATA[Total Cost]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="6adcfe3a-4d08-4447-a933-96bb8a1ca711"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NR7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8a70514f-d9c2-4954-9c28-f9e66b8e0bd3"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NR6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a89e86fb-4d79-44b4-b426-da271bddce27"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NR5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="bfde1b84-cb2e-4b84-954b-8c4802591211"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NR4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8cc91de6-d81e-429f-b7cb-0ec51cc9d4c9"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NR3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="254" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="136f5d2e-5eb1-42d3-baf0-3590bc7d3602"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NR2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="255" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="8889b855-ada6-46d5-ae6d-12e55d81d085"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NR1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="255" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="7e794462-82c9-4cf0-90db-5a115b374a1b"/>
+				<textElement textAlignment="Center">
+					<font size="13.5"/>
+				</textElement>
+				<text><![CDATA[Net Revenue:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="276" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="7a03e155-52d2-40fa-9407-dbbf34930757"/>
+				<textElement textAlignment="Center">
+					<font size="9.5"/>
+				</textElement>
+				<text><![CDATA[Amt. Due Sub-Metro]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="276" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="86a94ea4-877a-4d7b-9bc0-500680a2908d"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADS1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="1630ddee-c730-4eea-bf27-0f230e5b03f0"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADS2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="9c7da7d4-8665-4eb7-86d7-df8a833a1c65"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADS3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="887373a3-e5cf-4cab-8b1e-f885ba5aa09f"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADS4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="a72b6a72-7857-4f59-aada-849ca2de6f38"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADS5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="bb28927e-8110-415b-90bc-903de485b5ce"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADS6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="275" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="03ffc0e3-a165-4948-8940-37854a2a1a31"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADS7}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="33" y="298" width="87" height="17" isPrintWhenDetailOverflows="true" uuid="2cd8b3f1-3578-465a-81e4-82d0ca3a479b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11.5"/>
+				</textElement>
+				<text><![CDATA[Amt. Due KMA:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="140" y="298" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="7126f737-170c-4979-898e-30cc70f051ce"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADK1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="225" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="261410e2-3e21-4789-a2cc-139cd506b6f7"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADK2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="314" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="76ca4207-dda8-41b7-8a8d-8f56b45476a6"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADK3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="408" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="c9b2a1d7-fdbf-41f7-ac9c-ad1c899b1dcf"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADK4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="498" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="126a7a51-9ea6-4c00-8448-cc5b40f486f5"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADK5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="588" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="7ff2a568-d5cb-44f5-9f85-97248355126a"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADK6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement positionType="FixRelativeToBottom" x="679" y="297" width="83" height="17" isPrintWhenDetailOverflows="true" uuid="ca7e302e-8acf-4c78-87d2-a5044f3af4a8"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ADK7}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="42" y="332" width="138" height="20" isPrintWhenDetailOverflows="true" uuid="1630bf39-5695-4ce3-adf8-50b2aced99bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[REVENUE SUPERVISOR]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="174" y="333" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="04130e32-b37a-4707-abec-208d6e68ed22">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{revenueSupervisor}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

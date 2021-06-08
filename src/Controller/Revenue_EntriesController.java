@@ -156,7 +156,7 @@ public class Revenue_EntriesController  implements Initializable {
         System.out.println(cent +"\n"+GetCenter.getRevCenter());
 //        RevCentID = GetCenter.getCenterID();
       revTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-      registerItem.put("", new ArrayList());
+      registerItem.put("", new ArrayList<>());
       revTable.setOnMouseClicked(e -> {
           lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
       });
@@ -177,11 +177,11 @@ public class Revenue_EntriesController  implements Initializable {
 
     
     private void GetRevenueItems() throws SQLException {
-      stmnt = con.prepareStatement("SELECT `revenue_items`.`revenue_item`, `center_items`.`assign_item` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"+RevCent+"' AND `revenue_items`.`revenue_item_ID` = `center_items`.`assign_item`");
+      stmnt = con.prepareStatement("SELECT `item_Sub`, `assign_item` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"+RevCent+"' AND `revenue_item_ID` = `assign_item`");
       rs = stmnt.executeQuery();
       while (rs.next()){
-          RevenueItems.add(rs.getString("revenue_item"));
-          RevenueMap.put(rs.getString("revenue_item"), rs.getString("assign_item"));
+          RevenueItems.add(rs.getString("item_Sub"));
+          RevenueMap.put(rs.getString("item_Sub"), rs.getString("assign_item"));
       }
         cmbEntRevItem.getItems().clear();
         cmbEntRevItem.getItems().addAll(RevenueItems);

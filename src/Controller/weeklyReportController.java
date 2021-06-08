@@ -1006,7 +1006,7 @@ public class weeklyReportController implements Initializable {
               URL url = this.getClass().getResource("/Assets/kmalogo.png"),
                       file = this.getClass().getResource("/Assets/weeklySubMetroPotrait.jrxml");
 
-              System.out.println(items + "\n" + url);
+              System.out.println(items + "\n" + url+"\n"+file);
               JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
               String center = cmbReportCent.getSelectionModel().getSelectedItem(),tot1 = lblWk1SumSub.getText(),tot2 = lblWk2SumSub.getText(),
                       tot3 = lblWk3SumSub.getText(), tot4 = lblWk4SumSub.getText(), tot5 = lblWk5SumSub.getText(), tot6 = lblWk6SumSub.getText(),
@@ -1035,6 +1035,7 @@ public class weeklyReportController implements Initializable {
               par.put("ADS7", AS7);par.put("ADK1", AK1);par.put("ADK2", AK2);par.put("ADK3", AK3);par.put("ADK4", AK4);par.put("ADK5", AK5);par.put("ADK6", AK6);par.put("ADK7", AK7);
 
               //read jrxml file and creating jasperdesign object
+              assert file != null;
               InputStream input = new FileInputStream(file.getPath());
 
               JasperDesign jasperDesign = JRXmlLoader.load(input);

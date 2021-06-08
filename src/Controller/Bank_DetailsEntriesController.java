@@ -160,6 +160,7 @@ public class Bank_DetailsEntriesController implements Initializable {
             GCRs.addAll(gcr.getValue());
         }
         cmbGCR.getItems().clear();
+        Collections.sort(GCRs);
         cmbGCR.setItems(GCRs);
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblCollectEnt.setOnMouseClicked(event -> {

@@ -97,18 +97,20 @@ public class AssignItemController implements Initializable {
         centerId.clear();
         while(rs.next()){
             cmbCenters.getItems().add(rs.getString("revenue_center"));
+//            Collections.sort(cmbCenters.getItems());
             centerId.put(rs.getString("revenue_center"), rs.getString("CenterID"));
         }
     }
 
     void loadItems() throws SQLException {
-        stmnt = con.prepareStatement("SELECT `revenue_item`, `revenue_item_ID` FROM `revenue_items` WHERE 1");
+        stmnt = con.prepareStatement("SELECT `item_Sub`, `revenue_item_ID` FROM `revenue_items` WHERE 1");
         rs = stmnt.executeQuery();
         items.clear();
         while (rs.next()){
-            itemId.put(rs.getString("revenue_item"), rs.getString("revenue_item_ID"));
-            items.add(rs.getString("revenue_item"));
+            itemId.put(rs.getString("item_Sub"), rs.getString("revenue_item_ID"));
+            items.add(rs.getString("item_Sub"));
         }
+        Collections.sort(items);
         lstItemList.getItems().clear();
         lstItemList.getItems().addAll(items);
     }
@@ -124,15 +126,15 @@ public class AssignItemController implements Initializable {
         colCode.setCellValueFactory(e -> e.getValue().IDProperty());
         colItem.setCellValueFactory(e -> e.getValue().categoryProperty());
         String centId = centerId.get(cmbCenters.getSelectionModel().getSelectedItem());
-        stmnt = con.prepareStatement("SELECT `revenue_items`.`revenue_item`, `revenue_items`.`revenue_item_ID`," +
-                " `revenue_centers`.`revenue_center` FROM `revenue_items`,`center_items`, `revenue_centers` WHERE" +
+        stmnt = con.prepareStatement("SELECT `item_Sub`, `revenue_items`.`revenue_item_ID`," +
+                " `revenue_center`, `assign_code` FROM `revenue_items`,`center_items`, `revenue_centers` WHERE" +
                 " `center_items`.`assign_center` = '"+centId+"' AND `revenue_centers`.`CenterID` =" +
                 " `center_items`.`assign_center` AND `revenue_items`.`revenue_item_ID` = `center_items`.`assign_item`");
         rs = stmnt.executeQuery();
         tblAssign.getItems().clear();
         while (rs.next()){
-            getData = new GetDetails(rs.getString("revenue_center"), rs.getString("revenue_item_ID")
-                    , rs.getString("revenue_item"));
+            getData = new GetDetails(rs.getString("revenue_center"), rs.getString("assign_code")
+                    , rs.getString("item_Sub"));
             tblAssign.getItems().add(getData);
         }
         }else {
@@ -151,13 +153,13 @@ public class AssignItemController implements Initializable {
                 Day = Integer.toString(cal.get(Calendar.DAY_OF_WEEK)),
                 year = Integer.toString(cal.get(Calendar.YEAR)),
                 second = Integer.toString(cal.get(Calendar.SECOND)),
-                minute = Integer.toString(cal.get(Calendar.MINUTE)),
+                minute = Integer.toString(cal.get(Calendar.MILLISECOND)),
                 hour = Integer.toString(cal.get(Calendar.HOUR_OF_DAY));
         String id = UUID.randomUUID().toString(),
                 is = id.replace("-", "").substring(9,12),
                 ID = id.replace("-", "").substring(17,19),
                 si = id.replace("-", "").substring(23,24),
-                fini = is+ID+si.concat(Day).concat(date).concat(month).
+                fini = is+ID+si.concat(second).concat(date).concat(month).
                         concat(year).concat(hour).concat(minute);
         return fini;
     }
@@ -206,22 +208,39 @@ public class AssignItemController implements Initializable {
             }
         }
         loadTable();
-         }else if (lstItemList.getSelectionModel().isEmpty()){
-             event.consume();
+        resetFields();
          }else if (cmbCenters.getSelectionModel().isEmpty()){
              lblCentWarn.setVisible(true);
+         }else if (lstItemList.getSelectionModel().isEmpty()){
+             event.consume();
          } else if (lstItemList.getSelectionModel().isEmpty()){
-
+             Alert alert = new Alert(Alert.AlertType.WARNING);
+             alert.setTitle("Warning");
+             alert.setContentText("Please select Item from the list to add");
+             alert.showAndWait();
          }
+    }
+
+    void resetFields(){
+        lstItemList.getSelectionModel().clearSelection();
+        cmbCenters.getSelectionModel().clearSelection();
     }
 
     @FXML
     void deleteItem(ActionEvent event) throws SQLException {
+        if (!tblAssign.getSelectionModel().isEmpty()){
         getData = tblAssign.getSelectionModel().getSelectedItem();
         String id = getData.getID();
-        stmnt = con.prepareStatement("DELETE FROM `center_items` WHERE `assign_code` = '"+id+"' AND `assign_center`" +
-                "= '"+getData.getCenter()+"'");
+        stmnt = con.prepareStatement("DELETE FROM `center_items` WHERE `assign_code` = '"+id+"'");
         stmnt.executeUpdate();
         loadTable();
+//            resetFields();
+        id = null;
+        }else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setContentText("Please select Item from table to delete");
+            alert.showAndWait();
+        }
     }
 }

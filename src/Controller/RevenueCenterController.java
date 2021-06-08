@@ -73,7 +73,7 @@ public class RevenueCenterController implements Initializable {
     private final Connection con;
     boolean Condition;
     GetDetails getData;
-    String entryID;
+    String entryID, centr;
     ObservableList<String> centers = FXCollections.observableArrayList("KMA MAIN", "OUTSOURCED", "SUB-METROS", "PROPERTY RATE SECTION");
 
     public RevenueCenterController() throws SQLException, ClassNotFoundException {
@@ -115,9 +115,16 @@ public class RevenueCenterController implements Initializable {
         getData = tblCenters.getSelectionModel().getSelectedItem();
         txtCenter.setText(getData.getCenter());
         txtCode.setText(getData.getID());
+        centr = txtCenter.getText();
         cmbCategory.getSelectionModel().select(getData.getCategory());
         entryID = getData.getID();
-    }
+    }/*
+    void resetFields(){
+        txtCode.setText(null);
+        txtCenter.setText(null);
+        cmbCategory.getSelectionModel().clearSelection();
+        entryID = null;
+    }*/
 
     private void loadTable() throws SQLException {
         stmnt = con.prepareStatement("SELECT * FROM `revenue_centers` WHERE 1");
@@ -152,13 +159,13 @@ public class RevenueCenterController implements Initializable {
                     dup.add(rs.getString("revenue_center"));
                     dup.add(rs.getString("CenterID"));
                 }
-                if (dup.contains(txtCenter.getText())) {
+                if (dup.contains(txtCenter.getText()) && !centr.equals(txtCenter.getText())) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Duplicate Entry");
                     alert.setHeaderText("DUPLICATE");
                     alert.setContentText("Please '" + txtCode.getText() + "' already exist");
                     alert.showAndWait();
-                } else if (dup.contains(txtCode.getText())) {
+                } else if (dup.contains(txtCode.getText()) && !txtCode.getText().equals(entryID)) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Duplicate Entry");
                     alert.setHeaderText("DUPLICATE");
@@ -217,7 +224,11 @@ public class RevenueCenterController implements Initializable {
             }
         }
         }else {
-            event.consume();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("WARNING");
+            alert.setHeaderText("WRONG BUTTON CLICK");
+            alert.setContentText("Please click on Update Button to update Item.");
+            alert.showAndWait();
         }
     }
 
