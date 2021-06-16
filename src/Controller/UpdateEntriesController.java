@@ -343,6 +343,7 @@ public class UpdateEntriesController implements Initializable {
                 Item.add(rs.getString("revenue_item"));
                 codeItem.put(rs.getString("revenue_item"), rs.getString("revenue_item_ID"));
             }
+            Collections.sort(Item);
             cmbRevenueItem.getItems().clear();
             cmbRevenueItem.setItems(Item);
         } catch (SQLException throwables) {

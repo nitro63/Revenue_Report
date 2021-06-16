@@ -16,7 +16,6 @@
 
 <!--fx:controller="Controller.appController"-->
 
-
 <ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <BorderPane fx:id="border_pane" prefHeight="730.0" prefWidth="1355.0" style="-fx-background-color: #f5f6f7;">
@@ -92,74 +91,39 @@
                                     </VBox>
                                  </children>
                               </VBox>
-                              <HBox alignment="CENTER" prefHeight="40.0" prefWidth="497.0" style="-fx-blend-mode: darken;" VBox.vgrow="ALWAYS">
-                                 <VBox.margin>
-                                    <Insets bottom="2.0" top="5.0" />
-                                 </VBox.margin>
+                              <AnchorPane blendMode="DARKEN" prefHeight="28.0" prefWidth="975.0" style="-fx-blend-mode: darken;">
                                  <children>
-                                    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                                       <children>
-                                          <Button fx:id="btnSDHME" mnemonicParsing="false" onAction="#showSDHME" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: transparent;" text="HOME" textFill="#11124a">
-                                             <font>
-                                                <Font name="Century" size="13.0" />
-                                             </font>
-                                          </Button>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </HBox>
-                                    <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="156.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                                       <children>
-                                          <Button fx:id="btnSGRE" mnemonicParsing="false" onAction="#showSGRE" prefHeight="26.0" prefWidth="151.0" style="-fx-background-color: transparent;" text="REVENUE ENTRIES" textFill="#11124a">
-                                             <font>
-                                                <Font name="Century" size="13.0" />
-                                             </font>
-                                          </Button>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </HBox>
-                                    <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="156.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                                       <children>
-                                          <Button fx:id="btnSDRR" mnemonicParsing="false" onAction="#showSDRR" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: transparent;" text="REVENUE REPORTS" textFill="#11124a">
-                                             <font>
-                                                <Font name="Century" size="13.0" />
-                                             </font>
-                                          </Button>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </HBox>
-                                    <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                                       <children>
-                                          <Button fx:id="btnSDRI" mnemonicParsing="false" onAction="#showSDRI" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="ADD / DELELTE" textFill="#11124a">
-                                             <font>
-                                                <Font name="Century" size="13.0" />
-                                             </font>
-                                          </Button>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </HBox>
-                                    <Pane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="63.0" style="-fx-background-color: #87898af2; -fx-background-radius: 50; -fx-background-color: TRANSPARENT; -fx-border-radius: 50; -fx-border-color: #11c3c3;">
-                                       <children>
-                                          <Button fx:id="btnSDHelp" mnemonicParsing="false" onAction="#showSDHELP" prefHeight="26.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="HELP" textFill="#11124a">
-                                             <font>
-                                                <Font name="Century" size="13.0" />
-                                             </font>
-                                          </Button>
-                                       </children>
-                                    </HBox>
+                                    <Button fx:id="btnSDHME" layoutX="66.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDHME" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: transparent; -fx-border-color: #11c3c3; -fx-background-radius: 50; -fx-border-radius: 50;" text="HOME" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                    <Pane layoutX="138.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                                    <Button fx:id="btnSGRE" layoutX="171.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSGRE" prefHeight="28.0" prefWidth="154.0" style="-fx-background-color: transparent; -fx-border-color: #11c3c3; -fx-background-radius: 50; -fx-border-radius: 50;" text="REVENUE ENTRIES" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                    <Pane layoutX="334.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                                    <Button fx:id="btnSDRR" layoutX="365.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDRR" prefHeight="28.0" prefWidth="164.0" style="-fx-background-color: transparent; -fx-border-color: #11c3c3; -fx-border-radius: 50; -fx-background-radius: 50;" text="REVENUE REPORTS" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                    <Pane layoutX="530.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                                    <Button fx:id="btnSDRI" layoutX="567.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDRI" prefHeight="28.0" prefWidth="125.0" style="-fx-background-color: transparent; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-color: #11c3c3;" text="ADD / DELELTE" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
+                                    <Pane layoutX="709.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                                    <Button fx:id="btnSDHelp" layoutX="740.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDHELP" prefHeight="28.0" prefWidth="61.0" style="-fx-background-color: transparent; -fx-border-radius: 50; -fx-background-radius: 50; -fx-border-color: #11c3c3;" text="HELP" textFill="#11124a">
+                                       <font>
+                                          <Font name="Century" size="13.0" />
+                                       </font>
+                                    </Button>
                                  </children>
-                              </HBox>
+                              </AnchorPane>
                            </children>
                            <opaqueInsets>
                               <Insets bottom="5.0" left="5.0" right="5.0" />

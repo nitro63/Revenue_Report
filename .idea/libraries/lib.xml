@@ -20,7 +20,6 @@
       <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$USER_HOME$/.ideaLibSources/commons-collections-3.2.2-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/Libraries/commons-collections4-4.4/commons-collections4-4.4-test-sources.jar!/" />
     </SOURCES>

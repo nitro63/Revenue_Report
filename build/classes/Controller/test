@@ -1042,3 +1042,37 @@
 		</band>
 	</pageFooter>
 </jasperReport>
+
+public class Main {
+
+
+    public static void main(String[] args) {
+        int[][] k = {{5,4,6,7}, {5,34,675}, {45,7}};
+        int [] j = {2,534,6,43,1,4};
+        System.out.println(addNumbers(k));
+        System.out.println(addOddsEvens(j));
+    }
+
+    public static String addNumbers(int[][] arraySet){
+        int l = 0;
+        for (int i = 0; i < arraySet.length; ++i) {
+            for(int j = 0; j < arraySet[i].length; ++j) {
+                l += arraySet[i][j];
+            }
+        }
+        return "The sum of All numbers in the array: "+ Arrays.deepToString(arraySet) +" is " + l;
+    }
+
+    public static String addOddsEvens(int[] arraySet){
+        int i = 0, j = 0;
+        for (int k : arraySet){
+            if (k %2 == 0){
+                i += k;
+            }else {
+                j += k;
+            }
+        }
+        int diff = j - i;
+        return "The difference of the sum of all even numbers and the sum of all odd numbers is "+ diff;
+    }
+}

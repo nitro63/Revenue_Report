@@ -41,6 +41,7 @@ import javafx.stage.StageStyle;
 import org.apache.commons.lang3.StringUtils;
 import Controller.Gets.GetEntries;
 import Controller.Gets.GetRevCenter;
+import revenue_report.AutoCompleteComboBox;
 import revenue_report.DBConnection;
 import revenue_report.Main;
 
@@ -173,18 +174,21 @@ public class Revenue_EntriesController  implements Initializable {
             btnComm.setVisible(false);
             ccCheck = false;
         }
+        cmbEntRevItem.setEditable(true);
   }
 
     
     private void GetRevenueItems() throws SQLException {
-      stmnt = con.prepareStatement("SELECT `item_Sub`, `assign_item` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"+RevCent+"' AND `revenue_item_ID` = `assign_item`");
+      stmnt = con.prepareStatement("SELECT `item_Sub`, `assign_item`, `item_category` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"+RevCent+"' AND `revenue_item_ID` = `assign_item`");
       rs = stmnt.executeQuery();
       while (rs.next()){
           RevenueItems.add(rs.getString("item_Sub"));
           RevenueMap.put(rs.getString("item_Sub"), rs.getString("assign_item"));
       }
+      Collections.sort(RevenueItems);
         cmbEntRevItem.getItems().clear();
         cmbEntRevItem.getItems().addAll(RevenueItems);
+        new AutoCompleteComboBox<String>(cmbEntRevItem);
     }
     
    

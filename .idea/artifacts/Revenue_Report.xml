@@ -1,0 +1,27 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Revenue_Report">
+    <output-path>$PROJECT_DIR$/out/artifacts/Revenue_Report</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="revenue_report.Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="linuxIcon" value="$PROJECT_DIR$/src/Assets/kmalogo.png" />
+            <option name="macIcon" value="$PROJECT_DIR$/src/Assets/AnyConv.com__kmalogo.icns" />
+            <option name="windowsIcon" value="$PROJECT_DIR$/src/Assets/favicon.ico" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="title" value="Revenue_Report_Generating_System" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="Revenue_Report.jar">
+        <element id="module-output" name="Revenue_Report" />
+      </element>
+    </root>
+  </artifact>
+</component>

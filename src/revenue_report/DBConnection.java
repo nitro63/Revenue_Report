@@ -28,7 +28,7 @@ public class DBConnection {
             e.printStackTrace();
         }
         try {
-            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/"
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"
                     + "revenue_monitoring" + "?useTimezone=true&serverTimezone=UTC&autoReconnect=true", Username, Password);
         }catch (SQLException e) {
             e.printStackTrace();

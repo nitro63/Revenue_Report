@@ -1,19 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="sideHome" prefHeight="314.0" prefWidth="188.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane fx:id="sideHome" prefHeight="491.0" prefWidth="188.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" layoutX="42.0" layoutY="33.0" prefHeight="27.0" prefWidth="108.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #565656; -fx-border-radius: 25; -fx-background-radius: 25;" text="Dashboard" textAlignment="CENTER" textFill="#fcf7f7" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="38.0" />
-      
-      <Label alignment="CENTER" layoutX="42.0" layoutY="108.0" prefHeight="27.0" prefWidth="108.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #565656; -fx-border-radius: 25; -fx-background-radius: 25;" text="Add User" textAlignment="CENTER" textFill="#fcf7f7" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="38.0" />
-      <Label alignment="CENTER" layoutX="42.0" layoutY="68.0" prefHeight="27.0" prefWidth="108.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #565656; -fx-border-radius: 25; -fx-background-radius: 25;" text="User Profile" textAlignment="CENTER" textFill="#fcf7f7" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="38.0" />
-      <Line endX="83.0" layoutX="95.0" layoutY="169.0" startX="-81.0" />
-      <Label alignment="CENTER" layoutX="42.0" layoutY="218.0" prefHeight="27.0" prefWidth="108.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #f2f2f2; -fx-border-radius: 25; -fx-background-radius: 25;" text="Yet to Know" textAlignment="CENTER" textFill="#565656" />
-      <Label alignment="CENTER" layoutX="42.0" layoutY="180.0" prefHeight="27.0" prefWidth="108.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #f2f2f2; -fx-border-radius: 25; -fx-background-radius: 25;" text="Yet to Know" textAlignment="CENTER" textFill="#565656" />
-      <Label alignment="CENTER" layoutX="42.0" layoutY="254.0" prefHeight="27.0" prefWidth="108.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #f2f2f2; -fx-border-radius: 25; -fx-background-radius: 25;" text="Yet to Know" textAlignment="CENTER" textFill="#565656" />
+      <Line endX="83.0" layoutX="95.0" layoutY="17.0" startX="-81.0" />
+      <JFXButton fx:id="btnAddUser" layoutX="33.5" layoutY="306.0" onAction="#showAddUser" prefHeight="51.0" prefWidth="121.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #565656; -fx-background-radius: 25; -fx-border-radius: 25;" text="Add User" textFill="#fcf7f7" AnchorPane.leftAnchor="33.5" AnchorPane.rightAnchor="33.5">
+         <graphic>
+            <MaterialDesignIconView fill="#fcf0f0" glyphName="ACCOUNT_PLUS" size="25" />
+         </graphic>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnUserProfile" alignment="CENTER" layoutX="33.5" layoutY="216.0" onAction="#showUserProfile" prefHeight="51.0" prefWidth="121.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #565656; -fx-border-radius: 25; -fx-background-radius: 25;" text="User Profile" textFill="#fcf7f7" AnchorPane.leftAnchor="33.5" AnchorPane.rightAnchor="33.5">
+         <graphic>
+            <MaterialDesignIconView fill="#f2e5e5" glyphName="ACCOUNT" size="25" />
+         </graphic>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnDashboard" alignment="CENTER" layoutX="33.5" layoutY="129.0" onAction="#showDashboard" prefHeight="51.0" prefWidth="121.0" style="-fx-border-color: #e4e4e4; -fx-background-color: #565656; -fx-border-radius: 25; -fx-background-radius: 25;" text="Dashboard" textFill="#fcf7f7" AnchorPane.leftAnchor="33.5" AnchorPane.rightAnchor="33.5">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+         <graphic>
+            <MaterialDesignIconView fill="#f2e8e8" glyphName="MONITOR" size="25.0" />
+         </graphic>
+      </JFXButton>
+      <Label layoutX="39.0" layoutY="30.0" text="Home" AnchorPane.leftAnchor="33.5" AnchorPane.rightAnchor="33.5">
+         <graphic>
+            <MaterialDesignIconView glyphName="HOME" size="30" />
+         </graphic>
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
