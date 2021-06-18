@@ -354,14 +354,13 @@ public class YearlyReportController implements Initializable {
     }
 
     @FXML
-    void printReport(ActionEvent event) throws JRException, FileNotFoundException {
+    void printReport(ActionEvent event) throws JRException{
         if (yearlyTable.getItems().isEmpty()){
             event.consume();
         }else {
             Date date = new Date();
             List<GetYearlyReport> items = new ArrayList<>(yearlyTable.getItems());
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/yearlyPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmbReportYear1.getSelectionModel().getSelectedItem(),
@@ -383,7 +382,7 @@ public class YearlyReportController implements Initializable {
             parameters.put("year2", secondyear); parameters.put("fifthYear", fifth);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(file.getPath());
+            InputStream input = this.getClass().getResourceAsStream("/Assets/yearlyPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

@@ -272,21 +272,20 @@ public class Target_AnalysisController implements Initializable {
             event.consume();
         }else {
             Date date = new Date();
-            List<GetTargAnalReport> items = new ArrayList<GetTargAnalReport>();
+            List<GetTargAnalReport> items = new ArrayList<>();
             for (int j = 0; j < tblColPayAnalysis.getItems().size(); j++) {
-                GetTargAnalReport getdata = new GetTargAnalReport();
+                GetTargAnalReport getdata;
                 getdata = tblColPayAnalysis.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/targetAnalysisPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmbReportYear.getSelectionModel().getSelectedItem(),
                     center = cmbReportCent.getSelectionModel().getSelectedItem();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url);
             parameters.put("year", year);
@@ -294,7 +293,7 @@ public class Target_AnalysisController implements Initializable {
             parameters.put("center", center); parameters.put("target", targ);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = this.getClass().getResourceAsStream("/Assets/targetAnalysisPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

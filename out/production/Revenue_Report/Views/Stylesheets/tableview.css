@@ -30,7 +30,7 @@ and open the template in the editor.
     -fx-background-color: transparent;
 }
 .table-cell{
-    -fx-alignment: CENTER;
+    -fx-alignment: CENTER_RIGHT;
 }
 .table-cell:selected{
     -fx-background-color: #031c03;

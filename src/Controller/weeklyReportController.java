@@ -964,8 +964,7 @@ public class weeklyReportController implements Initializable {
                   getdata = weekTable.getItems().get(j);
                   items.add(getdata);
               }
-              URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                      file = this.getClass().getResource("/Assets/weeklyPotrait.jrxml");
+              URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
               System.out.println(items + "\n" + url);
               JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
@@ -974,7 +973,7 @@ public class weeklyReportController implements Initializable {
                       month = cmbReportMonth.getSelectionModel().getSelectedItem();
 
               /* Map to hold Jasper report Parameters */
-              Map<String, Object> parameters = new HashMap<String, Object>();
+              Map<String, Object> parameters = new HashMap<>();
               parameters.put("CollectionBean", itemsJRBean);
               parameters.put("logo", url);
               parameters.put("center",center);
@@ -983,7 +982,7 @@ public class weeklyReportController implements Initializable {
               parameters.put("timeStamp", date);
 
               //read jrxml file and creating jasperdesign object
-              InputStream input = new FileInputStream(new File(file.getPath()));
+              InputStream input = this.getClass().getResourceAsStream("/Assets/weeklyPotrait.jrxml");
 
               JasperDesign jasperDesign = JRXmlLoader.load(input);
 
@@ -997,16 +996,13 @@ public class weeklyReportController implements Initializable {
               JasperViewer.viewReport(jasperPrint, false);
           }else if (!weekTableSub.getItems().isEmpty()){
               Date date = new Date();
-              List<GetReportgen> items = new ArrayList<GetReportgen>();
+              List<GetReportgen> items = new ArrayList<>();
               for (int j = 0; j < weekTableSub.getItems().size(); j++) {
-                  GetReportgen getdata = new GetReportgen();
+                  GetReportgen getdata;
                   getdata = weekTableSub.getItems().get(j);
                   items.add(getdata);
               }
-              URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                      file = this.getClass().getResource("/Assets/weeklySubMetroPotrait.jrxml");
-
-              System.out.println(items + "\n" + url+"\n"+file);
+              URL url = this.getClass().getResource("/Assets/kmalogo.png");
               JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
               String center = cmbReportCent.getSelectionModel().getSelectedItem(),tot1 = lblWk1SumSub.getText(),tot2 = lblWk2SumSub.getText(),
                       tot3 = lblWk3SumSub.getText(), tot4 = lblWk4SumSub.getText(), tot5 = lblWk5SumSub.getText(), tot6 = lblWk6SumSub.getText(),
@@ -1024,7 +1020,7 @@ public class weeklyReportController implements Initializable {
                       TC7 = lblDiffTot.getText(), year = cmbReportYear.getSelectionModel().getSelectedItem(), month = cmbReportMonth.getSelectionModel().getSelectedItem();
 
               /* Map to hold Jasper report Parameters */
-              Map<String, Object> par = new HashMap<String, Object>();
+              Map<String, Object> par = new HashMap<>();
               par.put("CollectionBean", itemsJRBean);par.put("logo", url);par.put("center",center);par.put("month", month);par.put("year", year);par.put("timeStamp", date);
               par.put("TT1", tot1);par.put("TT2", tot2);par.put("TT3", tot3);par.put("TT4", tot4);par.put("TT5", tot5);par.put("TT6", tot6);par.put("TT7", tot7);par.put("TC1", TC1);
               par.put("TC2", TC2);par.put("TC3", TC3);par.put("TC4", TC4);par.put("TC5", TC5);par.put("TC6", TC6);par.put("TC7", TC7);par.put("NR1", NR1);par.put("NR2", NR2);
@@ -1035,8 +1031,7 @@ public class weeklyReportController implements Initializable {
               par.put("ADS7", AS7);par.put("ADK1", AK1);par.put("ADK2", AK2);par.put("ADK3", AK3);par.put("ADK4", AK4);par.put("ADK5", AK5);par.put("ADK6", AK6);par.put("ADK7", AK7);
 
               //read jrxml file and creating jasperdesign object
-              assert file != null;
-              InputStream input = new FileInputStream(file.getPath());
+              InputStream input = this.getClass().getResourceAsStream("/Assets/weeklySubMetroPotrait.jrxml");
 
               JasperDesign jasperDesign = JRXmlLoader.load(input);
 

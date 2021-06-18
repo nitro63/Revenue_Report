@@ -250,14 +250,13 @@ public class ValueBooksStockReportController implements Initializable {
             event.consume();
         }else {
             java.util.Date date = new Date();
-            List<GetValueBooksEntries> items = new ArrayList<GetValueBooksEntries>();
+            List<GetValueBooksEntries> items = new ArrayList<>();
             for (int j = 0; j < tblValBookStocksRep.getItems().size(); j++) {
-                GetValueBooksEntries getdata = new GetValueBooksEntries();
+                GetValueBooksEntries getdata;
                 getdata = tblValBookStocksRep.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/valueBooksStock.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmbYear.getSelectionModel().getSelectedItem(),
@@ -265,7 +264,7 @@ public class ValueBooksStockReportController implements Initializable {
                     center = cmbRevCenter.getSelectionModel().getSelectedItem();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url); parameters.put("month", month);
             parameters.put("year", year);
@@ -273,7 +272,7 @@ public class ValueBooksStockReportController implements Initializable {
             parameters.put("center", center);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = this.getClass().getResourceAsStream("/Assets/valueBooksStock.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

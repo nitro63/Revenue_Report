@@ -283,29 +283,27 @@ public class Collection_PaymentAnalysisReportController implements Initializable
             event.consume();
         }else {
             Date date = new Date();
-            List<GetColPay> items = new ArrayList<GetColPay>();
+            List<GetColPay> items = new ArrayList<>();
             for (int j = 0; j < tblColPayAnalysis.getItems().size(); j++) {
-                GetColPay getdata = new GetColPay();
-                getdata = tblColPayAnalysis.getItems().get(j);
+                GetColPay getdata = tblColPayAnalysis.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/revenueVSpayment.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             System.out.println(items + "\n" + url);
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
-            String year = lblYear.getText(),
+            String yr = lblYear.getText(),
                    center = lblRevenueCenter.getText();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url); parameters.put("center", center);
-            parameters.put("year", year);
+            parameters.put("year", yr);
             parameters.put("timeStamp", date);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = this.getClass().getResourceAsStream("/Assets/revenueVSpayment.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

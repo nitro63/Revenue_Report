@@ -322,28 +322,27 @@ public class MasterCentersController implements Initializable {
             event.consume();
         }else {
             Date date = new Date();
-            List<GetCentersReport> items = new ArrayList<GetCentersReport>();
+            List<GetCentersReport> items = new ArrayList<>();
             for (int j = 0; j < revenueCentersTable.getItems().size(); j++) {
-                GetCentersReport getdata = new GetCentersReport();
+                GetCentersReport getdata;
                 getdata = revenueCentersTable.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/masterCentersPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             System.out.println(items + "\n" + url);
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
-            String year = cmbMasterCentersYear.getSelectionModel().getSelectedItem();
+            String yr = cmbMasterCentersYear.getSelectionModel().getSelectedItem();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url);
-            parameters.put("year", year);
+            parameters.put("year", yr);
             parameters.put("timeStamp", date);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = this.getClass().getResourceAsStream("/Assets/masterCentersPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

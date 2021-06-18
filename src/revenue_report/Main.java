@@ -6,6 +6,7 @@
 package revenue_report;
 
 import Controller.LogInController;
+import Controller.MonthlyReportController;
 import Controller.PromptDialogController;
 import Controller.appController;
 import javafx.application.Application;
@@ -14,6 +15,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.runtime.regexp.joni.exception.ErrorMessages;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,10 +29,12 @@ import java.sql.SQLException;
 public class Main extends Application {
 
     public Stage stage;
+    static final Logger logger = Logger.getLogger(MonthlyReportController.class.getName());
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
         Parent root = null;
+        PropertyConfigurator.configure(getClass().getResource("log4j.properties"));
         try {
             FXMLLoader firstLoader = new FXMLLoader(getClass().getResource("/Views/fxml/Login.fxml"));
             firstLoader.setController(new LogInController());
@@ -39,6 +45,7 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
+            logger.error(e);
             new PromptDialogController("Error!", "Error Occured. Failed to initialize system.");
         }
     }

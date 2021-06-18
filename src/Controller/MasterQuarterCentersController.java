@@ -410,13 +410,12 @@ public class MasterQuarterCentersController implements Initializable {
             Date date = new Date();
             List<GetMstrQuarterCenters> items = new ArrayList<>();
             Map<String, Object> parameters = new HashMap<>();
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"), file;
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
             for (int j = 0; j < quarterMastCentersTable.getItems().size(); j++) {
                 GetMstrQuarterCenters getdata;
                 getdata = quarterMastCentersTable.getItems().get(j);
                 items.add(getdata);
             }
-            file = this.getClass().getResource("/Assets/masterQuarterCentersPotrait.jrxml");
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
 
             String year = cmMstCentersYear.getSelectionModel().getSelectedItem(),
@@ -432,7 +431,7 @@ public class MasterQuarterCentersController implements Initializable {
 
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(file.getPath());
+            InputStream input =  this.getClass().getResourceAsStream("/Assets/masterQuarterCentersPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 
@@ -448,13 +447,12 @@ public class MasterQuarterCentersController implements Initializable {
             Date date = new Date();
             List<GetMstrQuarterCenters> items = new ArrayList<>();
             Map<String, Object> parameters = new HashMap<>();
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"), file ;
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
             for (int j = 0; j < quarterMastCentersTableAll.getItems().size(); j++) {
                 GetMstrQuarterCenters getdata/* = new GetMstrQuarterCenters()*/;
                 getdata = quarterMastCentersTableAll.getItems().get(j);
                 items.add(getdata);
             }
-            file = this.getClass().getResource("/Assets/masterAllQuarterCentersPotrait.jrxml");
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
 
             String year = cmMstCentersYear.getSelectionModel().getSelectedItem(),
@@ -471,7 +469,7 @@ public class MasterQuarterCentersController implements Initializable {
 
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(file.getPath());
+            InputStream input = this.getClass().getResourceAsStream("/Assets/masterAllQuarterCentersPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 
