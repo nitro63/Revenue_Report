@@ -239,12 +239,10 @@ public class BankDetailsReportController implements Initializable {
             Date date = new Date();
             List<GetBankDetails> items = new ArrayList<>();
             for (int j = 0; j < tblBankDetails.getItems().size(); j++) {
-                new GetBankDetails();
                 GetBankDetails getdata = tblBankDetails.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/bankDetailsPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = lblYear.getText(),
@@ -261,7 +259,7 @@ public class BankDetailsReportController implements Initializable {
 
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(file.getPath());
+            InputStream input = this.getClass().getResourceAsStream("/Assets/bankDetailsPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

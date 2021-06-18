@@ -34,6 +34,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * FXML Controller class
@@ -405,46 +406,32 @@ public class MonthlyReportController implements Initializable {
         if (monthlyTable.getItems().isEmpty()){
             event.consume();
         }else {
-            Date date = new Date();
-            List<GetMonthlyReport> items = new ArrayList<>(monthlyTable.getItems());
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/monthlyPotrait.jrxml");
-
-            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
-            String year = cmbReportYear.getSelectionModel().getSelectedItem(),
-            center = cmbReportCent.getSelectionModel().getSelectedItem();
-
-            /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("CollectionBean", itemsJRBean);
-            parameters.put("logo", url);
-            parameters.put("year", year);
-            parameters.put("timeStamp", date);
-            parameters.put("center", center);
-
-            //read jrxml file and creating jasperdesign object
-            InputStream input = null;
             try {
-                input = new FileInputStream(file.getPath());
-            } catch (FileNotFoundException e) {
-                log.error(e.getMessage(), e);
-            }
-
-            JasperDesign jasperDesign = null;
-            try {
-                jasperDesign = JRXmlLoader.load(input);
+                Date date = new Date();
+                List<GetMonthlyReport> items = new ArrayList<>(monthlyTable.getItems());
+                URL url = this.getClass().getResource("/Assets/kmalogo.png");
+                JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
+                String year = cmbReportYear.getSelectionModel().getSelectedItem(),
+                        center = cmbReportCent.getSelectionModel().getSelectedItem();
+                /* Map to hold Jasper report Parameters */
+                Map<String, Object> parameters = new HashMap<>();
+                parameters.put("CollectionBean", itemsJRBean);
+                parameters.put("logo", url);
+                parameters.put("year", year);
+                parameters.put("timeStamp", date);
+                parameters.put("center", center);
+                //read jrxml file and creating jasperdesign object
+                InputStream input = this.getClass().getResourceAsStream("/Assets/monthlyPotrait.jrxml");
+                JasperDesign jasperDesign = JRXmlLoader.load(input);
                 /*compiling jrxml with help of JasperReport class*/
                 JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-
                 /* Using jasperReport object to generate PDF */
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
-
                 /*call jasper engine to display report in jasperviewer window*/
                 JasperViewer.viewReport(jasperPrint, false);
-            } catch (JRException e) {
-                log.error(e.getMessage(), e);
+            } catch (JRException ex) {
+                log.error(ex.getMessage(), ex);
             }
-
         }
     }
     

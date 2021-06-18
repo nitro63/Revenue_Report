@@ -34,7 +34,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         this.stage = stage;
         Parent root = null;
-        PropertyConfigurator.configure(getClass().getResource("/Controller/log4j.properties"));
+        PropertyConfigurator.configure(getClass().getResource("log4j.properties"));
         try {
             FXMLLoader firstLoader = new FXMLLoader(getClass().getResource("/Views/fxml/Login.fxml"));
             firstLoader.setController(new LogInController());

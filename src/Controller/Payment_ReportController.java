@@ -241,12 +241,10 @@ public class Payment_ReportController implements Initializable {
             Date date = new Date();
             List<GetPaymentDetails> items = new ArrayList<>();
             for (int j = 0; j < tblPaymentDetails.getItems().size(); j++) {
-                new GetPaymentDetails();
                 GetPaymentDetails getdata = tblPaymentDetails.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/paymentPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmbReportYear.getSelectionModel().getSelectedItem(),
@@ -263,7 +261,7 @@ public class Payment_ReportController implements Initializable {
 
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(file.getPath());
+            InputStream input = this.getClass().getResourceAsStream("/Assets/paymentPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

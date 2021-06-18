@@ -538,14 +538,13 @@ public class ReportController implements Initializable {
             event.consume();
         }else {
             Date date = new Date();
-            List<GetReport> items = new ArrayList<GetReport>();
+            List<GetReport> items = new ArrayList<>();
             for (int j = 0; j < WEEKLY_TABLE.getItems().size(); j++) {
-                GetReport getdata = new GetReport();
+                GetReport getdata;
                 getdata = WEEKLY_TABLE.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/dailyPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String month = cmbReportMonth.getSelectionModel().getSelectedItem(),
             center = cmbReportCent.getSelectionModel().getSelectedItem(),
@@ -556,7 +555,7 @@ public class ReportController implements Initializable {
             day7 = lblDay7.getText(), week = cmbReportWeek.getSelectionModel().getSelectedItem();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url);
             parameters.put("month", month);
@@ -570,7 +569,7 @@ public class ReportController implements Initializable {
             parameters.put("day6", day6);parameters.put("day7", day7);parameters.put("week", week);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = this.getClass().getResourceAsStream("/Assets/dailyPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 

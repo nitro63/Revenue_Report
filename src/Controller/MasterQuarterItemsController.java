@@ -408,14 +408,13 @@ public class MasterQuarterItemsController implements Initializable {
     void printReport(ActionEvent event) throws JRException, FileNotFoundException {
         if (!quarterMastItemsTable.getItems().isEmpty()){
             Date date = new Date();
-            List<GetMstrQuarterItems> items = new ArrayList<GetMstrQuarterItems>();
+            List<GetMstrQuarterItems> items = new ArrayList<>();
             for (int j = 0; j < quarterMastItemsTable.getItems().size(); j++) {
-                GetMstrQuarterItems getdata = new GetMstrQuarterItems();
+                GetMstrQuarterItems getdata;
                 getdata = quarterMastItemsTable.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/masterQuarterItemsPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmMstItemsYear.getSelectionModel().getSelectedItem(),
@@ -424,14 +423,14 @@ public class MasterQuarterItemsController implements Initializable {
                     third = month3.getText();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url); parameters.put("FirstMonth", first);
             parameters.put("year", year); parameters.put("SecondMonth", second);
             parameters.put("timeStamp", date); parameters.put("ThirdMonth", third);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = this.getClass().getResourceAsStream("/Assets/masterQuarterItemsPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 
@@ -445,14 +444,13 @@ public class MasterQuarterItemsController implements Initializable {
             JasperViewer.viewReport(jasperPrint, false);
         } else if (!quarterMastItemsTableAll.getItems().isEmpty()){
             Date date = new Date();
-            List<GetMstrQuarterItems> items = new ArrayList<GetMstrQuarterItems>();
+            List<GetMstrQuarterItems> items = new ArrayList<>();
             for (int j = 0; j < quarterMastItemsTableAll.getItems().size(); j++) {
-                GetMstrQuarterItems getdata = new GetMstrQuarterItems();
+                GetMstrQuarterItems getdata;
                 getdata = quarterMastItemsTableAll.getItems().get(j);
                 items.add(getdata);
             }
-            URL url = this.getClass().getResource("/Assets/kmalogo.png"),
-                    file = this.getClass().getResource("/Assets/masterAllQuarterItemsPotrait.jrxml");
+            URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmMstItemsYear.getSelectionModel().getSelectedItem(),
@@ -462,14 +460,14 @@ public class MasterQuarterItemsController implements Initializable {
                     fourth = month4All.getText();
 
             /* Map to hold Jasper report Parameters */
-            Map<String, Object> parameters = new HashMap<String, Object>();
+            Map<String, Object> parameters = new HashMap<>();
             parameters.put("CollectionBean", itemsJRBean);
             parameters.put("logo", url); parameters.put("FirstMonth", first);
             parameters.put("year", year); parameters.put("SecondMonth", second);
             parameters.put("timeStamp", date); parameters.put("ThirdMonth", third); parameters.put("FourthMonth", fourth);
 
             //read jrxml file and creating jasperdesign object
-            InputStream input = new FileInputStream(new File(file.getPath()));
+            InputStream input = this.getClass().getResourceAsStream("/Assets/masterAllQuarterItemsPotrait.jrxml");
 
             JasperDesign jasperDesign = JRXmlLoader.load(input);
 
