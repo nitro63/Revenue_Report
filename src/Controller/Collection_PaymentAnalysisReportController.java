@@ -82,6 +82,18 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     @FXML
     private Label lblYearWarn;
 
+    @FXML
+    private Label lblReportedAmount;
+
+    @FXML
+    private Label lblPaidAmount;
+
+    @FXML
+    private Label lblDifference;
+
+    @FXML
+    private Label lblRemarks;
+
 
     private final Connection con;
     private PreparedStatement stmnt;
@@ -169,31 +181,44 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     
     private void setItems() throws SQLException{
         ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");  
-        float repMonth, payMonth, diff;
+        float repMonth, payMonth, diff, totRepMonth = 0, totPayMonth = 0, totDiff;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
-        String acRepMonth, acPayMonth, acDiff, rmks="";
+        String acRepMonth, acPayMonth, acDiff, acTotRepMonth, acTotPayMonth, acTotDiff, rmks="";
         for(String month : collectionMonth){
            repMonth = setReptMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
            payMonth = setPayMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
            diff = repMonth - payMonth ;
-            acDiff = formatter.format(diff);
-           if(diff < 0){
-               rmks = "Overpayment";
+           if (diff < 0){
                acDiff = "("+formatter.format(Math.abs(diff))+")";
-           }else if(diff > 0){
+           }
+            acDiff = formatter.format(diff);
+
+            totRepMonth += repMonth;
+            totPayMonth += payMonth;
+            totDiff = totRepMonth - totPayMonth;
+            acTotDiff = formatter.format(totDiff);
+           if(totDiff < 0){
+               rmks = "Overpayment";
+               acTotDiff = "("+formatter.format(Math.abs(totDiff))+")";
+           }else if(totDiff > 0){
                rmks = "Underpayment";
-           }else if(diff == 0){
+           }else if(totDiff == 0){
                rmks = "Balanced";
            }
-           acRepMonth =formatter.format( repMonth);
-           acPayMonth = formatter.format(payMonth);
+            acRepMonth =formatter.format( repMonth);
+            acPayMonth = formatter.format(payMonth);
+            acTotRepMonth =formatter.format( totRepMonth);
+            acTotPayMonth = formatter.format(totPayMonth);
            colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
            colAmtReptd.setCellValueFactory(data -> data.getValue().AmtReprtdProperty());
            colAmtPayed.setCellValueFactory(data -> data.getValue().AmtPayedProperty());
            colDiff.setCellValueFactory(data -> data.getValue().DiffProperty());
-           colRemarks.setCellValueFactory(data -> data.getValue().RmksProperty());
-            GetColPay getReport = new GetColPay(month, acRepMonth, acPayMonth, acDiff, rmks);
+            GetColPay getReport = new GetColPay(month, acRepMonth, acPayMonth, acDiff);
            tblColPayAnalysis.getItems().add(getReport);
+           lblDifference.setText(acTotDiff);
+           lblPaidAmount.setText(acTotPayMonth);
+           lblReportedAmount.setText(acTotRepMonth);
+           lblRemarks.setText(rmks);
            repMonth = 0;
            payMonth = 0;
            diff = 0;

@@ -27,6 +27,13 @@ public class GetColPay {
         this.Month = new SimpleStringProperty(Month);
         this.Rmks = new SimpleStringProperty(Rmks);
     }
+
+    public GetColPay(String Month, String AmtReprtd, String AmtPayed, String Diff){
+        this.AmtPayed = new SimpleStringProperty(AmtPayed);
+        this.AmtReprtd = new SimpleStringProperty(AmtReprtd);
+        this.Diff = new SimpleStringProperty(Diff);
+        this.Month = new SimpleStringProperty(Month);
+    }
     
      
     public StringProperty AmtPayedProperty(){
