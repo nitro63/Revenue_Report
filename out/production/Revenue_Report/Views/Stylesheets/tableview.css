@@ -46,11 +46,12 @@ and open the template in the editor.
     -fx-border-width: 0 0.2 0.02;
     -fx-border-color: black;
     -fx-text-background-color: black;
-    -fx-font-size: 9;
+    -fx-font-size: 12;
     -fx-font-weight: bold;
+    -fx-text-fill: #000;
 }
 .table-row-cell:even {
-    -fx-text-fill: /*#f5faf6*/ black;
+    -fx-text-fill: /*#f5faf6*/ #000;
     -fx-font-size: 15;
     -fx-font-weight: bold;
 /*
@@ -60,7 +61,7 @@ and open the template in the editor.
     -fx-padding: 0.0em;
 }
 .table-row-cell:odd{
-    -fx-text-fill: /*#9a9696*/ black;
+    -fx-text-fill: /*#9a9696*/ #000;
     -fx-font-size: 15;
 /*
     -fx-background-color: linear-gradient(to left, #19e81f, #19e81f);
@@ -143,7 +144,7 @@ and open the template in the editor.
     #5adb14,
             #f0f6f8,
             #93f9b911,
-            #9a9696,
+    #8b1f1f,
             #19e81f,
     #f5faf6,
             #92f795,
