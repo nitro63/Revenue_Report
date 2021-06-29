@@ -172,6 +172,7 @@ public class ReportController implements Initializable {
     ObservableList<String> rowMonth =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowWeek =FXCollections.observableArrayList();
+    ObservableList<String> rowCategories =FXCollections.observableArrayList();
     @FXML
     private Button btnShowReport;
     boolean Condition, subMetroPR;
@@ -412,100 +413,94 @@ public class ReportController implements Initializable {
           * Retrieving Revenue Items from database per week selected
           * Put Revenue Items into a list for later use
          ***/
+        String totDay1 = "0.00", totDay2 = "0.00", totDay3 = "0.00", totDay4 = "0.00", totDay5 = "0.00", totDay6 = "0.00", totDay7 = "0.00", summation = "0.00", Day1 = "0.00", Day2 = "0.00", Day3 = "0.00", Day4 = "0.00", Day5 = "0.00", Day6 = "0.00", Day7 = "0.00",totalAmnt = "0.00";
+        float  totday1 = 0, totday2 = 0,totday3 = 0,totday4 = 0, totday5 = 0, totday6 = 0, totday7 = 0,totdaysum = 0, days1 = 0, days2 = 0, days3 = 0, days4 = 0, days5 = 0, days6 = 0, days7 = 0, total_amount = 0;
+        NumberFormat formatter = new DecimalFormat("#,##0.00");
+         PreparedStatement stmnt_itemsCategories;
+         ResultSet rs, rs_itemsCategories;
          if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")){
-             stmnt = con.prepareStatement("SELECT `item_Sub`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION'  AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub` ");
+             stmnt = con.prepareStatement("SELECT  `revenueDate`, `item_Sub`, `item_category`, `revenueAmount` FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION'  AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+             stmnt_itemsCategories = con.prepareStatement("SELECT `item_Sub`, `item_category` FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION'  AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
          }else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-             stmnt = con.prepareStatement("SELECT `item_Sub`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `CenterID` = 'K0201' OR `CenterID` = 'K0202' OR `CenterID` = 'K0203' OR `CenterID` = 'K0204' OR `CenterID` = 'K0205' AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
+             stmnt = con.prepareStatement("SELECT  `revenueDate`, `item_Sub`, `item_category`, `revenueAmount` FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `CenterID` = 'K0201' OR `CenterID` = 'K0202' OR `CenterID` = 'K0203' OR `CenterID` = 'K0204' OR `CenterID` = 'K0205' AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+             stmnt_itemsCategories = con.prepareStatement("SELECT `item_Sub`, `item_category`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `CenterID` = 'K0201' OR `CenterID` = 'K0202' OR `CenterID` = 'K0203' OR `CenterID` = 'K0204' OR `CenterID` = 'K0205' AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
          }else {
-             stmnt = con.prepareStatement("SELECT `item_Sub`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '" + cmbReportCent.getSelectionModel().getSelectedItem() + "'  AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
+             stmnt = con.prepareStatement("SELECT  `revenueDate`, `item_Sub`, `item_category`, `revenueAmount` FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '" + cmbReportCent.getSelectionModel().getSelectedItem() + "'  AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+             stmnt_itemsCategories = con.prepareStatement("SELECT `item_Sub`, `item_category`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '" + cmbReportCent.getSelectionModel().getSelectedItem() + "'  AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
          }
-       ResultSet rs = stmnt.executeQuery();
-
-       ObservableList<String> Item = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
-       while(rs.next()){//looping through the retrieved revenueItems result set
-           Item.add(rs.getString("item_Sub"));//adding revenue items to list
-       }
-       /***
-        * Retrieving revenue items and their respective Amount and Dates in an ordered form by revenueItem 
-        * 
-       ***/
-        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")){
-            stmnt =con.prepareStatement("SELECT `item_Sub`, `daily_entries`.`revenueAmount`, `daily_entries`.`revenueDate` FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' ORDER BY `item_category`");
-        }else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt =con.prepareStatement("SELECT `item_Sub`, `daily_entries`.`revenueAmount`, `daily_entries`.`revenueDate` FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' ORDER BY `item_category`");
-        }else {
-            stmnt =con.prepareStatement("SELECT `item_Sub`, `daily_entries`.`revenueAmount`, `daily_entries`.`revenueDate` FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '" + cmbReportCent.getSelectionModel().getSelectedItem() + "'  AND   `daily_entries`.`revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueMonth` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`revenueWeek` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' ORDER BY `item_category`");
-        }
-       ResultSet rt = stmnt.executeQuery();
-        Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview
-
-
-        //HashMap to store revenue Amounts on their respective dates
-//        ArrayList<String> AmountDate = new ArrayList<>(rowDate);
-       
-       Item.forEach((Items) -> {
-           forEntry.put(Items,  new HashMap<>());
-        });
-       while(rt.next()){
-           float object2 = rt.getFloat("revenueAmount");
-           for( String Dates : rowDate){
-               for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-                   if (Items.getKey().equals(rt.getString("item_Sub"))  && Dates.equals(rt.getString("revenueDate")) ){
-                           if(forEntry.containsKey(rt.getString("item_Sub")) && !forEntry.get(rt.getString("item_Sub")).containsKey(rt.getString("revenueDate"))){
-                           forEntry.get(rt.getString("item_Sub")).put(rt.getString("revenueDate"), new ArrayList<>());
-                           forEntry.get(rt.getString("item_Sub")).get(rt.getString("revenueDate")).add(object2);
-                       }else if(forEntry.containsKey(rt.getString("item_Sub")) && forEntry.get(rt.getString("item_Sub")).containsKey(rt.getString("revenueDate"))){
-                           forEntry.get(rt.getString("item_Sub")).get(rt.getString("revenueDate")).add(object2);
-                       }
-                   }
-               }
-           }
-       }
-         NumberFormat formatter = new DecimalFormat("#,##0.00");
-         
-       for(Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-           String da1 = "0.00", da2 = "0.00", da3 = "0.00", da4 = "0.00", da5 = "0.00", da6 = "0.00", da7 = "0.00", totalAmount = "0.00";
-           float day1 = 0, day2 = 0, day3 = 0, day4 = 0, day5 = 0, day6 = 0, day7 = 0, total_amount;
-           for(Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
-               String reveItem = Items.getKey();
-               if(Dates.getKey() == null ? DAY1.getText() == null : Dates.getKey().equals(DAY1.getText())){
-                   da1 = formatter.format(forEntry.get(Items.getKey()).get(DAY1.getText()).get(0));
-                   day1 = forEntry.get(Items.getKey()).get(DAY1.getText()).get(0);
-               }else if(Dates.getKey() == null ? DAY2.getText() == null : Dates.getKey().equals(DAY2.getText())){
-                   da2 = formatter.format(forEntry.get(Items.getKey()).get(DAY2.getText()).get(0));
-                   day2 = forEntry.get(Items.getKey()).get(DAY2.getText()).get(0);
-               }else if(Dates.getKey() == null ? DAY3.getText() == null : Dates.getKey().equals(DAY3.getText())){
-                   da3 = formatter.format(forEntry.get(Items.getKey()).get(DAY3.getText()).get(0));
-                   day3 = forEntry.get(Items.getKey()).get(DAY3.getText()).get(0);
-               }else if(Dates.getKey() == null ? DAY4.getText() == null : Dates.getKey().equals(DAY4.getText())){
-                   da4 = formatter.format(forEntry.get(Items.getKey()).get(DAY4.getText()).get(0));
-                   day4 = forEntry.get(Items.getKey()).get(DAY4.getText()).get(0);
-               }else if(Dates.getKey() == null ? DAY5.getText() == null : Dates.getKey().equals(DAY5.getText())){
-                   da5 = formatter.format(forEntry.get(Items.getKey()).get(DAY5.getText()).get(0));
-                   day5 = forEntry.get(Items.getKey()).get(DAY5.getText()).get(0);
-               }else if(Dates.getKey() == null ? DAY6.getText() == null : Dates.getKey().equals(DAY6.getText())){
-                   da6 = formatter.format(forEntry.get(Items.getKey()).get(DAY6.getText()).get(0));
-                   day6 = forEntry.get(Items.getKey()).get(DAY6.getText()).get(0);
-               }else if(Dates.getKey() == null ? DAY7.getText() == null : Dates.getKey().equals(DAY7.getText())){
-                   da7 = formatter.format(forEntry.get(Items.getKey()).get(DAY7.getText()).get(0));
-                   day7 = forEntry.get(Items.getKey()).get(DAY7.getText()).get(0);
-               }
-           }
-           total_amount = day1 + day2 + day3 +day4 + day5 + day6 + day7 ;
-           totalAmount = formatter.format(total_amount);       
-           REVENUE_ITEM.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
-           DAY1.setCellValueFactory(data -> data.getValue().DAY1Property());
-           DAY2.setCellValueFactory(data -> data.getValue().DAY2Property());
-           DAY3.setCellValueFactory(data -> data.getValue().DAY3Property());
-           DAY4.setCellValueFactory(data -> data.getValue().DAY4Property());
-           DAY5.setCellValueFactory(data -> data.getValue().DAY5Property());
-           DAY6.setCellValueFactory(data -> data.getValue().DAY6Property());
-           DAY7.setCellValueFactory(data -> data.getValue().DAY7Property());
-           Total_amt.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
-           getReport = new GetReport(Items.getKey(), da1, da2, da3, da4, da5, da6, da7, totalAmount);
-           WEEKLY_TABLE.getItems().add(getReport);                                           
-       }
-        WEEKLY_TABLE.sort();
+       rs = stmnt.executeQuery();
+         rs_itemsCategories = stmnt_itemsCategories.executeQuery();
+         rowCategories.clear();
+        Map<String, ArrayList<String>> categoriesItem = new HashMap<>();
+        categoriesItem.put("", new ArrayList<>());
+         while (rs_itemsCategories.next()){
+             if (!rowCategories.contains(rs_itemsCategories.getString("item_category"))){
+                 rowCategories.add(rs_itemsCategories.getString("item_category"));
+             }
+             if (!categoriesItem.containsKey(rs_itemsCategories.getString("item_category"))){
+                 categoriesItem.put(rs_itemsCategories.getString("item_category"), new ArrayList<>());
+                 categoriesItem.get(rs_itemsCategories.getString("item_category")).add(rs_itemsCategories.getString("item_Sub"));
+             }else if (categoriesItem.containsKey(rs_itemsCategories.getString("item_category")) && !categoriesItem.get(rs_itemsCategories.getString("item_category")).contains(rs_itemsCategories.getString("item_Sub"))){
+                 categoriesItem.get(rs_itemsCategories.getString("item_category")).add(rs_itemsCategories.getString("item_Sub"));
+             }
+         }
+        REVENUE_ITEM.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
+        DAY1.setCellValueFactory(data -> data.getValue().DAY1Property());
+        DAY2.setCellValueFactory(data -> data.getValue().DAY2Property());
+        DAY3.setCellValueFactory(data -> data.getValue().DAY3Property());
+        DAY4.setCellValueFactory(data -> data.getValue().DAY4Property());
+        DAY5.setCellValueFactory(data -> data.getValue().DAY5Property());
+        DAY6.setCellValueFactory(data -> data.getValue().DAY6Property());
+        DAY7.setCellValueFactory(data -> data.getValue().DAY7Property());
+        Total_amt.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
+         for (String category : rowCategories){
+             REVENUE_ITEM.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");
+             getReport = new GetReport(category, "", "", "", "", "", "", "", "");
+             WEEKLY_TABLE.getItems().add(getReport);
+             float subDay1 = 0, subDay2 = 0, subDay3 = 0, subDay4 = 0, subDay5 = 0, subDay6 = 0, subDay7 = 0, subTotalAmount;
+             String subDays1 = "0.00", subDays2 = "0.00", subDays3 = "0.00", subDays4 = "0.00", subDays5 = "0.00", subDays6 = "0.00", subDays7 = "0.00",subTotalAmnt = "0.00";
+             for (String items : categoriesItem.get(category)){
+                 Map<String, Map<String, Float>> itemWeekSum = new HashMap<>();
+                 Map<String, Float> weekSum = new HashMap<>();
+                 weekSum.put(DAY1.getText(), days1); weekSum.put(DAY2.getText(), days2); weekSum.put(DAY3.getText(), days3);
+                 weekSum.put(DAY4.getText(), days4); weekSum.put(DAY5.getText(), days5); weekSum.put(DAY6.getText(), days6);
+                 weekSum.put(DAY7.getText(), days7);
+                 itemWeekSum.put(items, weekSum);
+                 boolean resultSetState = true;
+                 while (resultSetState){
+                     rs.next();
+                     if (items.equals(rs.getString("item_Sub"))){
+                         float amot= itemWeekSum.get(items).get(rs.getString("revenueDate"));
+                         amot += rs.getFloat("revenueAmount");
+                         itemWeekSum.get(items).put(rs.getString("revenueDate"), amot);
+                     }
+                     if (rs.isLast()){
+                         resultSetState = false;
+                     }
+                 }
+                 if (rs.isLast()){
+                     rs.beforeFirst();
+                 }
+                 subDay1 += itemWeekSum.get(items).get(DAY1.getText()); subDay2 += itemWeekSum.get(items).get(DAY2.getText()); subDay3 += itemWeekSum.get(items).get(DAY3.getText()); subDay4 += itemWeekSum.get(items).get(DAY4.getText()); subDay5 += itemWeekSum.get(items).get(DAY5.getText()); subDay6 += itemWeekSum.get(items).get(DAY6.getText()); subDay7 += itemWeekSum.get(items).get(DAY7.getText());
+                 totday1 += itemWeekSum.get(items).get(DAY1.getText()); totday2 += itemWeekSum.get(items).get(DAY2.getText()); totday3 += itemWeekSum.get(items).get(DAY3.getText()); totday4 += itemWeekSum.get(items).get(DAY4.getText()); totday5 += itemWeekSum.get(items).get(DAY5.getText()); totday6 += itemWeekSum.get(items).get(DAY6.getText()); totday7 += itemWeekSum.get(items).get(DAY7.getText());
+                 Day1 = formatter.format(itemWeekSum.get(items).get(DAY1.getText())); Day2 = formatter.format(itemWeekSum.get(items).get(DAY2.getText())); Day3 = formatter.format(itemWeekSum.get(items).get(DAY3.getText())); Day4 = formatter.format(itemWeekSum.get(items).get(DAY4.getText()));
+                 Day5 = formatter.format(itemWeekSum.get(items).get(DAY5.getText())); Day6 = formatter.format(itemWeekSum.get(items).get(DAY6.getText())); Day7 = formatter.format(itemWeekSum.get(items).get(DAY7.getText()));
+                 total_amount = itemWeekSum.get(items).get(DAY1.getText()) + itemWeekSum.get(items).get(DAY2.getText()) + itemWeekSum.get(items).get(DAY3.getText()) + itemWeekSum.get(items).get(DAY4.getText()) + itemWeekSum.get(items).get(DAY5.getText()) + itemWeekSum.get(items).get(DAY6.getText()) + itemWeekSum.get(items).get(DAY7.getText()); totdaysum += total_amount;
+                 totalAmnt = formatter.format(total_amount);
+                 getReport = new GetReport(items, Day1, Day2, Day3, Day4, Day5, Day6, Day7, totalAmnt);
+                 WEEKLY_TABLE.getItems().add(getReport);
+                 days1 = 0; days2 = 0; days3 = 0; days4 = 0; days5 = 0; days6 = 0; days7 = 0;
+             }
+             subTotalAmount = subDay1 + subDay2 + subDay3 + subDay4 + subDay5 + subDay6 + subDay7;
+             subDays1 = formatter.format(subDay1); subDays2 = formatter.format(subDay2); subDays3 = formatter.format(subDay3); subDays4 = formatter.format(subDay4);
+             subDays5 = formatter.format(subDay5); subDays6 = formatter.format(subDay6); subDays7 = formatter.format(subDay7); subTotalAmnt = formatter.format(subTotalAmount);
+             getReport = new GetReport("SUB-TOTAL", subDays1, subDays2, subDays3, subDays4, subDays5, subDays6, subDays7, subTotalAmnt);
+             WEEKLY_TABLE.getItems().add(getReport);
+         }
+        totDay1 = formatter.format(totday1); totDay2 = formatter.format(totday2); totDay3 = formatter.format(totday3); totDay4 = formatter.format(totday4);
+        totDay5 = formatter.format(totday5); totDay6 = formatter.format(totday6); totDay7 = formatter.format(totday7); summation = formatter.format(totdaysum);
+        getReport = new GetReport("TOTAL",totDay1, totDay2, totDay3, totDay4, totDay5, totDay6, totDay7, summation);
+        WEEKLY_TABLE.getItems().add(getReport);
      }
 
     @FXML
@@ -584,9 +579,4 @@ public class ReportController implements Initializable {
         }
 
     }
-
-    
-
-   
-    
 }

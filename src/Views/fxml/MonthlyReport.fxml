@@ -56,11 +56,11 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <AnchorPane fx:id="generalPane" layoutX="20.0" layoutY="120.0">
+      <AnchorPane fx:id="generalPane" layoutX="20.0" layoutY="101.0" prefHeight="432.0" prefWidth="1040.0">
          <children>
-            <ScrollPane hbarPolicy="ALWAYS" prefHeight="466.0" prefWidth="1040.0" vbarPolicy="NEVER">
+            <ScrollPane hbarPolicy="ALWAYS" prefHeight="477.0" prefWidth="1040.0" vbarPolicy="NEVER">
                <content>
-                  <TableView fx:id="monthlyTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="1283.0">
+                  <TableView fx:id="monthlyTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="460.0" prefWidth="1283.0">
                      <columns>
                         <TableColumn fx:id="revenueItem" prefWidth="126.0">
                            <graphic>

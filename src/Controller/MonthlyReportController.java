@@ -6,6 +6,7 @@
 package Controller;
 
 import Controller.Gets.GetMonthlyReport;
+import Controller.Gets.GetReport;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,6 +48,45 @@ public class MonthlyReportController implements Initializable {
     private VBox monthlyTemplate;
     @FXML
     private JFXButton btnPrint;
+
+    @FXML
+    private Label lblJanSum;
+
+    @FXML
+    private Label lblFebSum;
+
+    @FXML
+    private Label lblMarSum;
+
+    @FXML
+    private Label lblAprSum;
+
+    @FXML
+    private Label lblMaySum;
+
+    @FXML
+    private Label lblJunSum;
+
+    @FXML
+    private Label lblJulSum;
+
+    @FXML
+    private Label lblAugSum;
+
+    @FXML
+    private Label lblSepSum;
+
+    @FXML
+    private Label lblOctSum;
+
+    @FXML
+    private Label lblNovSum;
+
+    @FXML
+    private Label lblDecSum;
+
+    @FXML
+    private Label lblTotSum;
     @FXML
     private ComboBox<String> cmbReportCent;
     @FXML
@@ -227,160 +267,108 @@ public class MonthlyReportController implements Initializable {
     
     private void setItems() throws SQLException{
         monthlyTable.getItems().clear();
+        String totJan = "0.00", totFeb = "0.00", totMar = "0.00", totApr = "0.00", totMay = "0.00", totJun = "0.00", totJul = "0.00", totAug = "0.00", totSep = "0.00", totOct = "0.00", totNov = "0.00", totDec = "0.00", summation = "0.00", Jan = "0.00", Feb = "0.00", Mar = "0.00", Apr = "0.00", May = "0.00", Jun = "0.00", Jul = "0.00", Aug = "0.00", Sep = "0.00", Oct = "0.00", Nov = "0.00", Dec = "0.00", totalAmnt = "0.00";
+        float  totjan = 0, totfeb = 0,totmar = 0,totapr = 0, totmay = 0, totjun = 0, totjul = 0, totaug = 0,totsep = 0,totoct = 0, totnov = 0, totdec = 0, totMonthsum = 0,  jan = 0, feb = 0, apr = 0, mai = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, mar = 0, nov = 0, dec = 0, total_amount = 0;
+        NumberFormat formatter = new DecimalFormat("#,##0.00");
+        PreparedStatement stmnt_itemsCategories;
+        ResultSet rs, rs_itemsCategories;
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, `revenueMonth` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
         } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
         }
        rs = stmnt.executeQuery();
+        rs_itemsCategories = stmnt_itemsCategories.executeQuery();
         rowItems.clear();
-        while(rs.next()){
-                    rowItems.add(rs.getString("revenue_item"));
+        Map<String, ArrayList<String>> categoriesItem = new HashMap<>();
+        categoriesItem.put("", new ArrayList<>());
+        while (rs_itemsCategories.next()){
+            if (!rowItems.contains(rs_itemsCategories.getString("item_category"))){
+                rowItems.add(rs_itemsCategories.getString("item_category"));
+            }
+            if (!categoriesItem.containsKey(rs_itemsCategories.getString("item_category"))){
+                categoriesItem.put(rs_itemsCategories.getString("item_category"), new ArrayList<>());
+                categoriesItem.get(rs_itemsCategories.getString("item_category")).add(rs_itemsCategories.getString("item_Sub"));
+            }else if (categoriesItem.containsKey(rs_itemsCategories.getString("item_category")) && !categoriesItem.get(rs_itemsCategories.getString("item_category")).contains(rs_itemsCategories.getString("item_Sub"))){
+                categoriesItem.get(rs_itemsCategories.getString("item_category")).add(rs_itemsCategories.getString("item_Sub"));
+            }
         }
-        if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
-        } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
+        revenueItem.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
+        january.setCellValueFactory(data -> data.getValue().JanProperty());
+        february.setCellValueFactory(data -> data.getValue().FebProperty());
+        march.setCellValueFactory(data -> data.getValue().MarProperty());
+        april.setCellValueFactory(data -> data.getValue().AprProperty());
+        may.setCellValueFactory(data -> data.getValue().MayProperty());
+        june.setCellValueFactory(data -> data.getValue().JunProperty());
+        july.setCellValueFactory(data -> data.getValue().JulProperty());
+        august.setCellValueFactory(data -> data.getValue().AugProperty());
+        september.setCellValueFactory(data -> data.getValue().SepProperty());
+        october.setCellValueFactory(data -> data.getValue().OctProperty());
+        november.setCellValueFactory(data -> data.getValue().NovProperty());
+        december.setCellValueFactory(data -> data.getValue().DecProperty());
+        totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
+        GetMonthlyReport getReport;
+        for (String category : rowItems){
+            revenueItem.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");
+            getReport = new GetMonthlyReport(category, "", "", "", "", "", "", "", "", "", "", "", "", "");
+            monthlyTable.getItems().add(getReport);
+            float subjan = 0, subfeb = 0, subapr = 0, submai = 0, subjun = 0, subjul = 0, subaug = 0, subsep = 0, suboct = 0, submar = 0, subnov = 0, subdec = 0, subtotal_amount;
+            String subJan = "0.00", subFeb = "0.00", subMar = "0.00", subApr = "0.00", subMay = "0.00", subJun = "0.00", subJul = "0.00", subAug = "0.00", subSep = "0.00", subOct = "0.00", subNov = "0.00", subDec = "0.00", subTotalAmnt = "0.00";
+            for (String item : categoriesItem.get(category)) {
+                Map<String, Map<String, Float>> itemMonthSum = new HashMap<>();
+                Map<String, Float> monthSum = new HashMap<>();
+                monthSum.put(january.getText(), jan); monthSum.put(february.getText(), feb); monthSum.put(march.getText(), mar);
+                monthSum.put(april.getText(), apr); monthSum.put(may.getText(), mai); monthSum.put(june.getText(), jun);
+                monthSum.put(july.getText(), jul); monthSum.put(august.getText(), aug); monthSum.put(september.getText(), sep);
+                monthSum.put(october.getText(), oct); monthSum.put(november.getText(), nov); monthSum.put(december.getText(), dec);
+                itemMonthSum.put(item, monthSum);
+                boolean resultSetState = true;
+                while (resultSetState){
+                    rs.next();
+                    if (item.equals(rs.getString("item_Sub"))){
+                        float amot= itemMonthSum.get(item).get(rs.getString("revenueMonth"));
+                        amot += rs.getFloat("revenueAmount");
+                        itemMonthSum.get(item).put(rs.getString("revenueMonth"), amot);
+                    }
+                    if (rs.isLast()){
+                        resultSetState = false;
+                    }
+                }
+                if (rs.isLast()){
+                    rs.beforeFirst();
+                }
+                subjan += itemMonthSum.get(item).get(january.getText()); subfeb += itemMonthSum.get(item).get(february.getText()); submar += itemMonthSum.get(item).get(march.getText()); subapr += itemMonthSum.get(item).get(april.getText()); submai += itemMonthSum.get(item).get(may.getText()); subjun += itemMonthSum.get(item).get(june.getText());
+                subjul += itemMonthSum.get(item).get(july.getText()); subaug += itemMonthSum.get(item).get(august.getText()); subsep += itemMonthSum.get(item).get(september.getText()); suboct += itemMonthSum.get(item).get(october.getText()); subnov += itemMonthSum.get(item).get(november.getText()); subdec += itemMonthSum.get(item).get(december.getText());
+                totjan += itemMonthSum.get(item).get(january.getText()); totfeb += itemMonthSum.get(item).get(february.getText()); totmar += itemMonthSum.get(item).get(march.getText()); totapr += itemMonthSum.get(item).get(april.getText()); totmay += itemMonthSum.get(item).get(may.getText()); totjun += itemMonthSum.get(item).get(june.getText());
+                totjul += itemMonthSum.get(item).get(july.getText()); totaug += itemMonthSum.get(item).get(august.getText()); totsep += itemMonthSum.get(item).get(september.getText()); totoct += itemMonthSum.get(item).get(october.getText()); totnov += itemMonthSum.get(item).get(november.getText()); totdec += itemMonthSum.get(item).get(december.getText());
+                Jan = formatter.format(itemMonthSum.get(item).get(january.getText())); Feb = formatter.format(itemMonthSum.get(item).get(february.getText())); Mar = formatter.format(itemMonthSum.get(item).get(march.getText())); Apr = formatter.format(itemMonthSum.get(item).get(april.getText())); May = formatter.format(itemMonthSum.get(item).get(may.getText()));
+                Jun = formatter.format(itemMonthSum.get(item).get(june.getText())); Jul = formatter.format(itemMonthSum.get(item).get(july.getText())); Aug = formatter.format(itemMonthSum.get(item).get(august.getText())); Sep = formatter.format(itemMonthSum.get(item).get(september.getText())); Oct = formatter.format(itemMonthSum.get(item).get(october.getText()));
+                Nov = formatter.format(itemMonthSum.get(item).get(november.getText())); Dec = formatter.format(itemMonthSum.get(item).get(december.getText()));
+                total_amount = itemMonthSum.get(item).get(january.getText()) + itemMonthSum.get(item).get(february.getText()) + itemMonthSum.get(item).get(march.getText()) + itemMonthSum.get(item).get(april.getText()) + itemMonthSum.get(item).get(may.getText()) +itemMonthSum.get(item).get(june.getText()) + itemMonthSum.get(item).get(july.getText()) + itemMonthSum.get(item).get(august.getText()) + itemMonthSum.get(item).get(september.getText()) + itemMonthSum.get(item).get(october.getText()) + itemMonthSum.get(item).get(november.getText()) + itemMonthSum.get(item).get(december.getText()); totMonthsum += total_amount;
+                totalAmnt = formatter.format(total_amount);
+                getReport = new GetMonthlyReport(item, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, totalAmnt);
+                monthlyTable.getItems().add(getReport);
+                jan = 0; feb = 0; apr = 0; mai = 0; jun = 0; jul = 0; aug = 0; sep = 0; oct = 0; mar = 0; nov = 0; dec = 0;
+            }
+            subtotal_amount = subjan + subfeb + submar + subapr + submai + subjun + subjul + subaug + subsep + suboct + subnov + subdec;
+            subJan = formatter.format(subjan); subFeb = formatter.format(subfeb); subMar = formatter.format(submar); subApr = formatter.format(subapr);
+            subMay = formatter.format(submai);subJun = formatter.format(subjun); subJul = formatter.format(subjul); subAug = formatter.format(subaug); subSep = formatter.format(subsep);
+            subOct = formatter.format(suboct); subNov = formatter.format(subnov); subDec = formatter.format(subdec); subTotalAmnt = formatter.format(subtotal_amount);
+            getReport = new GetMonthlyReport("SUB-TOTAL", subJan, subFeb, subMar, subApr, subMay, subJun, subJul,subAug,subSep,subOct,subNov,subDec, subTotalAmnt);
+            monthlyTable.getItems().add(getReport);
         }
-        else {
-            stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
-        }
-        rs = stmnt.executeQuery();
-        rowMonths.clear();
-        while(rs.next()){
-                    rowMonths.add(rs.getString("revenueMonth"));
-        }
-          Map<String, ArrayList<Float>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
-          Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
-          rowItems.forEach((rowItem) -> forEntry.put(rowItem, new HashMap<>()));
-          rowMonths.forEach((rowMonth) -> monthAmount.put(rowMonth, new ArrayList<>()));
-          try {
-          for(String month : rowMonths) {
-              for(String Item : rowItems) {
-                  float monthSum;
-                  monthSum = setMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, month, cmbReportYear.getSelectionModel().getSelectedItem());
-                  for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
-                          for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-                              if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
-                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(month)){
-                                      forEntry.get(Item).put(month, new ArrayList<>());
-                                      forEntry.get(Item).get(month).add(monthSum);
-                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
-                                      forEntry.get(Item).get(month).add(monthSum);
-                                  } 
-                              }
-                          }
-                      }
-                  
-              }
-          }
-         }
-                  catch (SQLException ex) {
-//                      Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
-                  }
-          NumberFormat formatter = new DecimalFormat("#,##0.00");
-         
-       for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-           String jan1 = "0.00", feb1 = "0.00", apr1 = "0.00", mai1 = "0.00", jun1 = "0.00", jul1 = "0.00", aug1 = "0.00", sep1 = "0.00",
-                   oct1 = "0.00", mar1 = "0.00", nov1 = "0.00", dec1 = "0.00", totalAmnt;
-           float jan = 0, feb = 0, apr = 0, mai = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, mar = 0, nov = 0, dec = 0, total_amount;
-           for(Map.Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
-               if(Dates.getKey() == null ? january.getText() == null : Dates.getKey().equals(january.getText())){
-                   jan1 = formatter.format(forEntry.get(Items.getKey()).get(january.getText()).get(0));
-                   jan = forEntry.get(Items.getKey()).get(january.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? february.getText() == null : Dates.getKey().equals(february.getText())){
-                   feb1 = formatter.format(forEntry.get(Items.getKey()).get(february.getText()).get(0));
-                   feb = forEntry.get(Items.getKey()).get(february.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? march.getText() == null : Dates.getKey().equals(march.getText())){
-                   mar1 = formatter.format(forEntry.get(Items.getKey()).get(march.getText()).get(0));
-                   mar = forEntry.get(Items.getKey()).get(march.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? april.getText() == null : Dates.getKey().equals(april.getText())){
-                   apr1 = formatter.format(forEntry.get(Items.getKey()).get(april.getText()).get(0));
-                   apr = forEntry.get(Items.getKey()).get(april.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? may.getText() == null : Dates.getKey().equals(may.getText())){
-                   mai1 = formatter.format(forEntry.get(Items.getKey()).get(may.getText()).get(0));
-                   mai = forEntry.get(Items.getKey()).get(may.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? june.getText() == null : Dates.getKey().equals(june.getText())){
-                   jun1 = formatter.format(forEntry.get(Items.getKey()).get(june.getText()).get(0));
-                   jun = forEntry.get(Items.getKey()).get(june.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? july.getText() == null : Dates.getKey().equals(july.getText())){
-                   jul1 = formatter.format(forEntry.get(Items.getKey()).get(july.getText()).get(0));
-                   jul = forEntry.get(Items.getKey()).get(july.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? august.getText() == null : Dates.getKey().equals(august.getText())){
-                   aug1 = formatter.format(forEntry.get(Items.getKey()).get(august.getText()).get(0));
-                   aug = forEntry.get(Items.getKey()).get(august.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? september.getText() == null : Dates.getKey().equals(september.getText())){
-                   sep1 = formatter.format(forEntry.get(Items.getKey()).get(september.getText()).get(0));
-                   sep = forEntry.get(Items.getKey()).get(september.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? october.getText() == null : Dates.getKey().equals(october.getText())){
-                   oct1 = formatter.format(forEntry.get(Items.getKey()).get(october.getText()).get(0));
-                   oct = forEntry.get(Items.getKey()).get(october.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? november.getText() == null : Dates.getKey().equals(november.getText())){
-                   nov1 = formatter.format(forEntry.get(Items.getKey()).get(november.getText()).get(0));
-                   nov = forEntry.get(Items.getKey()).get(november.getText()).get(0);
-               }
-               else if(Dates.getKey() == null ? december.getText() == null : Dates.getKey().equals(december.getText())){
-                   dec1 = formatter.format(forEntry.get(Items.getKey()).get(december.getText()).get(0));
-                   dec = forEntry.get(Items.getKey()).get(december.getText()).get(0);
-               }
-           }
-           total_amount = jan + feb + mar + apr + mai + jun + jul + aug + oct + nov + sep + dec;
-           totalAmnt = formatter.format(total_amount);       
-           revenueItem.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
-           january.setCellValueFactory(data -> data.getValue().JanProperty());
-           february.setCellValueFactory(data -> data.getValue().FebProperty());
-           march.setCellValueFactory(data -> data.getValue().MarProperty());
-           april.setCellValueFactory(data -> data.getValue().AprProperty());
-           may.setCellValueFactory(data -> data.getValue().MayProperty());
-           june.setCellValueFactory(data -> data.getValue().JunProperty());
-           july.setCellValueFactory(data -> data.getValue().JulProperty());
-           august.setCellValueFactory(data -> data.getValue().AugProperty());
-           september.setCellValueFactory(data -> data.getValue().SepProperty());
-           october.setCellValueFactory(data -> data.getValue().OctProperty());
-           november.setCellValueFactory(data -> data.getValue().NovProperty());
-           december.setCellValueFactory(data -> data.getValue().DecProperty());
-           totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
-           GetMonthlyReport getReport = new GetMonthlyReport(Items.getKey(), jan1, feb1, mar1, apr1, mai1, jun1, jul1, aug1, sep1, oct1, nov1, dec1, totalAmnt);
-           monthlyTable.getItems().add(getReport);                                           
-       }
-          
-    }
-    
-    
-       public Float setMonthSum(String Center, String item, String Month, String Year) throws SQLException{
-        float totalAmunt;
-           if (Center.equals("PROPERTY RATE ALL")) {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+Year+"' AND  `revenueMonth` = '"+Month+"'");
-           } else if (Center.equals("PROPERTY RATE SUB-METROS")){
-               stmnt = con.prepareStatement("  SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+Year+"' AND  `revenueMonth` = '"+Month+"'");
-           }
-           else {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND  `revenueMonth` = '"+Month+"'");
-           }
-//       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE  `revenueItem` = '"+item+"' AND `revenueMonth` = '"+Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
-       rs = stmnt.executeQuery();
-       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
-       while(rs.next()){//looping through the retrieved revenueItems result set
-           Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
-       }
-        totalAmunt = 0;
-           for (Float aFloat : Amount) {
-               totalAmunt += aFloat;
-           }
-        return totalAmunt;
+        totJan = formatter.format(totjan); totFeb = formatter.format(totfeb); totMar = formatter.format(totmar); totApr = formatter.format(totapr);
+        totMay = formatter.format(totmay); totJun = formatter.format(totjun); totJul = formatter.format(totjul); totAug = formatter.format(totaug); totSep = formatter.format(totsep);
+        totOct = formatter.format(totoct); totNov = formatter.format(totnov); totDec = formatter.format(totdec); summation = formatter.format(totMonthsum);
+                getReport = new GetMonthlyReport("TOTAL", totJan, totFeb, totMar, totApr, totMay, totJun, totJul, totAug, totSep, totOct, totNov, totDec, summation);
+        monthlyTable.getItems().add(getReport);
+//        lblJanSum.setText(totJan); lblFebSum.setText(totFeb); lblMarSum.setText(totMar); lblAprSum.setText(totApr); lblMaySum.setText(totMay); lblJunSum.setText(totJun); lblJulSum.setText(totJul);
     }
 
     @FXML

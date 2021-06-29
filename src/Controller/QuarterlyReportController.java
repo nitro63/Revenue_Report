@@ -562,3 +562,192 @@ public class QuarterlyReportController implements Initializable {
     }
     
 }
+/**
+ *
+ { Map<String, ArrayList<Float>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
+ Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview
+ if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
+ if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+ } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+ }
+ else {
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+ }
+ //        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+ ResultSet rs = stmnt.executeQuery();
+ rowItems.clear();
+ while(rs.next()){
+ rowItems.add(rs.getString("revenue_item"));
+ }
+ }
+ else {
+ if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'GROUP BY `revenue_item`");
+ } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'GROUP BY `revenue_item`");
+ }
+ else {
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'GROUP BY `revenue_item`");
+ }
+ //            stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
+ ResultSet rs = stmnt.executeQuery();
+ rowItems.clear();
+ while(rs.next()){
+ rowItems.add(rs.getString("revenue_item"));
+ }
+ }
+ rowItems.forEach((rowItem) -> forEntry.put(rowItem, new HashMap<>()));
+ rowMonths.forEach((rowMonth) -> monthAmount.put(rowMonth, new ArrayList<>()));
+ try {
+ if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
+ for(String month : rowMonths) {
+ for(String Item : rowItems) {
+ float monthSum;
+ monthSum = setMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, month, cmbReportYear.getSelectionModel().getSelectedItem(), cmbReportQuarter.getSelectionModel().getSelectedItem());
+ for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
+ for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
+ if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
+ if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(month)){
+ forEntry.get(Item).put(month, new ArrayList<>());
+ forEntry.get(Item).get(month).add(monthSum);
+ }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
+ forEntry.get(Item).get(month).add(monthSum);
+ }
+ };
+ };
+ }
+
+ }
+ }
+ }
+ else if (allQuarters){
+ for(String month : rowMonths) {
+ for(String Item : rowItems) {
+ float monthSum = 0;
+ monthSum = setMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, cmbReportYear.getSelectionModel().getSelectedItem(), month);
+ for(Map.Entry<String, ArrayList<Float>> Dates : monthAmount.entrySet()){
+ for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
+ if (Items.getKey().equals(Item)  && Dates.getKey().equals(month)){
+ if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(month)){
+ forEntry.get(Item).put(month, new ArrayList<>());
+ forEntry.get(Item).get(month).add(monthSum);
+ }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(month)){
+ forEntry.get(Item).get(month).add(monthSum);
+ }
+ };
+ };
+ }
+
+ }
+ }
+ System.out.println(forEntry+""+rowItems+""+rowMonths);
+ }
+ }
+ catch (SQLException ex) {
+ log.error(ex.getMessage(), ex);
+ }
+ NumberFormat formatter = new DecimalFormat("#,##0.00");
+
+ for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()) {
+ String mon1 = "0.00", mon2 = "0.00", mon3 = "0.00", mon4 = "0.00", totalAmnt;
+ float Mon1 = 0, Mon2 = 0, Mon3 = 0, Mon4 = 0, total_amount;
+ for (Map.Entry<String, ArrayList<Float>> Dates : forEntry.get(Items.getKey()).entrySet()) {
+ if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")) {
+ if (Dates.getKey() == null ? month1.getText() == null : Dates.getKey().equals(month1.getText())) {
+ mon1 = formatter.format(forEntry.get(Items.getKey()).get(month1.getText()).get(0));
+ Mon1 = forEntry.get(Items.getKey()).get(month1.getText()).get(0);
+ } else if (Dates.getKey() == null ? month2.getText() == null : Dates.getKey().equals(month2.getText())) {
+ mon2 = formatter.format(forEntry.get(Items.getKey()).get(month2.getText()).get(0));
+ Mon2 = forEntry.get(Items.getKey()).get(month2.getText()).get(0);
+ } else if (Dates.getKey() == null ? month3.getText() == null : Dates.getKey().equals(month3.getText())) {
+ mon3 = formatter.format(forEntry.get(Items.getKey()).get(month3.getText()).get(0));
+ Mon3 = forEntry.get(Items.getKey()).get(month3.getText()).get(0);
+ }
+ } else if (allQuarters){
+ if (Dates.getKey().equals("1")) {
+ mon1 = formatter.format(forEntry.get(Items.getKey()).get("1").get(0));
+ Mon1 = forEntry.get(Items.getKey()).get("1").get(0);
+ } else if (Dates.getKey().equals("2")) {
+ mon2 = formatter.format(forEntry.get(Items.getKey()).get("2").get(0));
+ Mon2 = forEntry.get(Items.getKey()).get("2").get(0);
+ } else if (Dates.getKey().equals("3")) {
+ mon3 = formatter.format(forEntry.get(Items.getKey()).get("3").get(0));
+ Mon3 = forEntry.get(Items.getKey()).get("3").get(0);
+ } else if (Dates.getKey().equals("4")) {
+ mon4 = formatter.format(forEntry.get(Items.getKey()).get("4").get(0));
+ Mon4 = forEntry.get(Items.getKey()).get("4").get(0);
+ }
+ }
+ }
+ if (singleQuarter){
+ total_amount = Mon3 + Mon2 + Mon1;
+ totalAmnt = formatter.format(total_amount);
+ revenueItem.setCellValueFactory(data -> data.getValue().revenueItemProperty());
+ month1.setCellValueFactory(data -> data.getValue().firstMonthProperty());
+ month2.setCellValueFactory(data -> data.getValue().secondMonthProperty());
+ month3.setCellValueFactory(data -> data.getValue().thirdMonthProperty());
+ totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
+ getReport = new GetQuarterReport(mon1, mon2, mon3, Items.getKey(), totalAmnt);
+ quarterTable.getItems().add(getReport);
+ }else if (allQuarters){
+ total_amount = Mon3 + Mon2 + Mon1 + Mon4;
+ totalAmnt = formatter.format(total_amount);
+ revenueItemAll.setCellValueFactory(data -> data.getValue().revenueItemProperty());
+ month1All.setCellValueFactory(data -> data.getValue().firstMonthProperty());
+ month2All.setCellValueFactory(data -> data.getValue().secondMonthProperty());
+ month3All.setCellValueFactory(data -> data.getValue().thirdMonthProperty());
+ month4All.setCellValueFactory(data -> data.getValue().fourthMonthProperty());
+ totalAmountAll.setCellValueFactory(data -> data.getValue().totalAmountProperty());
+ getReport = new GetQuarterReport( mon1, mon2, mon3, mon4, Items.getKey(), totalAmnt);
+ quarterTableAll.getItems().add(getReport);
+ }
+ }
+ }
+
+ public Float setMonthSum(String Center, String item, String Year, String Quarter) throws SQLException{
+ float totalAmunt;
+ if (Center.equals("PROPERTY RATE ALL")) {
+ stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"'");
+ } else if (Center.equals("PROPERTY RATE SUB-METROS")){
+ stmnt = con.prepareStatement("SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `CenterID` = 'K0201' OR `CenterID` = 'K0202' OR `CenterID` = 'K0203' OR `CenterID` = 'K0204' OR `CenterID` = 'K0205'");
+ }
+ else {
+ stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"'");
+ }
+ rs = stmnt.executeQuery();
+ ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+ while(rs.next()){//looping through the retrieved revenueItems result set
+ Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
+ }
+ totalAmunt = 0;
+ for(int i = 0; i < Amount.size(); i++){
+ totalAmunt += Amount.get(i);
+ }
+ return totalAmunt;
+ }
+
+ public Float setMonthSum(String Center, String item, String Month, String Year, String Quarter) throws SQLException{
+ float totalAmunt;
+ if (Center.equals("PROPERTY RATE ALL")) {
+ stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' AND `revenueMonth` = '"+Month+"'");
+ } else if (Center.equals("PROPERTY RATE SUB-METROS")){
+ stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' AND `revenueMonth` = '"+Month+"'");
+ }
+ else {
+ stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenueQuarter` = '"+Quarter+"' AND `revenueMonth` = '"+Month+"'");
+ }
+ rs = stmnt.executeQuery();
+ ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+ while(rs.next()){//looping through the retrieved revenueItems result set
+ Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
+ }
+ totalAmunt = 0;
+ for(int i = 0; i < Amount.size(); i++){
+ totalAmunt += Amount.get(i);
+ }
+ return totalAmunt;
+ }
+ *
+ */
