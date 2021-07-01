@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="617.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="617.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="925.0" layoutY="578.0" onAction="#printReport" text="PRINT">
          <effect>
@@ -52,7 +52,7 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <TableView fx:id="yearlyTable" layoutX="43.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="432.0" prefWidth="948.0">
+      <TableView fx:id="yearlyTable" layoutX="43.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="358.0" prefWidth="948.0">
          <columns>
             <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
             <TableColumn fx:id="year1" prefWidth="100.0" text="YEAR" />
@@ -113,6 +113,12 @@
             </Label>
          </children>
       </AnchorPane>
+      <Label alignment="CENTER" layoutX="46.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" text="TOTAL" />
+      <Label fx:id="lblMonth1All" alignment="CENTER" layoutX="194.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblMonth2All" alignment="CENTER" layoutX="380.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" />
+      <Label fx:id="lblMonth4All" alignment="CENTER" layoutX="699.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" />
+      <Label fx:id="lblTotalAmountAll" alignment="CENTER" layoutX="852.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" />
+      <Label fx:id="lblMonth3All" alignment="CENTER" layoutX="547.0" layoutY="495.0" prefHeight="25.0" prefWidth="128.0" />
    </children>
    <stylesheets>
       <URL value="@../Stylesheets/report.css" />

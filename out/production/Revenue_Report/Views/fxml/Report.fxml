@@ -123,14 +123,14 @@
          <children>
             <TableView fx:id="WEEKLY_TABLE" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="430.0" prefWidth="1044.0">
               <columns>
-                  <TableColumn fx:id="REVENUE_ITEM" prefWidth="126.0">
+                  <TableColumn fx:id="REVENUE_ITEM" editable="false" prefWidth="126.0" sortable="false">
                      <graphic>
                         <Label text="REVENUE ITEM " textAlignment="CENTER" wrapText="true" />
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
                      <columns>
-                        <TableColumn fx:id="DAY1" prefWidth="75.0" text="DAY" />
+                        <TableColumn fx:id="DAY1" editable="false" prefWidth="75.0" sortable="false" text="DAY" />
                      </columns>
                      <graphic>
                         <Label fx:id="lblDay1" prefHeight="31.0" prefWidth="110.0">
@@ -140,9 +140,9 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
                      <columns>
-                        <TableColumn fx:id="DAY2" prefWidth="75.0" text="DAY" />
+                        <TableColumn fx:id="DAY2" editable="false" prefWidth="75.0" sortable="false" text="DAY" />
                      </columns>
                      <graphic>
                         <Label fx:id="lblDay2" prefHeight="31.0" prefWidth="110.0">
@@ -152,9 +152,9 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
                      <columns>
-                        <TableColumn fx:id="DAY3" prefWidth="75.0" text="DAY" />
+                        <TableColumn fx:id="DAY3" editable="false" prefWidth="75.0" sortable="false" text="DAY" />
                      </columns>
                      <graphic>
                         <Label fx:id="lblDay3" prefHeight="31.0" prefWidth="110.0">
@@ -164,9 +164,9 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
                      <columns>
-                        <TableColumn fx:id="DAY4" prefWidth="75.0" text="DAY" />
+                        <TableColumn fx:id="DAY4" editable="false" prefWidth="75.0" sortable="false" text="DAY" />
                      </columns>
                      <graphic>
                         <Label fx:id="lblDay4" prefHeight="31.0" prefWidth="110.0">
@@ -176,9 +176,9 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
                      <columns>
-                        <TableColumn fx:id="DAY5" prefWidth="75.0" text="DAY" />
+                        <TableColumn fx:id="DAY5" editable="false" prefWidth="75.0" sortable="false" text="DAY" />
                      </columns>
                      <graphic>
                         <Label fx:id="lblDay5" prefHeight="31.0" prefWidth="110.0">
@@ -188,9 +188,9 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
                      <columns>
-                        <TableColumn fx:id="DAY6" prefWidth="75.0" text="DAY" />
+                        <TableColumn fx:id="DAY6" editable="false" prefWidth="75.0" sortable="false" text="DAY" />
                      </columns>
                      <graphic>
                         <Label fx:id="lblDay6" prefHeight="31.0" prefWidth="110.0">
@@ -200,9 +200,9 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn prefWidth="75.0">
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
                      <columns>
-                        <TableColumn fx:id="DAY7" prefWidth="75.0" text="DAY" />
+                        <TableColumn fx:id="DAY7" editable="false" prefWidth="75.0" sortable="false" text="DAY" />
                      </columns>
                      <graphic>
                         <Label fx:id="lblDay7" prefHeight="31.0" prefWidth="110.0" textAlignment="CENTER" wrapText="true">
@@ -212,7 +212,7 @@
                         </Label>
                      </graphic>
                   </TableColumn>
-                  <TableColumn fx:id="Total_amt" prefWidth="100.0">
+                  <TableColumn fx:id="Total_amt" editable="false" prefWidth="100.0" sortable="false">
                      <graphic>
                         <Label text="TOTAL AMOUNT" textAlignment="CENTER" wrapText="true" />
                      </graphic>

@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="640.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="640.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="851.0" layoutY="590.0" onAction="#printReport" text="PRINT">
          <effect>
@@ -50,23 +50,32 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <TableView fx:id="quarterTable" layoutX="26.0" layoutY="121.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="925.0">
-         <columns>
-            <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
-            <TableColumn fx:id="month1" prefWidth="165.0" text="MONTH" />
-            <TableColumn fx:id="month2" prefWidth="165.0" text="MONTH" />
-            <TableColumn fx:id="month3" prefWidth="165.0" text="MONTH" />
-            <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
-         </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
       <Text layoutX="259.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QUARTERLY REVENUE REPORT" textAlignment="CENTER" wrappingWidth="506.13671875">
          <font>
             <Font name="System Bold" size="31.0" />
          </font>
       </Text>
+      <AnchorPane fx:id="paneSingle" layoutX="26.0" layoutY="121.0">
+         <children>
+            <TableView fx:id="quarterTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="419.0" prefWidth="925.0">
+               <columns>
+                  <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
+                  <TableColumn fx:id="month1" prefWidth="165.0" text="MONTH" />
+                  <TableColumn fx:id="month2" prefWidth="165.0" text="MONTH" />
+                  <TableColumn fx:id="month3" prefWidth="165.0" text="MONTH" />
+                  <TableColumn fx:id="totalAmount" prefWidth="100.0" text="TOTAL AMOUNT" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <Label alignment="CENTER" layoutX="17.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" text="TOTAL" />
+            <Label fx:id="lblMonth1" alignment="CENTER" layoutX="212.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="lblMonth2" alignment="CENTER" layoutX="407.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="lblMonth3" alignment="CENTER" layoutX="602.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="797.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
+         </children>
+      </AnchorPane>
       <AnchorPane layoutX="528.0" layoutY="85.0">
          <children>
             <Label layoutY="2.0" text="YEAR:">
@@ -109,19 +118,29 @@
             </Label>
          </children>
       </AnchorPane>
-      <TableView fx:id="quarterTableAll" layoutX="24.0" layoutY="121.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="935.0" visible="false">
-         <columns>
-            <TableColumn fx:id="revenueItemAll" prefWidth="126.0" text="REVENUE ITEM " />
-            <TableColumn fx:id="month1All" prefWidth="165.0" text="1st Quarter" />
-            <TableColumn fx:id="month2All" prefWidth="165.0" text="2nd Quarter" />
-            <TableColumn fx:id="month3All" prefWidth="165.0" text="3rd Quarter" />
-            <TableColumn fx:id="month4All" prefWidth="165.0" text="4th Quarter" />
-            <TableColumn fx:id="totalAmountAll" prefWidth="100.0" text="TOTAL AMOUNT" />
-         </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
+      <AnchorPane fx:id="paneAll" layoutX="24.0" layoutY="121.0" prefHeight="450.0" prefWidth="935.0" visible="false">
+         <children>
+            <TableView fx:id="quarterTableAll" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="419.0" prefWidth="935.0">
+               <columns>
+                  <TableColumn fx:id="revenueItemAll" prefWidth="126.0" text="REVENUE ITEM " />
+                  <TableColumn fx:id="month1All" prefWidth="165.0" text="1st Quarter" />
+                  <TableColumn fx:id="month2All" prefWidth="165.0" text="2nd Quarter" />
+                  <TableColumn fx:id="month3All" prefWidth="165.0" text="3rd Quarter" />
+                  <TableColumn fx:id="month4All" prefWidth="165.0" text="4th Quarter" />
+                  <TableColumn fx:id="totalAmountAll" prefWidth="100.0" text="TOTAL AMOUNT" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <Label alignment="CENTER" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" text="TOTAL" />
+            <Label fx:id="lblMonth1All" alignment="CENTER" layoutX="167.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="lblMonth2All" alignment="CENTER" layoutX="334.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="lblMonth4All" alignment="CENTER" layoutX="653.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="lblTotalAmountAll" alignment="CENTER" layoutX="806.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="lblMonth3All" alignment="CENTER" layoutX="501.0" layoutY="423.0" prefHeight="25.0" prefWidth="128.0" />
+         </children>
+      </AnchorPane>
    </children>
    <stylesheets>
       <URL value="@../Stylesheets/tableview.css" />

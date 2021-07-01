@@ -10,23 +10,23 @@ and open the template in the editor.
 .root{
     -fx-background-color:  #f0f6f8;
 }
-.table-view{
+.table-view{/*
     -fx-border-radius: 30;
-    -fx-background-radius: 30;
+    -fx-background-radius: 30;*/
 }
 .table-view .column-header-background,
 .table-view .column-header-background .filler{/*
-    -fx-background-color: linear-gradient(to top, #27b52b, #0ee014);*/
+    -fx-background-color: linear-gradient(to top, #27b52b, #0ee014);*//*
     -fx-background-radius: 7px 7px 7px 7px;
-    -fx-border-radius: 7 7 0 7;
+    -fx-border-radius: 7 7 0 7;*/
     -fx-background-insets: 0;
 }
 .table-view .column-header{
     -fx-background-color: transparent;
 }
 .table-view .column-header-background .filler{
-    -fx-background-radius: 30;
-    -fx-border-radius: 30;
+    /*-fx-background-radius: 30;
+    -fx-border-radius: 30;*/
     -fx-background-color: transparent;
 }
 .table-row-cell{
@@ -39,8 +39,8 @@ and open the template in the editor.
 /*
     -fx-background-color: #031c03;
 */
-    -fx-background-insets: 0;
-    -fx-background-radius: 1;
+    -fx-background-insets: 0;/*
+    -fx-background-radius: 1;*/
 }
 .table-view .corner{
     -fx-background-color: red;
@@ -157,3 +157,7 @@ and open the template in the editor.
             #04c13a,
             #4CF540;
 }
+
+
+
+

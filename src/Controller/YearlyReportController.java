@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Controller.Gets.GetQuarterReport;
 import Controller.Gets.GetYearlyReport;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
@@ -229,111 +230,92 @@ public class YearlyReportController implements Initializable {
     }
     
       private void setItems() throws SQLException{
+        PreparedStatement stmnt_itemCategories;
+        ResultSet rs_itemsCategories, rs;
+          NumberFormat formatter = new DecimalFormat("#,##0.00");
+          String yer1 = "0.00", yer2 = "0.00", yer3 = "0.00", yer4 = "0.00", yer5 = "0.00", totalAmnt = "", totyer1 = "0.00", totyer2 = "0.00", totyer3 = "0.00", totyer4 = "0.00", totyer5 = "0.00", summation ;
+          float yr1 = 0, yr2 = 0, yr3 = 0, yr4 = 0, yr5 = 0, total_amount, totyr1 = 0, totyr2 = 0, totyr3 = 0, totyr4 = 0, totyr5 = 0, totYearAmount = 0;
           yearlyTable.getItems().clear();
           if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-              stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+              stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, `revenueYear` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+              stmnt_itemCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
           } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-              stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE  `revenueItem` = `revenue_item_ID` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+              stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, `revenueYear` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE  `revenueItem` = `revenue_item_ID` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+              stmnt_itemCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE  `revenueItem` = `revenue_item_ID` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
           }
           else {
-              stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+              stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, `revenueYear` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+              stmnt_itemCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
           }
-//        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
-        ResultSet rs = stmnt.executeQuery();
+          rs_itemsCategories = stmnt_itemCategories.executeQuery();
+        rs = stmnt.executeQuery();
         rowItems.clear();
-        while(rs.next()){
-            rowItems.add(rs.getString("revenue_item"));
-        }        
-          Map<String, ArrayList<Float>> yearAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective years
-          Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview 
-          rowItems.forEach((rowItem) -> forEntry.put(rowItem, new HashMap<>()));
-          rowYear.forEach((rowDates) -> yearAmount.put(rowDates, new ArrayList<>()));
-          try {
-          for(String year : rowYear) {
-              for(String Item : rowItems) {
-                  float weekSum;
-                   weekSum = setYearSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, year);
-                      for(Map.Entry<String, ArrayList<Float>> Dates : yearAmount.entrySet()){
-                          for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-                              if (Items.getKey().equals(Item)  && Dates.getKey().equals(year)){
-                                  if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(year)){
-                                      forEntry.get(Item).put(year, new ArrayList<>());
-                                      forEntry.get(Item).get(year).add(weekSum);
-                                  }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(year)){
-                                      forEntry.get(Item).get(year).add(weekSum);
-                                  } 
-                              }
-                          }
-                      }
-                  
+          Map<String, ArrayList<String>> categoriesItem = new HashMap<>();
+          categoriesItem.put("", new ArrayList<>());
+          while(rs_itemsCategories.next()){
+              if (!rowItems.contains(rs_itemsCategories.getString("item_category"))){
+                  rowItems.add(rs_itemsCategories.getString("item_category"));
+              }
+              if (!categoriesItem.containsKey(rs_itemsCategories.getString("item_category"))){
+                  categoriesItem.put(rs_itemsCategories.getString("item_category"), new ArrayList<>());
+                  categoriesItem.get(rs_itemsCategories.getString("item_category")).add(rs_itemsCategories.getString("revenue_item"));
+              }else if (categoriesItem.containsKey(rs_itemsCategories.getString("item_category")) && !categoriesItem.get(rs_itemsCategories.getString("item_category")).contains(rs_itemsCategories.getString("revenue_item"))){
+                  categoriesItem.get(rs_itemsCategories.getString("item_category")).add(rs_itemsCategories.getString("revenue_item"));
               }
           }
-         }
-                  catch (SQLException ex) {
-                      Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
+          revenueItem.setCellValueFactory(data -> data.getValue().revenueItemProperty());
+          revenueItem.setSortable(false); year1.setSortable(false); year2.setSortable(false); year3.setSortable(false);
+          year4.setSortable(false); year5.setSortable(false); totalAmount.setSortable(false);
+          year1.setCellValueFactory(data -> data.getValue().year1Property());
+          year2.setCellValueFactory(data -> data.getValue().year2Property());
+          year3.setCellValueFactory(data -> data.getValue().year3Property());
+          year4.setCellValueFactory(data -> data.getValue().year4Property());
+          year5.setCellValueFactory(data -> data.getValue().year5Property());
+          totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
+          for (String category : rowItems){
+              revenueItem.setStyle("-fx-alignment: CENTER; -fx-text-fill: #000;");
+              getReport = new GetYearlyReport("", "", "", "", "", category, "");
+              yearlyTable.getItems().add(getReport);
+              String subyer1 = "0.00", subyer2 = "0.00", subyer3 = "0.00", subyer4 = "0.00", subyer5 = "0.00", subtotalAmnt = "0.00";
+              float subyr1 = 0, subyr2 = 0, subyr3 = 0, subyr4 = 0, subyr5 = 0, subtotal_amount;
+              for (String item : categoriesItem.get(category)) {
+                  Map<String, Map<String, Float>> itemYearSum = new HashMap<>();
+                  Map<String, Float> yearSum = new HashMap<>();
+                  yearSum.put(year1.getText(), yr1); yearSum.put(year2.getText(), yr2); yearSum.put(year3.getText(), yr3);
+                  yearSum.put(year4.getText(), yr4); yearSum.put(year5.getText(), yr5); itemYearSum.put(item, yearSum);
+                  boolean resultSetState = true;
+                  while (resultSetState){
+                      rs.next();
+                      if (item.equals(rs.getString("revenue_item"))){
+                          float amot= itemYearSum.get(item).get(rs.getString("revenueYear"));
+                          amot += rs.getFloat("revenueAmount");
+                          itemYearSum.get(item).put(rs.getString("revenueYear"), amot);
+                      }
+                      if (rs.isLast()){
+                          resultSetState = false;
+                      }
                   }
-          NumberFormat formatter = new DecimalFormat("#,##0.00");
-         
-       for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
-           String yer1 = "0.00", yer2 = "0.00", yer3 = "0.00", yer4 = "0.00", yer5 = "0.00", totalAmnt ;
-           float yr1 = 0, yr2 = 0, yr3 = 0, yr4 = 0, yr5 = 0, total_amount;
-           for(Map.Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
-               String reveItem = Items.getKey();
-               System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
-               if(Dates.getKey() == null ? year1.getText() == null : Dates.getKey().equals(year1.getText())){
-                   yer1 = formatter.format(forEntry.get(Items.getKey()).get(year1.getText()).get(0));
-                   yr1 = forEntry.get(Items.getKey()).get(year1.getText()).get(0);
-               }else if(Dates.getKey() == null ? year2.getText() == null : Dates.getKey().equals(year2.getText())){
-                   yer2 = formatter.format(forEntry.get(Items.getKey()).get(year2.getText()).get(0));
-                   yr2 = forEntry.get(Items.getKey()).get(year2.getText()).get(0);
-               }else if(Dates.getKey() == null ? year3.getText() == null : Dates.getKey().equals(year3.getText())){
-                   yer3 = formatter.format(forEntry.get(Items.getKey()).get(year3.getText()).get(0));
-                   yr3 = forEntry.get(Items.getKey()).get(year3.getText()).get(0);
-               }else if(Dates.getKey() == null ? year4.getText() == null : Dates.getKey().equals(year4.getText())){
-                   yer4 = formatter.format(forEntry.get(Items.getKey()).get(year4.getText()).get(0));
-                   yr4 = forEntry.get(Items.getKey()).get(year4.getText()).get(0);
-               }else if(Dates.getKey() == null ? year5.getText() == null : Dates.getKey().equals(year5.getText())){
-                   yer5 = formatter.format(forEntry.get(Items.getKey()).get(year5.getText()).get(0));
-                   yr5 = forEntry.get(Items.getKey()).get(year5.getText()).get(0);
-               }
-           }
-           total_amount = yr1 + yr2 + yr3 + yr4 + yr5;
-           totalAmnt = formatter.format(total_amount);       
-           revenueItem.setCellValueFactory(data -> data.getValue().revenueItemProperty());
-           year1.setCellValueFactory(data -> data.getValue().year1Property());
-           year2.setCellValueFactory(data -> data.getValue().year2Property());
-           year3.setCellValueFactory(data -> data.getValue().year3Property());
-           year4.setCellValueFactory(data -> data.getValue().year4Property());
-           year5.setCellValueFactory(data -> data.getValue().year5Property());
-           totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
-           getReport = new GetYearlyReport(yer1, yer2, yer3, yer4, yer5, Items.getKey(),  totalAmnt);
-           yearlyTable.getItems().add(getReport);                                           
-       }
+                  if (rs.isLast()){
+                      rs.beforeFirst();
+                  }
+                  subyr1 += itemYearSum.get(item).get(year1.getText()); subyr2 += itemYearSum.get(item).get(year2.getText()); subyr3 += itemYearSum.get(item).get(year3.getText()); subyr4 += itemYearSum.get(item).get(year4.getText()); subyr5 += itemYearSum.get(item).get(year5.getText());
+                  yer1 = formatter.format( itemYearSum.get(item).get(year1.getText())); yer2 = formatter.format(itemYearSum.get(item).get(year2.getText())); yer3 = formatter.format(itemYearSum.get(item).get(year3.getText())); yer4 = formatter.format(itemYearSum.get(item).get(year4.getText())); yer5 = formatter.format(itemYearSum.get(item).get(year5.getText()));
+                  total_amount = itemYearSum.get(item).get(year1.getText()) + itemYearSum.get(item).get(year2.getText()) + itemYearSum.get(item).get(year3.getText()) + itemYearSum.get(item).get(year4.getText()) + itemYearSum.get(item).get(year5.getText()); totYearAmount += total_amount;
+                  totalAmnt = formatter.format(total_amount);
+                  totyr1 += itemYearSum.get(item).get(year1.getText()); totyr2 += itemYearSum.get(item).get(year2.getText()); totyr3 += itemYearSum.get(item).get(year3.getText()); totyr4 += itemYearSum.get(item).get(year4.getText()); totyr5 += itemYearSum.get(item).get(year5.getText());
+                  getReport = new GetYearlyReport(yer1, yer2, yer3, yer4, yer5, item, totalAmnt);
+                  yearlyTable.getItems().add(getReport); yr1 = 0; yr2 = 0; yr3 = 0; yr4 = 0; yr5 = 0;
+              }
+              subtotal_amount = subyr2 + subyr3 + subyr4 + subyr5 + subyr1;
+              subyer1 = formatter.format(subyr1); subyer2 = formatter.format(subyr2); subyer3 = formatter.format(subyr3); subyer4 = formatter.format(subyr4); subyer5 = formatter.format(subyr5); subtotalAmnt = formatter.format(subtotal_amount);
+              getReport = new GetYearlyReport(subyer1, subyer2, subyer3, subyer4, subyer5, "SUB-TOTAL", subtotalAmnt);
+              yearlyTable.getItems().add(getReport);
+          }
+          totyer1 = formatter.format(totyr1); totyer2 = formatter.format(totyr2); totyer3 = formatter.format(totyr3); totyer4 = formatter.format(totyr4); totyer5 = formatter.format(totyr5); summation = formatter.format(totYearAmount);
+          getReport = new GetYearlyReport(totyer1, totyer2, totyer3, totyer4, totyer5, "TOTAL", summation);
+          yearlyTable.getItems().add(getReport);
           
       }
-      
-      
-       public Float setYearSum(String Center, String item, String Year) throws SQLException{
-        float totalAmunt;
-           if (Center.equals("PROPERTY RATE ALL")) {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION'  AND `revenueYear` = '"+Year+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"'");
-           } else if (Center.equals("PROPERTY RATE SUB-METROS")){
-               stmnt = con.prepareStatement("  SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE  `revenueItem` = `revenue_item_ID` AND `revenue_item` = '"+item+"' AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+Year+"'");
-           }
-           else {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' ");
-           }
-       ResultSet rs = stmnt.executeQuery();
-       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
-       while(rs.next()){
-           Amount.add(rs.getFloat("revenueAmount"));
-       }
-        totalAmunt = 0;
-           for (Float aFloat : Amount) {
-               totalAmunt += aFloat;
-           }
-        return totalAmunt;
-    }
 
     @FXML
     private void SelectedCenter(ActionEvent event) throws SQLException {
@@ -398,3 +380,115 @@ public class YearlyReportController implements Initializable {
     }
     
 }
+
+/**
+ *
+
+ private void setItems() throws SQLException{
+ yearlyTable.getItems().clear();
+ if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+ } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE  `revenueItem` = `revenue_item_ID` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+ }
+ else {
+ stmnt = con.prepareStatement(" SELECT `revenue_item` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+ }
+ //        stmnt = con.prepareStatement(" SELECT `revenueItem` FROM `daily_entries` WHERE   `revenueYear` >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND `revenueYear` <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueItem`");
+ ResultSet rs = stmnt.executeQuery();
+ rowItems.clear();
+ while(rs.next()){
+ rowItems.add(rs.getString("revenue_item"));
+ }
+ Map<String, ArrayList<Float>> yearAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective years
+ Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview
+ rowItems.forEach((rowItem) -> forEntry.put(rowItem, new HashMap<>()));
+ rowYear.forEach((rowDates) -> yearAmount.put(rowDates, new ArrayList<>()));
+ try {
+ for(String year : rowYear) {
+ for(String Item : rowItems) {
+ float weekSum;
+ weekSum = setYearSum(cmbReportCent.getSelectionModel().getSelectedItem(), Item, year);
+ for(Map.Entry<String, ArrayList<Float>> Dates : yearAmount.entrySet()){
+ for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
+ if (Items.getKey().equals(Item)  && Dates.getKey().equals(year)){
+ if(forEntry.containsKey(Item) && !forEntry.get(Item).containsKey(year)){
+ forEntry.get(Item).put(year, new ArrayList<>());
+ forEntry.get(Item).get(year).add(weekSum);
+ }else if(forEntry.containsKey(Item) && forEntry.get(Item).containsKey(year)){
+ forEntry.get(Item).get(year).add(weekSum);
+ }
+ }
+ }
+ }
+
+ }
+ }
+ }
+ catch (SQLException ex) {
+ Logger.getLogger(weeklyReportController.class.getName()).log(Level.SEVERE, null, ex);
+ }
+ NumberFormat formatter = new DecimalFormat("#,##0.00");
+
+ for(Map.Entry<String, Map<String, ArrayList<Float>>>Items : forEntry.entrySet()){
+ String yer1 = "0.00", yer2 = "0.00", yer3 = "0.00", yer4 = "0.00", yer5 = "0.00", totalAmnt ;
+ float yr1 = 0, yr2 = 0, yr3 = 0, yr4 = 0, yr5 = 0, total_amount;
+ for(Map.Entry<String, ArrayList<Float>> Dates :forEntry.get(Items.getKey()).entrySet() ){
+ String reveItem = Items.getKey();
+ System.out.println(reveItem+ "\n"+Items.getValue().get(Dates.getKey()));
+ if(Dates.getKey() == null ? year1.getText() == null : Dates.getKey().equals(year1.getText())){
+ yer1 = formatter.format(forEntry.get(Items.getKey()).get(year1.getText()).get(0));
+ yr1 = forEntry.get(Items.getKey()).get(year1.getText()).get(0);
+ }else if(Dates.getKey() == null ? year2.getText() == null : Dates.getKey().equals(year2.getText())){
+ yer2 = formatter.format(forEntry.get(Items.getKey()).get(year2.getText()).get(0));
+ yr2 = forEntry.get(Items.getKey()).get(year2.getText()).get(0);
+ }else if(Dates.getKey() == null ? year3.getText() == null : Dates.getKey().equals(year3.getText())){
+ yer3 = formatter.format(forEntry.get(Items.getKey()).get(year3.getText()).get(0));
+ yr3 = forEntry.get(Items.getKey()).get(year3.getText()).get(0);
+ }else if(Dates.getKey() == null ? year4.getText() == null : Dates.getKey().equals(year4.getText())){
+ yer4 = formatter.format(forEntry.get(Items.getKey()).get(year4.getText()).get(0));
+ yr4 = forEntry.get(Items.getKey()).get(year4.getText()).get(0);
+ }else if(Dates.getKey() == null ? year5.getText() == null : Dates.getKey().equals(year5.getText())){
+ yer5 = formatter.format(forEntry.get(Items.getKey()).get(year5.getText()).get(0));
+ yr5 = forEntry.get(Items.getKey()).get(year5.getText()).get(0);
+ }
+ }
+ total_amount = yr1 + yr2 + yr3 + yr4 + yr5;
+ totalAmnt = formatter.format(total_amount);
+ revenueItem.setCellValueFactory(data -> data.getValue().revenueItemProperty());
+ year1.setCellValueFactory(data -> data.getValue().year1Property());
+ year2.setCellValueFactory(data -> data.getValue().year2Property());
+ year3.setCellValueFactory(data -> data.getValue().year3Property());
+ year4.setCellValueFactory(data -> data.getValue().year4Property());
+ year5.setCellValueFactory(data -> data.getValue().year5Property());
+ totalAmount.setCellValueFactory(data -> data.getValue().totalAmountProperty());
+ getReport = new GetYearlyReport(yer1, yer2, yer3, yer4, yer5, Items.getKey(),  totalAmnt);
+ yearlyTable.getItems().add(getReport);
+ }
+
+ }
+
+
+ public Float setYearSum(String Center, String item, String Year) throws SQLException{
+ float totalAmunt;
+ if (Center.equals("PROPERTY RATE ALL")) {
+ stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION'  AND `revenueYear` = '"+Year+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"'");
+ } else if (Center.equals("PROPERTY RATE SUB-METROS")){
+ stmnt = con.prepareStatement("  SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE  `revenueItem` = `revenue_item_ID` AND `revenue_item` = '"+item+"' AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+Year+"'");
+ }
+ else {
+ stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `revenue_centers`,`daily_entries`, `revenue_items` WHERE `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_item` = '"+item+"' ");
+ }
+ ResultSet rs = stmnt.executeQuery();
+ ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+ while(rs.next()){
+ Amount.add(rs.getFloat("revenueAmount"));
+ }
+ totalAmunt = 0;
+ for (Float aFloat : Amount) {
+ totalAmunt += aFloat;
+ }
+ return totalAmunt;
+ }
+ *
+ */

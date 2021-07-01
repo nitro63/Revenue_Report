@@ -313,6 +313,9 @@ public class MonthlyReportController implements Initializable {
         november.setCellValueFactory(data -> data.getValue().NovProperty());
         december.setCellValueFactory(data -> data.getValue().DecProperty());
         totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
+        revenueItem.setSortable(false); march.setSortable(false); april.setSortable(false); may.setSortable(false); june.setSortable(false);
+        january.setSortable(false); july.setSortable(false); august.setSortable(false); september.setSortable(false); october.setSortable(false);
+        february.setSortable(false); november.setSortable(false); december.setSortable(false); totalAmount.setSortable(false);
         GetMonthlyReport getReport;
         for (String category : rowItems){
             revenueItem.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");
