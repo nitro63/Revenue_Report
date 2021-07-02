@@ -118,7 +118,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneAll" layoutX="24.0" layoutY="121.0" prefHeight="450.0" prefWidth="935.0">
+      <AnchorPane fx:id="paneAll" layoutX="24.0" layoutY="121.0" prefHeight="450.0" prefWidth="935.0" visible="false">
          <children>
             <TableView fx:id="quarterTableAll" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="419.0" prefWidth="935.0">
                <columns>

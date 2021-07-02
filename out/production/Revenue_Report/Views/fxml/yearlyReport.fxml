@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="617.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="617.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="925.0" layoutY="578.0" onAction="#printReport" text="PRINT">
          <effect>
@@ -52,7 +52,7 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <TableView fx:id="yearlyTable" layoutX="43.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="432.0" prefWidth="948.0">
+      <TableView fx:id="yearlyTable" layoutX="43.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="358.0" prefWidth="948.0">
          <columns>
             <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
             <TableColumn fx:id="year1" prefWidth="100.0" text="YEAR" />
@@ -113,6 +113,13 @@
             </Label>
          </children>
       </AnchorPane>
+      <Label alignment="CENTER" layoutX="46.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" text="TOTAL" />
+      <Label fx:id="lblSumYear1" alignment="CENTER" layoutX="194.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear2" alignment="CENTER" layoutX="330.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear3" alignment="CENTER" layoutX="466.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="874.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear4" alignment="CENTER" layoutX="602.0" layoutY="495.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear5" alignment="CENTER" layoutX="738.0" layoutY="495.0" prefHeight="25.0" prefWidth="108.0" />
    </children>
    <stylesheets>
       <URL value="@../Stylesheets/report.css" />

@@ -119,9 +119,9 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <AnchorPane fx:id="generalPane" layoutX="7.0" layoutY="126.0">
+      <AnchorPane fx:id="generalPane" layoutX="7.0" layoutY="111.0" prefHeight="423.0" prefWidth="1044.0">
          <children>
-            <TableView fx:id="WEEKLY_TABLE" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="430.0" prefWidth="1044.0">
+            <TableView fx:id="WEEKLY_TABLE" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="423.0" prefWidth="1044.0">
               <columns>
                   <TableColumn fx:id="REVENUE_ITEM" editable="false" prefWidth="126.0" sortable="false">
                      <graphic>
@@ -222,6 +222,15 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <Label alignment="CENTER" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" text="TOTAL" />
+            <Label fx:id="lblSumDay1" alignment="CENTER" layoutX="124.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
+            <Label fx:id="lblSumDay2" alignment="CENTER" layoutX="248.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
+            <Label fx:id="lblSumDay3" alignment="CENTER" layoutX="358.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
+            <Label fx:id="lblSumDay4" alignment="CENTER" layoutX="471.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
+            <Label fx:id="lblSumDay5" alignment="CENTER" layoutX="587.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
+            <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="945.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
+            <Label fx:id="lblSumDay6" alignment="CENTER" layoutX="703.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
+            <Label fx:id="lblSumDay7" alignment="CENTER" layoutX="819.0" layoutY="424.0" prefHeight="25.0" prefWidth="97.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="subPane" layoutX="7.0" layoutY="102.0" prefHeight="491.0" prefWidth="1044.0" visible="false">
