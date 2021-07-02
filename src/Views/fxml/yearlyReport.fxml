@@ -114,11 +114,12 @@
          </children>
       </AnchorPane>
       <Label alignment="CENTER" layoutX="46.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" text="TOTAL" />
-      <Label fx:id="lblMonth1All" alignment="CENTER" layoutX="194.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
-      <Label fx:id="lblMonth2All" alignment="CENTER" layoutX="380.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" />
-      <Label fx:id="lblMonth4All" alignment="CENTER" layoutX="699.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" />
-      <Label fx:id="lblTotalAmountAll" alignment="CENTER" layoutX="852.0" layoutY="494.0" prefHeight="25.0" prefWidth="128.0" />
-      <Label fx:id="lblMonth3All" alignment="CENTER" layoutX="547.0" layoutY="495.0" prefHeight="25.0" prefWidth="128.0" />
+      <Label fx:id="lblSumYear1" alignment="CENTER" layoutX="194.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear2" alignment="CENTER" layoutX="330.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear3" alignment="CENTER" layoutX="466.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="874.0" layoutY="494.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear4" alignment="CENTER" layoutX="602.0" layoutY="495.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label fx:id="lblSumYear5" alignment="CENTER" layoutX="738.0" layoutY="495.0" prefHeight="25.0" prefWidth="108.0" />
    </children>
    <stylesheets>
       <URL value="@../Stylesheets/report.css" />

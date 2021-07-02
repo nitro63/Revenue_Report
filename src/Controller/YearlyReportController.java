@@ -81,6 +81,24 @@ public class YearlyReportController implements Initializable {
     @FXML
     private Label lblRevenueCenter;
 
+    @FXML
+    private Label lblSumYear1;
+
+    @FXML
+    private Label lblSumYear2;
+
+    @FXML
+    private Label lblSumYear3;
+
+    @FXML
+    private Label lblTotalAmount;
+
+    @FXML
+    private Label lblSumYear4;
+
+    @FXML
+    private Label lblSumYear5;
+
     GetYearlyReport getReport;
     
     
@@ -314,6 +332,7 @@ public class YearlyReportController implements Initializable {
           totyer1 = formatter.format(totyr1); totyer2 = formatter.format(totyr2); totyer3 = formatter.format(totyr3); totyer4 = formatter.format(totyr4); totyer5 = formatter.format(totyr5); summation = formatter.format(totYearAmount);
           getReport = new GetYearlyReport(totyer1, totyer2, totyer3, totyer4, totyer5, "TOTAL", summation);
           yearlyTable.getItems().add(getReport);
+          lblSumYear1.setText(totyer1); lblSumYear2.setText(totyer2); lblSumYear3.setText(totyer3); lblSumYear4.setText(totyer4); lblSumYear5.setText(totyer5); lblTotalAmount.setText(summation);
           
       }
 

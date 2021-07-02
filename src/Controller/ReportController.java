@@ -106,6 +106,30 @@ public class ReportController implements Initializable {
     private ComboBox<String> cmbReportMonth;
     @FXML
     private ComboBox<String> cmbReportWeek;
+
+    @FXML
+    private Label lblSumDay1;
+
+    @FXML
+    private Label lblSumDay2;
+
+    @FXML
+    private Label lblSumDay3;
+
+    @FXML
+    private Label lblSumDay4;
+
+    @FXML
+    private Label lblSumDay5;
+
+    @FXML
+    private Label lblTotalAmount;
+
+    @FXML
+    private Label lblSumDay6;
+
+    @FXML
+    private Label lblSumDay7;
     @FXML
     private AnchorPane subPane;
     @FXML
@@ -501,6 +525,8 @@ public class ReportController implements Initializable {
         totDay5 = formatter.format(totday5); totDay6 = formatter.format(totday6); totDay7 = formatter.format(totday7); summation = formatter.format(totdaysum);
         getReport = new GetReport("TOTAL",totDay1, totDay2, totDay3, totDay4, totDay5, totDay6, totDay7, summation);
         WEEKLY_TABLE.getItems().add(getReport);
+        lblSumDay1.setText(totDay1); lblSumDay2.setText(totDay2); lblSumDay3.setText(totDay3); lblSumDay4.setText(totDay4); lblSumDay5.setText(totDay5); lblSumDay6.setText(totDay6);
+        lblSumDay7.setText(totDay7); lblTotalAmount.setText(summation);
      }
 
     @FXML
