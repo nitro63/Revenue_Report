@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import java.net.URL?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -14,11 +13,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="625.0" prefWidth="1070.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="512.0" prefWidth="850.0" styleClass="background_color" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="984.0" layoutY="582.0" onAction="#printReport" text="PRINT">
+      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="783.0" layoutY="475.0" onAction="#printReport" text="PRINT">
          <effect>
             <DropShadow />
          </effect>
@@ -26,9 +24,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <HBox alignment="CENTER" layoutY="51.0" prefHeight="29.0" prefWidth="1030.0">
+      <HBox alignment="CENTER" layoutY="17.0" prefHeight="29.0" prefWidth="850.0">
          <children>
-            <Pane prefHeight="55.0" prefWidth="124.0" />
+            <Pane prefHeight="29.0" prefWidth="92.0" HBox.hgrow="ALWAYS" />
             <HBox alignment="CENTER">
                <children>
                   <AnchorPane>
@@ -43,18 +41,18 @@
                   </AnchorPane>
                </children>
             </HBox>
-            <Pane prefHeight="200.0" prefWidth="100.0" />
-            <HBox alignment="CENTER">
+            <Pane prefHeight="29.0" prefWidth="84.0" />
+            <HBox alignment="CENTER" prefHeight="29.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="btnShowReport" mnemonicParsing="false" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text="Show Report" />
+                  <JFXButton fx:id="btnShowReport" buttonType="RAISED" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text="Show Report" />
                </children>
             </HBox>
-            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <Pane prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
-      <ScrollPane layoutX="2.0" layoutY="111.0" prefHeight="453.0" prefWidth="1058.0" vbarPolicy="NEVER">
+      <ScrollPane layoutX="2.0" layoutY="85.0" prefHeight="380.0" prefWidth="843.0" vbarPolicy="NEVER">
          <content>
-            <TableView fx:id="revenueCentersTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="451.0" prefWidth="1171.0">
+            <TableView fx:id="revenueCentersTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="367.0" prefWidth="1171.0">
                <columns>
                   <TableColumn fx:id="revenueCenter" prefWidth="126.0">
                      <graphic>
@@ -85,19 +83,14 @@
             </TableView>
          </content>
       </ScrollPane>
-      <Text layoutX="280.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MASTER CENTERS' REPORT" textAlignment="CENTER" wrappingWidth="405.13671875">
-         <font>
-            <Font name="System Bold" size="31.0" />
-         </font>
-      </Text>
-      <AnchorPane layoutX="500.0" layoutY="81.0">
+      <AnchorPane layoutX="400.0" layoutY="52.0" prefHeight="29.0" prefWidth="116.0">
          <children>
             <Label layoutY="2.0" text="YEAR:">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblYear" layoutX="57.0" text="NAN">
+            <Label fx:id="lblYear" layoutX="57.0" prefHeight="28.0" prefWidth="57.0" text="NAN" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>

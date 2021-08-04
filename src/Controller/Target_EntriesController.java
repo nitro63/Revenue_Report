@@ -15,11 +15,13 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +30,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import revenue_report.DBConnection;
 
@@ -45,9 +48,9 @@ public class Target_EntriesController implements Initializable {
     @FXML
     private Spinner<Integer> spnTargYear;
     @FXML
-    private Label lblEdit;
+    private Text lblEdit;
     @FXML
-    private Label lblDup;
+    private Text lblDup;
     @FXML
     private Button btnEnter;
     @FXML
@@ -63,7 +66,7 @@ public class Target_EntriesController implements Initializable {
     @FXML
     private JFXButton btnDelete;
     @FXML
-    private Label lblDeleteWarn;
+    private Text lblDeleteWarn;
     private final GetRevCenter GetCenter;
     @FXML
     private AnchorPane collectEntPane;
@@ -71,7 +74,31 @@ public class Target_EntriesController implements Initializable {
     private TableView<GetTargetEnt> tblCollectEnt;
     @FXML
     private Button btnClearEntr;
-    GetTargetEnt getData, getReport;
+
+    @FXML
+    private JFXButton btnClearUpdate;
+
+    @FXML
+    private JFXButton btnUpdateEntries;
+
+    @FXML
+    private JFXButton btnDeleteUpdate;
+
+    @FXML
+    private JFXCheckBox chkUpdate;
+
+    @FXML
+    private ComboBox<String> cmbUpdateYear;
+
+    @FXML
+    private ComboBox<String> cmbUpdateMonth;
+
+    @FXML
+    private JFXButton btnFetchUpdate;
+
+    @FXML
+    private Label lblControlWarn;
+    GetTargetEnt getData, getReport, addEntries;
     entries_sideController app;
 
     ObservableList<String> registerItem = FXCollections.observableArrayList();
@@ -79,8 +106,13 @@ public class Target_EntriesController implements Initializable {
          boolean Condition = true;
     private final Connection con;
     private PreparedStatement stmnt;
-        
-        String RevCent, RevCentID, Amount, Year;
+    private ResultSet rs;
+    private  Calendar cal;
+    private String regex = "(?<=[\\d])(,)(?=[\\d])";
+    private Pattern p = Pattern.compile(regex);
+    private Matcher m;
+
+    private String RevCent, RevCentID, Amount, Year, entriesID;
     
 
     /**
@@ -104,15 +136,156 @@ public class Target_EntriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         RevCentID = GetCenter.getCenterID();
-        tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        Calendar cal = Calendar.getInstance();
+        RevCent = GetCenter.getRevCenter();
+        cal = Calendar.getInstance();
         spnTargYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2090, cal.get(Calendar.YEAR)));
+        try {
+            GetRevenueYears();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        chkUpdate.setVisible(LogInController.Accountant || LogInController.OverAllAdmin);
+      chkUpdate.setOnMouseClicked(event -> {
+          try {
+              GetRevenueYears();
+          } catch (SQLException throwables) {
+              throwables.printStackTrace();
+          }
+          if (chkUpdate.isSelected()){
+              cmbUpdateYear.setVisible(true);
+              btnFetchUpdate.setVisible(true);
+              btnClearUpdate.setVisible(true);
+              btnDeleteUpdate.setVisible(true);
+              btnUpdateEntries.setVisible(true);
+              colCenter.setVisible(true);
+              btnEnter.setVisible(false);
+              btnClear.setVisible(false);
+              btnClearEntr.setVisible(false);
+              btnSaveEntries.setVisible(false);
+              btnDelete.setVisible(false);
+              tblCollectEnt.getItems().clear();
+              tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+              clear();
+
+          }else {
+              cmbUpdateYear.setVisible(false);
+              btnFetchUpdate.setVisible(false);
+              btnClearUpdate.setVisible(false);
+              btnDeleteUpdate.setVisible(false);
+              btnUpdateEntries.setVisible(false);
+              colCenter.setVisible(false);
+              btnEnter.setVisible(true);
+              btnClear.setVisible(true);
+              btnClearEntr.setVisible(true);
+              btnSaveEntries.setVisible(true);
+              btnDelete.setVisible(true);
+              tblCollectEnt.getItems().clear();
+              tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+              clear();
+          }
+      });
         tblCollectEnt.setOnMouseClicked(e -> {
-            lblDeleteWarn.setVisible(false);
-            lblDup.setVisible(false);
-            lblEdit.setVisible(false);
+            if (!chkUpdate.isSelected()){
+                lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
+            }else {
+                if (tblCollectEnt.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
+                    setEntries();
+                    if (lblControlWarn.isVisible()){
+                        lblControlWarn.setVisible(false);
+                    }
+                }
+            }
         });
-    }    
+        tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
+
+  private void GetRevenueYears() throws SQLException {
+      stmnt = con.prepareStatement("SELECT `Year` FROM `target_entries` WHERE `target_revCenter` = '"+RevCentID+"' GROUP BY `Year`");
+      rs = stmnt.executeQuery();
+      cmbUpdateYear.getItems().clear();
+      while (rs.next()){
+          cmbUpdateYear.getItems().add(rs.getString("Year"));
+      }
+  }
+
+    @FXML
+    void fetchEntries(ActionEvent event) throws SQLException {
+        if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
+            String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+                stmnt = con.prepareStatement("SELECT `target_ID`, `Year`, `Amount` FROM `target_entries` WHERE `target_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "'");
+        }
+        else {
+            stmnt = con.prepareStatement("SELECT `target_ID`, `Year`, `Amount` FROM `target_entries` WHERE `target_revCenter` = '" + RevCentID + "'");
+        }
+            rs = stmnt.executeQuery();
+            tblCollectEnt.getItems().clear();
+            colCenter.setCellValueFactory(data -> data.getValue().IDProperty());
+            colAmount.setCellValueFactory(data -> data.getValue().YearProperty());
+            colYear.setCellValueFactory(data -> data.getValue().AmountProperty());
+            while (rs.next()) {
+                addEntries = new GetTargetEnt(rs.getString("target_ID"), rs.getString("Amount"), rs.getString("Year"));
+                tblCollectEnt.getItems().add(addEntries);
+
+            }
+    }
+
+    private void setEntries() {
+        GetTargetEnt entries = tblCollectEnt.getSelectionModel().getSelectedItem();
+        entriesID = entries.getID();
+        spnTargYear.getValueFactory().setValue(Integer.parseInt(entries.getYear()));
+        m = p.matcher(entries.getAmount());
+        String amount =  m.replaceAll("");
+        txtEntAmt.setText(amount);
+    }
+
+    @FXML
+    void updateEntries(ActionEvent event) throws SQLException {
+        if (entriesID != null){
+            Integer Year = spnTargYear.getValue();
+            Condition = true;
+            if(spnTargYear.getValue() == null){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Please select Year");
+                alert.showAndWait();
+                Condition = false;
+            }else {
+                while(Condition) {
+                    if(txtEntAmt.getText().isEmpty()){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning Dialog");
+                        alert.setHeaderText("Please Enter \"Amount\"");
+                        alert.showAndWait();
+                        Condition =false;
+                    }else if(StringUtils.countMatches(txtEntAmt.getText(), ".") >1){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning Dialog");
+                        alert.setHeaderText("Please Enter Amount");
+                        alert.setContentText("Please check the number of '.' in the amount");
+                        alert.showAndWait();
+                        Condition =false;
+                    }
+                    else{
+                        stmnt = con.prepareStatement("UPDATE `target_entries` SET  " +
+                                "`Amount`= '"+Float.parseFloat(txtEntAmt.getText())+"',`Year`= '"+Year+"' WHERE   " +
+                                "`target_ID`= '"+entriesID+"' AND `target_revCenter`= '"+RevCentID+"'");
+                        stmnt.executeUpdate();
+                        clear();
+                        loadRevenueCollectionTable();
+                        Condition = false;
+                    }
+                }
+            }
+        }else{
+            lblControlWarn.setVisible(true);
+        }
+    }
+
+    void clear(){
+        entriesID = null;
+        spnTargYear.getValueFactory().setValue(cal.get(Calendar.YEAR));
+        txtEntAmt.setText(null);
+    }
 
     @FXML
     private void showClose(ActionEvent event) {        
@@ -120,9 +293,28 @@ public class Target_EntriesController implements Initializable {
     }
 
 
+    private void loadRevenueCollectionTable() throws SQLException {
+        if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
+            String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+            stmnt = con.prepareStatement("SELECT `target_ID`, `Year`, `Amount` FROM `target_entries` WHERE `target_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "'");
+        }
+        else {
+            stmnt = con.prepareStatement("SELECT `target_ID`, `Year`, `Amount` FROM `target_entries` WHERE `target_revCenter` = '" + RevCentID + "'");
+        }
+        rs = stmnt.executeQuery();
+        tblCollectEnt.getItems().clear();
+        colCenter.setCellValueFactory(data -> data.getValue().IDProperty());
+        colAmount.setCellValueFactory(data -> data.getValue().YearProperty());
+        colYear.setCellValueFactory(data -> data.getValue().AmountProperty());
+        while (rs.next()) {
+            addEntries = new GetTargetEnt(rs.getString("target_ID"), rs.getString("Amount"), rs.getString("Year"));
+            tblCollectEnt.getItems().add(addEntries);
+
+        }
+    }
+
     @FXML
     private void saveEntries(ActionEvent event) {
-        RevCent = GetCenter.getRevCenter();
         Year = Integer.toString(spnTargYear.getValue());
         Condition = true;
         while (Condition){
@@ -174,7 +366,6 @@ public class Target_EntriesController implements Initializable {
                 Condition =false;
                 }
             else{
-                colCenter.setCellValueFactory( data -> data.getValue().CenterProperty());
                 colAmount.setCellValueFactory( data -> data.getValue().AmountProperty());
                 colYear.setCellValueFactory( data -> data.getValue().YearProperty());
         double initeAmount = Double.parseDouble(txtEntAmt.getText());
@@ -189,11 +380,11 @@ public class Target_EntriesController implements Initializable {
                 Condition =false;
                 
             }else{
-            getReport = new GetTargetEnt(RevCent, Amount, Year);
+            getReport = new GetTargetEnt(Amount, Year);
             tblCollectEnt.getItems().add(getReport);
             registerItem.add(Year);
             Condition = false;
-            spnTargYear.getValueFactory().setValue(Calendar.getInstance().get(Calendar.YEAR));
+            spnTargYear.getValueFactory().setValue(cal.get(Calendar.YEAR));
         txtEntAmt.clear();
         }
             }
@@ -202,19 +393,21 @@ public class Target_EntriesController implements Initializable {
 
     @FXML
     private void clearEntries(ActionEvent event) {
+        if (!chkUpdate.isSelected()){
         GetTargetEnt targ = tblCollectEnt.getSelectionModel().getSelectedItem();
         if (tblCollectEnt.getSelectionModel().isEmpty()){
             lblEdit.setText("Please select a row in the table to "+'"'+"Edit"+'"');
             lblEdit.setVisible(true);
         }else {
-            String regex = "(?<=[\\d])(,)(?=[\\d])";
-            Pattern p = Pattern.compile(regex);
-            Matcher m = p.matcher(targ.getAmount());
+            m = p.matcher(targ.getAmount());
             txtEntAmt.setText(m.replaceAll(""));
             spnTargYear.getValueFactory().setValue(Integer.parseInt(targ.getYear()));
             ObservableList<GetTargetEnt> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
             ArrayList<GetTargetEnt> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblCollectEnt.getItems().remove(row));
+        }
+        }else{
+            clear();
         }
     }
 
@@ -227,11 +420,9 @@ public class Target_EntriesController implements Initializable {
         for(int j=0; j<=tblCollectEnt.getItems().size(); j++){
             if (j != tblCollectEnt.getItems().size()){
             getData = tblCollectEnt.getItems().get(j);
-            String acCenter = getData.getCenter();
-            String regex = "(?<=[\\d])(,)(?=[\\d])";
-            Pattern p = Pattern.compile(regex);
+            String acCenter = RevCent;
             String amount = getData.getAmount();
-            Matcher m = p.matcher(amount);
+            m = p.matcher(amount);
             amount = m.replaceAll("");
             float acAmount = Float.parseFloat(amount);
             int acYear = Integer.parseInt(getData.getYear());
@@ -265,6 +456,7 @@ public class Target_EntriesController implements Initializable {
 
     @FXML
     private void CancelEntries(ActionEvent event) {
+        clear();
         tblCollectEnt.getItems().clear();
     }
 
@@ -287,14 +479,26 @@ public class Target_EntriesController implements Initializable {
     }
     }
 
-    public void deleteSelection(ActionEvent actionEvent) {
-        if(tblCollectEnt.getSelectionModel().isEmpty()){
-            lblDeleteWarn.setVisible(true);
+    public void deleteSelection(ActionEvent actionEvent) throws SQLException {
+        if (!chkUpdate.isSelected()){
+            if(tblCollectEnt.getSelectionModel().isEmpty()){
+                lblDeleteWarn.setVisible(true);
+            }else {
+                ObservableList<GetTargetEnt> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
+                ArrayList<GetTargetEnt> rows = new ArrayList<>(selectedRows);
+                rows.forEach(row -> tblCollectEnt.getItems().remove(row));
+            }
         }else {
-        ObservableList<GetTargetEnt> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
-        ArrayList<GetTargetEnt> rows = new ArrayList<>(selectedRows);
-        rows.forEach(row -> tblCollectEnt.getItems().remove(row));
+            if (entriesID != null){
+                stmnt = con.prepareStatement("DELETE FROM `target_entries` WHERE `target_ID` = '"+entriesID+"'");
+                stmnt.executeUpdate();
+                clear();
+                loadRevenueCollectionTable();
+            }else {
+                lblControlWarn.setVisible(true);
+            }
         }
     }
-    
 }
+    
+

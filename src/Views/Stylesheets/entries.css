@@ -1,0 +1,117 @@
+@font-face{
+    font-family: 'Yikes';
+    src: url("Yikes_medium.ttf");
+}
+
+@font-face{
+    font-family: 'Roboto';
+    src: url("Roboto-Bold.ttf");
+}
+@font-face{
+    font-family: 'Montserrat-Bold';
+    src: url("Montserrat-Bold.ttf");
+}
+
+.background_color{
+    -fx-background-color: transparent;
+}
+
+.title{
+    -fx-fill:
+    linear-gradient(reflect, #196372ad , #004902bf),
+    linear-gradient(reflect, #0a090945, #1F1A1A61),
+    linear-gradient(reflect, #5b835596 0%, #11464694 75%);
+    -fx-font-family: 'Roboto';
+    -fx-font-size: 25;
+    -fx-font-weight: bold;
+}
+
+.sub-title{
+-fx-fill:
+linear-gradient(#0CBAE0AD, #00A707BF);
+    -fx-font-family: 'Roboto';
+    -fx-font-size: 23;
+    -fx-font-weight: bold;
+}
+
+.combo-box1{
+    -fx-background-color: linear-gradient(#F5FFF8, #FFFFFF);
+    -fx-border-width:1 1 1 1;
+    -fx-border-color: #000;
+    -fx-border-radius: 7 7 11 11;
+    -fx-background-radius: 7 7 11 11;
+    -fx-text-alignment: Center;
+}
+.combo-box > .input-line/*,
+ .combo-box > .input-focused-line*/{
+    -fx-background-color: transparent;
+
+}
+
+.menu-button{
+    -fx-background-color: none;
+    -fx-padding: 0 0 1 0;
+}
+.menu-button >.label{
+    -fx-text-fill: linear-gradient( #196372ad, #004902bf);
+    -fx-font-family: 'Montserrat-Bold';
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.menu-title{
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+.menu-title-button1{
+    -fx-text-fill: linear-gradient( #196372ad, #004902bf);
+    -fx-font-family: 'Montserrat-Bold';
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+.menu-title-button{
+    -fx-background-color: transparent;
+    -fx-font-family: 'Yikes';
+    -fx-font-size: 8;
+}
+.menu-title-button:hover{
+    -fx-background-color: linear-gradient(#F5FFF8, #FFFFFF);
+    -fx-font-family: 'Yikes';
+    -fx-font-size: 9;
+    -fx-font-weight: bold;
+}
+
+.menu-title:hover{
+               -fx-background-color: linear-gradient(#e8efeaf2, #edfff2);
+               -fx-text-fill: #0b5d26;
+               -fx-border-color: linear-gradient(#073f16eb, #07575bf7);
+               -fx-border-width: 0px 0px 3px 0px;
+           }
+.menu-title-button1:hover{
+               -fx-text-fill: #0b5d26;
+           }
+.menu-title:pressed{
+               -fx-background-color: transparent;
+               -fx-border-width: 0px;
+           }
+.menu-title-button1:pressed{
+               -fx-background-color: linear-gradient(#e8efeaf2, #edfff2);
+               -fx-text-fill: #0eae49;
+               -fx-border-color: linear-gradient(#073f16eb, #07575bf7);
+               -fx-border-width: 0px 0px 3.5px 0px;
+               -fx-border-radius: 5 5 0 0;
+               -fx-background-radius: 5 5 0 0;
+           }
+.big{
+               -fx-background-color: linear-gradient(#e8efeaf2, #edfff2);
+               -fx-text-fill: #0b5d26;
+               -fx-border-color: linear-gradient(#073f16eb, #07575bf7);
+               -fx-border-width: 0px 0px 3px 0px;
+}
+
+.normal-text{
+    -fx-font-family:'Yikes';
+    -fx-font-size: 35;
+    -fx-font-weight: Bold;
+    -fx-fill:#03571463;
+}

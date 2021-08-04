@@ -60,7 +60,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     @FXML
     private ComboBox<String> cmbReportYear;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private TableColumn<?, ?> revenueCenter;
     @FXML
@@ -315,7 +315,6 @@ public class Collection_PaymentAnalysisReportController implements Initializable
             }
             URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
-            System.out.println(items + "\n" + url);
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String yr = lblYear.getText(),
                    center = lblRevenueCenter.getText();

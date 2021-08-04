@@ -10,11 +10,11 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +26,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import Controller.Gets.GetRevCenter;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import revenue_report.DBConnection;
 
 import java.sql.SQLException;
@@ -36,12 +40,40 @@ import java.sql.SQLException;
  *
  * @author HP
  */
-public class entries_sideController  implements Initializable {
+public class entries_sideController extends VBox implements Initializable {
 
     @FXML
-     ComboBox<String> cmbRevGroup;
+    private VBox entriesMain;
     @FXML
-    private ComboBox<String> cmbRevCent;
+    private VBox vboxEntries;
+    @FXML
+    private MaterialDesignIconView iconForward;
+    @FXML
+    private Text txtTitle;
+    @FXML
+    private HBox containerDailies;
+    @FXML
+    private HBox containerTarget;
+    @FXML
+    private HBox containerStock;
+    @FXML
+    private HBox containerPayment;
+    @FXML
+    private JFXComboBox<String> cmbRevGroup;
+    @FXML
+    private JFXComboBox<String> cmbRevCent;
+
+    @FXML
+    private Button btnCloseTarget;
+
+    @FXML
+    private Button btnCloseValue;
+
+    @FXML
+    private Button btnClosePayment;
+
+    @FXML
+    private Button btnCloseRevenue;
 
     @FXML
     private JFXButton btnDailies;
@@ -65,10 +97,21 @@ public class entries_sideController  implements Initializable {
      appController app;
     @FXML
     private JFXButton btnPaymentEntries;
+
+    @FXML
+    private VBox paneEntriesArea;
+    @FXML
+    private AnchorPane noEntriesPane;
     @FXML
     private JFXButton btnTargEntries;
     @FXML
     private JFXButton btnPaymentDetails;
+    @FXML
+    private Text txtEntries;
+    @FXML
+    private Text txtEntriesMain;
+    @FXML
+    private Text txtEntriesMainNoPane;
     InitializerController init = new InitializerController();
 
      /***
@@ -91,10 +134,16 @@ public class entries_sideController  implements Initializable {
      public ComboBox getRevGroup(){
          return cmbRevGroup;
      }
+    public VBox getEntryMain(){
+        return entriesMain;
+    }
      
      public ComboBox getRevCent(){
          return cmbRevCent;
      }
+    ObservableList<JFXButton> menuButtons = FXCollections.observableArrayList();
+    ObservableList <HBox> menuContainers = FXCollections.observableArrayList();
+    ObservableList <Button> menuCloseButton = FXCollections.observableArrayList();
 
 
     /**
@@ -104,6 +153,12 @@ public class entries_sideController  implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        menuButtons.addAll(Arrays.asList(btnVLBStcxEntries,btnDailies,btnTargEntries,btnPaymentEntries));
+        menuContainers.addAll(Arrays.asList(containerStock,containerDailies,containerTarget,containerPayment));
+        menuCloseButton.addAll(Arrays.asList(btnCloseValue,btnCloseRevenue,btnClosePayment,btnCloseTarget));
+        VBox.setVgrow(entriesMain, Priority.ALWAYS);
+        entriesMain.setFillWidth(true);
+        btnCloseRevenue.setVisible(false);
         try {
             SetRevenueCenters();
         } catch (SQLException throwables) {
@@ -122,12 +177,15 @@ public class entries_sideController  implements Initializable {
             }
         } catch (SQLException throwables) {
                 throwables.printStackTrace();
-        }
+        }/*
         if (LogInController.OverAllAdmin || LogInController.Accountant){
             btnEntriesUpdate.setVisible(true);
         }else {
             btnEntriesUpdate.setVisible(false);
-        }
+        }*/
+        txtEntries.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
     }
     
     
@@ -143,6 +201,21 @@ public class entries_sideController  implements Initializable {
     }
     
     private void SetCenters() throws SQLException {
+        txtEntries.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        for (Button close : menuCloseButton){
+            if (close.isVisible()){
+                close.setVisible(false);
+            }
+        }
+        txtEntries.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+            container.getStyleClass().remove("big");}
+
         String Center = cmbRevGroup.getSelectionModel().getSelectedItem();
         stmnt = con.prepareStatement("SELECT `revenue_center`, `CenterID` FROM `revenue_centers` WHERE `revenue_category` = '"+
                 Center+"'");
@@ -188,9 +261,35 @@ public class entries_sideController  implements Initializable {
        loadEntries.setController(new Revenue_EntriesController(GetCenter));
        Revenue_EntriesController revEnt = (Revenue_EntriesController)loadEntries.getController();
        revEnt.setappController(this);
+       for (JFXButton btn: menuButtons){
+           if (btn.equals(btnDailies)){
+               btn.getStyleClass().removeAll("menu-title-button1, focus");
+           }
+       }
+       for (HBox container : menuContainers){
+           if (container.equals(containerDailies)){
+               container.getStyleClass().removeAll("menu-title, focus");
+               container.getStyleClass().remove("big");
+               container.getStyleClass().add("big");
+           }else {
+               container.getStyleClass().remove("big");
+           }
+       }
+       for (Button close : menuCloseButton){
+        if (!close.equals(btnCloseRevenue)){
+            close.setVisible(false);
+        }else {
+            btnCloseRevenue.setVisible(true);
+        }
+       }
+       txtEntries.setVisible(true);
+       iconForward.setVisible(true);
+       txtTitle.setText("Daily Revenue");
+       txtTitle.setVisible(true);
        AnchorPane root = loadEntries.load();
-       app.getCenterPane().getChildren().clear();
-       app.getCenterPane().getChildren().add(root);
+            paneEntriesArea.getChildren().clear();
+            paneEntriesArea.getChildren().add(root);
+//            app.getCenterPane().getChildren().add(root);
         }
     }
     
@@ -202,14 +301,30 @@ public class entries_sideController  implements Initializable {
     
     @FXML
     private void SelectedCenter(ActionEvent event) {
-           if(app.getCenterPane().getChildren() != null){
-               app.getCenterPane().getChildren().clear();
+           if(paneEntriesArea.getChildren() != null){
+               paneEntriesArea.getChildren().clear();
+               paneEntriesArea.getChildren().add(noEntriesPane);
+               txtEntriesMain.setVisible(false);
+               txtEntriesMainNoPane.setVisible(true);
+               txtEntries.setVisible(false);
+               iconForward.setVisible(false);
+               txtTitle.setText(null);
+               for (Button close : menuCloseButton){
+                   if (close.isVisible()){
+                       close.setVisible(false);
+                   }
+               }
+               txtEntries.setVisible(false);
+               iconForward.setVisible(false);
+               txtTitle.setText(null);
+               txtTitle.setVisible(false);
+               for (HBox container : menuContainers){
+                   container.getStyleClass().remove("big");}
            }
         SelItem = cmbRevCent.getSelectionModel().getSelectedItem();
            SelRev = centerID.get(cmbRevCent.getSelectionModel().getSelectedItem());
         GetCenter.setRevCenter(SelItem);
         GetCenter.setCenterID(SelRev);
-        System.out.println(GetCenter.getCenterID());
     }
 
     @FXML
@@ -226,8 +341,33 @@ public class entries_sideController  implements Initializable {
        Payment_EntriesController revEnt = (Payment_EntriesController)loadEntries.getController();
        revEnt.setappController(this);
        AnchorPane root = loadEntries.load();
-       app.getCenterPane().getChildren().clear();
-       app.getCenterPane().getChildren().add(root);
+       paneEntriesArea.getChildren().clear();
+       paneEntriesArea.getChildren().add(root);
+            for (JFXButton btn: menuButtons){
+                if (btn.equals(btnPaymentEntries)){
+                    btn.getStyleClass().removeAll("menu-title-button1, focus");
+                }
+            }
+            for (HBox container : menuContainers){
+                if (container.equals(containerPayment)){
+                    container.getStyleClass().removeAll("menu-title, focus");
+                    container.getStyleClass().remove("big");
+                    container.getStyleClass().add("big");
+                }else {
+                    container.getStyleClass().remove("big");
+                }
+            }
+            for (Button close : menuCloseButton){
+                if (!close.equals(btnClosePayment)){
+                    close.setVisible(false);
+                }else {
+                    close.setVisible(true);
+                }
+            }
+            txtEntries.setVisible(true);
+            iconForward.setVisible(true);
+            txtTitle.setText("Payment");
+            txtTitle.setVisible(true);
         }            
     }
     @FXML
@@ -249,8 +389,33 @@ public class entries_sideController  implements Initializable {
        Target_EntriesController revEnt = (Target_EntriesController)loadEntries.getController();
        revEnt.setappController(this);
        AnchorPane root = loadEntries.load();
-       app.getCenterPane().getChildren().clear();
-       app.getCenterPane().getChildren().add(root);
+       paneEntriesArea.getChildren().clear();
+       paneEntriesArea.getChildren().add(root);
+            for (JFXButton btn: menuButtons){
+                if (btn.equals(btnTargEntries)){
+                    btn.getStyleClass().removeAll("menu-title-button1, focus");
+                }
+            }
+            for (HBox container : menuContainers){
+                if (container.equals(containerTarget)){
+                    container.getStyleClass().removeAll("menu-title, focus");
+                    container.getStyleClass().remove("big");
+                    container.getStyleClass().add("big");
+                }else {
+                    container.getStyleClass().remove("big");
+                }
+            }
+            for (Button close : menuCloseButton){
+                if (!close.equals(btnCloseTarget)){
+                    close.setVisible(false);
+                }else {
+                    close.setVisible(true);
+                }
+            }
+            txtEntries.setVisible(true);
+            iconForward.setVisible(true);
+            txtTitle.setText("Annual Target");
+            txtTitle.setVisible(true);
         }            
     }
 
@@ -268,8 +433,8 @@ public class entries_sideController  implements Initializable {
             UpdateEntriesController valController = (UpdateEntriesController)loadEntries.getController();
             valController.setappController(this);
             AnchorPane root = loadEntries.load();
-            app.getCenterPane().getChildren().clear();
-            app.getCenterPane().getChildren().add(root);
+            paneEntriesArea.getChildren().clear();
+            paneEntriesArea.getChildren().add(root);
         }
     }
 
@@ -287,9 +452,53 @@ public class entries_sideController  implements Initializable {
             valueBooksEntriesController valController = (valueBooksEntriesController)loadEntries.getController();
             valController.setappController(this);
             AnchorPane root = loadEntries.load();
-            app.getCenterPane().getChildren().clear();
-            app.getCenterPane().getChildren().add(root);
+            paneEntriesArea.getChildren().clear();
+            paneEntriesArea.getChildren().add(root);
+            for (JFXButton btn: menuButtons){
+                if (btn.equals(btnVLBStcxEntries)){
+                    btn.getStyleClass().removeAll("menu-title-button1, focus");
+                }
+            }
+            for (HBox container : menuContainers){
+                if (container.equals(containerStock)){
+                    container.getStyleClass().removeAll("menu-title, focus");
+                    container.getStyleClass().remove("big");
+                    container.getStyleClass().add("big");
+                }else {
+                    container.getStyleClass().remove("big");
+                }
+            }
+            for (Button close : menuCloseButton){
+                if (!close.equals(btnCloseValue)){
+                    close.setVisible(false);
+                }else {
+                    close.setVisible(true);
+                }
+            }
+            txtEntries.setVisible(true);
+            iconForward.setVisible(true);
+            txtTitle.setText("Value Books Stock");
+            txtTitle.setVisible(true);
         }
+    }
+
+    @FXML
+    private void showClose(ActionEvent event) {
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(noEntriesPane);
+        txtEntriesMain.setVisible(false);
+        txtEntriesMainNoPane.setVisible(true);
+        for (Button close : menuCloseButton){
+            if (close.isVisible()){
+                close.setVisible(false);
+            }
+        }
+        txtEntries.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+                container.getStyleClass().remove("big");}
     }
 
    

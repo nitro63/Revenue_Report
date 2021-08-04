@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -15,28 +17,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="1049.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="topPane" prefHeight="50.0" prefWidth="1049.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <AnchorPane layoutX="983.0" layoutY="8.0" style="-fx-border-width: 0.5px;">
-               <children>
-                  <JFXButton fx:id="btnClose" alignment="CENTER" buttonType="RAISED" cancelButton="true" layoutX="26.0" layoutY="16.0" onAction="#showClose" prefHeight="23.0" prefWidth="21.0" ripplerFill="#8d0606" text="X" textAlignment="CENTER" textFill="#0d0c0c" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <font>
-                        <Font name="System Bold" size="10.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </AnchorPane>
-            <Label fx:id="lblTitle" layoutX="308.0" text="VALUE BOOKS STOCK ENTRIES">
-               <font>
-                  <Font name="System Bold" size="34.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <HBox alignment="CENTER" layoutX="81.0" layoutY="55.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="57.0" prefWidth="728.0">
+      <HBox alignment="CENTER" layoutX="61.0" layoutY="50.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="57.0" prefWidth="716.0">
          <children>
             <AnchorPane>
                <HBox.margin>
@@ -122,58 +107,55 @@
             </AnchorPane>
          </children>
       </HBox>
-      <JFXButton fx:id="btnEnter" buttonType="RAISED" layoutX="830.0" layoutY="70.0" onAction="#saveEntries" prefHeight="35.0" prefWidth="65.0" ripplerFill="#aea6a6" style="-fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Enter">
+      <JFXButton fx:id="btnEnter" buttonType="RAISED" layoutX="586.0" layoutY="107.0" onAction="#saveEntries" prefHeight="35.0" prefWidth="65.0" ripplerFill="#aea6a6" style="-fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Enter">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="904.0" layoutY="70.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="100.0" ripplerFill="#aea6a6" style="-fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Edit Entries">
+      <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="671.0" layoutY="107.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="65.0" ripplerFill="#aea6a6" style="-fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Edit ">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <TableView fx:id="tblValueBookStocks" layoutX="3.0" layoutY="127.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="1042.0">
+      <TableView fx:id="tblValueBookStocks" layoutX="20.0" layoutY="150.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="275.0" prefWidth="841.0">
          <columns>
-            <TableColumn fx:id="colYear" editable="false" prefWidth="66.0" text="YEAR" />
-            <TableColumn fx:id="colQuarter" editable="false" prefWidth="66.0" text="QUARTER" />
-            <TableColumn fx:id="colMonth" editable="false" prefWidth="66.0" text="MONTH" />
-            <TableColumn fx:id="colWeek" editable="false" minWidth="0.0" prefWidth="86.0" text="WEEK" />
-            <TableColumn fx:id="colDATE" editable="false" minWidth="0.0" prefWidth="86.0" text="DATE" />
-            <TableColumn fx:id="colTypeVB" editable="false" prefWidth="143.0">
+            <TableColumn fx:id="colID" editable="false" minWidth="0.0" prefWidth="76.0" sortable="false" text="ID" visible="false" />
+            <TableColumn fx:id="colDATE" editable="false" minWidth="0.0" prefWidth="52.0" sortable="false" text="DATE" />
+            <TableColumn fx:id="colTypeVB" editable="false" prefWidth="82.0" sortable="false">
                <graphic>
                   <Label text="TYPE OF VALUE BOOK" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn editable="false" prefWidth="134.0" text="SERIAL NUMBER">
+            <TableColumn editable="false" prefWidth="137.0" sortable="false" text="SERIAL NUMBER">
                <columns>
-                  <TableColumn fx:id="colSerialFrom" prefWidth="75.0" text="FROM" />
-                  <TableColumn fx:id="colSerialTo" prefWidth="75.0" text="TO" />
+                  <TableColumn fx:id="colSerialFrom" editable="false" prefWidth="75.0" sortable="false" text="FROM" />
+                  <TableColumn fx:id="colSerialTo" editable="false" prefWidth="75.0" sortable="false" text="TO" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="colQuantity" editable="false" prefWidth="167.0">
+            <TableColumn fx:id="colQuantity" editable="false" prefWidth="101.0" sortable="false">
                <graphic>
-                  <Label prefHeight="34.0" prefWidth="116.0" text="QUANTITY(Books/ Booklets)" textAlignment="CENTER" wrapText="true">
+                  <Label prefHeight="43.0" prefWidth="98.0" text="QUANTITY(Books/ Booklets)" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="10.0" />
                      </font></Label>
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colAmtVal" editable="false" prefWidth="121.0">
+            <TableColumn fx:id="colAmtVal" editable="false" prefWidth="88.0" sortable="false">
                <graphic>
                   <Label text="AMOUNT (VALUE)" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colCumuAmount" editable="false" prefWidth="139.0">
+            <TableColumn fx:id="colCumuAmount" editable="false" prefWidth="119.0" sortable="false">
                <graphic>
-                  <Label text="CUMULATIVE AMOUNT" textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="43.0" prefWidth="101.0" text="CUMULATIVE AMOUNT" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colPurchAmount" editable="false" prefWidth="139.0">
+            <TableColumn fx:id="colPurchAmount" editable="false" prefWidth="72.0" sortable="false">
                <graphic>
-                  <Label text="PURCHASE AMOUNT" textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="42.0" prefWidth="88.0" text="PURCHASE AMOUNT" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colRemarks" maxWidth="100.0" minWidth="80.0" prefWidth="100.0">
+            <TableColumn fx:id="colRemarks" editable="false" maxWidth="145.0" minWidth="80.0" prefWidth="121.0" sortable="false">
                <graphic>
                   <Label prefHeight="24.0" prefWidth="78.0" text="REMARKS" textAlignment="CENTER" wrapText="true" />
                </graphic>
@@ -182,48 +164,91 @@
          <effect>
             <DropShadow />
          </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane layoutX="32.0" layoutY="548.0" minWidth="-Infinity" prefHeight="86.0" prefWidth="714.0">
+      <AnchorPane layoutX="10.0" layoutY="432.0" minWidth="-Infinity" prefHeight="78.0" prefWidth="509.0">
          <children>
-            <Label fx:id="lblDeleteWarn" layoutX="236.0" layoutY="20.0" prefHeight="17.0" prefWidth="232.0" text="Please select a row in the table to delete" textFill="#ee2222" visible="false">
+            <Text fx:id="lblDup" fill="#ee2222" layoutX="90.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-font" text="Text" visible="false" wrappingWidth="400.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
-            </Label>
-            <Label fx:id="lblEdit" alignment="CENTER" layoutY="6.0" prefHeight="17.0" prefWidth="714.0" text="Label" textAlignment="CENTER" textFill="#ee2222" visible="false" wrapText="true">
+            </Text>
+            <Text fx:id="lblEdit" fill="#ee2222" layoutX="90.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-font" text="Text" visible="false" wrappingWidth="419.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
-            </Label>
-            <Label fx:id="lblDup" alignment="CENTER" layoutY="36.0" prefHeight="41.0" prefWidth="714.0" text="Label" textAlignment="CENTER" textFill="#ee2222" visible="false" wrapText="true">
+            </Text>
+            <Text fx:id="lblDeleteWarn" fill="#ee2222" layoutX="162.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-font" text="Please select a row in the table to delete" visible="false">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
-            </Label>
+            </Text>
          </children>
       </AnchorPane>
-      <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="750.0" layoutY="566.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="73.0" ripplerFill="#aea6a6" style="-fx-background-color: #212853; -fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Delete">
+      <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="523.0" layoutY="451.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="73.0" ripplerFill="#aea6a6" style="-fx-background-color: #212853; -fx-text-fill: #ffffff; -fx-text-alignment: center; -fx-font-size: 15; -fx-border-radius: 1 1 1 1;" text="Delete">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnClearEntr" buttonType="RAISED" layoutX="839.0" layoutY="566.0" onAction="#CancelEntries" prefHeight="35.0" prefWidth="73.0" ripplerFill="#aea6a6" text="Cancel">
+      <JFXButton fx:id="btnClearEntr" buttonType="RAISED" layoutX="612.0" layoutY="451.0" onAction="#CancelEntries" prefHeight="35.0" prefWidth="73.0" ripplerFill="#aea6a6" text="Cancel">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnSaveEntries" buttonType="RAISED" layoutX="926.0" layoutY="566.0" onAction="#SaveToDatabase" prefHeight="31.0" prefWidth="111.0" ripplerFill="#a6a7ad" text="Save Entries">
+      <JFXButton fx:id="btnSaveEntries" buttonType="RAISED" layoutX="699.0" layoutY="452.0" onAction="#SaveToDatabase" prefHeight="31.0" prefWidth="73.0" ripplerFill="#a6a7ad" text="Save ">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
+      <JFXCheckBox fx:id="chkUpdate" layoutX="671.0" layoutY="10.0" styleClass="check-text" text="UPDATE" textFill="#0a752f" unCheckedColor="#0b6f27">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXCheckBox>
+      <ComboBox fx:id="cmbUpdateYear" layoutX="264.0" layoutY="3.0" onAction="#selectedYear" prefWidth="134.0" promptText="Select Year" styleClass="text-font" visible="false" />
+      <ComboBox fx:id="cmbUpdateMonth" layoutX="414.0" layoutY="3.0" prefWidth="134.0" promptText="Select Month" styleClass="text-font" visible="false" />
+      <JFXButton fx:id="btnFetchUpdate" buttonType="RAISED" layoutX="572.0" layoutY="3.0" onAction="#fetchEntries" prefHeight="25.0" prefWidth="59.0" text="Fetch" visible="false">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnClearUpdate" buttonType="RAISED" layoutX="546.0" layoutY="107.0" onAction="#clearEntries" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6abad" style="-fx-background-radius: 10 10 10 10;" styleClass="btnClear1" text="Clear" visible="false">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <JFXButton fx:id="btnUpdateEntries" buttonType="RAISED" layoutX="626.0" layoutY="107.0" onAction="#updateEntries" prefHeight="35.0" prefWidth="77.0" style="-fx-background-radius: 10 10 10 10;" text="Update" visible="false">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <JFXButton fx:id="btnDeleteUpdate" alignment="CENTER" buttonType="RAISED" layoutX="711.0" layoutY="107.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="70.0" ripplerFill="#a6a6a6" style="-fx-background-radius: 10 10 10 10;" styleClass="btnDelete" text="Delete" visible="false">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <Label fx:id="lblControlWarn" layoutX="277.0" layoutY="432.0" text="Please select a row on the table!" textFill="#f20d0d" visible="false">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
    <stylesheets>
       <URL value="@../Stylesheets/valueBooksEntries.css" />
       <URL value="@../Stylesheets/valueBooksEntries.css" />
-      <URL value="@../Stylesheets/EntriesStyle.css" />
+      <URL value="@../Stylesheets/EntriesStyleCopy.css" />
    </stylesheets>
 </AnchorPane>

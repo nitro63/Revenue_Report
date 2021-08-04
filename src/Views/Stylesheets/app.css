@@ -8,6 +8,41 @@ and open the template in the editor.
     Author     : HP
 */
 
+@font-face{
+    font-family: 'Roboto Italic'
+    src: url("Roboto-Italic.ttf");
+}
+@font-face{
+    font-family: 'Helvetica'
+    src: url("Helvetica.ttf");
+}
+@font-face{
+    font-family: 'Montserrat'
+    src: url("Montserrat-SemiBold.ttf");
+}
+@font-face{
+    font-family: 'Roboto Medium'
+    src: url("Roboto-Medium.ttf");
+}
+@font-face{
+    font-family: 'Helvetica Bold'
+    src: url("Helvetica-Oblique.ttf");
+}
+@font-face{
+    font-family: 'Roboto'
+    src: url("Roboto-Light.ttf");
+}
+@font-face{
+    font-family: 'Roboto BoldItalic'
+    src: url("Roboto-BoldItalic.ttf");
+}
+@font-face{
+    font-family: 'Roboto Bold'
+    src: url("Roboto-Bold.ttf");
+}
+
+
+
 .combo-box .text-field{
     -fx-prompt-text-fill: rgba(255, 0, 0, 0.5);
 }
@@ -15,3 +50,52 @@ and open the template in the editor.
 .combo-box .text-field:focused {
     -fx-prompt-text-fill: transparent;
 }
+
+.background-color{
+    -fx-background-color: linear-gradient(#DCDCDC, #B1F1ED);
+}
+.nav-brand{
+    -fx-background-radius:  0 0 25 0;
+    -fx-background-color: linear-gradient(#5ff12b94, #a3e1727a);
+}
+
+.nav-brand-text{
+    -fx-font-family: 'Roboto Bold';
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+    -fx-line-spacing: 0.25em;
+    -fx-text-spacing: 2em;
+    /*-fx-text-alignment: Left;*/
+}
+.nav-bar-text{
+   -fx-font-family: 'Roboto Medium';
+    /*-fx-font-weight: bold;*/
+    -fx-font-size: 15.5;
+    -fx-line-height: 7;
+    /*-fx-text-alignment: Left;*/
+}
+.nav-bar-text-bold{
+   -fx-font-family: 'Roboto Medium';
+    /*-fx-font-weight: bold;*/
+    -fx-font-size: 18;
+    -fx-line-height: 7;
+    /*-fx-text-alignment: Left;*/
+}
+.username{
+    -fx-font-family: 'Montserrat';
+    -fx-font-size: 16;
+}
+
+.nav-bar{
+    -fx-background-color: #F6FFFF;
+}
+//#17BA4552
+.side-bar{
+    -fx-background-color: linear-gradient(#18b84252 16%, #ABFF69a1 58%);
+}
+
+.profile-menulist{
+    -fx-background-color: transparent;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    }

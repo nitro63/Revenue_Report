@@ -64,7 +64,13 @@ public class QuarterlyReportController implements Initializable {
     @FXML
     private ComboBox<String> cmbReportQuarter;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
+    @FXML
+    private Label lblCenterWarn;
+    @FXML
+    private Label lblYearWarn;
+    @FXML
+    private Label lblQuarterWarn;
     @FXML
     private TableView<GetQuarterReport> quarterTable;
     @FXML
@@ -145,6 +151,9 @@ public class QuarterlyReportController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cmbReportCent.setOnMouseClicked(e -> lblCenterWarn.setVisible(false));
+        cmbReportYear.setOnMouseClicked(e -> lblYearWarn.setVisible(false));
+        cmbReportQuarter.setOnMouseClicked(e -> lblQuarterWarn.setVisible(false));
         try {
             getRevCenters();
         } catch (SQLException | ClassNotFoundException ex) {
@@ -439,7 +448,6 @@ public class QuarterlyReportController implements Initializable {
         while(rs.next()){
             rowYear.add(rs.getString("revenueYear"));
         }
-        System.out.println(rowYear);
         cmbReportYear.getItems().clear();
         cmbReportYear.getItems().addAll(rowYear);
         cmbReportYear.setVisibleRowCount(5);
@@ -468,11 +476,19 @@ public class QuarterlyReportController implements Initializable {
 
     @FXML
     private void ShowReport(ActionEvent event) throws SQLException {
+        if (cmbReportCent.getSelectionModel().isEmpty()){
+            lblCenterWarn.setVisible(true);
+        }else if (cmbReportYear.getSelectionModel().isEmpty()){
+            lblYearWarn.setVisible(true);
+        }else if (cmbReportQuarter.getSelectionModel().isEmpty()){
+            lblQuarterWarn.setVisible(true);
+        }else {
         quarterTableAll.getItems().clear();
         quarterTable.getItems().clear();
         getMonths();
         changeNames();
         setItems();
+        }
     }
 
     @FXML

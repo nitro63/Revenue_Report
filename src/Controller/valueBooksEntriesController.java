@@ -4,6 +4,7 @@ import Controller.Gets.GetCollectEnt;
 import Controller.Gets.GetFunctions;
 import Controller.Gets.GetRevCenter;
 import Controller.Gets.GetValueBooksEntries;
+import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,12 +22,9 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import revenue_report.DBConnection;
 
@@ -72,7 +70,7 @@ public class valueBooksEntriesController implements Initializable {
     private TableColumn<GetValueBooksEntries, String> colQuarter;
 
     @FXML
-    private TableColumn<GetValueBooksEntries, String> colWeek;
+    private TableColumn<GetValueBooksEntries, String> colID;
 
     @FXML
     private TableColumn<GetValueBooksEntries, String> colDATE;
@@ -109,11 +107,11 @@ public class valueBooksEntriesController implements Initializable {
     @FXML
     private JFXButton btnSaveEntries;
     @FXML
-    private Label lblDeleteWarn;
+    private Text lblDeleteWarn;
     @FXML
-    private Label lblEdit;
+    private Text lblEdit;
     @FXML
-    private Label lblDup;
+    private Text lblDup;
     @FXML
     private Label lblDateWarn;
     @FXML
@@ -125,25 +123,51 @@ public class valueBooksEntriesController implements Initializable {
     @FXML
     private Label lblValueBookWarn;
 
+    @FXML
+    private JFXButton btnClearUpdate;
 
-    entries_sideController app;
-    GetValueBooksEntries addEntries, getData;
-    Bank_DetailsEntriesController bnkDtls = new Bank_DetailsEntriesController();
-    GetFunctions getDates = new GetFunctions();
+    @FXML
+    private JFXButton btnUpdateEntries;
+
+    @FXML
+    private JFXButton btnDeleteUpdate;
+
+    @FXML
+    private JFXCheckBox chkUpdate;
+
+    @FXML
+    private ComboBox<String> cmbUpdateYear;
+
+    @FXML
+    private ComboBox<String> cmbUpdateMonth;
+
+    @FXML
+    private JFXButton btnFetchUpdate;
+
+    @FXML
+    private Label lblControlWarn;
+
+    private entries_sideController app;
+    private GetValueBooksEntries addEntries, getData;
+    private Bank_DetailsEntriesController bnkDtls = new Bank_DetailsEntriesController();
+    private GetFunctions getDates = new GetFunctions();
     private final GetRevCenter GetCenter;
-    Payment_EntriesController pay ;
+    private Payment_EntriesController pay ;
     boolean Condition = true;
     private final Connection con;
     float amount =0, cumuamount, puramount;
-    String regex = "(?<=[\\d])(,)(?=[\\d])";
-    Pattern p = Pattern.compile(regex);
-    Matcher mac;
-    Map<String, ArrayList<String>> regValSerial = new HashMap<>();
-    String revCent, revCentID, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount,
-            purAmount, Quarter, Week;
-    String remarks = "Initial Entry";
-    Map<String, Float> priceBook = new HashMap<>();
-    Map<String, String> valueBookID = new HashMap<>();
+    private String regex = "(?<=[\\d])(,)(?=[\\d])";
+    private Pattern p = Pattern.compile(regex);
+    private Matcher m;
+    private PreparedStatement stmnt;
+    private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private ResultSet rs;
+    private Map<String, ArrayList<String>> regValSerial = new HashMap<>();
+    private String revCent, revCentID, Year, Month, Date, typeOfValBk, firstSerial, lastSerial, Quantity, valAmount, cumuAmount,
+            purAmount, Quarter, entriesID;
+   private String remarks = "Initial Entry";
+   private Map<String, Float> priceBook = new HashMap<>();
+    private Map<String, String> valueBookID = new HashMap<>();
 
 
     public valueBooksEntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
@@ -176,11 +200,65 @@ public class valueBooksEntriesController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        try {
+            GetRevenueYears();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        chkUpdate.setVisible(LogInController.Accountant || LogInController.OverAllAdmin);
+      chkUpdate.setOnMouseClicked(event -> {
+          try {
+              GetRevenueYears();
+          } catch (SQLException throwables) {
+              throwables.printStackTrace();
+          }
+          if (chkUpdate.isSelected()){
+              cmbUpdateYear.setVisible(true);
+              cmbUpdateMonth.setVisible(true);
+              btnFetchUpdate.setVisible(true);
+              btnClearUpdate.setVisible(true);
+              btnDeleteUpdate.setVisible(true);
+              btnUpdateEntries.setVisible(true);
+              colID.setVisible(true);
+              btnEnter.setVisible(false);
+              btnClear.setVisible(false);
+              btnClearEntr.setVisible(false);
+              btnSaveEntries.setVisible(false);
+              btnDelete.setVisible(false);
+              tblValueBookStocks.getItems().clear();
+              tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+              clear();
+
+          }else {
+              cmbUpdateYear.setVisible(false);
+              cmbUpdateMonth.setVisible(false);
+              btnFetchUpdate.setVisible(false);
+              btnClearUpdate.setVisible(false);
+              btnDeleteUpdate.setVisible(false);
+              btnUpdateEntries.setVisible(false);
+              colID.setVisible(false);
+              btnEnter.setVisible(true);
+              btnClear.setVisible(true);
+              btnClearEntr.setVisible(true);
+              btnSaveEntries.setVisible(true);
+              btnDelete.setVisible(true);
+              tblValueBookStocks.getItems().clear();
+              tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+              clear();
+          }
+      });
         tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblValueBookStocks.setOnMouseClicked(e -> {
-            lblDeleteWarn.setVisible(false);
-            lblDup.setVisible(false);
-            lblEdit.setVisible(false);
+            if (!chkUpdate.isSelected()){
+                lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
+            }else {
+                if (tblValueBookStocks.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
+                    setEntries();
+                    if (lblControlWarn.isVisible()){
+                        lblControlWarn.setVisible(false);
+                    }
+                }
+            }
         });
         entDatePck.setOnMouseClicked(event -> {
             lblDateWarn.setVisible(false);
@@ -199,8 +277,172 @@ public class valueBooksEntriesController implements Initializable {
         });
     }
 
+  private void GetRevenueYears() throws SQLException {
+      stmnt = con.prepareStatement("SELECT `year` FROM `value_books_stock_record` WHERE `value_stock_revCenter` = '"+revCentID+"' GROUP BY `year`");
+      rs = stmnt.executeQuery();
+      cmbUpdateYear.getItems().clear();
+      while (rs.next()){
+          cmbUpdateYear.getItems().add(rs.getString("year"));
+      }
+  }
+
+    @FXML
+    void selectedYear(ActionEvent event) throws SQLException {
+      String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+        stmnt = con.prepareStatement("SELECT `month` FROM `value_books_stock_record` WHERE `value_stock_revCenter` = '"+revCentID+"' AND `year` ='"+year+"' GROUP BY `month`");
+        rs = stmnt.executeQuery();
+        cmbUpdateMonth.getItems().clear();
+        while (rs.next()){
+            cmbUpdateMonth.getItems().add(rs.getString("month"));
+        }
+    }
+
+    @FXML
+    void fetchEntries(ActionEvent event) throws SQLException {
+        if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
+            String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+            if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
+                stmnt = con.prepareStatement("SELECT `value_record_ID`, `date`, `value_books`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks` FROM `value_books_stock_record`, `value_books_details` WHERE `value_stock_revCenter` = '" + revCentID + "' AND `value_book_ID` = `value_book` AND `year` ='" + year + "' AND `month` = '" + month + "' ");
+            } else {
+                stmnt = con.prepareStatement("SELECT `value_record_ID`, `date`, `value_books`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks` FROM `value_books_stock_record`, `value_books_details` WHERE `value_stock_revCenter` = '" + revCentID + "' AND `value_book_ID` = `value_book` AND `year` ='" + year + "'");
+            }
+            rs = stmnt.executeQuery();
+            tblValueBookStocks.getItems().clear();
+            colID.setCellValueFactory(data -> data.getValue().weekProperty());
+            colDATE.setCellValueFactory(data -> data.getValue().dateProperty());
+            colTypeVB.setCellValueFactory(data -> data.getValue().valueBookProperty());
+            colSerialFrom.setCellValueFactory(data -> data.getValue().firstSerialProperty());
+            colSerialTo.setCellValueFactory(data -> data.getValue().lastSerialProperty());
+            colQuantity.setCellValueFactory(data -> data.getValue().quantityProperty());
+            colAmtVal.setCellValueFactory(data -> data.getValue().valAmountProperty());
+            colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
+            colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
+            colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
+            float amount = 0; String cumuAmounts;
+            while (rs.next()) {
+                amount += rs.getFloat("amount");
+                cumuAmounts = getDates.getAmount(Float.toString(amount));
+                addEntries = new GetValueBooksEntries(rs.getString("value_record_ID"), rs.getString("date"), rs.getString("value_books"), rs.getString("first_serial"), rs.getString("last_serial"),
+                        rs.getString("quantity"), rs.getString("amount"), cumuAmounts, rs.getString("purchase_amount"), rs.getString("remarks"));
+                tblValueBookStocks.getItems().add(addEntries);
+
+            }
+        }else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Please select Year");
+            alert.showAndWait();
+        }
+    }
+
+    private void setEntries() {
+        GetValueBooksEntries entries = tblValueBookStocks.getSelectionModel().getSelectedItem();
+        entriesID = entries.getWeek();
+        entDatePck.setValue(LocalDate.parse(entries.getDate(), format));
+        m = p.matcher(entries.getPurAmount());
+        String amount =  m.replaceAll("");
+        float price = Float.parseFloat(amount);
+        int quantity = Integer.parseInt(entries.getQuantity());
+        float unitAmount = price / quantity;
+        txtUnitAmount.setText(Float.toString(unitAmount));
+        cmbTypeOfValueBook.getSelectionModel().select(entries.getValueBook());
+        txtSerialFrom.setText(entries.getFirstSerial());
+        txtSerialTo.setText(entries.getLastSerial());
+    }
+
+    @FXML
+    void updateEntries(ActionEvent event) throws SQLException {
+        if (entriesID != null){
+            String  lastSerial = txtSerialTo.getText(),
+                    firstSerial = txtSerialFrom.getText(),
+                    Quantity, typeOfValBk = cmbTypeOfValueBook.getSelectionModel().getSelectedItem(),
+                    purAmount, valAmount,
+                    Month = getDates.getMonth(entDatePck.getValue()),
+                    Date = getDates.getDate(entDatePck.getValue());
+            float amount = 0, cumuamount = 0, puramount = 0;
+            int serialChecker = ((Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial)) + 1),
+                    year = Integer.parseInt(getDates.getYear(entDatePck.getValue())),
+                    week = Integer.parseInt(getDates.getWeek(entDatePck.getValue())),
+                    quarter = Integer.parseInt(getDates.getQuarter(entDatePck.getValue()));
+            int quantity = ((serialChecker) / 100);
+            if ((serialChecker) < 100 || serialChecker % 100 != 0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Please check Serials");
+                alert.showAndWait();
+            } else {
+                Quantity = Integer.toString(quantity);
+                for (Map.Entry<String, Float> calValAmount : priceBook.entrySet()){
+                    if (calValAmount.getKey().equals(typeOfValBk)){
+                        amount = quantity * calValAmount.getValue() * 100;
+                    }
+                }
+                puramount = (Float.parseFloat(txtUnitAmount.getText()) * quantity);
+                purAmount = getDates.getAmount(Float.toString(puramount));
+                valAmount = getDates.getAmount(Float.toString((amount)));
+                if ("0.00".equals(purAmount)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Please Amount cannot be '0'");
+                    alert.showAndWait();
+                    txtUnitAmount.clear();
+                } else {
+                    stmnt = con.prepareStatement("UPDATE `value_books_stock_record` SET `year` = '"+year+"'," +
+                            " `week` = '"+week+"', `quarter` = '"+quarter+"', `date` = '"+Date+"', `month` = '"+Month
+                            +"', `value_book` = '"+valueBookID.get(typeOfValBk)+"', `first_serial` = '"+firstSerial+"', `last_serial` = '"+
+                            lastSerial+"', `quantity` = '"+Quantity+"', `amount` = '"+valAmount+"', `purchase_amount` = '"+
+                            purAmount+"', `remarks` = 'Updated' WHERE `value_record_ID` = '"+entriesID+"'");
+                    stmnt.executeUpdate();
+                    loadRevenueCollectionTable();
+                    clear();
+                }
+            }
+        }else{
+            lblControlWarn.setVisible(true);
+        }
+    }
+
+    void clear(){
+        entriesID = null;
+        entDatePck.setValue(null);
+        txtUnitAmount.setText(null);
+        txtSerialFrom.setText(null);
+        txtSerialTo.setText(null);
+        cmbTypeOfValueBook.getSelectionModel().clearSelection();
+    }
+
     public void showClose(ActionEvent actionEvent) {
         getentries_sideController().getappController().getCenterPane().getChildren().clear();
+    }
+
+    private void loadRevenueCollectionTable() throws SQLException {
+        String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+        if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
+            stmnt = con.prepareStatement("SELECT `value_record_ID`, `date`, `value_books`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks` FROM `value_books_stock_record`, `value_books_details` WHERE `value_stock_revCenter` = '" + revCentID + "' AND `value_book_ID` = `value_book` AND `year` ='" + year + "' AND `month` = '" + month + "' ");
+        } else {
+            stmnt = con.prepareStatement("SELECT `value_record_ID`, `date`, `value_books`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks` FROM `value_books_stock_record`, `value_books_details` WHERE `value_stock_revCenter` = '" + revCentID + "' AND `value_book_ID` = `value_book` AND `year` ='" + year + "'");
+        }
+        rs = stmnt.executeQuery();
+        tblValueBookStocks.getItems().clear();
+        colID.setCellValueFactory(data -> data.getValue().weekProperty());
+        colDATE.setCellValueFactory(data -> data.getValue().dateProperty());
+        colTypeVB.setCellValueFactory(data -> data.getValue().valueBookProperty());
+        colSerialFrom.setCellValueFactory(data -> data.getValue().firstSerialProperty());
+        colSerialTo.setCellValueFactory(data -> data.getValue().lastSerialProperty());
+        colQuantity.setCellValueFactory(data -> data.getValue().quantityProperty());
+        colAmtVal.setCellValueFactory(data -> data.getValue().valAmountProperty());
+        colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
+        colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
+        colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
+        float amount = 0; String cumuAmounts;
+        while (rs.next()) {
+            amount += rs.getFloat("amount");
+            cumuAmounts = getDates.getAmount(Float.toString(amount));
+            addEntries = new GetValueBooksEntries(rs.getString("value_record_ID"), rs.getString("date"), rs.getString("value_books"), rs.getString("first_serial"), rs.getString("last_serial"),
+                    rs.getString("quantity"), rs.getString("amount"), cumuAmounts, rs.getString("purchase_amount"), rs.getString("remarks"));
+            tblValueBookStocks.getItems().add(addEntries);
+
+        }
     }
 
     public void saveEntries(ActionEvent actionEvent) throws SQLException {
@@ -213,12 +455,12 @@ public class valueBooksEntriesController implements Initializable {
             lblDateWarn.setVisible(true);
             Condition = false;
         }else{
-            Condition =true;
+            Condition =true;/*
             Quarter = getDates.getQuarter(date);
             Month = getDates.getMonth(date);
-            Week = getDates.getWeek(date);
+            Week = getDates.getWeek(date);*/
             Date = getDates.getDate(date);
-            Year = getDates.getYear(date);
+//            Year = getDates.getYear(date);
             while (Condition){
                     if(regValSerial.containsKey(typeOfValBk) && regValSerial.get(typeOfValBk).contains(firstSerial)){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -288,11 +530,11 @@ public class valueBooksEntriesController implements Initializable {
                             txtUnitAmount.clear();
                             Condition = false;
 
-                        } else {
+                        } else {/*
                             colYear.setCellValueFactory(data -> data.getValue().yearProperty());
                             colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
                             colQuarter.setCellValueFactory(data -> data.getValue().quarterProperty());
-                            colWeek.setCellValueFactory(data -> data.getValue().dateProperty());
+                            colWeek.setCellValueFactory(data -> data.getValue().dateProperty());*/
                             colDATE.setCellValueFactory(data -> data.getValue().dateProperty());
                             colTypeVB.setCellValueFactory(data -> data.getValue().valueBookProperty());
                             colSerialFrom.setCellValueFactory(data -> data.getValue().firstSerialProperty());
@@ -302,7 +544,7 @@ public class valueBooksEntriesController implements Initializable {
                             colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
                             colPurchAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
                             colRemarks.setCellValueFactory(d -> d.getValue().remarksProperty());
-                            addEntries = new GetValueBooksEntries(Year, Month, Quarter, Week, Date, typeOfValBk, firstSerial,
+                            addEntries = new GetValueBooksEntries(/*Year, Month, Quarter, Week, */Date, typeOfValBk, firstSerial,
                                     lastSerial, Quantity, valAmount, cumuAmount, purAmount, remarks);
                             tblValueBookStocks.getItems().add(addEntries);
                             if (!regValSerial.containsKey(typeOfValBk)) {
@@ -335,6 +577,7 @@ public class valueBooksEntriesController implements Initializable {
     }
 
     public void clearEntries(ActionEvent actionEvent) {
+        if (!chkUpdate.isSelected()){
         GetValueBooksEntries valueBooks = tblValueBookStocks.getSelectionModel().getSelectedItem();
         if (tblValueBookStocks.getSelectionModel().isEmpty()){
             lblEdit.setText("Please select a row in the table to "+'"'+"Edit"+'"');
@@ -343,9 +586,9 @@ public class valueBooksEntriesController implements Initializable {
             entDatePck.setValue(LocalDate.parse(valueBooks.getDate(),
                     DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             cmbTypeOfValueBook.getSelectionModel().select(valueBooks.getValueBook());
-                    mac = p.matcher(valueBooks.getPurAmount());
+                    m = p.matcher(valueBooks.getPurAmount());
             String amount = "";
-            amount = mac.replaceAll("");
+            amount = m.replaceAll("");
 //            if (mac.matches()){
 //
 //            }else {
@@ -367,13 +610,16 @@ public class valueBooksEntriesController implements Initializable {
             ObservableList<GetValueBooksEntries> selectedRows = tblValueBookStocks.getSelectionModel().getSelectedItems();
             ArrayList<GetValueBooksEntries> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblValueBookStocks.getItems().remove(row));
-
+        }
+        }else {
+            clear();
         }
     }
 
     public void SaveToDatabase(ActionEvent actionEvent) throws SQLException {
         revCent = GetCenter.getRevCenter();
         ArrayList<String> duplicate = new ArrayList<>();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         getData = new GetValueBooksEntries();
         ResultSet rs;
         ResultSetMetaData rm;
@@ -383,12 +629,14 @@ public class valueBooksEntriesController implements Initializable {
         for(int f = 0; f <= tblValueBookStocks.getItems().size(); f++) {
             if (f != tblValueBookStocks.getItems().size()){
             getData = tblValueBookStocks.getItems().get(f);
-            String acMonth = getData.getMonth(),
+            String acMonth ,
             acDate = getData.getDate();
+            LocalDate date = LocalDate.parse(acDate, dtf);
             typeOfValBk = getData.getValueBook();
-            int acYear = Integer.parseInt(getData.getYear());
-            int acQuarter = Integer.parseInt(getData.getQuarter());
-            int acWeek = Integer.parseInt(getData.getWeek());
+            acMonth = getDates.getMonth(date);
+            int acYear = Integer.parseInt(getDates.getYear(date));
+            int acQuarter = Integer.parseInt(getDates.getQuarter(date));
+            int acWeek = Integer.parseInt(getDates.getWeek(date));
             int acFirstSerial = Integer.parseInt(getData.getFirstSerial());
             int acLastSerial = Integer.parseInt(getData.getLastSerial());
             int acQuantity = Integer.parseInt(getData.getQuantity());
@@ -405,7 +653,6 @@ public class valueBooksEntriesController implements Initializable {
                 if(res.getInt("first_serial")<=Integer.parseInt(getData.getLastSerial()) && Integer.parseInt(getData.getLastSerial())<= res.getInt("last_serial") && !duplicate.contains(getData.getLastSerial())){
                     duplicate.add(getData.getLastSerial());
                 }
-                System.out.println("dup" +duplicate+""+acFirstSerial+""+acLastSerial);
             }
             if (duplicate.contains(getData.getFirstSerial()) && duplicate.contains(getData.getLastSerial())){
                 lblDup.setText("Range of Serials for "+'"'+typeOfValBk+'"'+"" +
@@ -452,13 +699,20 @@ public class valueBooksEntriesController implements Initializable {
         bnkDtls.onlyIntegers(keyEvent);
     }
 
-    public void deleteSelection(ActionEvent actionEvent) {
+    public void deleteSelection(ActionEvent actionEvent) throws SQLException {
+        if (!chkUpdate.isSelected()){
         if(tblValueBookStocks.getSelectionModel().isEmpty()){
             lblDeleteWarn.setVisible(true);
         } else {
             ObservableList<GetValueBooksEntries> selectedRows = tblValueBookStocks.getSelectionModel().getSelectedItems();
             ArrayList<GetValueBooksEntries> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblValueBookStocks.getItems().remove(row));
+        }
+        }else {
+            stmnt = con.prepareStatement("DELETE FROM `value_books_stock_record` WHERE `value_record_ID` = '"+entriesID+"' ");
+            stmnt.executeUpdate();
+            loadRevenueCollectionTable();
+            clear();
         }
     }
 }

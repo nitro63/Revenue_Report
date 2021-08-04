@@ -20,6 +20,7 @@ import java.util.*;
 
 import Controller.Gets.GetFunctions;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
@@ -35,6 +36,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -61,6 +63,10 @@ public class Revenue_EntriesController  implements Initializable {
     @FXML
     private Label lblTotalAmount;
     @FXML
+    private Label lblControlWarn;
+    @FXML
+    private Label lblTot;
+    @FXML
     private DatePicker entDatePck;
     @FXML
     private ComboBox<String> cmbEntRevItem;
@@ -75,21 +81,37 @@ public class Revenue_EntriesController  implements Initializable {
     @FXML
     private TableColumn<GetEntries, String> revAmount;
     @FXML
-    private TableColumn<GetEntries, String> revDate;
+    private TableColumn<GetEntries, String> revDate;/*
     @FXML
-    private TableColumn<GetEntries, String> revWeek;
+    private TableColumn<GetEntries, String> revWeek;*/
     @FXML
-    private Label lblEdit;
+    private Text lblEdit;
     @FXML
-    private Label lblDup;
+    private Text lblDup;
     @FXML
     private JFXButton btnDelete;
     @FXML
-    private Label lblDeleteWarn;
+    private Text lblDeleteWarn;
+
     @FXML
-    private TableColumn<GetEntries, String> revMonth;
+    private JFXCheckBox chkUpdate;
+
+    @FXML
+    private ComboBox<String> cmbUpdateYear;
+
+    @FXML
+    private ComboBox<String> cmbUpdateMonth;
+
+    @FXML
+    private JFXButton btnFetchUpdate;/*
+    @FXML
+    private TableColumn<GetEntries, String> revMonth;*/
     entries_sideController app;
     GetFunctions getFunctions = new GetFunctions();
+    String regex = "(?<=[\\d])(,)(?=[\\d])";
+    Pattern p = Pattern.compile(regex);
+    Matcher m;
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
      * initializes the controller class.
@@ -112,7 +134,7 @@ public class Revenue_EntriesController  implements Initializable {
          boolean Condition = true, ccCheck;
          float totAmount = 0;
         
-        String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, RevCentID,Qtr, totalAmount;
+        String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, entriesID,Qtr, totalAmount;
         
         
                 
@@ -124,19 +146,18 @@ public class Revenue_EntriesController  implements Initializable {
     private Button btnSaveEntries;
     @FXML
     private JFXButton btnComm;
+    @FXML
+    private Button btnClearEntr;
     
      GetEntries addEntries = new GetEntries();
     
-    private final GetRevCenter GetCenter;
+    private final GetRevCenter GetCenter;/*
     @FXML
     private TableColumn<GetEntries, String> revYear;
     @FXML
-    private TableColumn<GetEntries, String> revQuarter;
+    private TableColumn<GetEntries, String> revQuarter;*/
     @FXML
     private Button btnClose;
-
-
-    
   public Revenue_EntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
       this.con = DBConnection.getConn();
        this.GetCenter = GetCenter;
@@ -152,21 +173,83 @@ public class Revenue_EntriesController  implements Initializable {
         
     @Override
     public void initialize(URL url, ResourceBundle rb)  {
+        try {
+            GetRevenueYears();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        chkUpdate.setVisible(LogInController.Accountant || LogInController.OverAllAdmin);
+      chkUpdate.setOnMouseClicked(event -> {
+          try {
+              GetRevenueYears();
+          } catch (SQLException throwables) {
+              throwables.printStackTrace();
+          }
+          if (chkUpdate.isSelected()){
+              cmbUpdateYear.setVisible(true);
+              cmbUpdateMonth.setVisible(true);
+              btnFetchUpdate.setVisible(true);
+              revDate.setText("ID");
+              revCode.setText("Date");
+              btnEnter.setText("Update");
+              btnClear.setText("Clear");
+              btnClearEntr.setText("Delete");
+              btnClearEntr.setLayoutX(89);
+              btnClearEntr.setLayoutY(10);
+              btnSaveEntries.setVisible(false);
+              btnDelete.setVisible(false);
+              lblTot.setVisible(false);
+              lblTotalAmount.setVisible(false);
+              revTable.getItems().clear();
+              revTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+              clear();
+
+          }else {
+              cmbUpdateYear.setVisible(false);
+              cmbUpdateMonth.setVisible(false);
+              btnFetchUpdate.setVisible(false);
+              revDate.setText("Date");
+              revCode.setText("Code");
+              btnEnter.setText("Enter");
+              btnClear.setText("Edit");
+              btnClearEntr.setText("Cancel");
+              btnClearEntr.setLayoutX(169);
+              btnClearEntr.setLayoutY(10);
+              btnSaveEntries.setVisible(true);
+              btnDelete.setVisible(true);
+              lblTot.setVisible(true);
+              lblTotalAmount.setVisible(true);
+              revTable.getItems().clear();
+              revTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+              clear();
+          }
+      });
+
         RevCent = GetCenter.getCenterID();
         String cent = GetCenter.centerIDProperty().getValue();
-        System.out.println(cent +"\n"+GetCenter.getRevCenter());
-//        RevCentID = GetCenter.getCenterID();
-      revTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
       registerItem.put("", new ArrayList<>());
       revTable.setOnMouseClicked(e -> {
+          if (!chkUpdate.isSelected()){
           lblDeleteWarn.setVisible(false);lblDup.setVisible(false);lblEdit.setVisible(false);
+          }else {
+              if (revTable.getSelectionModel().getSelectedItem() != null && e.getClickCount() > 1){
+                  setEntries();
+                  if (lblControlWarn.isVisible()){
+                      lblControlWarn.setVisible(false);
+                  }
+              }
+          }
       });
-        try {
+
+        revTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+      try {
             GetRevenueItems();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        if (app.getRevGroup().getSelectionModel().getSelectedItem().toString().toLowerCase(Locale.ROOT).
+
+      if (app.getRevGroup().getSelectionModel().getSelectedItem().toString().toLowerCase(Locale.ROOT).
                 equals("sub-metros")){
             btnComm.setVisible(true);
             ccCheck = true;
@@ -177,6 +260,14 @@ public class Revenue_EntriesController  implements Initializable {
         cmbEntRevItem.setEditable(true);
   }
 
+  private void GetRevenueYears() throws SQLException {
+      stmnt = con.prepareStatement("SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+RevCent+"' GROUP BY `revenueYear`");
+      rs = stmnt.executeQuery();
+      cmbUpdateYear.getItems().clear();
+      while (rs.next()){
+          cmbUpdateYear.getItems().add(rs.getString("revenueYear"));
+      }
+  }
     
     private void GetRevenueItems() throws SQLException {
       stmnt = con.prepareStatement("SELECT `item_Sub`, `assign_item`, `item_category` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"+RevCent+"' AND `revenue_item_ID` = `assign_item`");
@@ -190,13 +281,78 @@ public class Revenue_EntriesController  implements Initializable {
         cmbEntRevItem.getItems().addAll(RevenueItems);
         new AutoCompleteComboBox<String>(cmbEntRevItem);
     }
-    
-   
 
+    private void setEntries() {
+        GetEntries entries = revTable.getSelectionModel().getSelectedItem();
+        entriesID = entries.getDate();
+        entDatePck.setValue(LocalDate.parse(entries.getCode(), format));
+        cmbEntRevItem.getSelectionModel().select(entries.getItem());
+        m = p.matcher(entries.getAmount());
+        String amount =  m.replaceAll("");
+        txtEntAmt.setText(amount);
+    }
 
+    @FXML
+    void selectedYear(ActionEvent event) throws SQLException {
+      String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+        stmnt = con.prepareStatement("SELECT `revenueMonth` FROM `daily_entries` WHERE `daily_revCenter` = '"+RevCent+"' AND `revenueYear` ='"+year+"' GROUP BY `revenueMonth`");
+        rs = stmnt.executeQuery();
+        cmbUpdateMonth.getItems().clear();
+        while (rs.next()){
+            cmbUpdateMonth.getItems().add(rs.getString("revenueMonth"));
+        }
+    }
+
+    @FXML
+    void fetchEntries(ActionEvent event) throws SQLException {
+      if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
+          String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+          if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
+              stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "' AND `revenueMonth` = '" + month + "' ");
+          } else {
+              stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "'");
+          }
+          rs = stmnt.executeQuery();
+          revTable.getItems().clear();
+          revCode.setCellValueFactory(data -> data.getValue().CodeProperty());
+          revItem.setCellValueFactory(data -> data.getValue().ItemProperty());
+          revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
+          revDate.setCellValueFactory(data -> data.getValue().DateProperty());
+          while (rs.next()) {
+              addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"), rs.getString("entries_ID"), rs.getString("revenueAmount"));
+              revTable.getItems().add(addEntries);
+
+          }
+      }else {
+          Alert alert = new Alert(Alert.AlertType.WARNING);
+          alert.setTitle("Warning Dialog");
+          alert.setHeaderText("Please select Year");
+          alert.showAndWait();
+      }
+    }
+
+    private void loadRevenueCollectionTable() throws SQLException {
+        String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+        if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
+            stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "' AND `revenueMonth` = '" + month + "' ");
+        } else {
+            stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "'");
+        }
+        rs = stmnt.executeQuery();
+        revTable.getItems().clear();
+        revCode.setCellValueFactory(data -> data.getValue().CodeProperty());
+        revItem.setCellValueFactory(data -> data.getValue().ItemProperty());
+        revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
+        revDate.setCellValueFactory(data -> data.getValue().DateProperty());
+        while (rs.next()) {
+            addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"), rs.getString("entries_ID"), rs.getString("revenueAmount"));
+            revTable.getItems().add(addEntries);
+        }
+    }
    
     @FXML
-    private void saveEntries(ActionEvent event) throws IOException {
+    private void saveEntries(ActionEvent event) throws IOException, SQLException {
+      if (!chkUpdate.isSelected()){
       LocalDate date = entDatePck.getValue();// Assigning the date picker value to a variable
       //Making sure Datepicker is never empty :)
       if(entDatePck.getValue() == null){
@@ -207,11 +363,11 @@ public class Revenue_EntriesController  implements Initializable {
              Condition = false;
             }else{
              Condition =true;
-        Date = getFunctions.getDate(date);
+        Date = getFunctions.getDate(date);/*
         Year = getFunctions.getYear(date);
         Qtr = getFunctions.getQuarter(date);
         Week = getFunctions.getWeek(date);
-        Month = getFunctions.getMonth(date);
+        Month = getFunctions.getMonth(date)*/;
        while(Condition) {
             String i=cmbEntRevItem.getSelectionModel().getSelectedItem();
        if(registerItem.containsKey(Date) && registerItem.get(Date).contains(i)){
@@ -258,11 +414,11 @@ public class Revenue_EntriesController  implements Initializable {
                 revCode.setCellValueFactory(data -> data.getValue().CodeProperty());
         revItem.setCellValueFactory(data -> data.getValue().ItemProperty());
         revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
-        revDate.setCellValueFactory(data -> data.getValue().DateProperty());
+        revDate.setCellValueFactory(data -> data.getValue().DateProperty());/*
         revWeek.setCellValueFactory(data -> data.getValue().WeekProperty());
         revMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
         revQuarter.setCellValueFactory(data -> data.getValue().QuarterProperty());
-        revYear.setCellValueFactory(data -> data.getValue().YearProperty());
+        revYear.setCellValueFactory(data -> data.getValue().YearProperty());*/
         Amount= getFunctions.getAmount(txtEntAmt.getText());
         if("0.00".equals(Amount)){
                 Alert alert = new Alert(AlertType.WARNING);
@@ -277,7 +433,7 @@ public class Revenue_EntriesController  implements Initializable {
             totAmount += Float.parseFloat(txtEntAmt.getText());
             totalAmount = getFunctions.getAmount(Float.toString(totAmount));
             lblTotalAmount.setText(totalAmount);
-               addEntries = new GetEntries(Code, Item, Date, Month, Amount, Week, Year, Qtr);
+               addEntries = new GetEntries(Code, Item, Date,/* Month,*/ Amount/*, Week, Year, Qtr*/);
                 revTable.getItems().add(addEntries);
                 if(!registerItem.containsKey(Date)){
                     registerItem.put(Date, new ArrayList<>());
@@ -292,22 +448,93 @@ public class Revenue_EntriesController  implements Initializable {
                 txtEntAmt.clear();
                 Condition = false;
         }
-            }
+          }
        }
-
          }
+      }else {
+          if (entriesID != null){
+          ArrayList<String> dupItem = new ArrayList<>();
+          String Date = getFunctions.getDate(entDatePck.getValue()),
+                  Year = getFunctions.getYear(entDatePck.getValue()),
+                  Qtr = getFunctions.getQuarter(entDatePck.getValue()),
+                  Week = getFunctions.getWeek(entDatePck.getValue()),
+                  Month = getFunctions.getMonth(entDatePck.getValue());
+          String code = RevenueMap.get(cmbEntRevItem.getSelectionModel().getSelectedItem());
+          stmnt = con.prepareStatement("SELECT `revenueItem` FROM `daily_entries` WHERE  `daily_revCenter` = '"+
+                  RevCent +"' AND `entries_ID` != '"+entriesID+"' AND `revenueItem` = '"+code +"' AND `revenueDate` = '"+Date+"' ");/*AND `entries_ID` != '"+entriesID+"'*/
+          ResultSet rt = stmnt.executeQuery();
+          while (rt.next()){
+              dupItem.add(rt.getString("revenueItem"));
+          }
+          Condition = true;
+          if(entDatePck.getValue() == null){
+              Alert alert = new Alert(Alert.AlertType.WARNING);
+              alert.setTitle("Warning Dialog");
+              alert.setHeaderText("Please select Date");
+              alert.showAndWait();
+//              lblDatePckRevWarn.setVisible(true);
+              Condition = false;
+          }else {
+              while(Condition) {
+                  String i=cmbEntRevItem.getSelectionModel().getSelectedItem();
+                  if(dupItem.contains(i)){
+                      Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning Dialog");
+                      alert.setHeaderText("This record already exists");
+                      alert.showAndWait();
+                      Condition =false;
+                  }else if (cmbEntRevItem.getValue().isEmpty()){
+                      Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning Dialog");
+                      alert.setHeaderText("Please select \"Revenue Item\"");
+                      alert.showAndWait();
+//                      lblRevItemWarn.setVisible(true);
+                      Condition =false;
+                  }else if(txtEntAmt.getText().isEmpty()){
+                      Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning Dialog");
+                      alert.setHeaderText("Please Enter \"Amount\"");
+                      alert.showAndWait();
+//                      lblRevAmountWarn.setVisible(true);
+                      Condition =false;
+                  }else if(StringUtils.countMatches(txtEntAmt.getText(), ".") >1){
+                      Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Warning Dialog");
+                      alert.setHeaderText("Please Enter Amount");
+                      alert.setContentText("Please check the number of '.' in the amount");
+                      alert.showAndWait();
+                      Condition =false;
+                  }
+                  else{
+                      stmnt = con.prepareStatement("UPDATE `daily_entries` SET  " +
+                              "`revenueAmount`= '"+Float.parseFloat(txtEntAmt.getText())+"',`revenueYear`= '"+Year+"'," +
+                              "`revenueDate` = '"+Date+"', `revenueItem` = '"+code+"'" +
+                              ",`revenueWeek` = '"+Week+"', `revenueMonth` = '"+Month+"', `revenueQuarter` = '"+Qtr+"' WHERE   " +
+                              "`entries_ID`= '"+entriesID+"' AND `daily_revCenter`= '"+RevCent+"'");
+                      stmnt.executeUpdate();
+                      clear();
+                      loadRevenueCollectionTable();
+                      Condition = false;
+                  }
+              }
+          }
+          }else{
+              lblControlWarn.setVisible(true);
+          }
+      }
     }
 
     @FXML
     private void clearEntries(ActionEvent event) {
+      if (!chkUpdate.isSelected()){
       GetEntries entries = revTable.getSelectionModel().getSelectedItem();
       if (revTable.getSelectionModel().isEmpty()){
           lblEdit.setText("Please select a row in the table to "+'"'+"Edit"+'"');
           lblEdit.setVisible(true);
-      }else {
+      }else {/*
           String regex = "(?<=[\\d])(,)(?=[\\d])";
-          Pattern p = Pattern.compile(regex);
-          Matcher m = p.matcher(entries.getAmount());
+           p = Pattern.compile(regex);*/
+           m = p.matcher(entries.getAmount());
           entDatePck.setValue(LocalDate.parse(entries.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
           cmbEntRevItem.getSelectionModel().select(entries.getItem());
           txtEntAmt.setText(m.replaceAll(""));
@@ -319,6 +546,9 @@ public class Revenue_EntriesController  implements Initializable {
           ArrayList<GetEntries> rows = new ArrayList<>(selectedRows);
           rows.forEach(row -> revTable.getItems().remove(row));
       }
+      }else {
+          clear();
+      }
     }
 
     @FXML
@@ -327,22 +557,24 @@ public class Revenue_EntriesController  implements Initializable {
         GetEntries getData = new GetEntries();
         ObservableList<String> duplicate = FXCollections.observableArrayList();
         List <List<String>> arrList = new ArrayList<>();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         for(int i = 0; i <= revTable.getItems().size(); i++){
             if (i != revTable.getItems().size()){
                 getData = revTable.getItems().get(i);
             String acDate = getData.getDate();
+            LocalDate date = LocalDate.parse(acDate, dtf);
             String acCode = getData.getCode();
             String acItem = getData.getCode();
-            String acQtr = getData.getQuarter();
+            String acQtr = getFunctions.getQuarter(date);
             String CcAmt;
             String regex = "(?<=[\\d])(,)(?=[\\d])";
             Pattern p = Pattern.compile(regex);
             String amount = getData.getAmount();
             Matcher m = p.matcher(amount);
             float acAmount = Float.parseFloat(m.replaceAll(""));
-            int acWeek = Integer.parseInt(getData.getWeek());
-            String acMonth = getData.getMonth();
-            int acYear = Integer.parseInt(getData.getYear());
+            int acWeek = Integer.parseInt(getFunctions.getWeek(date));
+            String acMonth = getFunctions.getMonth(date);
+            int acYear = Integer.parseInt(getFunctions.getYear(date));
             stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `revenueItem` = '"+acCode+"'" +
                     " AND `revenueDate` = '"+acDate+"' AND `daily_revCenter` = '"+RevCent+"' ");
             rs = stmnt.executeQuery();
@@ -371,19 +603,30 @@ public class Revenue_EntriesController  implements Initializable {
         }
     }
 
-
-
-
+    void clear(){
+      entriesID = null;
+      entDatePck.setValue(null);
+      cmbEntRevItem.getSelectionModel().clearSelection();
+      cmbEntRevItem.setValue(null);
+      txtEntAmt.setText(null);
+    }
 
 
     @FXML
-    private void CancelEntries(ActionEvent event) {
-        registerItem.clear();
-        revTable.getItems().clear();
-//        getentries_sideController().getRevCent().getSelectionModel().clearSelection();
-//        getentries_sideController().getRevGroup().getSelectionModel().clearSelection();
-//        getentries_sideController().setRevCenter(null);
-//        getentries_sideController().initialize(url, rb);
+    private void CancelEntries(ActionEvent event) throws SQLException {
+      if (!chkUpdate.isSelected()) {
+          registerItem.clear();
+          revTable.getItems().clear();
+      }else {
+          if (entriesID != null){
+          stmnt = con.prepareStatement("DELETE FROM `daily_entries` WHERE `entries_ID` = '"+entriesID+"'");
+          stmnt.executeUpdate();
+          clear();
+          loadRevenueCollectionTable();
+          }else{
+              lblControlWarn.setVisible(true);
+          }
+      }
     }
 
     @FXML
@@ -399,14 +642,16 @@ public class Revenue_EntriesController  implements Initializable {
     private void showClose(ActionEvent event) {        
         getentries_sideController().getappController().getCenterPane().getChildren().clear();
     }
+
+
     public void deleteSelection(ActionEvent actionEvent) {
       GetEntries entries = revTable.getSelectionModel().getSelectedItem();
       if(revTable.getSelectionModel().isEmpty()){
           lblDeleteWarn.setVisible(true);
-      }else{
+      }else{/*
           String regex = "(?<=[\\d])(,)(?=[\\d])";
           Pattern p = Pattern.compile(regex);
-          Matcher m = p.matcher(entries.getAmount());
+          Matcher */m = p.matcher(entries.getAmount());
           totAmount -= Float.parseFloat(m.replaceAll(""));
           totalAmount = getFunctions.getAmount(Float.toString(totAmount));
           lblTotalAmount.setText(totalAmount);
@@ -415,6 +660,7 @@ public class Revenue_EntriesController  implements Initializable {
         rows.forEach(row -> revTable.getItems().remove(row));
           registerItem.get(entries.getDate()).remove(entries.getItem());
       }
+
 
     }
 

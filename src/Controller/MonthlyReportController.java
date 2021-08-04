@@ -92,7 +92,7 @@ public class MonthlyReportController implements Initializable {
     @FXML
     private ComboBox<String> cmbReportYear;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private AnchorPane generalPane;
     @FXML
@@ -385,10 +385,15 @@ public class MonthlyReportController implements Initializable {
 
     @FXML
     private void ShowReport(ActionEvent event) throws SQLException {
-        if (cmbReportYear.getSelectionModel().isEmpty())
+        if (cmbReportCent.getSelectionModel().isEmpty()){
+            lblCenterWarn.setVisible(true);
+        } else if (cmbReportYear.getSelectionModel().isEmpty()){
+            lblYearWarn.setVisible(true);
+        }else {
         monthlyTable.getItems().clear();
         changeNames();
         setItems();
+        }
         
     }
 

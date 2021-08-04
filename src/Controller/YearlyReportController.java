@@ -53,11 +53,17 @@ public class YearlyReportController implements Initializable {
     @FXML
     private ComboBox<String> cmbReportYear2;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private TableView<GetYearlyReport> yearlyTable;
     @FXML
     private VBox yearlyTemplate;
+    @FXML
+    private Label lblCenterWarn;
+    @FXML
+    private Label lblYear1Warn;
+    @FXML
+    private Label lblYear2Warn;
     @FXML
     private TableColumn<GetYearlyReport, String> revenueCenter;
     @FXML
@@ -121,6 +127,9 @@ public class YearlyReportController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cmbReportCent.setOnMouseClicked(e -> lblCenterWarn.setVisible(false));
+        cmbReportYear1.setOnMouseClicked(e -> lblYear1Warn.setVisible(false));
+        cmbReportYear2.setOnMouseClicked(e -> lblYear1Warn.setVisible(false));
         try {
             getRevCenters();
         } catch (SQLException | ClassNotFoundException ex) {

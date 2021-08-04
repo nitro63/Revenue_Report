@@ -50,11 +50,17 @@ public class weeklyReportController implements Initializable {
     @FXML
     private ComboBox<String> cmbReportMonth;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private VBox weekTemplate;
     @FXML
     private AnchorPane generalPane;
+    @FXML
+    private Label lblCenterWarn;
+    @FXML
+    private Label lblYearWarn;
+    @FXML
+    private Label lblMonthWarn;
     @FXML
     private TableView<GetReportgen> weekTable;
     @FXML
@@ -282,6 +288,15 @@ public class weeklyReportController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         subPane.setVisible(false);
+        cmbReportCent.setOnMouseClicked(e-> {
+            lblCenterWarn.setVisible(false);
+        });
+        cmbReportYear.setOnMouseClicked(e -> {
+            lblYearWarn.setVisible(false);
+        });
+        cmbReportMonth.setOnMouseClicked(e -> {
+            lblMonthWarn.setVisible(false);
+        });
         try {
             getRevCenters();
         } catch (SQLException ex) {
@@ -347,7 +362,6 @@ public class weeklyReportController implements Initializable {
              }
          }
          }
-         System.out.println(app.catCenter+"\n"+condSubMetro);
     }
      
      private void getReportMonth() throws SQLException{
@@ -749,6 +763,13 @@ public class weeklyReportController implements Initializable {
 
     @FXML
     private void ShowReport(ActionEvent event) throws SQLException {
+          if (cmbReportCent.getSelectionModel().isEmpty()){
+              lblCenterWarn.setVisible(true);
+          } else if (cmbReportYear.getSelectionModel().isEmpty()){
+              lblYearWarn.setVisible(true);
+          }else if (cmbReportMonth.getSelectionModel().isEmpty()){
+              lblMonthWarn.setVisible(true);
+          }else {
         changeNames();
         if (condSubMetro){
             subPane.setVisible(true);
@@ -763,6 +784,7 @@ public class weeklyReportController implements Initializable {
         weekTable.getItems().clear();
         setItems();
         }
+          }
         
     }
 
@@ -778,7 +800,6 @@ public class weeklyReportController implements Initializable {
               }
               URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
-              System.out.println(items + "\n" + url);
               JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
               String center = cmbReportCent.getSelectionModel().getSelectedItem(),
                       year = cmbReportYear.getSelectionModel().getSelectedItem(),

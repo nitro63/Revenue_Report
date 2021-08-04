@@ -1,3 +1,17 @@
+@font-face{
+    font-family: 'Yikes';
+    src: url("Yikes_medium.ttf");
+}@font-face{
+     font-family: 'Panton';
+     src: url("PantonDemo-Black.otf");
+ }
+.button {
+    -fx-font-family: 'Yikes';
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-font-size: 13.5;
+    -fx-border-radius:  1 1 1 1;
+}
 #btnPrint{
     -fx-font-weight: bold;
     -fx-text-alignment: center;
@@ -5,4 +19,90 @@
     -fx-border-radius:  1 1 1 1;
     -fx-background-color: #2cac33;
     -fx-text-fill: #f6f3f5;
+}
+#btnShowReport{
+    -fx-border-radius:  7 7 11 11;
+    -fx-background-color: #2cac33;
+    -fx-text-fill: #f6f3f5;
+}
+.background_color{
+    -fx-background-color: transparent;
+}
+
+.table-cell{
+    -fx-alignment: CENTER;
+}
+
+.combo-box-base .text{
+    -fx-fill: #03531e;
+    -fx-background-color: none;
+    -fx-padding: 0 0 3 0;
+}
+
+.combo-box{
+    -fx-background-color: none;
+    -fx-padding: 0 0 1 0;
+}
+.combo-box-base .text-field{
+    -fx-prompt-text-fill: #057c0a;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #007d07;
+}
+.combo-box {
+    -fx-border-width: 0 0 0.9 0;
+    -fx-border-color: #007d07;
+}
+.combo-box-base .arrow-button{
+    -fx-background-color: none;
+}
+.combo-box-base .text-input{
+    -fx-background-color: none;
+}
+.combo-box-base{
+    -fx-background-color: none;
+}
+.combo-box-base .arrow-button .arrow{
+    -fx-background-color: #055B18;
+}
+.table-view{
+    -fx-background-color: #00ea5c36;
+    /*#fdfffe;*/
+}
+
+.table-view .table-cell{
+    -fx-font-size: 12px;
+    -fx-font-family: 'Calibri';
+    -fx-text-fill: #000;
+}
+.table-view .column-header-background .label{
+    -fx-font-family: 'Yikes';
+}
+.text-font{
+    -fx-font-family: 'Yikes';
+}
+.table-view .column-header-background{
+    -fx-border-width: 0px 0px 1.5px 0px;
+    -fx-border-color: #000;
+    -fx-background-color: transparent;
+    -fx-font-size: 13px;
+}
+
+.table-view .column-header{
+    -fx-background-color: #f4fff7;
+}
+.table-row-cell{
+    -fx-background-color: #fdfffe;
+}
+.table-row-cell:filled:selected, .table-row-cell: filled > .table-cell: selected{
+    -fx-background-color: #00ea5c36;
+}
+.table-row-cell:odd{
+    -fx-background-color: #eef1ef;
+}
+
+.text-field{
+    -fx-background-color: none;
+    -fx-prompt-text-fill: #08400c;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #03a00b;
 }

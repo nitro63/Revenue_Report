@@ -43,6 +43,13 @@ public class GetEntries {
         this.Year = new SimpleStringProperty(Year);
         this.Quarter = new SimpleStringProperty(Quarter);
     }
+    public GetEntries(String ID, String Date, String Month, String Week, String Amount) {
+        this.ID = new SimpleStringProperty(ID);
+        this.Date = new SimpleStringProperty(Date);
+        this.Month =new SimpleStringProperty( Month);
+        this.Amount = new SimpleStringProperty(Amount) ;
+        this.Week = new SimpleStringProperty(Week);
+    }
 
     public GetEntries(String Date, String Month, String Week, String Year, String Quarter, String Amount) {
         this.Date = new SimpleStringProperty(Date);
@@ -53,15 +60,15 @@ public class GetEntries {
         this.Quarter = new SimpleStringProperty(Quarter);
     }
 
-    public GetEntries(String Code, String Item, String Date, String Month, String Amount, String Week, String Year, String Quarter) {
+    public GetEntries(String Code, String Item, String Date/*, String Month*/, String Amount/*, String Week, String Year, String Quarter*/) {
         this.Code = new SimpleStringProperty(Code);
         this.Item = new  SimpleStringProperty(Item);
-        this.Date = new SimpleStringProperty(Date);
-        this.Month =new SimpleStringProperty( Month);
-        this.Amount = new SimpleStringProperty(Amount) ;
+        this.Date = new SimpleStringProperty(Date);/*
+        this.Month =new SimpleStringProperty( Month);*/
+        this.Amount = new SimpleStringProperty(Amount) ;/*
         this.Week = new SimpleStringProperty(Week);
         this.Year = new SimpleStringProperty(Year);
-        this.Quarter = new SimpleStringProperty(Quarter);
+        this.Quarter = new SimpleStringProperty(Quarter);*/
     }
 
     public String getID() {

@@ -53,11 +53,17 @@ public class Payment_ReportController implements Initializable {
     @FXML
     private JFXButton btnBankDetails;
     @FXML
+    private Label lblCenterWarn;
+    @FXML
+    private Label lblYearWarn;
+    @FXML
+    private Label lblMonthWarn;
+    @FXML
     private ComboBox<String> cmbReportCent;
     @FXML
     private ComboBox<String> cmbReportYear;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private ComboBox<String> cmbReportMonth;
     @FXML
@@ -97,6 +103,15 @@ public class Payment_ReportController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cmbReportCent.setOnMouseClicked(e-> {
+            lblCenterWarn.setVisible(false);
+        });
+        cmbReportYear.setOnMouseClicked(e -> {
+            lblYearWarn.setVisible(false);
+        });
+        cmbReportMonth.setOnMouseClicked(e -> {
+            lblMonthWarn.setVisible(false);
+        });
         try {
             getRevCenters();
         } catch (SQLException | ClassNotFoundException ex) {
@@ -228,6 +243,13 @@ public class Payment_ReportController implements Initializable {
 
     @FXML
     private void ShowReport(ActionEvent event) throws SQLException {
+        if (cmbReportCent.getSelectionModel().isEmpty()){
+            lblCenterWarn.setVisible(true);
+        } else if (cmbReportYear.getSelectionModel().isEmpty()){
+            lblYearWarn.setVisible(true);
+        }else if (cmbReportMonth.getSelectionModel().isEmpty()){
+            lblMonthWarn.setVisible(true);
+        }
         tblPaymentDetails.getItems().clear();
         changeNames();
         setItems();

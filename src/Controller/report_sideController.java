@@ -11,21 +11,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import Controller.Gets.Conditioner;
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import revenue_report.DBConnection;
 
 /**
@@ -36,40 +40,122 @@ import revenue_report.DBConnection;
 public class report_sideController implements Initializable {
 
     @FXML
-    private AnchorPane paneReport;
+    private VBox entriesMain;
+
+    @FXML
+    private MaterialDesignIconView iconForward;
+
+    @FXML
+    private Text txtTitle;
+
+    @FXML
+    private Text txtReport;
+
+    @FXML
+    private MenuButton paneMaster;
+
+    @FXML
+    private MenuItem btnRevenueItemsMaster;
+
+    @FXML
+    private MenuItem btnRevenueCenters;
+
+    @FXML
+    private MenuItem btnCollectionPayment;
+
+    @FXML
+    private MenuItem btnRevenueItemsQuarterly;
+
+    @FXML
+    private MenuItem btnQuarterlyCentersBasis;
+
+    @FXML
+    private HBox containerDailies;
 
     @FXML
     private JFXButton btnViewReport;
-    
-    private appController app;
+
+    @FXML
+    private Button btnCloseDaily;
+
+    @FXML
+    private HBox containerWeekly;
+
     @FXML
     private JFXButton btnWeeklyReport;
+
+    @FXML
+    private Button btnCloseWeekly;
+
+    @FXML
+    private HBox containerMonthly;
+
     @FXML
     private JFXButton btnMonthlyReport;
+
     @FXML
-    private JFXButton btnQuarterlyReport;
+    private Button btnCloseMonthly;
+
     @FXML
-    private JFXButton btnYearlyReport;
-    @FXML
-    private JFXButton btnBankDetails;
-    @FXML
-    private JFXButton btnRevenueTarget;
-    @FXML
-    private JFXButton btnRevenueItemsMaster;
-    @FXML
-    private JFXButton btnRevenueCenters;
-    @FXML
-    private JFXButton btnCollectionPayment;
-    @FXML
-    private AnchorPane paneMaster;
-    @FXML
-    private JFXButton btnRevenueItemsQuarterly;
-    @FXML
-    private JFXButton btnQuarterlyCentersBasis;
-    @FXML
-    private JFXButton btnPaymentDetails;
+    private HBox containerStock;
+
     @FXML
     private JFXButton btnValueBooksReport;
+
+    @FXML
+    private Button btnCloseValue;
+
+    @FXML
+    private HBox containerQuarterly;
+
+    @FXML
+    private HBox containerMaster;
+
+    @FXML
+    private JFXButton btnQuarterlyReport;
+
+    @FXML
+    private Button btnCloseQuarterly;
+
+    @FXML
+    private HBox containerYearly;
+
+    @FXML
+    private JFXButton btnYearlyReport;
+
+    @FXML
+    private Button btnCloseYearly;
+
+    @FXML
+    private HBox containerPayment;
+
+    @FXML
+    private JFXButton btnPaymentDetails;
+
+    @FXML
+    private Button btnClosePayment;
+
+    @FXML
+    private Button btnCloseMaster;
+
+    @FXML
+    private HBox containerTarget;
+
+    @FXML
+    private JFXButton btnRevenueTarget;
+
+    @FXML
+    private Button btnCloseTarget;
+
+    @FXML
+    private VBox paneEntriesArea;
+
+    @FXML
+    private AnchorPane noEntriesPane;
+
+    @FXML
+    private Text txtEntriesMainNoPane;
+    private appController app;
     Conditioner conditioner = new Conditioner();
 
     private final Connection con;
@@ -82,15 +168,24 @@ public class report_sideController implements Initializable {
      }
 
      Map<String, ArrayList<String>> catCenter = new HashMap<>();
+    ObservableList<JFXButton> menuButtons = FXCollections.observableArrayList();
+    ObservableList <HBox> menuContainers = FXCollections.observableArrayList();
+    ObservableList <Button> menuCloseButton = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        txtReport.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        menuButtons.addAll(Arrays.asList(btnViewReport,btnWeeklyReport,btnMonthlyReport,btnValueBooksReport,btnQuarterlyReport,btnYearlyReport,btnPaymentDetails,btnRevenueTarget));
+        menuContainers.addAll(Arrays.asList(containerMaster,containerStock,containerDailies,containerTarget,containerPayment,containerWeekly,containerMonthly,containerQuarterly,containerYearly));
+        menuCloseButton.addAll(Arrays.asList(btnCloseMaster,btnCloseDaily,btnCloseValue,btnClosePayment,btnCloseTarget,btnCloseWeekly,btnCloseMonthly,btnCloseQuarterly,btnCloseYearly));
         if (LogInController.hasCenter){
             paneMaster.setVisible(false);
-            paneReport.setPrefHeight(480);
         }
         try {
             PreparedStatement stmnt = con.prepareStatement("SELECT `revenue_category` FROM `revenue_centers` WHERE 1 GROUP BY `revenue_category`");
@@ -115,8 +210,33 @@ public class report_sideController implements Initializable {
         loader.setLocation(getClass().getResource("/Views/fxml/Report.fxml"));
         loader.setController(new ReportController());
         ReportController rep = (ReportController)loader.getController();
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnViewReport)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerDailies)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseDaily)){
+                close.setVisible(false);
+            }else {
+                btnCloseDaily.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Daily Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -126,8 +246,33 @@ public class report_sideController implements Initializable {
         loader.setController(new weeklyReportController());
         weeklyReportController week = (weeklyReportController)loader.getController();
         week.setReportSide(this);
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnWeeklyReport)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerWeekly)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseWeekly)){
+                close.setVisible(false);
+            }else {
+                btnCloseWeekly.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Weekly Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -135,8 +280,33 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/MonthlyReport.fxml"));
         loader.setController(new MonthlyReportController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnMonthlyReport)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerMonthly)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseMonthly)){
+                close.setVisible(false);
+            }else {
+                btnCloseMonthly.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Monthly Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -144,8 +314,33 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/QuarterlyReport.fxml"));
         loader.setController(new QuarterlyReportController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnQuarterlyReport)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerQuarterly)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseQuarterly)){
+                close.setVisible(false);
+            }else {
+                btnCloseQuarterly.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Quarterly Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -153,8 +348,33 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/yearlyReport.fxml"));
         loader.setController(new YearlyReportController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnYearlyReport)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerYearly)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseYearly)){
+                close.setVisible(false);
+            }else {
+                btnCloseYearly.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Yearly Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -162,8 +382,33 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/Target_Analysis.fxml"));
         loader.setController(new Target_AnalysisController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnRevenueTarget)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerTarget)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseTarget)){
+                close.setVisible(false);
+            }else {
+                btnCloseTarget.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Annual Target Analysis");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -171,8 +416,33 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/ValueBooksStockReport.fxml"));
         loader.setController(new ValueBooksStockReportController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnValueBooksReport)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerStock)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseValue)){
+                close.setVisible(false);
+            }else {
+                btnCloseValue.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Value Books Stock Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -180,8 +450,35 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/MasterItems.fxml"));
         loader.setController(new MasterItemsController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        paneMaster.getStyleClass().removeAll("menu-title-button1, focus");
+        for (HBox container : menuContainers){
+            if (container.equals(containerTarget)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseMaster)){
+                close.setVisible(false);
+            }else {
+                btnCloseMaster.setVisible(true);
+            }
+        }
+        txtReport.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+            container.getStyleClass().remove("big");}
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Revenue Items Annual Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -189,8 +486,35 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/MasterCenters.fxml"));
         loader.setController(new MasterCentersController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        paneMaster.getStyleClass().removeAll("menu-title-button1, focus");
+        for (HBox container : menuContainers){
+            if (container.equals(containerTarget)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseMaster)){
+                close.setVisible(false);
+            }else {
+                btnCloseMaster.setVisible(true);
+            }
+        }
+        txtReport.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+            container.getStyleClass().remove("big");}
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Revenue Centers Annual Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -198,8 +522,35 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/Collection_PaymentAnalysisReport.fxml"));
         loader.setController(new Collection_PaymentAnalysisReportController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        paneMaster.getStyleClass().removeAll("menu-title-button1, focus");
+        for (HBox container : menuContainers){
+            if (container.equals(containerTarget)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseMaster)){
+                close.setVisible(false);
+            }else {
+                btnCloseMaster.setVisible(true);
+            }
+        }
+        txtReport.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+            container.getStyleClass().remove("big");}
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Revenue VS Payment Analysis");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -207,8 +558,35 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/MasterQuarterItems.fxml"));
         loader.setController(new MasterQuarterItemsController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        paneMaster.getStyleClass().removeAll("menu-title-button1, focus");
+        for (HBox container : menuContainers){
+            if (container.equals(containerTarget)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseMaster)){
+                close.setVisible(false);
+            }else {
+                btnCloseMaster.setVisible(true);
+            }
+        }
+        txtReport.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+            container.getStyleClass().remove("big");}
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Revenue Items Quarterly Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -216,8 +594,35 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/MasterQuarterCenters.fxml"));
         loader.setController(new MasterQuarterCentersController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        paneMaster.getStyleClass().removeAll("menu-title-button1, focus");
+        for (HBox container : menuContainers){
+            if (container.equals(containerTarget)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnCloseMaster)){
+                close.setVisible(false);
+            }else {
+                btnCloseMaster.setVisible(true);
+            }
+        }
+        txtReport.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+            container.getStyleClass().remove("big");}
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Revenue Centers Quarterly Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
 
     @FXML
@@ -225,8 +630,50 @@ public class report_sideController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/fxml/Payment_Report.fxml"));
         loader.setController(new Payment_ReportController());
-        app.getCenterPane().getChildren().clear();
-        app.getCenterPane().getChildren().add(loader.load());
+        for (JFXButton btn: menuButtons){
+            if (btn.equals(btnPaymentDetails)){
+                btn.getStyleClass().removeAll("menu-title-button1, focus");
+            }
+        }
+        for (HBox container : menuContainers){
+            if (container.equals(containerPayment)){
+                container.getStyleClass().removeAll("menu-title, focus");
+                container.getStyleClass().remove("big");
+                container.getStyleClass().add("big");
+            }else {
+                container.getStyleClass().remove("big");
+            }
+        }
+        for (Button close : menuCloseButton){
+            if (!close.equals(btnClosePayment)){
+                close.setVisible(false);
+            }else {
+                btnClosePayment.setVisible(true);
+            }
+        }
+        txtReport.setVisible(true);
+        iconForward.setVisible(true);
+        txtTitle.setText("Payments Report");
+        txtTitle.setVisible(true);
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loader.load());
     }
-    
+
+    @FXML
+    private void showClose(ActionEvent event) {
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(noEntriesPane);
+        txtEntriesMainNoPane.setVisible(true);
+        for (Button close : menuCloseButton){
+            if (close.isVisible()){
+                close.setVisible(false);
+            }
+        }
+        txtReport.setVisible(false);
+        iconForward.setVisible(false);
+        txtTitle.setText(null);
+        txtTitle.setVisible(false);
+        for (HBox container : menuContainers){
+            container.getStyleClass().remove("big");}
+    }
 }

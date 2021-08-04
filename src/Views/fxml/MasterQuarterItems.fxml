@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import java.net.URL?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,11 +12,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="571.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="512.0" prefWidth="849.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="922.0" layoutY="594.0" onAction="#printReport" text="PRINT">
+      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="785.0" layoutY="482.0" onAction="#printReport" text="PRINT">
          <effect>
             <DropShadow />
          </effect>
@@ -25,7 +23,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="60.0" prefHeight="29.0" prefWidth="1030.0">
+      <HBox alignment="CENTER" layoutY="-2.0" prefHeight="33.0" prefWidth="850.0">
          <children>
             <Pane prefHeight="200.0" prefWidth="100.0" />
             <HBox alignment="CENTER">
@@ -60,18 +58,13 @@
             <Pane prefHeight="200.0" prefWidth="100.0" />
             <HBox alignment="CENTER">
                <children>
-                  <Button fx:id="btnShowReport" mnemonicParsing="false" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text="Show Report" />
+                  <JFXButton fx:id="btnShowReport" buttonType="RAISED" mnemonicParsing="false" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text="Show Report" />
                </children>
             </HBox>
             <Pane prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <Text layoutX="244.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MASTER QUARTER - REVENUE ITEMS' REPORT" textAlignment="CENTER" wrappingWidth="765.13671875">
-         <font>
-            <Font name="System Bold" size="31.0" />
-         </font>
-      </Text>
-      <AnchorPane layoutX="530.0" layoutY="99.0" prefHeight="27.0" prefWidth="136.0">
+      <AnchorPane layoutX="500.0" layoutY="37.0" prefHeight="27.0" prefWidth="136.0">
          <children>
             <Label text="QUARTER:">
                <font>
@@ -85,7 +78,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="279.0" layoutY="97.0">
+      <AnchorPane layoutX="249.0" layoutY="35.0">
          <children>
             <Label layoutY="2.0" text="YEAR:">
                <font>
@@ -99,9 +92,9 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneSingle" layoutX="36.0" layoutY="122.0">
+      <AnchorPane fx:id="paneSingle" layoutY="60.0" prefHeight="413.0" prefWidth="843.0">
          <children>
-            <TableView fx:id="quarterMastItemsTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="419.0" prefWidth="925.0">
+            <TableView fx:id="quarterMastItemsTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="378.0" prefWidth="850.0">
                <columns>
                   <TableColumn fx:id="revenueItem" prefWidth="126.0" text="REVENUE ITEM " />
                   <TableColumn fx:id="month1" prefWidth="165.0" text="MONTH" />
@@ -113,16 +106,16 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Label alignment="CENTER" layoutX="17.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" text="TOTAL" />
-            <Label fx:id="lblMonth1" alignment="CENTER" layoutX="212.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
-            <Label fx:id="lblMonth2" alignment="CENTER" layoutX="407.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
-            <Label fx:id="lblMonth3" alignment="CENTER" layoutX="602.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
-            <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="797.0" layoutY="425.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label alignment="CENTER" layoutX="14.0" layoutY="384.0" prefHeight="25.0" prefWidth="102.0" text="TOTAL" />
+            <Label fx:id="lblMonth1" alignment="CENTER" layoutX="192.0" layoutY="385.0" prefHeight="25.0" prefWidth="120.0" />
+            <Label fx:id="lblMonth2" alignment="CENTER" layoutX="364.0" layoutY="384.0" prefHeight="25.0" prefWidth="120.0" />
+            <Label fx:id="lblMonth3" alignment="CENTER" layoutX="541.0" layoutY="384.0" prefHeight="25.0" prefWidth="120.0" />
+            <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="714.0" layoutY="384.0" prefHeight="25.0" prefWidth="120.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneAll" layoutX="34.0" layoutY="122.0" prefHeight="450.0" prefWidth="935.0" visible="false">
+      <AnchorPane fx:id="paneAll" layoutX="2.0" layoutY="60.0" prefHeight="402.0" prefWidth="850.0" visible="false">
          <children>
-            <TableView fx:id="quarterMastItemsTableAll" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="419.0" prefWidth="935.0">
+            <TableView fx:id="quarterMastItemsTableAll" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="368.0" prefWidth="850.0">
                <columns>
                   <TableColumn fx:id="revenueItemAll" prefWidth="126.0" text="REVENUE ITEM " />
                   <TableColumn fx:id="month1All" prefWidth="165.0" text="1st Quarter" />
@@ -135,12 +128,12 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Label alignment="CENTER" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" text="TOTAL" />
-            <Label fx:id="lblMonth1All" alignment="CENTER" layoutX="167.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
-            <Label fx:id="lblMonth2All" alignment="CENTER" layoutX="334.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
-            <Label fx:id="lblMonth4All" alignment="CENTER" layoutX="653.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
-            <Label fx:id="lblTotalAmountAll" alignment="CENTER" layoutX="806.0" layoutY="422.0" prefHeight="25.0" prefWidth="128.0" />
-            <Label fx:id="lblMonth3All" alignment="CENTER" layoutX="501.0" layoutY="423.0" prefHeight="25.0" prefWidth="128.0" />
+            <Label alignment="CENTER" layoutY="369.0" prefHeight="25.0" prefWidth="110.0" text="TOTAL" />
+            <Label fx:id="lblMonth1All" alignment="CENTER" layoutX="156.0" layoutY="369.0" prefHeight="25.0" prefWidth="110.0" />
+            <Label fx:id="lblMonth2All" alignment="CENTER" layoutX="294.0" layoutY="369.0" prefHeight="25.0" prefWidth="110.0" />
+            <Label fx:id="lblMonth4All" alignment="CENTER" layoutX="580.0" layoutY="369.0" prefHeight="25.0" prefWidth="110.0" />
+            <Label fx:id="lblTotalAmountAll" alignment="CENTER" layoutX="733.0" layoutY="369.0" prefHeight="25.0" prefWidth="110.0" />
+            <Label fx:id="lblMonth3All" alignment="CENTER" layoutX="434.0" layoutY="370.0" prefHeight="25.0" prefWidth="110.0" />
          </children>
       </AnchorPane>
    </children>

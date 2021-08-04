@@ -172,7 +172,7 @@ public class commissionUpdateController implements Initializable {
             Week = rs.getString("commission_week");
             Year = rs.getString("commission_year");
             Amount = getFunctions.getAmount(rs.getString("commission_amount"));
-            getCollectionData = new GetEntries(ID, Date, Month, Week, Year, Qtr, Amount);
+            getCollectionData = new GetEntries(ID, Date, Month, Week,  Amount);
             commTable.getItems().add(getCollectionData);
         }
 

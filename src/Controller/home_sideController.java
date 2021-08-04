@@ -55,7 +55,6 @@ public class home_sideController implements Initializable {
         }else {
             btnAddUser.setVisible(false);
         }
-        System.out.println("Admin: "+ LogInController.admin+"\t"+"Supervisor: "+ LogInController.supervisor+"\t"+"OverAll admin: "+LogInController.OverAllAdmin+"\t"+"Has a center: "+LogInController.hasCenter);
         showDashboard(null);
     }
 

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="968.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="620.0" prefWidth="968.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="870.0" layoutY="577.0" onAction="#printReport" text="PRINT">
          <effect>
@@ -117,7 +117,7 @@
       </Label>
    </children>
    <stylesheets>
-      <URL value="@../Stylesheets/tableview.css" />
       <URL value="@../Stylesheets/report.css" />
+      <URL value="@../Stylesheets/tableview.css" />
    </stylesheets>
 </AnchorPane>

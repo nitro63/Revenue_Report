@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,163 +19,139 @@
 
 <!--fx:controller="Controller.appController"-->
 
-<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <BorderPane fx:id="border_pane" prefHeight="730.0" prefWidth="1355.0" style="-fx-background-color: #f5f6f7;">
-         <left>
-            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="569.0" BorderPane.alignment="CENTER">
-               <content>
-                  <VBox fx:id="leftPane" alignment="CENTER" prefHeight="569.0" prefWidth="215.0" style="-fx-border-width: 0px 2.5px 2.5px 2.5px; -fx-border-color: #87fb9e; -fx-background-color: #a9f9e4d1; -fx-border-radius: 25; -fx-background-radius: 25;" />
-               </content>
-            </ScrollPane>
-         </left>
-         <center>
-            <VBox fx:id="centerPane" alignment="CENTER" fillWidth="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="1137.0" style="-fx-background-color: #edfff7;" />
-         </center>
-         <top>
-            <HBox prefHeight="81.0" prefWidth="876.0" style="-fx-background-color: #dddcf7; -fx-background-color: #f5f6f7;">
+<BorderPane fx:id="border_pane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1038.0" styleClass="background-color" stylesheets="@../Stylesheets/app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="69.0" prefWidth="1038.0" styleClass="nav-bar" BorderPane.alignment="CENTER">
+         <children>
+            <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="242.0" styleClass="nav-brand" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER" prefHeight="69.0" prefWidth="216.0" style="-fx-background-color: #ededfb; -fx-background-radius: 45;">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
+                  <Line endY="55.60984802246094" fill="BLACK" layoutX="58.0" layoutY="3.0" />
+                  <Text layoutX="70.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-brand-text" text="KUMASI METROPOLITAN ASSEMBLY" wrappingWidth="176.87">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="59.0" fitWidth="56.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../Assets/kmalogo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <AnchorPane prefHeight="65.0" prefWidth="857.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+               <children>
+                  <AnchorPane layoutX="230.0" layoutY="5.0" prefHeight="57.0" prefWidth="275.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="264.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <ImageView fitHeight="80.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../Assets/kmalogo.png" />
-                           </image>
-                        </ImageView>
-                        <Line endY="64.60984802246094" />
-                        <VBox prefHeight="102.0" prefWidth="131.0">
-                           <children>
-                              <Text fill="#055b18" strokeType="OUTSIDE" strokeWidth="0.0" text="KUMASI METROPOLITAN ASSEMBLY" wrappingWidth="141.0">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                              </Text>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="3.0" />
-                           </HBox.margin>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <AnchorPane minWidth="-Infinity" prefHeight="82.0" prefWidth="868.0" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                     <children>
-                        <VBox alignment="TOP_RIGHT" prefHeight="82.0" prefWidth="899.0" style="-fx-background-color: #e4f2f2; -fx-background-radius: 15; -fx-border-width: 0px; -fx-border-color: #a6a6ff; -fx-border-radius: 15;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="41.0" prefWidth="463.0" style="-fx-background-color: transparent;">
-                                 <children>
-                                    <VBox alignment="CENTER" fillWidth="false" prefHeight="26.0" prefWidth="519.0" style="-fx-background-radius: 5; -fx-background-color: #d4dfe4a8;">
-                                       <children>
-                                          <Text fill="#055b18" strokeType="OUTSIDE" strokeWidth="0.0" text="FINANCE DEPARTMENT" textAlignment="CENTER" wrappingWidth="232.0">
-                                             <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <Text fill="#055b18" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="REVENUE UNIT" textAlignment="CENTER" wrappingWidth="136.0">
-                                             <font>
-                                                <Font name="SansSerif Regular" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="2.0" />
-                                             </VBox.margin>
-                                          </Text>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets right="2.0" top="5.0" />
-                                       </VBox.margin>
-                                    </VBox>
-                                 </children>
-                              </VBox>
-                              <AnchorPane blendMode="DARKEN" prefHeight="28.0" prefWidth="975.0" style="-fx-blend-mode: darken;">
-                                 <children>
-                                    <Button fx:id="btnSDHME" layoutX="66.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDHME" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: transparent; -fx-border-color: #11c3c3; -fx-background-radius: 50; -fx-border-radius: 50;" text="HOME" textFill="#11124a">
-                                       <font>
-                                          <Font name="Century" size="13.0" />
-                                       </font>
-                                    </Button>
-                                    <Pane layoutX="138.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <Button fx:id="btnSGRE" layoutX="171.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSGRE" prefHeight="28.0" prefWidth="154.0" style="-fx-background-color: transparent; -fx-border-color: #11c3c3; -fx-background-radius: 50; -fx-border-radius: 50;" text="REVENUE ENTRIES" textFill="#11124a">
-                                       <font>
-                                          <Font name="Century" size="13.0" />
-                                       </font>
-                                    </Button>
-                                    <Pane layoutX="334.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <Button fx:id="btnSDRR" layoutX="365.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDRR" prefHeight="28.0" prefWidth="164.0" style="-fx-background-color: transparent; -fx-border-color: #11c3c3; -fx-border-radius: 50; -fx-background-radius: 50;" text="REVENUE REPORTS" textFill="#11124a">
-                                       <font>
-                                          <Font name="Century" size="13.0" />
-                                       </font>
-                                    </Button>
-                                    <Pane layoutX="530.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <Button fx:id="btnSDRI" layoutX="567.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDRI" prefHeight="28.0" prefWidth="125.0" style="-fx-background-color: transparent; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-color: #11c3c3;" text="ADD / DELELTE" textFill="#11124a">
-                                       <font>
-                                          <Font name="Century" size="13.0" />
-                                       </font>
-                                    </Button>
-                                    <Pane layoutX="709.0" layoutY="4.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                                    <Button fx:id="btnSDHelp" layoutX="740.0" layoutY="4.0" mnemonicParsing="false" onAction="#showSDHELP" prefHeight="28.0" prefWidth="61.0" style="-fx-background-color: transparent; -fx-border-radius: 50; -fx-background-radius: 50; -fx-border-color: #11c3c3;" text="HELP" textFill="#11124a">
-                                       <font>
-                                          <Font name="Century" size="13.0" />
-                                       </font>
-                                    </Button>
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                           <opaqueInsets>
-                              <Insets bottom="5.0" left="5.0" right="5.0" />
-                           </opaqueInsets>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-                  <VBox alignment="BASELINE_CENTER" prefHeight="79.0" prefWidth="154.0" style="-fx-border-radius: 80; -fx-border-width: 1.5px 1.5px 1.5px 1.5px; -fx-border-color: #565656; -fx-background-color: #ededfb; -fx-background-radius: 80;">
-                     <HBox.margin>
-                        <Insets top="3.0" />
-                     </HBox.margin>
-                     <children>
-                        <HBox alignment="CENTER">
-                           <children>
-                              <ImageView fx:id="imgAvatar" fitHeight="22.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../Assets/user.png" />
-                                 </image>
-                              </ImageView>
-                              <Text fx:id="txtUser" strokeType="OUTSIDE" strokeWidth="0.0" text="USER" textAlignment="CENTER" wrappingWidth="63.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </Text>
-                           </children>
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#LOGOUT" style="-fx-background-color: transparent;" text="LOGOUT" textFill="#c98e0e" />
-                        <Text lineSpacing="1.0" strokeType="OUTSIDE" strokeWidth="0.0">
+                        <Text layoutX="7.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-bar-text-bold" text="F I N A N C E  D E P A R T M E N T " textAlignment="CENTER" wrappingWidth="295.0">
                            <font>
-                              <Font name="System Bold" size="12.0" />
+                              <Font name="System Bold" size="16.0" />
                            </font>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
+                        </Text>
+                        <Text layoutX="26.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-bar-text" text="R E V E N U E  U N I T " textAlignment="CENTER" wrappingWidth="260.0">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
                         </Text>
                      </children>
-                  </VBox>
+                  </AnchorPane>
+                  <ImageView fx:id="imgUser" fitHeight="50.0" fitWidth="57.0" layoutX="728.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="16.674495697021484" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="16.0">
+                     <image>
+                        <Image url="@../../Assets/download-removebg-preview.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="txtUser" alignment="CENTER_RIGHT" layoutX="678.0" layoutY="17.0" prefHeight="35.0" prefWidth="89.0" styleClass="username" text="User Name" wrapText="true" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="101.0" AnchorPane.topAnchor="17.0" />
+                  <MenuButton fx:id="btnUserMenu" layoutX="808.0" layoutY="22.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="23.0" styleClass="profile-menulist" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="22.0">
+                    <items>
+                      <MenuItem fx:id="menuItemViewProfile" mnemonicParsing="false" onAction="#viewProfile" text="View Profile" />
+                      <MenuItem fx:id="menuItemLogout" mnemonicParsing="false" onAction="#Logout" text="Logout" />
+                    </items>
+                  </MenuButton>
                </children>
-               <BorderPane.margin>
-                  <Insets bottom="2.0" />
-               </BorderPane.margin>
-            </HBox>
-         </top>
-      </BorderPane>
-   </content>
-</ScrollPane>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox fx:id="leftPane" prefHeight="638.0" prefWidth="164.0" styleClass="side-bar" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane>
+               <children>
+                  <JFXHamburger fx:id="btnBurger" layoutX="8.0" layoutY="59.0" prefHeight="17.0" prefWidth="26.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="59.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="562.0" prefWidth="167.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label fx:id="lblDashboard" layoutX="67.0" layoutY="62.0" text="Dashboard">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="btnSDHME" graphicTextGap="120.0" layoutX="-1.0" layoutY="50.0" minWidth="-Infinity" onAction="#showSDHME" prefHeight="47.0" prefWidth="165.0">
+                     <graphic>
+                        <AnchorPane prefHeight="25.0" prefWidth="33.0">
+                           <children>
+                              <ImageView fitHeight="25.78" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../Assets/dashboard-icon-png-16-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </graphic>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </JFXButton>
+                  <Label fx:id="lblEntries" layoutX="69.0" layoutY="161.0" text="Entries">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="btnSGRE" graphicTextGap="120.0" layoutX="1.0" layoutY="150.0" minWidth="-Infinity" onAction="#showSGRE" prefHeight="45.0" prefWidth="162.0">
+                     <graphic>
+                        <AnchorPane>
+                           <children>
+                              <ImageView fitHeight="25.87" fitWidth="25.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../Assets/Entry-LIst-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </graphic>
+                  </JFXButton>
+                  <Label fx:id="lblReports" layoutX="67.0" layoutY="260.0" text="Reports">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="btnSDRR" graphicTextGap="120.0" layoutX="1.0" layoutY="245.0" minWidth="-Infinity" onAction="#showSDRR" prefHeight="48.0" prefWidth="162.0" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Assets/report_icon-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></JFXButton>
+                  <Label fx:id="lblAdministrative" layoutX="61.0" layoutY="349.0" text="Administrative">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="btnSDRI" graphicTextGap="118.0" layoutX="-1.0" layoutY="331.0" onAction="#showSDRI" prefHeight="45.0" prefWidth="168.0">
+                     <graphic>
+                        <AnchorPane prefHeight="45.0" prefWidth="32.0">
+                           <children>
+                              <MaterialDesignIconView glyphName="SHIELD_OUTLINE" layoutY="34.0" size="30" wrappingWidth="25.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="6.0" />
+                           </children>
+                        </AnchorPane>
+                     </graphic></JFXButton>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox fx:id="centerPane" alignment="TOP_CENTER" prefHeight="638.0" prefWidth="791.0" style="-fx-background-color: transparent;" BorderPane.alignment="TOP_CENTER" />
+   </center>
+</BorderPane>

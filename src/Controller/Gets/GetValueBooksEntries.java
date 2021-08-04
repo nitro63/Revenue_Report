@@ -11,10 +11,7 @@ public class GetValueBooksEntries {
 
     public GetValueBooksEntries(){   }
 
-    public GetValueBooksEntries(String Year, String month, String quarter, String week, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
-        this.Year = new SimpleStringProperty(Year);
-        this.Month = new SimpleStringProperty(month);
-        this.Quarter = new SimpleStringProperty(quarter);
+    public GetValueBooksEntries( String week, String date, String valueBook, String firstSerial, String lastSerial, String quantity, String valAmount, String cumuAmount, String purAmount, String remarks) {
         this.Week = new SimpleStringProperty(week);
         this.Date = new SimpleStringProperty(date);
         this.ValueBook = new SimpleStringProperty(valueBook);

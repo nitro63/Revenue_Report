@@ -60,7 +60,7 @@ public class MasterQuarterItemsController implements Initializable {
     @FXML
     private ComboBox<String> cmbMstItemsQuarter;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private TableView<GetMstrQuarterItems> quarterMastItemsTable;
     @FXML

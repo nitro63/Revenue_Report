@@ -63,7 +63,7 @@ public class Target_AnalysisController implements Initializable {
     @FXML
     private ComboBox<String> cmbReportYear;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private Text txtAnnualTarget;
     @FXML
@@ -261,6 +261,7 @@ public class Target_AnalysisController implements Initializable {
 
     @FXML
     private void ShowReport(ActionEvent event) throws SQLException {
+
         tblColPayAnalysis.getItems().clear();
         changeNames();
         setItems();

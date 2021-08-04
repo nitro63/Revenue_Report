@@ -18,10 +18,15 @@ public class GetTargetEnt {
     public GetTargetEnt(){
         
     }
-    
-    public GetTargetEnt( String Center, String Amount, String Year){
+
+    public GetTargetEnt(  String Amount, String Year){
         this.Amount = new SimpleStringProperty(Amount);
-        this.Center = new SimpleStringProperty(Center);
+        this.Year = new SimpleStringProperty(Year);
+    }
+
+    public GetTargetEnt( String ID, String Amount, String Year){
+        this.ID = new SimpleStringProperty(ID);
+        this.Amount = new SimpleStringProperty(Amount);
         this.Year = new SimpleStringProperty(Year);
     }
 

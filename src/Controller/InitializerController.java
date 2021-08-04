@@ -75,11 +75,12 @@ public class InitializerController implements Initializable {
             loader.setController(new appController());
             appController app = loader.getController();
             root = loader.load();
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root);/*
+            String css = this.getClass().getResource("/Views/Stylesheets/app.css").toExternalForm(); // Getting stylesheet
+            scene.getStylesheets().add(css);*/
             base.setTitle("Revenue Monitoring System");
             base.getIcons().add(new Image("/Assets/kmalogo.png"));
             base.setScene(scene);
-            base.setMaximized(true);
             base.show();
         } catch (IOException ex) {
             ex.printStackTrace();

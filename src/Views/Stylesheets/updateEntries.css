@@ -106,17 +106,17 @@
     -fx-font-weight: bold;
 }
 
-#btnDelete {
+.btnDelete {
     -fx-background-color: #e72e27;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
-#btnDelete:hover {
+.btnDelete:hover {
     -fx-background-color: #bf0505;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
-#btnDelete:hover:pressed {
+.btnDelete:hover:pressed {
     -fx-background-color: #9b2526;
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;

@@ -282,7 +282,6 @@ public class Bank_DetailsEntriesController implements Initializable {
                     String center = colEnt.GetCenter.getRevCenter();
                     String year = getData.getYear();
                     ID = getGcrID(getData.getGCR(), colEnt.gcrID);
-                    System.out.println("Fred"+ID);
                 String fini = "chq"+colEnt.getID();
                 boolean condition = true;
                 ArrayList<String> dup = new ArrayList<>();
@@ -432,7 +431,6 @@ public class Bank_DetailsEntriesController implements Initializable {
                     }else{
                         String id = colEnt.gcrID.get(GCR);
                         String gcr = cmbGCR.getSelectionModel().getSelectedItem().substring(cmbGCR.getSelectionModel().getSelectedItem().lastIndexOf("-")+1);
-                        System.out.println("Fred"+"\n"+GCR+"\n"+id+"\n"+colEnt.gcrID);
                         getReport = new GetBankDetails(GCR, Year, Month, Date, chqDate, chqNumber, Bank, Amount);
                         tblCollectEnt.getItems().add(getReport);
                         Condition = false;

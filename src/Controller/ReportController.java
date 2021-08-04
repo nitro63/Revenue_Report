@@ -57,6 +57,14 @@ public class ReportController implements Initializable {
     @FXML
     private Label lblRevenueCenter;
     @FXML
+    private Label lblCenterWarn;
+    @FXML
+    private Label lblYearWarn;
+    @FXML
+    private Label lblMonthWarn;
+    @FXML
+    private Label lblWeekWarn;
+    @FXML
     private TableView<GetReport> WEEKLY_TABLE;
     @FXML
     private JFXButton btnPrint;
@@ -198,7 +206,7 @@ public class ReportController implements Initializable {
     ObservableList<String> rowWeek =FXCollections.observableArrayList();
     ObservableList<String> rowCategories =FXCollections.observableArrayList();
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     boolean Condition, subMetroPR;
     
     GetReport getReport;
@@ -210,6 +218,18 @@ public class ReportController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cmbReportCent.setOnMouseClicked(e -> {
+            lblCenterWarn.setVisible(false);
+        });
+        cmbReportMonth.setOnMouseClicked(e -> {
+            lblMonthWarn.setVisible(false);
+        });
+        cmbReportYear.setOnMouseClicked(e -> {
+            lblYearWarn.setVisible(false);
+        });
+        cmbReportWeek.setOnMouseClicked(e -> {
+            lblWeekWarn.setVisible(false);
+        });
         try {
             getRevCenters();
         } catch (SQLException ex) {
@@ -548,9 +568,19 @@ public class ReportController implements Initializable {
     @FXML
     private void ShowReport(ActionEvent event) throws SQLException, ParseException {
         WEEKLY_TABLE.getItems().clear();
+        if (cmbReportCent.getSelectionModel().isEmpty()){
+            lblCenterWarn.setVisible(true);
+        }else if (cmbReportYear.getSelectionModel().isEmpty()){
+            lblYearWarn.setVisible(true);
+        }else if (cmbReportMonth.getSelectionModel().isEmpty()){
+            lblMonthWarn.setVisible(true);
+        }else if (cmbReportWeek.getSelectionModel().isEmpty()){
+            lblWeekWarn.setVisible(true);
+        }else{
         changeNames();
         getWeekly();
         setItems();
+        }
     }
 
     @FXML

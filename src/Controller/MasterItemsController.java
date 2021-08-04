@@ -53,7 +53,7 @@ public class MasterItemsController implements Initializable {
     @FXML
     private ComboBox<String> cmbMasterItemsYear;
     @FXML
-    private Button btnShowReport;
+    private JFXButton btnShowReport;
     @FXML
     private TableView<GetItemsReport> revenueItemsTable;
     @FXML
@@ -293,7 +293,6 @@ public class MasterItemsController implements Initializable {
             }
             URL url = this.getClass().getResource("/Assets/kmalogo.png");
 
-            System.out.println(items + "\n" + url);
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String yr = cmbMasterItemsYear.getSelectionModel().getSelectedItem();
 

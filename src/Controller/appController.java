@@ -11,6 +11,12 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import com.jfoenix.transitions.hamburger.HamburgerTransition;
+import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +24,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import Controller.Gets.GetRevCenter;
@@ -36,9 +46,33 @@ public class appController  implements Initializable{
     
     
     @FXML
-    private BorderPane border_pane;
+    public BorderPane border_pane;
     @FXML
-    private VBox centerPane; 
+    private VBox centerPane;
+    @FXML
+    private VBox leftPane;
+    @FXML
+    private MenuButton btnUserMenu;
+    @FXML
+    private Label lblDashboard;
+    @FXML
+    private Label lblAdministrative;
+    @FXML
+    private Label lblReports;
+    @FXML
+    private Label lblEntries;
+    @FXML
+    private ImageView imgUser;
+
+    @FXML
+    private MenuItem menuItemViewProfile;
+
+    @FXML
+    private MenuItem menuItemLogout;
+
+    @FXML
+    private JFXHamburger btnBurger;
+
     @FXML
     private Button btnSDHME;
     @FXML
@@ -52,12 +86,11 @@ public class appController  implements Initializable{
     @FXML
     private ImageView imgAvatar;
     @FXML
-    private Text txtUser;
+    private Label txtUser;
     @FXML
     private Button btnLogout;
-    @FXML
-    private VBox leftPane;
     GetRevCenter GetCenter = new GetRevCenter();
+    HamburgerBasicCloseTransition transition;
     LogInController getLogin ;/*
      InitializerController app;
      public void setappController(InitializerController app){
@@ -73,13 +106,48 @@ public  appController() {
       
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {/*
-        System.out.println(InitializerController.userCategory+"\t"+ InitializerController.userCenter);*/
+    public void initialize(URL url, ResourceBundle rb) {
+    transition = new HamburgerBasicCloseTransition(btnBurger);
+        border_pane.widthProperty().addListener(((observable, oldValue, newValue) -> {
+            sideBarResize();
+        }));
+        transition.setRate(-1);
+    btnBurger.setOnMousePressed(e ->{
+        transition.setRate(transition.getRate()*-1);
+        transition.play();
+        if (transition.getRate() > 0){
+            leftPane.setMinWidth(168);
+            leftPane.setMaxWidth(168);
+            leftPane.setPrefWidth(168);
+            btnSDHME.setPrefWidth(168);
+            btnSDRI.setPrefWidth(168);
+            btnSDRR.setPrefWidth(168);
+            btnSGRE.setPrefWidth(168);
+            lblDashboard.setVisible(true);
+            if (!LogInController.OverAllAdmin){
+                lblAdministrative.setVisible(false);
+            }else {
+                lblAdministrative.setVisible(true);}
+            lblEntries.setVisible(true);
+            lblReports.setVisible(true);
+        }else {
+            leftPane.setMinWidth(51);
+            leftPane.setMaxWidth(51);
+            leftPane.setPrefWidth(51);
+            btnSDHME.setPrefWidth(51);
+            btnSDRI.setPrefWidth(51);
+            btnSDRR.setPrefWidth(51);
+            btnSGRE.setPrefWidth(51);
+            lblDashboard.setVisible(false);
+            lblAdministrative.setVisible(false);
+            lblEntries.setVisible(false);
+            lblReports.setVisible(false);
+        }
+    });
         txtUser.setText(LogInController.loggerUsername);
         if (!LogInController.OverAllAdmin){
             btnSDRI.setVisible(false);
-            btnSDHelp.setLayoutX(567);
-            btnSDHelp.setLayoutY(4);
+            lblAdministrative.setVisible(false);
         }
         try {
             showSDHME(null);
@@ -96,10 +164,10 @@ public  appController() {
         loadsdhme.setLocation(getClass().getResource( "/Views/fxml/home_side.fxml"));
         loadsdhme.setController(new home_sideController());
         home_sideController home = loadsdhme.getController();
-        home.setappController(this);
+        home.setappController(this);/*
         leftPane.getChildren().clear();
         centerPane.getChildren().clear();
-        leftPane.getChildren().add(loadsdhme.load());
+        leftPane.getChildren().add(loadsdhme.load());*/
     }
 
     @FXML
@@ -109,9 +177,10 @@ public  appController() {
         loadsgre.setController(new entries_sideController(/*GetCenter*/));
         entries_sideController cont = (entries_sideController)loadsgre.getController();
         cont.setappController(this);
-        leftPane.getChildren().clear();
         centerPane.getChildren().clear();
-        leftPane.getChildren().add(loadsgre.load());
+        centerPane.getChildren().add(loadsgre.load());
+        VBox.setVgrow(loadsgre.getRoot(), Priority.ALWAYS);
+//        border_pane.setCenter(loadsgre.load());
     }
 
     @FXML
@@ -121,9 +190,8 @@ public  appController() {
         load.setController(new report_sideController());
         report_sideController rep = (report_sideController)load.getController();
         rep.setappController(this);
-        leftPane.getChildren().clear();
         centerPane.getChildren().clear();
-        leftPane.getChildren().add(load.load());
+        centerPane.getChildren().add(load.load());
     }
 
     @FXML
@@ -133,9 +201,8 @@ public  appController() {
         load.setController(new add_sideController());
         add_sideController rep = (add_sideController)load.getController();
         rep.setappController(this);
-        leftPane.getChildren().clear();
         centerPane.getChildren().clear();
-        leftPane.getChildren().add(load.load());
+        centerPane.getChildren().add(load.load());
     }
 
     @FXML
@@ -144,7 +211,7 @@ public  appController() {
     }
 
     @FXML
-    private void LOGOUT(ActionEvent event) {
+    private void Logout(ActionEvent event) {
     Stage current = (Stage)txtUser.getScene().getWindow();
     current.close();
         try {
@@ -162,5 +229,45 @@ public  appController() {
         } catch (IOException e) {
             new PromptDialogController("Error!", "Error Occured. Failed to initialize system.");
         }
+    }
+
+    void sideBarResize(){
+        if (border_pane.getWidth() > 1038.0){
+            if (transition.getRate() < 0){
+            transition.setRate(transition.getRate()*-1);
+            transition.play();}
+            leftPane.setMinWidth(168);
+            leftPane.setMaxWidth(168);
+            leftPane.setPrefWidth(168);
+            btnSDHME.setPrefWidth(168);
+            btnSDRI.setPrefWidth(168);
+            btnSDRR.setPrefWidth(168);
+            btnSGRE.setPrefWidth(168);
+            lblDashboard.setVisible(true);
+            if (!LogInController.OverAllAdmin){
+                lblAdministrative.setVisible(false);
+            }else {
+                lblAdministrative.setVisible(true);}
+            lblEntries.setVisible(true);
+            lblReports.setVisible(true);
+        }else if (border_pane.getWidth() <= 1038.0){
+            if (transition.getRate() > 0){
+            transition.setRate(-1);
+            transition.play();}
+            leftPane.setMinWidth(51);
+            leftPane.setMaxWidth(51);
+            leftPane.setPrefWidth(51);
+            btnSDHME.setPrefWidth(51);
+            btnSDRI.setPrefWidth(51);
+            btnSDRR.setPrefWidth(51);
+            btnSGRE.setPrefWidth(51);
+            lblDashboard.setVisible(false);
+            lblAdministrative.setVisible(false);
+            lblEntries.setVisible(false);
+            lblReports.setVisible(false);
+        }}
+    @FXML
+    void viewProfile(ActionEvent event) {
+
     }
 }
