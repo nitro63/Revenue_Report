@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="512.0" prefWidth="850.0" styleClass="background_color" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" layoutY="-6.0" prefHeight="48.0" prefWidth="847.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <AnchorPane prefHeight="29.0" prefWidth="159.0">
+               <children>
+                  <ComboBox fx:id="cmbReportCent" layoutY="15.0" onAction="#SelectedCenter" prefHeight="27.0" prefWidth="131.0" promptText="Revenue Center" />
+                  <Label fx:id="lblCenterWarn" layoutX="2.0" layoutY="6.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <AnchorPane>
+               <children>
+                  <ComboBox fx:id="cmbReportYear" layoutY="18.0" onAction="#SelectedYear" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
+                  <Label fx:id="lblYearWarn" layoutY="8.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textAlignment="CENTER" textFill="#ee2222" visible="false" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <AnchorPane prefHeight="48.0" prefWidth="114.0">
+               <children>
+                  <ComboBox fx:id="cmbReportMonth" layoutY="19.0" prefHeight="27.0" prefWidth="116.0" promptText="Month" />
+                  <Label fx:id="lblMonthWarn" layoutX="3.0" layoutY="6.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+            <AnchorPane>
+               <children>
+                  <JFXButton fx:id="btnShowReport" buttonType="RAISED" layoutY="17.0" onAction="#ShowReport" prefHeight="25.0" prefWidth="116.0" text=" Show Report" />
+               </children>
+            </AnchorPane>
+            <Pane prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <AnchorPane fx:id="generalPane" layoutX="12.0" layoutY="83.0" prefHeight="373.0" prefWidth="834.0">
+         <children>
+            <TableView fx:id="weekTable" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="317.0" prefWidth="822.0">
+               <columns>
+                  <TableColumn fx:id="revenueITEM" editable="false" prefWidth="126.0" sortable="false">
+                     <graphic>
+                        <Label prefHeight="51.0" prefWidth="99.0" text="REVENUE ITEM " textAlignment="CENTER" wrapText="true" />
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                     <columns>
+                        <TableColumn fx:id="week1" editable="false" prefWidth="100.0" sortable="false" text="1" />
+                     </columns>
+                     <graphic>
+                        <Label fx:id="lblWeek1gen" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                     <columns>
+                        <TableColumn fx:id="week2" editable="false" prefWidth="100.0" sortable="false" text="2" />
+                     </columns>
+                     <graphic>
+                        <Label fx:id="lblWeek2gen" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                     <columns>
+                        <TableColumn fx:id="week3" editable="false" prefWidth="100.0" sortable="false" text="3" />
+                     </columns>
+                     <graphic>
+                        <Label fx:id="lblWeek3gen" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                     <columns>
+                        <TableColumn fx:id="week4" editable="false" prefWidth="100.0" sortable="false" text="4" />
+                     </columns>
+                     <graphic>
+                        <Label fx:id="lblWeek4gen" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                     <columns>
+                        <TableColumn fx:id="week5" editable="false" prefWidth="100.0" sortable="false" text="5" />
+                     </columns>
+                     <graphic>
+                        <Label fx:id="lblWeek5gen" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                     <columns>
+                        <TableColumn fx:id="week6" editable="false" prefWidth="100.0" sortable="false" text="6" />
+                     </columns>
+                     <graphic>
+                        <Label fx:id="lblWeek6gen" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn fx:id="totalAmount" editable="false" prefWidth="100.0" sortable="false">
+                     <graphic>
+                        <Label text="TOTAL AMOUNT" textAlignment="CENTER" wrapText="true" />
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn fx:id="colType" editable="false" prefWidth="100.0" sortable="false" text="TYPE" visible="false" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <Label alignment="CENTER" layoutY="322.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" text="TOTAL" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk1SumGen" alignment="CENTER" layoutX="98.0" layoutY="322.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk2SumGen" alignment="CENTER" layoutX="200.0" layoutY="322.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk3SumGen" alignment="CENTER" layoutX="299.0" layoutY="322.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk4SumGen" alignment="CENTER" layoutX="409.0" layoutY="322.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk5SumGen" alignment="CENTER" layoutX="515.0" layoutY="322.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalSumGen" alignment="CENTER" layoutX="728.0" layoutY="322.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblWk6SumGen" alignment="CENTER" layoutX="630.0" layoutY="323.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="773.0" layoutY="479.0" onAction="#printReport" text="PRINT">
+         <effect>
+            <DropShadow />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <AnchorPane layoutX="649.0" layoutY="45.0" prefHeight="27.0" prefWidth="198.0" visible="false">
+         <children>
+            <Label text="MONTH:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblMonth" layoutX="81.0" layoutY="-2.0" text="NAN">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="492.0" layoutY="45.0" visible="false">
+         <children>
+            <Label layoutY="2.0" text="YEAR:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblYear" layoutX="57.0" layoutY="1.0" text="NAN">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="38.0" layoutY="43.0" prefHeight="38.0" prefWidth="433.0" visible="false">
+         <children>
+            <Label layoutY="5.0" text="REVENUE CENTER:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRevenueCenter" layoutX="165.0" layoutY="-3.0" prefHeight="41.0" prefWidth="266.0" text="NAN" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ScrollPane fx:id="subPane" focusTraversable="false" layoutX="4.0" layoutY="73.0" prefHeight="404.0" prefWidth="841.0" visible="false">
+         <content>
+            <AnchorPane prefHeight="680.0" prefWidth="850.0">
+               <children>
+                  <TableView fx:id="weekTableSub" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="333.0" prefWidth="827.0">
+                     <columns>
+                        <TableColumn fx:id="revenueITEMSub" editable="false" prefWidth="126.0" sortable="false">
+                           <graphic>
+                              <Label prefHeight="51.0" prefWidth="99.0" text="REVENUE ITEM " textAlignment="CENTER" wrapText="true" />
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                           <columns>
+                              <TableColumn fx:id="week1Sub" editable="false" prefWidth="100.0" sortable="false" text="1" />
+                           </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek1sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                           <columns>
+                              <TableColumn fx:id="week2Sub" editable="false" prefWidth="100.0" sortable="false" text="2" />
+                           </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek2sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                           <columns>
+                              <TableColumn fx:id="week3Sub" editable="false" prefWidth="100.0" sortable="false" text="3" />
+                           </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek3sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                           <columns>
+                              <TableColumn fx:id="week4Sub" editable="false" prefWidth="100.0" sortable="false" text="4" />
+                           </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek4sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                           <columns>
+                              <TableColumn fx:id="week5Sub" prefWidth="100.0" sortable="false" text="5" />
+                           </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek5sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn editable="false" prefWidth="75.0" sortable="false">
+                           <columns>
+                              <TableColumn fx:id="week6Sub" editable="false" prefWidth="100.0" sortable="false" text="6" />
+                           </columns>
+                           <graphic>
+                              <Label fx:id="lblWeek6sub" minHeight="-Infinity" prefHeight="36.0" prefWidth="120.0" text="WEEK" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn fx:id="totalAmountSub" editable="false" prefWidth="100.0" sortable="false">
+                           <graphic>
+                              <Label text="TOTAL AMOUNT" textAlignment="CENTER" wrapText="true" />
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn fx:id="colTypeSub" editable="false" prefWidth="100.0" sortable="false" text="TYPE" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <Text layoutX="1.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Comm Collectors Amount:" wrappingWidth="100.99999904632568">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="1.0" layoutY="432.0" strokeType="OUTSIDE" strokeWidth="0.0" text="18% Commission:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="3.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cost of Value Books:" wrappingWidth="100.99999740347266">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="5.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NET REVENUE:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="3.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AMOUNT DUE SUB-METRO:" wrappingWidth="100.9999982547015">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="4.0" layoutY="579.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AMOUNT DUE KMA:" wrappingWidth="100.99999740347266">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="3.0" layoutY="487.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Cost:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="lblCCAmount1" alignment="CENTER" layoutX="96.0" layoutY="383.0" prefHeight="21.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCommission1" alignment="CENTER" layoutX="96.0" layoutY="420.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCostValueBooks1" alignment="CENTER" layoutX="96.0" layoutY="445.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiff1" alignment="CENTER" layoutX="96.0" layoutY="472.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblNetRevenue1" alignment="CENTER" layoutX="96.0" layoutY="500.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueSub1" alignment="CENTER" layoutX="96.0" layoutY="534.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueKMA1" alignment="CENTER" layoutX="96.0" layoutY="572.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="1.0" layoutY="335.0" prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: #b6f1c3;" text="TOTAL" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblWk1SumSub" alignment="CENTER" layoutX="96.0" layoutY="335.0" prefHeight="38.0" prefWidth="95.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblWk2SumSub" alignment="CENTER" layoutX="201.0" layoutY="336.0" prefHeight="38.0" prefWidth="95.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblWk3SumSub" alignment="CENTER" layoutX="307.0" layoutY="336.0" prefHeight="38.0" prefWidth="95.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblWk4SumSub" alignment="CENTER" layoutX="414.0" layoutY="336.0" prefHeight="38.0" prefWidth="95.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblWk5SumSub" alignment="CENTER" layoutX="521.0" layoutY="336.0" prefHeight="38.0" prefWidth="95.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalSumSub" alignment="CENTER" layoutX="730.0" layoutY="336.0" prefHeight="38.0" prefWidth="95.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblWk6SumSub" alignment="CENTER" layoutX="624.0" layoutY="336.0" prefHeight="38.0" prefWidth="95.0" style="-fx-background-color: #b6f1c3;" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCCAmount2" alignment="CENTER" layoutX="201.0" layoutY="383.0" prefHeight="21.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCommission2" alignment="CENTER" layoutX="201.0" layoutY="420.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCostValueBooks2" alignment="CENTER" layoutX="201.0" layoutY="445.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiff2" alignment="CENTER" layoutX="201.0" layoutY="472.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblNetRevenue2" alignment="CENTER" layoutX="201.0" layoutY="500.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueSub2" alignment="CENTER" layoutX="201.0" layoutY="534.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueKMA2" alignment="CENTER" layoutX="201.0" layoutY="572.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCCAmount3" alignment="CENTER" layoutX="310.0" layoutY="383.0" prefHeight="21.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCommission3" alignment="CENTER" layoutX="310.0" layoutY="420.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCostValueBooks3" alignment="CENTER" layoutX="310.0" layoutY="445.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiff3" alignment="CENTER" layoutX="310.0" layoutY="472.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblNetRevenue3" alignment="CENTER" layoutX="310.0" layoutY="500.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueSub3" alignment="CENTER" layoutX="310.0" layoutY="534.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueKMA3" alignment="CENTER" layoutX="310.0" layoutY="572.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCCAmount4" alignment="CENTER" layoutX="414.0" layoutY="383.0" prefHeight="21.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCommission4" alignment="CENTER" layoutX="414.0" layoutY="420.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCostValueBooks4" alignment="CENTER" layoutX="414.0" layoutY="445.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiff4" alignment="CENTER" layoutX="414.0" layoutY="472.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblNetRevenue4" alignment="CENTER" layoutX="414.0" layoutY="500.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueSub4" alignment="CENTER" layoutX="414.0" layoutY="534.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueKMA4" alignment="CENTER" layoutX="414.0" layoutY="572.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCCAmount5" alignment="CENTER" layoutX="521.0" layoutY="383.0" prefHeight="21.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCommission5" alignment="CENTER" layoutX="521.0" layoutY="420.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCostValueBooks5" alignment="CENTER" layoutX="521.0" layoutY="445.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiff5" alignment="CENTER" layoutX="521.0" layoutY="472.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblNetRevenue5" alignment="CENTER" layoutX="521.0" layoutY="500.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueSub5" alignment="CENTER" layoutX="521.0" layoutY="534.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueKMA5" alignment="CENTER" layoutX="521.0" layoutY="572.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCCAmount6" alignment="CENTER" layoutX="624.0" layoutY="383.0" prefHeight="21.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCommission6" alignment="CENTER" layoutX="624.0" layoutY="420.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCostValueBooks6" alignment="CENTER" layoutX="624.0" layoutY="445.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiff6" alignment="CENTER" layoutX="624.0" layoutY="472.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblNetRevenue6" alignment="CENTER" layoutX="624.0" layoutY="500.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueSub6" alignment="CENTER" layoutX="624.0" layoutY="534.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueKMA6" alignment="CENTER" layoutX="624.0" layoutY="572.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCCAmountTot" alignment="CENTER" layoutX="730.0" layoutY="383.0" prefHeight="21.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCommissionTot" alignment="CENTER" layoutX="730.0" layoutY="420.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblCostValueBooksTot" alignment="CENTER" layoutX="730.0" layoutY="445.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblDiffTot" alignment="CENTER" layoutX="730.0" layoutY="472.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblNetRevenueTot" alignment="CENTER" layoutX="730.0" layoutY="500.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueSubTot" alignment="CENTER" layoutX="730.0" layoutY="534.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAmtDueKMATot" alignment="CENTER" layoutX="730.0" layoutY="572.0" prefHeight="16.0" prefWidth="95.0" text="##########" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Label>
+                  <Line endX="84.0" layoutX="730.0" layoutY="465.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="624.0" layoutY="465.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="521.0" layoutY="465.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="414.0" layoutY="465.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="310.0" layoutY="465.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="201.0" layoutY="465.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="95.0" layoutY="465.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="730.0" layoutY="493.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="624.0" layoutY="493.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="521.0" layoutY="493.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="414.0" layoutY="493.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="310.0" layoutY="493.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="201.0" layoutY="493.0" startX="10.0" />
+                  <Line endX="84.0" layoutX="95.0" layoutY="493.0" startX="10.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+   </children>
+   <stylesheets>
+      <URL value="@../Stylesheets/report.css" />
+      <URL value="@../Stylesheets/tableview.css" />
+   </stylesheets>
+</AnchorPane>

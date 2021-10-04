@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="paneConfigurations" prefHeight="441.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Controller.ConnectionConfiguration">
+   <children>
+      <HBox alignment="CENTER" prefHeight="62.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connection Configurations">
+               <font>
+                  <Font name="System Bold" size="37.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutY="75.0" prefHeight="40.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="33.0" text="URL:" />
+            <JFXTextField fx:id="txtUrl" prefHeight="25.0" prefWidth="269.0">
+               <HBox.margin>
+                  <Insets left="66.0" />
+               </HBox.margin>
+            </JFXTextField>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="278.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="33.0" text="PORT:">
+                     <HBox.margin>
+                        <Insets left="-5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <JFXTextField fx:id="txtPort" prefHeight="25.0" prefWidth="111.0">
+                     <HBox.margin>
+                        <Insets left="14.0" />
+                     </HBox.margin>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutY="134.0" prefHeight="40.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="33.0" text="USER:">
+               <HBox.margin>
+                  <Insets left="-3.0" />
+               </HBox.margin>
+            </Label>
+            <JFXTextField fx:id="txtUser" prefHeight="25.0" prefWidth="297.0">
+               <HBox.margin>
+                  <Insets left="69.0" />
+               </HBox.margin>
+            </JFXTextField>
+         </children>
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutY="184.0" prefHeight="40.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="75.0" text="PASSWORD:">
+               <HBox.margin>
+                  <Insets left="24.0" />
+               </HBox.margin>
+            </Label>
+            <JFXTextField fx:id="txtPassword" prefHeight="25.0" prefWidth="297.0">
+               <HBox.margin>
+                  <Insets left="31.0" />
+               </HBox.margin>
+            </JFXTextField>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </HBox>
+      <HBox fx:id="paneTimeZone" alignment="CENTER_LEFT" layoutY="234.0" prefHeight="40.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <JFXRadioButton fx:id="radTimezone" onAction="#loadTimeZone" text="USE SERVER TIMEZONE" />
+            <Label prefHeight="17.0" prefWidth="65.0" text="TIMEZONE:">
+               <HBox.margin>
+                  <Insets left="48.0" />
+               </HBox.margin>
+            </Label>
+            <JFXComboBox fx:id="cmbTimezone" prefHeight="25.0" prefWidth="130.0">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </JFXComboBox>
+         </children>
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+      </HBox>
+      <HBox fx:id="paneSSL" alignment="CENTER_LEFT" layoutY="274.0" prefHeight="52.0" prefWidth="295.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <JFXRadioButton fx:id="radUseSSL" onAction="#selectUseSSL" text="USE SSL">
+               <HBox.margin>
+                  <Insets left="52.0" />
+               </HBox.margin>
+            </JFXRadioButton>
+            <JFXComboBox fx:id="cmbSSLMode" prefHeight="25.0" prefWidth="110.0">
+               <HBox.margin>
+                  <Insets left="27.0" />
+               </HBox.margin>
+            </JFXComboBox>
+         </children>
+      </HBox>
+      <HBox fx:id="paneConnect" alignment="CENTER" layoutY="326.0" prefHeight="76.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <VBox prefHeight="76.0" prefWidth="632.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0">
+                     <children>
+                        <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#saveConnectionConfiguration" prefHeight="25.0" prefWidth="83.0" ripplerFill="#58d327" text="SAVE">
+                           <HBox.margin>
+                              <Insets right="7.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="btnTestConnection" buttonType="RAISED" onAction="#testConnection" prefHeight="25.0" prefWidth="125.0" ripplerFill="#58d327" text="TEST CONNECTION">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="343.0">
+                     <children>
+                        <Label fx:id="lblConnectionStatus" alignment="CENTER" prefHeight="35.0" prefWidth="314.0" text="Label" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <MaterialDesignIconView glyphName="ALERT_CIRCLE" size="16" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For new connection configurations, Test Connection before saving." />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="12.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
