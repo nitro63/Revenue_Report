@@ -20,31 +20,32 @@ import java.util.Properties;
 public class DBConnection {
     private static final String Username = "root";
     private static final String Password = "";
+    static File jarPath=new File(DBConnection.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    static String propertiesPath= jarPath.getParentFile().getAbsolutePath();
 
-    private static boolean getLocalProperties(){
-        try {
-            FileReader reader = new FileReader("connection.properties");
-        } catch (FileNotFoundException e) {
-            return false;
-        }
-        return true;
-    }
+
     private static Properties propt() throws IOException {
-    /*    File jarPath=new File(DBConnection.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        String propertiesPath=jarPath.getParentFile().getAbsolutePath();*/
         Properties pop = new Properties();
         InputStream fx;
         if (!getLocalProperties()){
         fx = DBConnection.class.getResourceAsStream("/com/revenue_report/connection.properties");
         pop.load(fx);
-        pop.store(new FileOutputStream("connection.properties"),null);
-        fx = new FileInputStream("connection.properties");
+        pop.store(new FileOutputStream(propertiesPath+"/connection.properties"),null);
+        fx = new FileInputStream(propertiesPath+ "/connection.properties");
         pop.load(fx);
         }else{
-            fx = new FileInputStream("connection.properties");
+            fx = new FileInputStream(propertiesPath+"/connection.properties");
             pop.load(fx);
         }
         return pop;
+    }
+    private static boolean getLocalProperties(){
+        try {
+            FileReader reader = new FileReader(propertiesPath+"/connection.properties");
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
     public static Connection getConn() {

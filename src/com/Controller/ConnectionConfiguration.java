@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import com.revenue_report.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -67,7 +68,9 @@ public class ConnectionConfiguration implements Initializable {
     @FXML
     private Label lblConnectionStatus;
     private final ObservableList<String> _sslModes = FXCollections.observableArrayList("REQUIRED", "PREFERRED");
-    private final String file = "connection.properties";
+    static File jarPath=new File(DBConnection.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    static String propertiesPath= jarPath.getParentFile().getAbsolutePath();
+    private final String file = propertiesPath+"/connection.properties";
     private final Properties prop = new Properties();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
