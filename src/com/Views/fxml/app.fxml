@@ -40,7 +40,7 @@
             </Pane>
             <AnchorPane prefHeight="65.0" prefWidth="857.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane layoutX="230.0" layoutY="5.0" prefHeight="57.0" prefWidth="275.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="264.0" AnchorPane.topAnchor="5.0">
+                  <AnchorPane layoutX="200.0" layoutY="5.0" prefHeight="57.0" prefWidth="275.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="5.0">
                      <children>
                         <Text layoutX="7.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-bar-text-bold" text="F I N A N C E  D E P A R T M E N T " textAlignment="CENTER" wrappingWidth="295.0">
                            <font>
