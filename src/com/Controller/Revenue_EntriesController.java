@@ -12,10 +12,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.Controller.Gets.GetFunctions;
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import javafx.fxml.FXMLLoader;
@@ -78,9 +82,7 @@ public class Revenue_EntriesController  implements Initializable {
     @FXML
     private TableColumn<GetEntries, String> revAmount;
     @FXML
-    private TableColumn<GetEntries, String> revDate;/*
-    @FXML
-    private TableColumn<GetEntries, String> revWeek;*/
+    private TableColumn<GetEntries, String> revDate;
     @FXML
     private Text lblEdit;
     @FXML
@@ -97,43 +99,52 @@ public class Revenue_EntriesController  implements Initializable {
     private ComboBox<String> cmbUpdateYear;
 
     @FXML
-    private ComboBox<String> cmbUpdateMonth;
+    private ComboBox<Months> cmbUpdateMonth;
 
     @FXML
-    private JFXButton btnFetchUpdate;/*
+    private JFXButton btnFetchUpdate;
+
     @FXML
-    private TableColumn<GetEntries, String> revMonth;*/
-    entries_sideController app;
-    GetFunctions getFunctions = new GetFunctions();
-    String regex = "(?<=[\\d])(,)(?=[\\d])";
-    Pattern p = Pattern.compile(regex);
-    Matcher m;
-    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private ComboBox<String> cmbUpdateDate;
+
+    @FXML
+    private JFXButton btnClearUpdate;
+
+    @FXML
+    private JFXButton btnUpdateEntries;
+
+    @FXML
+    private JFXButton btnDeleteUpdate;
+    private entries_sideController app;
+    private GetFunctions getFunctions = new GetFunctions();
+    private String regex = "(?<=[\\d])(,)(?=[\\d])";
+    private Pattern p = Pattern.compile(regex);
+    private Matcher m;
+    private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
      * initializes the controller class.
      * @param app
      */
     
-    Map <String, String> RevenueMap = new HashMap<>();
-        ObservableList<String> RevenueItems = FXCollections.observableArrayList();
-        ObservableList<String> ItemsCode = FXCollections.observableArrayList(RevenueMap.values());
-        
-        Map<String, ArrayList<String>> registerItem=new HashMap<>();
+    private Map <String, String> RevenueMap = new HashMap<>();
+    private ObservableList<String> RevenueItems = FXCollections.observableArrayList();
+    private ObservableList<String> ItemsCode = FXCollections.observableArrayList(RevenueMap.values());
+    private Map<String, ArrayList<String>> registerItem=new HashMap<>();
 
 
 
 
-    PreparedStatement stmnt;
-    ResultSet rs;
-    ResultSetMetaData metaData;
+    private PreparedStatement stmnt;
+    private ResultSet rs;
+    private ResultSetMetaData metaData;
     private final Connection con;
-         boolean Condition = true, ccCheck;
-         float totAmount = 0;
+    private boolean Condition = true, ccCheck;
+    private float totAmount = 0;
         
-        String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, entriesID,Qtr, totalAmount;
-        
-        
+    private String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, entriesID,Qtr, totalAmount;
+//    private static final int JANUARY = 1, FEBRUARY = 2;
+
                 
     @FXML
     private Button btnEnter;
@@ -146,16 +157,13 @@ public class Revenue_EntriesController  implements Initializable {
     @FXML
     private Button btnClearEntr;
     
-     GetEntries addEntries = new GetEntries();
+    private GetEntries addEntries = new GetEntries();
     
-    private final GetRevCenter GetCenter;/*
-    @FXML
-    private TableColumn<GetEntries, String> revYear;
-    @FXML
-    private TableColumn<GetEntries, String> revQuarter;*/
+    private final GetRevCenter GetCenter;
     @FXML
     private Button btnClose;
-  public Revenue_EntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
+
+    public Revenue_EntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
       this.con = DBConnection.getConn();
        this.GetCenter = GetCenter;
     }
@@ -163,7 +171,8 @@ public class Revenue_EntriesController  implements Initializable {
     public void setappController(entries_sideController app){
          this.app = app;
      }
-     public entries_sideController getentries_sideController(){
+
+    public entries_sideController getentries_sideController(){
          return app;
      }  
 
@@ -185,16 +194,18 @@ public class Revenue_EntriesController  implements Initializable {
           if (chkUpdate.isSelected()){
               cmbUpdateYear.setVisible(true);
               cmbUpdateMonth.setVisible(true);
+              cmbUpdateDate.setVisible(true);
               btnFetchUpdate.setVisible(true);
               revDate.setText("ID");
               revCode.setText("Date");
-              btnEnter.setText("Update");
-              btnClear.setText("Clear");
-              btnClearEntr.setText("Delete");
-              btnClearEntr.setLayoutX(89);
-              btnClearEntr.setLayoutY(10);
+              btnEnter.setVisible(false);
+              btnClear.setVisible(false);
+              btnClearEntr.setVisible(false);
               btnSaveEntries.setVisible(false);
               btnDelete.setVisible(false);
+              btnClearUpdate.setVisible(true);
+              btnDeleteUpdate.setVisible(true);
+              btnUpdateEntries.setVisible(true);
               lblTot.setVisible(false);
               lblTotalAmount.setVisible(false);
               revTable.getItems().clear();
@@ -205,15 +216,17 @@ public class Revenue_EntriesController  implements Initializable {
               cmbUpdateYear.setVisible(false);
               cmbUpdateMonth.setVisible(false);
               btnFetchUpdate.setVisible(false);
+              cmbUpdateDate.setVisible(false);
               revDate.setText("Date");
               revCode.setText("Code");
-              btnEnter.setText("Enter");
-              btnClear.setText("Edit");
-              btnClearEntr.setText("Cancel");
-              btnClearEntr.setLayoutX(169);
-              btnClearEntr.setLayoutY(10);
+              btnEnter.setVisible(true);
+              btnClear.setVisible(true);
+              btnClearEntr.setVisible(true);
               btnSaveEntries.setVisible(true);
               btnDelete.setVisible(true);
+              btnClearUpdate.setVisible(false);
+              btnDeleteUpdate.setVisible(false);
+              btnUpdateEntries.setVisible(false);
               lblTot.setVisible(true);
               lblTotalAmount.setVisible(true);
               revTable.getItems().clear();
@@ -257,8 +270,8 @@ public class Revenue_EntriesController  implements Initializable {
         cmbEntRevItem.setEditable(true);
   }
 
-  private void GetRevenueYears() throws SQLException {
-      stmnt = con.prepareStatement("SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+RevCent+"' GROUP BY `revenueYear`");
+    private void GetRevenueYears() throws SQLException {
+      stmnt = con.prepareStatement("SELECT YEAR(`revenueDate`) AS `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+RevCent+"' GROUP BY `revenueYear`");
       rs = stmnt.executeQuery();
       cmbUpdateYear.getItems().clear();
       while (rs.next()){
@@ -290,24 +303,39 @@ public class Revenue_EntriesController  implements Initializable {
     }
 
     @FXML
-    void selectedYear(ActionEvent event) throws SQLException {
+    private void selectedYear(ActionEvent event) throws SQLException {
       String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
-        stmnt = con.prepareStatement("SELECT `revenueMonth` FROM `daily_entries` WHERE `daily_revCenter` = '"+RevCent+"' AND `revenueYear` ='"+year+"' GROUP BY `revenueMonth`");
+        stmnt = con.prepareStatement("SELECT MONTH(`revenueDate`) AS `revenueMonth` FROM `daily_entries` WHERE `daily_revCenter` = '"+RevCent+"' AND YEAR(`revenueDate`) ='"+year+"' GROUP BY `revenueMonth`");
         rs = stmnt.executeQuery();
         cmbUpdateMonth.getItems().clear();
         while (rs.next()){
-            cmbUpdateMonth.getItems().add(rs.getString("revenueMonth"));
+            cmbUpdateMonth.getItems().add(Months.get(rs.getInt("revenueMonth")));
         }
     }
 
     @FXML
-    void fetchEntries(ActionEvent event) throws SQLException {
+    void LoadDates(ActionEvent event) throws SQLException {
+        String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+        Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+        stmnt = con.prepareStatement("SELECT DAY(`revenueDate`) AS `revenueDay` FROM `daily_entries` WHERE `daily_revCenter` = '"+RevCent+"' AND YEAR(`revenueDate`) ='"+year+"' AND MONTH(`revenueDate`) = '" + month.getValue() + "' GROUP BY `revenueDay`");
+        rs = stmnt.executeQuery();
+        cmbUpdateDate.getItems().clear();
+        while (rs.next()){
+            cmbUpdateDate.getItems().add(rs.getString("revenueDay"));
+        }
+    }
+
+    @FXML
+    private void fetchEntries(ActionEvent event) throws SQLException {
       if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
-          String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
-          if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
-              stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "' AND `revenueMonth` = '" + month + "' ");
+          String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), day = cmbUpdateDate.getSelectionModel().getSelectedItem();
+          Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+          if (!cmbUpdateMonth.getSelectionModel().isEmpty() && cmbUpdateDate.getSelectionModel().isEmpty()) {
+              stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' ");
+          } else if (!cmbUpdateMonth.getSelectionModel().isEmpty() && cmbUpdateDate.getSelectionModel().isEmpty()) {
+              stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"+day+"'");
           } else {
-              stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "'");
+              stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year + "'");
           }
           rs = stmnt.executeQuery();
           revTable.getItems().clear();
@@ -316,7 +344,7 @@ public class Revenue_EntriesController  implements Initializable {
           revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
           revDate.setCellValueFactory(data -> data.getValue().DateProperty());
           while (rs.next()) {
-              addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"), rs.getString("entries_ID"), rs.getString("revenueAmount"));
+              addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"), rs.getString("entries_ID"), getFunctions.getAmount(rs.getString("revenueAmount")));
               revTable.getItems().add(addEntries);
 
           }
@@ -329,7 +357,8 @@ public class Revenue_EntriesController  implements Initializable {
     }
 
     private void loadRevenueCollectionTable() throws SQLException {
-        String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+        String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+        Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
         if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
             stmnt = con.prepareStatement("SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '" + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "' AND `revenueMonth` = '" + month + "' ");
         } else {
@@ -342,7 +371,7 @@ public class Revenue_EntriesController  implements Initializable {
         revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
         revDate.setCellValueFactory(data -> data.getValue().DateProperty());
         while (rs.next()) {
-            addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"), rs.getString("entries_ID"), rs.getString("revenueAmount"));
+            addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"), rs.getString("entries_ID"), getFunctions.getAmount(rs.getString("revenueAmount")));
             revTable.getItems().add(addEntries);
         }
     }
@@ -360,11 +389,7 @@ public class Revenue_EntriesController  implements Initializable {
              Condition = false;
             }else{
              Condition =true;
-        Date = getFunctions.getDate(date);/*
-        Year = getFunctions.getYear(date);
-        Qtr = getFunctions.getQuarter(date);
-        Week = getFunctions.getWeek(date);
-        Month = getFunctions.getMonth(date)*/;
+        Date = getFunctions.getDate(date);
        while(Condition) {
             String i=cmbEntRevItem.getSelectionModel().getSelectedItem();
        if(registerItem.containsKey(Date) && registerItem.get(Date).contains(i)){
@@ -408,14 +433,10 @@ public class Revenue_EntriesController  implements Initializable {
                 Condition =false;
             }
             else{
-                revCode.setCellValueFactory(data -> data.getValue().CodeProperty());
+        revCode.setCellValueFactory(data -> data.getValue().CodeProperty());
         revItem.setCellValueFactory(data -> data.getValue().ItemProperty());
         revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
-        revDate.setCellValueFactory(data -> data.getValue().DateProperty());/*
-        revWeek.setCellValueFactory(data -> data.getValue().WeekProperty());
-        revMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
-        revQuarter.setCellValueFactory(data -> data.getValue().QuarterProperty());
-        revYear.setCellValueFactory(data -> data.getValue().YearProperty());*/
+        revDate.setCellValueFactory(data -> data.getValue().DateProperty());
         Amount= getFunctions.getAmount(txtEntAmt.getText());
         if("0.00".equals(Amount)){
                 Alert alert = new Alert(AlertType.WARNING);
@@ -549,17 +570,19 @@ public class Revenue_EntriesController  implements Initializable {
     }
 
     @FXML
-    private void SaveToDatabase(ActionEvent event) throws ClassNotFoundException, SQLException {
+    private void SaveToDatabase(ActionEvent event) throws ClassNotFoundException, SQLException, ParseException {
       float deduction = 0;
         GetEntries getData = new GetEntries();
         ObservableList<String> duplicate = FXCollections.observableArrayList();
         List <List<String>> arrList = new ArrayList<>();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         for(int i = 0; i <= revTable.getItems().size(); i++){
             if (i != revTable.getItems().size()){
                 getData = revTable.getItems().get(i);
             String acDate = getData.getDate();
             LocalDate date = LocalDate.parse(acDate, dtf);
+            String sqlDate = date.format(dtf2);
             String acCode = getData.getCode();
             String acItem = getData.getCode();
             String acQtr = getFunctions.getQuarter(date);
@@ -573,7 +596,7 @@ public class Revenue_EntriesController  implements Initializable {
             String acMonth = getFunctions.getMonth(date);
             int acYear = Integer.parseInt(getFunctions.getYear(date));
             stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `revenueItem` = '"+acCode+"'" +
-                    " AND `revenueDate` = '"+acDate+"' AND `daily_revCenter` = '"+RevCent+"' ");
+                    " AND `revenueDate` = '"+sqlDate+"' AND `daily_revCenter` = '"+RevCent+"' ");
             rs = stmnt.executeQuery();
             while(rs.next()){
                         String dup = rs.getString("revenueItem");
@@ -586,11 +609,11 @@ public class Revenue_EntriesController  implements Initializable {
             }else{
                 deduction += acAmount;
                 stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, " +
-                        "`revenueItem`, `revenueAmount`, `revenueDate`, `revenueWeek`, `revenueMonth`," +
-                        " `revenueYear`, `revenueQuarter`) VALUES('"+RevCent+"'," +
-                        " '"+acItem+"', '"+acAmount+"', '"+acDate+"', '"+acWeek+"','"+acMonth+"', '"+acYear+"'," +
-                        " '"+acQtr+"')");
+                        "`revenueItem`, `revenueAmount`, `revenueDate`) VALUES('"+RevCent+"'," +
+                        " '"+acItem+"', '"+acAmount+"',  '"+sqlDate+"'");
                 stmnt.executeUpdate();
+                registerItem.clear();
+
             }
             }else {
                 totAmount -= deduction;
@@ -600,7 +623,7 @@ public class Revenue_EntriesController  implements Initializable {
         }
     }
 
-    void clear(){
+   private void clear(){
       entriesID = null;
       entDatePck.setValue(null);
       cmbEntRevItem.getSelectionModel().clearSelection();

@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
 import java.util.Calendar;
 
@@ -19,6 +20,10 @@ public class GetFunctions {
         String Date = Dateformat.format(setDate);// Assigning converted date with "MM/dd/YY" format to "Date" variable
         return Date;
     }
+    public LocalDate setDate(String acDate){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(acDate, dtf);
+    }
 
     public String getMonth(LocalDate date){
        int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
@@ -26,8 +31,7 @@ public class GetFunctions {
         cal.set(date.getYear(), actMonth, date.getDayOfMonth());//Initialising assigning datepicker value to Calendar item
         java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
         cal.setTime(setDate);//Setting time to Calendar variable
-        String Month = new SimpleDateFormat("MMMM").format(cal.getTime());
-        return Month;
+        return new SimpleDateFormat("MMMM").format(cal.getTime());
             }
 
     public String getWeek(LocalDate date){
@@ -38,8 +42,7 @@ public class GetFunctions {
         cal.setTime(setDate);//Setting time to Calendar variable
         cal.setFirstDayOfWeek(1);
         cal.setMinimalDaysInFirstWeek(1);//Setting the minimal days to make a week;
-        String Week = Integer.toString(cal.get(Calendar.WEEK_OF_MONTH));
-        return Week;
+        return Integer.toString(cal.get(Calendar.WEEK_OF_MONTH));
     }
 
     public String getQuarter(LocalDate date){
@@ -48,8 +51,7 @@ public class GetFunctions {
 //        cal.set(date.getYear(), actMonth, date.getDayOfMonth());
 //        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
 //        cal.setTime(setDate);//Setting time to Calendar variable
-        String Quarter = Integer.toString(date.get(IsoFields.QUARTER_OF_YEAR));
-        return Quarter;
+        return Integer.toString(date.get(IsoFields.QUARTER_OF_YEAR));
     }
 
     public String getYear(LocalDate date){
