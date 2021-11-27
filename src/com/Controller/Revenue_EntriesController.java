@@ -131,7 +131,7 @@ public class Revenue_EntriesController  implements Initializable {
          boolean Condition = true, ccCheck;
          float totAmount = 0;
         
-        String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, entriesID,Qtr, totalAmount;
+       private String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, entriesID,Qtr, totalAmount;
         
         
                 
@@ -146,13 +146,9 @@ public class Revenue_EntriesController  implements Initializable {
     @FXML
     private Button btnClearEntr;
     
-     GetEntries addEntries = new GetEntries();
+     private GetEntries addEntries = new GetEntries();
     
-    private final GetRevCenter GetCenter;/*
-    @FXML
-    private TableColumn<GetEntries, String> revYear;
-    @FXML
-    private TableColumn<GetEntries, String> revQuarter;*/
+    private final GetRevCenter GetCenter;
     @FXML
     private Button btnClose;
   public Revenue_EntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {

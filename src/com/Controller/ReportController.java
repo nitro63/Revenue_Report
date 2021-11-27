@@ -196,18 +196,18 @@ public class ReportController implements Initializable {
     
     private final Connection con;
     private PreparedStatement stmnt;
-    Map<String, String> centerID = new HashMap<>();
-    ObservableList<String> rowDate =FXCollections.observableArrayList();
-    ObservableList<String> rowCent =FXCollections.observableArrayList();
-    ObservableList<String> rowMonth =FXCollections.observableArrayList();
-    ObservableList<String> rowYear =FXCollections.observableArrayList();
-    ObservableList<String> rowWeek =FXCollections.observableArrayList();
-    ObservableList<String> rowCategories =FXCollections.observableArrayList();
+    private Map<String, String> centerID = new HashMap<>();
+    private ObservableList<String> rowDate =FXCollections.observableArrayList();
+    private ObservableList<String> rowCent =FXCollections.observableArrayList();
+    private ObservableList<String> rowMonth =FXCollections.observableArrayList();
+    private ObservableList<String> rowYear =FXCollections.observableArrayList();
+    private ObservableList<String> rowWeek =FXCollections.observableArrayList();
+    private ObservableList<String> rowCategories =FXCollections.observableArrayList();
     @FXML
     private JFXButton btnShowReport;
-    boolean Condition, subMetroPR;
+    private boolean Condition, subMetroPR;
     
-    GetReport getReport;
+    private GetReport getReport;
 
     public ReportController() throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -218,16 +218,7 @@ public class ReportController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cmbReportCent.setOnMouseClicked(e -> {
             lblCenterWarn.setVisible(false);
-        });/*
-        WEEKLY_TABLE.setOnScroll(e -> new TableCell<GetReport, String>()
-        {
-            @Override
-            protected void updateItem(final String item, boolean empty)
-            {
-                if (!empty)
-                    setText(item);
-            }
-        });*/
+        });
         cmbReportMonth.setOnMouseClicked(e -> {
             lblMonthWarn.setVisible(false);
         });
@@ -339,7 +330,7 @@ public class ReportController implements Initializable {
         lblWeek.setText(cmbReportWeek.getSelectionModel().getSelectedItem());
     }
 
-    public String getDate(int day, int month, int year, int week){
+    protected String getDate(int day, int month, int year, int week){
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.SUNDAY);
         calendar.set(Calendar.WEEK_OF_MONTH, week);
@@ -355,7 +346,7 @@ public class ReportController implements Initializable {
         return df.format(calendar.getTime());
     }
 
-    public String getDay(int day, int month, int year, int week){
+    protected String getDay(int day, int month, int year, int week){
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.SUNDAY);
         calendar.set(Calendar.WEEK_OF_MONTH, week);
@@ -406,53 +397,6 @@ public class ReportController implements Initializable {
         lblDay5.setText(getDay(5, monthNum, yearNum, weekNum));
         lblDay6.setText(getDay(6, monthNum, yearNum, weekNum));
         lblDay7.setText(getDay(7, monthNum, yearNum, weekNum));
-//        System.out.println(rowDate.size());
-//        int rowSize = rowDate.size();
-//        switch(rowSize){
-//            case 1:
-//                DAY1.setText(rowDate.get(0));
-//                break;
-//            case 2:
-//                DAY1.setText(rowDate.get(0));
-//                DAY2.setText(rowDate.get(1));
-//                break;
-//            case 3:
-//                DAY1.setText(rowDate.get(0));
-//                DAY2.setText(rowDate.get(1));
-//                DAY3.setText(rowDate.get(2));
-//                break;
-//            case 4:
-//                DAY1.setText(rowDate.get(0));
-//                DAY2.setText(rowDate.get(1));
-//                DAY3.setText(rowDate.get(2));
-//                DAY4.setText(rowDate.get(3));
-//                break;
-//            case 5:
-//                DAY1.setText(rowDate.get(0));
-//                DAY2.setText(rowDate.get(1));
-//                DAY3.setText(rowDate.get(2));
-//                DAY4.setText(rowDate.get(3));
-//                DAY5.setText(rowDate.get(4));
-//                break;
-//            case 6:
-//                DAY1.setText(rowDate.get(0));
-//                DAY2.setText(rowDate.get(1));
-//                DAY3.setText(rowDate.get(2));
-//                DAY4.setText(rowDate.get(3));
-//                DAY5.setText(rowDate.get(4));
-//                DAY6.setText(rowDate.get(5));
-//                break;
-//            case 7:
-//                DAY1.setText(rowDate.get(0));
-//                DAY2.setText(rowDate.get(1));
-//                DAY3.setText(rowDate.get(2));
-//                DAY4.setText(rowDate.get(3));
-//                DAY5.setText(rowDate.get(4));
-//                DAY6.setText(rowDate.get(5));
-//                DAY7.setText(rowDate.get(6));
-//                break;
-//
-//        }
         
         
        
@@ -512,44 +456,6 @@ public class ReportController implements Initializable {
         colType.setCellValueFactory(data -> data.getValue().typeProperty());
         colCode.setCellValueFactory(data -> data.getValue().RevenueCodeProperty());
         Total_amt.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
-        /*REVENUE_ITEM.setCellFactory(param -> new TableCell<GetReport, String>()
-            {
-                @Override
-                protected void updateItem(final String item, boolean empty)
-                { TableRow<GetReport> row = getTableRow();
-                    if (!empty)
-                    {
-                        int currentIndex = indexProperty()
-                                .getValue() < 0 ? 0
-                                : indexProperty().getValue();
-                       final String type = param
-                                .getTableView().getItems()
-                                .get(currentIndex).getType();
-                        if (type.equals("A"))
-                        {
-                            if ( row.getItem().getType().equals("A"))
-                            setText(item.toUpperCase());
-                            setStyle("-fx-alignment: CENTER; -fx-text-fill: GREEN; -fx-font-weight: BOLD; -fx-font-size: 16;");
-                        } else if (type.equals("C"))
-                        {
-                            setText(item);
-                            if (!row.getStyle().contains("-fx-background-color: #62ef73ad;") && row.getItem().getType().equals("C")){
-                            row.setStyle("-fx-background-color: #62ef73ad;");}
-                        }else {
-                            setText(item);
-                        }
-                    }
-                }
-            });
-        WEEKLY_TABLE.setOnScroll(e -> new TableCell<GetReport, String>()
-        {
-            @Override
-            protected void updateItem(final String item, boolean empty)
-            {
-                if (!empty)
-                        setText(item);
-                    }
-        });*/
          for (String category : rowCategories){
              REVENUE_ITEM.setStyle("-fx-alignment: CENTER;");
              getReport = new GetReport("", category.toUpperCase(), "", "", "", "", "", "", "", "", "A");
