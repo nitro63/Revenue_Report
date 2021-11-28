@@ -23,6 +23,15 @@ public class GetFunctions {
         String Date = Dateformat.format(setDate);// Assigning converted date with "MM/dd/YY" format to "Date" variable
         return Date;
     }
+    public String getSqlDate(LocalDate date){
+        int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
+        Calendar cal = Calendar.getInstance();
+        cal.set(date.getYear(), actMonth, date.getDayOfMonth());//Initialising assigning datepicker value to Calendar item
+        java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
+        SimpleDateFormat Dateformat = new SimpleDateFormat("yyyy-MM-dd");// Date format for Date
+        String Date = Dateformat.format(setDate);// Assigning converted date with "MM/dd/YY" format to "Date" variable
+        return Date;
+    }
     public String convertSqlDate(String acDate){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");

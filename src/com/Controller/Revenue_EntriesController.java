@@ -160,6 +160,7 @@ public class Revenue_EntriesController implements Initializable {
     private final GetRevCenter GetCenter;
     @FXML
     private Button btnClose;
+    private int selectedIndex = -1;
 
     public Revenue_EntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -486,13 +487,19 @@ public class Revenue_EntriesController implements Initializable {
                             totAmount += Float.parseFloat(txtEntAmt.getText());
                             totalAmount = getFunctions.getAmount(Float.toString(totAmount));
                             lblTotalAmount.setText(totalAmount);
+
                             addEntries = new GetEntries(Code, Item, Date, /* Month, */ Amount/* , Week, Year, Qtr */);
-                            revTable.getItems().add(addEntries);
-                            if (!registerItem.containsKey(Date)) {
-                                registerItem.put(Date, new ArrayList<>());
-                                registerItem.get(Date).add(i);
-                            } else if (registerItem.containsKey(Date) && !registerItem.get(Date).contains(i)) {
-                                registerItem.get(Date).add(i);
+                            if (selectedIndex < 0 ) {
+                                revTable.getItems().add(addEntries);
+                                if (!registerItem.containsKey(Date)) {
+                                    registerItem.put(Date, new ArrayList<>());
+                                    registerItem.get(Date).add(i);
+                                } else if (registerItem.containsKey(Date) && !registerItem.get(Date).contains(i)) {
+                                    registerItem.get(Date).add(i);
+                                }
+                            }else {
+                                revTable.getItems().add(selectedIndex, addEntries);
+                                selectedIndex = -1;
                             }
 
                             // registerItem.add(cmbEntRevItem.getSelectionModel().getSelectedIndex());
@@ -582,6 +589,7 @@ public class Revenue_EntriesController implements Initializable {
     private void clearEntries(ActionEvent event) {
         if (!chkUpdate.isSelected()) {
             GetEntries entries = revTable.getSelectionModel().getSelectedItem();
+            selectedIndex = revTable.getSelectionModel().getSelectedIndex();
             if (revTable.getSelectionModel().isEmpty()) {
                 lblEdit.setText("Please select a row in the table to " + '"' + "Edit" + '"');
                 lblEdit.setVisible(true);
@@ -707,14 +715,20 @@ public class Revenue_EntriesController implements Initializable {
             /*
              * String regex = "(?<=[\\d])(,)(?=[\\d])"; Pattern p = Pattern.compile(regex);
              * Matcher
-             */m = p.matcher(entries.getAmount());
+             m = p.matcher(entries.getAmount());
             totAmount -= Float.parseFloat(m.replaceAll(""));
             totalAmount = getFunctions.getAmount(Float.toString(totAmount));
-            lblTotalAmount.setText(totalAmount);
+            lblTotalAmount.setText(totalAmount);*/
             ObservableList<GetEntries> selectedRows = revTable.getSelectionModel().getSelectedItems();
             ArrayList<GetEntries> rows = new ArrayList<>(selectedRows);
-            rows.forEach(row -> revTable.getItems().remove(row));
-            registerItem.get(entries.getDate()).remove(entries.getItem());
+            rows.forEach(row ->
+            {
+                m = p.matcher(row.getAmount());
+                totAmount -= Float.parseFloat(m.replaceAll(""));
+                revTable.getItems().remove(row);
+                registerItem.get(row.getDate()).remove(row.getItem());});
+            totalAmount = getFunctions.getAmount(Float.toString(totAmount));
+            lblTotalAmount.setText(totalAmount);
         }
 
     }
