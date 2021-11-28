@@ -129,7 +129,7 @@ public class Payment_EntriesController implements Initializable {
     private final ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March"
                 , "April", "May", "June", "July", "August", "September", "October", "November", "December");
         
-         boolean Condition = true, typeA_B, typeB_A, typeB_B, update, delete;
+      private   boolean Condition = true, typeA_B, typeB_A, typeB_B, update, delete;
     private final Connection con;
     private Matcher m;
     private PreparedStatement stmnt;
@@ -139,7 +139,6 @@ public class Payment_EntriesController implements Initializable {
    private final String regex = "(?<=[\\d])(,)(?=[\\d])";
    public Pattern p = Pattern.compile(regex);
    private byte chk , chkd , chk1 , chkd1 ;
-//    public  Stage stg;
         
    private     String Date, Item, Code, Month, Amount, Week, Year, RevCent, RevCentID, GCR, Type, type, entriesID;
     protected Map<String, ArrayList<String>> regGcr = new HashMap<>();
@@ -150,7 +149,7 @@ public class Payment_EntriesController implements Initializable {
     protected Map<String, String> codeGCR = new HashMap<>();
     protected Map<String, String> amountGCR = new HashMap<>();
     protected Map<String, String> gcrID = new HashMap<>();
-    int count, typePB = 0;
+    protected int count, typePB = 0;
     private Calendar cal;
     @FXML
     private TextField txtEntGCR;

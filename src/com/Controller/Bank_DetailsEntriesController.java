@@ -96,7 +96,7 @@ public class Bank_DetailsEntriesController implements Initializable {
     private Label lblChqdatewarn;
 
     @FXML
-    private JFXDatePicker dtpckChequeDate;
+    private DatePicker dtpckChequeDate;
 
     @FXML
     private TableColumn<GetBankDetails, String> colChqDate;
@@ -251,24 +251,35 @@ public class Bank_DetailsEntriesController implements Initializable {
         for(int i = 0; i < tblCollectEnt.getItems().size(); i++){
             getData = tblCollectEnt.getItems().get(i);
             int payYear = Integer.parseInt(colEnt.payChq.get(getData.getGCR()).get("Year"));
-            int acChqNmb = Integer.parseInt(getData.getChequeNumber()), payGCR = Integer.parseInt(colEnt.payChq.get(getData.getGCR()).get("GCR"));
+            String acChqNmb = getData.getChequeNumber(); int payGCR = Integer.parseInt(colEnt.payChq.get(getData.getGCR()).get("GCR"));
             String payMonth = colEnt.payChq.get(getData.getGCR()).get("Month");
             String amount = getData.getAmount();
             Matcher m = colEnt.p.matcher(amount);
             amount = m.replaceAll("");
+
             float acAMOUNT = Float.parseFloat(amount), payAmount = Float.parseFloat(colEnt.payChq.get(getData.getGCR()).get("Amount"));
-            String payDATE = colEnt.payChq.get(getData.getGCR()).get("Date"), payType = colEnt.payChq.get(getData.getGCR()).get("Type");
-            String acChqDate = getData.getChequeDate();
+
+            String payDATE = getFunctions.setSqlDate(colEnt.payChq.get(getData.getGCR()).get("Date")), payType = colEnt.payChq.get(getData.getGCR()).get("Type");
+
+            String acChqDate = getFunctions.setSqlDate(getData.getChequeDate());
+
             String acBank = getData.getBank();
+
             String payCenter = colEnt.payChq.get(getData.getGCR()).get("Center"), payID = colEnt.payChq.get(getData.getGCR()).get("PayID");
-            String year = getData.getYear();
+
             ID = getGcrID(getData.getGCR(), colEnt.gcrID);
+
             String fini = "chq"+colEnt.getID(colEnt.GetCenter.getCenterID());
+
             boolean condition = true;
+
             ArrayList<String> dup = new ArrayList<>();
+
             stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE " +
                     " `cheque_number` = '"+acChqNmb+"' AND `bank` = '"+acBank+"'");
+
             ResultSet res = stmnt.executeQuery();
+
             while (res.next()){
                 duplicate.add(res.getString("cheque_number"));
             }

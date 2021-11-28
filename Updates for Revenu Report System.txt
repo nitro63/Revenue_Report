@@ -1,0 +1,9 @@
+# Revenue Entries should always be to two decimal places 
+# also track entries for same item multiple by date and time
+# Value books amount should be accounting format 
+# values with preceding zeroes should be saved as such
+# Remarks in value books should be eliminated 
+# wrap the item or value books too
+
+UI UPDATES
+Back button
