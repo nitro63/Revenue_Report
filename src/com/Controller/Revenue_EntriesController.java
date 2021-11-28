@@ -610,7 +610,7 @@ public class Revenue_EntriesController  implements Initializable {
                 deduction += acAmount;
                 stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, " +
                         "`revenueItem`, `revenueAmount`, `revenueDate`) VALUES('"+RevCent+"'," +
-                        " '"+acItem+"', '"+acAmount+"',  '"+sqlDate+"'");
+                        " '"+acItem+"', '"+acAmount+"',  '"+sqlDate+"')");
                 stmnt.executeUpdate();
                 registerItem.clear();
 
