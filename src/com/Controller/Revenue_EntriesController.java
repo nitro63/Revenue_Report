@@ -22,6 +22,7 @@ import com.Controller.Gets.GetFunctions;
 import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXDatePicker;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
@@ -41,6 +42,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 import com.Controller.Gets.GetEntries;
 import com.Controller.Gets.GetRevCenter;
@@ -179,6 +181,7 @@ public class Revenue_EntriesController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        getFunctions.datePicker(entDatePck);
         chkUpdate.setVisible(LogInController.Accountant || LogInController.OverAllAdmin);
         chkUpdate.setOnMouseClicked(event -> {
             try {
@@ -311,23 +314,29 @@ public class Revenue_EntriesController implements Initializable {
                         + RevCent + "' AND YEAR(`revenueDate`) ='" + year + "' GROUP BY `revenueMonth`");
         rs = stmnt.executeQuery();
         cmbUpdateMonth.getItems().clear();
+        cmbUpdateMonth.getItems().add(null);
         while (rs.next()) {
             cmbUpdateMonth.getItems().add(Months.get(rs.getInt("revenueMonth")));
         }
+        cmbUpdateMonth.getSelectionModel().selectFirst();
     }
 
     @FXML
     void LoadDates(ActionEvent event) throws SQLException {
         String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
-        Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+        if(!cmbUpdateMonth.getSelectionModel().isSelected(0)){
+            Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
         stmnt = con.prepareStatement(
                 "SELECT DAY(`revenueDate`) AS `revenueDay` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
                         + "' AND YEAR(`revenueDate`) ='" + year + "' AND MONTH(`revenueDate`) = '" + month.getValue()
                         + "' GROUP BY `revenueDay`");
         rs = stmnt.executeQuery();
         cmbUpdateDate.getItems().clear();
+        cmbUpdateDate.getItems().add(null);
         while (rs.next()) {
             cmbUpdateDate.getItems().add(rs.getString("revenueDay"));
+        }
+        cmbUpdateDate.getSelectionModel().selectFirst();
         }
     }
 
@@ -337,12 +346,12 @@ public class Revenue_EntriesController implements Initializable {
             String year = cmbUpdateYear.getSelectionModel().getSelectedItem(),
                     day = cmbUpdateDate.getSelectionModel().getSelectedItem();
             Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
-            if (!cmbUpdateMonth.getSelectionModel().isEmpty() && cmbUpdateDate.getSelectionModel().isEmpty()) {
+            if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && cmbUpdateDate.getSelectionModel().isSelected(0)) {
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                 + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
                                 + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' ");
-            } else if (!cmbUpdateMonth.getSelectionModel().isEmpty() && cmbUpdateDate.getSelectionModel().isEmpty()) {
+            } else if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && !cmbUpdateDate.getSelectionModel().isSelected(0)) {
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                 + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
@@ -361,7 +370,8 @@ public class Revenue_EntriesController implements Initializable {
             revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
             revDate.setCellValueFactory(data -> data.getValue().DateProperty());
             while (rs.next()) {
-                addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"),
+
+                addEntries = new GetEntries(getFunctions.convertSqlDate(rs.getString("revenueDate")) , rs.getString("item_Sub"),
                         rs.getString("entries_ID"), getFunctions.getAmount(rs.getString("revenueAmount")));
                 revTable.getItems().add(addEntries);
 
@@ -637,7 +647,7 @@ public class Revenue_EntriesController implements Initializable {
                     deduction += acAmount;
                     stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, "
                             + "`revenueItem`, `revenueAmount`, `revenueDate`) VALUES('" + RevCent + "'," + " '" + acItem
-                            + "', '" + acAmount + "',  '" + sqlDate + "'");
+                            + "', '" + acAmount + "',  '" + sqlDate + "')");
                     stmnt.executeUpdate();
                     registerItem.clear();
 

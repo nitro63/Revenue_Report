@@ -35,7 +35,7 @@ public class valueBooksEntriesController implements Initializable {
     private JFXButton btnClose;
 
     @FXML
-    private JFXDatePicker entDatePck;
+    private DatePicker entDatePck;
 
     @FXML
     private JFXComboBox<String> cmbTypeOfValueBook;

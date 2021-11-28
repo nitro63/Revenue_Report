@@ -1,0 +1,24 @@
+Updates made To the revenue reporting system:
+Changes to the database : 
+(collection_payment_entries) 
+# Converted: 
+## GCR from int to varchar
+## Date from varchar to date
+## Year from int to year(4)
+(cheque_details)
+# Converted:
+## cheque_date from Varchar to date
+## cheque_number from int to varchar
+## deleted the columns: month, year
+(daily_entries)
+# Converted:
+## RevenueDate from int to date
+## Deleted the following columns: week, month, quarter and year
+(commission_details)
+# Converted:
+## commission_date from varchar to date
+## deleted the columns: week, month, quarter and year
+(value_books_stock-record)
+# Converted:
+## first_serial and last_serial from int to varchar
+## Deleted the following columns: week, month, quarter, year

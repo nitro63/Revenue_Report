@@ -3,12 +3,12 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" layoutX="61.0" layoutY="50.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="57.0" prefWidth="716.0">
          <children>
@@ -28,7 +28,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
                <children>
-                  <JFXDatePicker fx:id="entDatePck" defaultColor="#023933" prefHeight="25.0" prefWidth="118.0" promptText="Select Date" />
+                  <DatePicker fx:id="entDatePck" editable="false" prefHeight="25.0" prefWidth="118.0" promptText="Select Date" styleClass="text-font" />
                   <Label fx:id="lblDateWarn" layoutY="-8.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
                      <font>
                         <Font name="System Bold" size="12.0" />

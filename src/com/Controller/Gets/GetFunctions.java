@@ -1,5 +1,8 @@
 package com.Controller.Gets;
 
+import javafx.scene.control.DatePicker;
+import javafx.util.StringConverter;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -20,9 +23,23 @@ public class GetFunctions {
         String Date = Dateformat.format(setDate);// Assigning converted date with "MM/dd/YY" format to "Date" variable
         return Date;
     }
-    public LocalDate setDate(String acDate){
+    public String convertSqlDate(String acDate){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return LocalDate.parse(acDate, dtf);
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(acDate, dtf2);
+        return date.format(dtf);
+        /*
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(acDate, dtf);*/
+    }
+    public String setSqlDate(String acDate){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(acDate, dtf);
+        return date.format(dtf2);
+        /*
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(acDate, dtf);*/
     }
 
     public String getMonth(LocalDate date){
@@ -68,5 +85,32 @@ public class GetFunctions {
         String initAmount = formatter.format(initeAmount);
         formatter.setGroupingUsed(true);
         return initAmount;
+    }
+    public DatePicker datePicker(DatePicker dtp)
+    {
+        dtp.setConverter(new StringConverter<LocalDate>() {
+        String pattern = "dd/MM/yyyy";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+            /*{
+                entDatePck.setPromptText(pattern.toLowerCase());
+            }*/
+
+        @Override public String toString(LocalDate date) {
+            if (date != null) {
+                return dateFormatter.format(date);
+            } else {
+                return "";
+            }
+        }
+
+        @Override public LocalDate fromString(String string) {
+            if (string != null && !string.isEmpty()) {
+                return LocalDate.parse(string, dateFormatter);
+            } else {
+                return null;
+            }
+        }
+    });
+        return dtp;
     }
 }
