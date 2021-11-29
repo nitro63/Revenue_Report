@@ -3,6 +3,7 @@ package com.Controller;
 import com.Controller.Gets.GetEntries;
 import com.Controller.Gets.GetFunctions;
 import com.Controller.Gets.GetRevCenter;
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import javafx.collections.FXCollections;
@@ -117,7 +118,7 @@ public class commissionEntriesController implements Initializable {
     private ComboBox<String> cmbUpdateYear;
 
     @FXML
-    private ComboBox<String> cmbUpdateMonth;
+    private ComboBox<Months> cmbUpdateMonth;
 
     @FXML
     private JFXButton btnFetchUpdate;
@@ -159,6 +160,7 @@ public class commissionEntriesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        getFunctions.datePicker(entDatePck);
         RevCent = GetCenter.getCenterID();
         registerAmount.put("", "");
         entDatePck.setOnMouseClicked(e ->{
@@ -234,7 +236,7 @@ public class commissionEntriesController implements Initializable {
     }
 
   private void GetRevenueYears() throws SQLException {
-      stmnt = con.prepareStatement("SELECT `commission_year` FROM `commission_details` WHERE `commission_center` = '"+RevCent+"' GROUP BY `commission_year`");
+      stmnt = con.prepareStatement("SELECT YEAR(commission_date) AS `commission_year` FROM `commission_details` WHERE `commission_center` = '"+RevCent+"' GROUP BY `commission_year`");
       rs = stmnt.executeQuery();
       cmbUpdateYear.getItems().clear();
       while (rs.next()){
@@ -245,22 +247,22 @@ public class commissionEntriesController implements Initializable {
     @FXML
     void selectedYear(ActionEvent event) throws SQLException {
       String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
-        stmnt = con.prepareStatement("SELECT `commission_month` FROM `commission_details` WHERE `commission_center` = '"+RevCent+"' AND `commission_year` ='"+year+"' GROUP BY `commission_month`");
+        stmnt = con.prepareStatement("SELECT MONTH(commission_date) AS `commission_month` FROM `commission_details` WHERE `commission_center` = '"+RevCent+"' AND YEAR(commission_date) ='"+year+"' GROUP BY `commission_month`");
         rs = stmnt.executeQuery();
         cmbUpdateMonth.getItems().clear();
         while (rs.next()){
-            cmbUpdateMonth.getItems().add(rs.getString("commission_month"));
+            cmbUpdateMonth.getItems().add(Months.get(rs.getInt("commission_month")));
         }
     }
 
     @FXML
     void fetchEntries(ActionEvent event) throws SQLException {
         if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
-            String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+            String year = cmbUpdateYear.getSelectionModel().getSelectedItem(); Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
             if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
-                stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND `commission_year` ='" + year + "' AND `commission_month` = '" + month + "' ");
+                stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, MONTH(commission_date) AS `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND YEAR(`commission_date`) ='" + year + "' AND MONTH(`commission_date`) = '" + month.getValue() + "' ");
             } else {
-                stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND `commission_year` ='" + year + "'");
+                stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, MONTH(commission_date) AS `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND YEAR(`commission_date`) ='" + year + "'");
             }
             rs = stmnt.executeQuery();
             commTable.getItems().clear();
@@ -270,7 +272,7 @@ public class commissionEntriesController implements Initializable {
             colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
             colWeek.setCellValueFactory(data -> data.getValue().WeekProperty());
             while (rs.next()) {
-                addEntries = new GetEntries(rs.getString("commission_ID"), rs.getString("commission_date"), rs.getString("commission_month"), rs.getString("commission_week"), rs.getString("commission_amount"));
+                addEntries = new GetEntries(rs.getString("commission_ID"), getFunctions.convertSqlDate(rs.getString("commission_date")), Months.get(rs.getInt("commission_month")).toString(), rs.getString("commission_week"), getFunctions.getAmount(rs.getString("commission_amount")));
                 commTable.getItems().add(addEntries);
 
             }
@@ -294,7 +296,7 @@ public class commissionEntriesController implements Initializable {
     @FXML
     void updateEntries(ActionEvent event) throws SQLException {
         if (entriesID != null){
-            String Date = getFunctions.getDate(entDatePck.getValue()),
+            String Date = getFunctions.getSqlDate(entDatePck.getValue()),
                     Year = getFunctions.getYear(entDatePck.getValue()),
                     Qtr = getFunctions.getQuarter(entDatePck.getValue()),
                     Week = getFunctions.getWeek(entDatePck.getValue()),
@@ -326,8 +328,8 @@ public class commissionEntriesController implements Initializable {
                     }
                     else{
                         stmnt = con.prepareStatement("UPDATE `commission_details` SET  " +
-                                "`commission_amount`= '"+Float.parseFloat(txtEntCCAmt.getText())+"',`commission_year`= '"+Year+"'," +
-                                "`commission_date` = '"+Date+"',`commission_week` = '"+Week+"', `commission_month` = '"+Month+"', `commission_quarter` = '"+Qtr+"' WHERE   " +
+                                "`commission_amount`= '"+Float.parseFloat(txtEntCCAmt.getText())+"'," +
+                                "`commission_date` = '"+Date+"',`commission_week` = '"+Week+"' WHERE   " +
                                 "`commission_ID`= '"+entriesID+"' AND `commission_center`= '"+RevCent+"'");
                         stmnt.executeUpdate();
                         clear();
@@ -413,14 +415,14 @@ public class commissionEntriesController implements Initializable {
         for (int i=0; i<=commTable.getItems().size(); i++){
             if (i != commTable.getItems().size()){
             getData = commTable.getItems().get(i);
-            String acDate = getData.getDate();
+            String acDate = getFunctions.setSqlDate(getData.getDate());/*
             LocalDate date = LocalDate.parse(acDate, dtf);
-            String regex = "(?<=[\\d])(,)(?=[\\d])";
+            String regex = "(?<=[\\d])(,)(?=[\\d])";*/
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(getData.getAmount());
             float ccAmount = Float.parseFloat(m.replaceAll(""));
-            int week = Integer.parseInt(getData.getCode()), year = Integer.parseInt(getFunctions.getYear(date)),
-                qtr = Integer.parseInt(getFunctions.getQuarter(date));
+            int week = Integer.parseInt(getData.getCode())/* year = Integer.parseInt(getFunctions.getYear(date)),
+                qtr = Integer.parseInt(getFunctions.getQuarter(date))*/;
             String  month = getData.getItem(), fini = getID();
             PreparedStatement stmnt = con.prepareStatement("SELECT `commission_date` FROM `commission_details`" +
                     " WHERE `commission_center` = '"+RevCent+"'");
@@ -450,9 +452,8 @@ public class commissionEntriesController implements Initializable {
                     }
                     deduction += ccAmount;
                     stmnt = con.prepareStatement("INSERT INTO `commission_details`(`commission_ID`, " +
-                            "`commission_center`, `commission_amount`, `commission_date`, `commission_week`," +
-                            " `commission_month`,`commission_quarter`, `commission_year`) VALUES ('"+fini+"', '"+RevCent+"', '"+ccAmount
-                            +"', '"+acDate+"', '"+week+"', '"+month+"', '"+qtr+"', '"+year+"')");
+                            "`commission_center`, `commission_amount`, `commission_date`, `commission_week`) VALUES ('"+fini+"', '"+RevCent+"', '"+ccAmount
+                            +"', '"+acDate+"', '"+week+"')");
                     stmnt.executeUpdate();
             }
         }else {
@@ -485,11 +486,12 @@ public class commissionEntriesController implements Initializable {
     }
 
     private void loadRevenueCollectionTable() throws SQLException {
-        String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+        String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+        Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
         if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
-            stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND `commission_year` ='" + year + "' AND `commission_month` = '" + month + "' ");
+            stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, MONTH(commission_date) AS `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND YEAR(commission_date) ='" + year + "' AND MONTH(commission_date) = '" + month.getValue() + "' ");
         } else {
-            stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND `commission_year` ='" + year + "'");
+            stmnt = con.prepareStatement("SELECT `commission_ID`, `commission_date`, `commission_week`, `commission_amount`, MONTH(commission_date) AS `commission_month` FROM `commission_details` WHERE `commission_center` = '" + RevCent + "' AND YEAR(commission_date) ='" + year + "'");
         }
         rs = stmnt.executeQuery();
         commTable.getItems().clear();
@@ -499,7 +501,7 @@ public class commissionEntriesController implements Initializable {
         colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
         colWeek.setCellValueFactory(data -> data.getValue().WeekProperty());
         while (rs.next()) {
-            addEntries = new GetEntries(rs.getString("commission_ID"), rs.getString("commission_date"), rs.getString("commission_month"), rs.getString("commission_week"), rs.getString("commission_amount"));
+            addEntries = new GetEntries(rs.getString("commission_ID"), getFunctions.convertSqlDate(rs.getString("commission_date")), Months.get(rs.getInt("commission_month")).toString(), rs.getString("commission_week"), getFunctions.getAmount(rs.getString("commission_amount")));
             commTable.getItems().add(addEntries);
 
         }

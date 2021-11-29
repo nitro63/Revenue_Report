@@ -88,7 +88,7 @@ public class InitializerController implements Initializable {
             Scene scene = new Scene(root);/*
             String css = this.getClass().getResource("/Views/Stylesheets/app.css").toExternalForm(); // Getting stylesheet
             scene.getStylesheets().add(css);*/
-            base.setTitle("Revenue Monitoring System");
+            base.setTitle("KMA Revenue Reporting System");
             base.getIcons().add(new Image("/com/Assets/kmalogo.png"));
             base.setScene(scene);
             base.show();

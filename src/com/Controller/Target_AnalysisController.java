@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -86,6 +87,7 @@ public class Target_AnalysisController implements Initializable {
     String targ;
     Map<String, String> centerID = new HashMap<>();
     boolean subMetroPR, Condition;
+    private String SelectedCenter;
     
     public Target_AnalysisController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -100,6 +102,13 @@ public class Target_AnalysisController implements Initializable {
             getRevCenters();
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (LogInController.hasCenter){
+            try {
+                getReportYear();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     } 
     
@@ -127,7 +136,11 @@ public class Target_AnalysisController implements Initializable {
          cmbReportCent.getItems().clear();
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);
-    
+        if (LogInController.hasCenter){
+            cmbReportCent.getSelectionModel().select(LogInController.loggerCenterName);
+            SelectedCenter = cmbReportCent.getSelectionModel().getSelectedItem();
+//            cmbReportCent.setDisable(true);
+        }
          
     }
     
@@ -181,10 +194,10 @@ public class Target_AnalysisController implements Initializable {
        targ = acTargAmount;
        txtAnnualTarget.setText(acTargAmount);
        System.out.println(targAmount);
-        ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");  
+        ObservableList<Months> collectionMonth = FXCollections.observableArrayList(Months.values());
         float totRevenue, cumuRevenue = 0, outRevenue, cumuPercent, outPercent;
         String actotRevenue, acCumuRevenue = "", acOutRevenue = "", acCumPercent = "", acOutPercent = "";
-        for(String month : collectionMonth){            
+        for(Months month : collectionMonth){
            totRevenue = setReptMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
            cumuRevenue += totRevenue;
            cumuPercent = (cumuRevenue / targAmount);
@@ -215,22 +228,22 @@ public class Target_AnalysisController implements Initializable {
            colPercAchv.setCellValueFactory(data -> data.getValue().achvPercentProperty());
            colAmtOut.setCellValueFactory(data -> data.getValue().outAmtProperty());
            colPercOut.setCellValueFactory(data -> data.getValue().outPercentProperty());
-            GetTargAnalReport getReport = new GetTargAnalReport(month, actotRevenue, acCumuRevenue, acCumPercent, acOutRevenue, acOutPercent);
+            GetTargAnalReport getReport = new GetTargAnalReport(month.toString(), actotRevenue, acCumuRevenue, acCumPercent, acOutRevenue, acOutPercent);
            tblColPayAnalysis.getItems().add(getReport);
            totRevenue = 0;
            }
        }
 
          
-       public Float setReptMonthSum(String Center, String Month, String Year) throws SQLException{
+       public Float setReptMonthSum(String Center, Months Month, String Year) throws SQLException{
         float totalAmunt;
            if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueMonth`= '"+Month+"'");
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate) = '"+Month.getValue()+"'");
            } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `target_revCenter` = 'K0201' OR `target_revCenter` = 'K0202' OR `target_revCenter` = 'K0203' OR `target_revCenter` = 'K0204' OR `target_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueMonth`= '"+Month+"'");
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `target_revCenter` = 'K0201' OR `target_revCenter` = 'K0202' OR `target_revCenter` = 'K0203' OR `target_revCenter` = 'K0204' OR `target_revCenter` = 'K0205' AND YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate) = '"+Month.getValue()+"'");
            }
            else {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+Center+"'AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenueMonth`= '"+Month+"'");
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+Center+"'AND YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate) = '"+Month.getValue()+"'");
            }
 //       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();

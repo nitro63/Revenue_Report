@@ -23,6 +23,13 @@ public class GetFunctions {
         String Date = Dateformat.format(setDate);// Assigning converted date with "MM/dd/YY" format to "Date" variable
         return Date;
     }
+
+    /**
+     *
+     * @param date
+     * @return Date
+     * The getSqlDate function sets a LocalDate to the sql date format
+     */
     public String getSqlDate(LocalDate date){
         int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
         Calendar cal = Calendar.getInstance();

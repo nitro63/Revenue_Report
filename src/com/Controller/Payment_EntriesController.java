@@ -272,12 +272,12 @@ public class Payment_EntriesController implements Initializable {
       rs = stmnt.executeQuery();
       cmbUpdateYear.getItems().clear();
       while (rs.next()){
-          cmbUpdateYear.getItems().add(rs.getString("Year"));
+          cmbUpdateYear.getItems().add(Integer.toString(rs.getInt("Year")));
       }
   }
 
     @FXML
-    void selectedYear(ActionEvent event) throws SQLException {
+    private void selectedYear(ActionEvent event) throws SQLException {
       String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
         stmnt = con.prepareStatement("SELECT `Month` FROM `collection_payment_entries` WHERE `pay_revCenter` = '"+RevCentID+"' AND `Year` ='"+year+"' GROUP BY `Month`");
         rs = stmnt.executeQuery();
@@ -288,7 +288,7 @@ public class Payment_EntriesController implements Initializable {
     }
 
     @FXML
-   void fetchEntries(ActionEvent event) throws SQLException {
+   private void fetchEntries(ActionEvent event) throws SQLException {
         if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
             String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
             if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {

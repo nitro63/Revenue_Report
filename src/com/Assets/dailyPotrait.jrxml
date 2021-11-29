@@ -203,26 +203,26 @@
 	<detail>
 		<band height="345" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="42" y="283" width="138" height="20" isPrintWhenDetailOverflows="true" uuid="1dac484c-9f27-4b66-9c45-205dbe9d710e"/>
+				<reportElement positionType="FixRelativeToBottom" x="42" y="288" width="138" height="20" isPrintWhenDetailOverflows="true" uuid="1dac484c-9f27-4b66-9c45-205dbe9d710e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[REVENUE SUPERVISOR]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="FixRelativeToBottom" x="174" y="284" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="d24a4c97-1d45-4a63-ad9b-37acf394effc">
+				<reportElement positionType="FixRelativeToBottom" x="174" y="289" width="115" height="20" isPrintWhenDetailOverflows="true" uuid="d24a4c97-1d45-4a63-ad9b-37acf394effc">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{revenueSupervisor}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="41" y="312" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="79297422-3218-4747-b39d-5cefef625714">
+				<reportElement positionType="FixRelativeToBottom" x="41" y="317" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="79297422-3218-4747-b39d-5cefef625714">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[SIGNATURE]]></text>
+				<text><![CDATA[SIGNATURE/ STAMP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="142" y="312" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="e6bc7382-a30b-4fd4-9f35-d1b3ca87eaa2">
+				<reportElement positionType="FixRelativeToBottom" x="142" y="317" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="e6bc7382-a30b-4fd4-9f35-d1b3ca87eaa2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
@@ -231,26 +231,26 @@
 				<text><![CDATA[....................................................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="451" y="282" width="123" height="20" isPrintWhenDetailOverflows="true" uuid="511d2b81-e088-4bff-a963-2a06bee93540"/>
+				<reportElement positionType="FixRelativeToBottom" x="451" y="287" width="123" height="20" isPrintWhenDetailOverflows="true" uuid="511d2b81-e088-4bff-a963-2a06bee93540"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[ACCOUNTANT]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="FixRelativeToBottom" x="560" y="282" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="70530bea-11ed-48a9-8922-172490edffb2">
+				<reportElement positionType="FixRelativeToBottom" x="560" y="287" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="70530bea-11ed-48a9-8922-172490edffb2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{accountant}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="454" y="311" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="01f21ac0-26a3-40ff-93e7-d3f9fa4b8895">
+				<reportElement positionType="FixRelativeToBottom" x="454" y="316" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="01f21ac0-26a3-40ff-93e7-d3f9fa4b8895">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[SIGNATURE]]></text>
+				<text><![CDATA[SIGNATURE/ STAMP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="555" y="311" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="574fd092-e93c-4fe0-a4ad-8cfd182be874">
+				<reportElement positionType="FixRelativeToBottom" x="555" y="316" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="574fd092-e93c-4fe0-a4ad-8cfd182be874">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">

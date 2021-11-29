@@ -6,6 +6,7 @@
 package com.Controller;
 
 import com.Controller.Gets.GetMonthlyReport;
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -193,6 +194,7 @@ public class MonthlyReportController implements Initializable {
     Map<String, String> centerID = new HashMap<>();
     Logger log = Logger.getLogger(MonthlyReportController.class.getName());
     private boolean subMetroPR, Condition;
+    private String SelectedCenter;
     
     public MonthlyReportController() throws SQLException, ClassNotFoundException{
         this.con = DBConnection.getConn();
@@ -206,6 +208,13 @@ public class MonthlyReportController implements Initializable {
             getRevCenters();
         } catch (SQLException | ClassNotFoundException ex) {
             log.error(ex.getMessage(), ex);
+        }
+        if (LogInController.hasCenter){
+            try {
+                getReportYear();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }   
     
@@ -233,18 +242,23 @@ public class MonthlyReportController implements Initializable {
         }
          cmbReportCent.getItems().addAll(rowCent);
          cmbReportCent.setVisibleRowCount(5);
+        if (LogInController.hasCenter){
+            cmbReportCent.getSelectionModel().select(LogInController.loggerCenterName);
+            SelectedCenter = cmbReportCent.getSelectionModel().getSelectedItem();
+            cmbReportCent.setDisable(true);
+        }
     
 
     }
     
     private void getReportYear() throws SQLException{
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `daily_entries`.`revenueYear`");
+            stmnt = con.prepareStatement(" SELECT YEAR(revenueDate) AS `revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `daily_entries`.`revenueYear`");
         } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' GROUP BY `daily_entries`.`revenueYear`");
+            stmnt = con.prepareStatement(" SELECT YEAR(revenueDate) AS `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' GROUP BY `daily_entries`.`revenueYear`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+            stmnt = con.prepareStatement(" SELECT YEAR(revenueDate) AS `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         }
         rs = stmnt.executeQuery();
         rowYear.clear();
@@ -269,15 +283,15 @@ public class MonthlyReportController implements Initializable {
         PreparedStatement stmnt_itemsCategories;
         ResultSet rs, rs_itemsCategories;
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, `revenueMonth` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
+            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, MONTH(revenueDate) AS `revenueMonth` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(revenueDate)  = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(revenueDate)  = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
         } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
+            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, MONTH(revenueDate) AS `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND YEAR(revenueDate)  = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' AND YEAR(revenueDate)  = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `revenueYear` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
+            stmnt = con.prepareStatement(" SELECT `item_Sub`, `item_category`, `revenueAmount`, MONTH(revenueDate) AS `revenueMonth` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND YEAR(revenueDate)  = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' ORDER BY `item_Sub` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemsCategories = con.prepareStatement(" SELECT `item_Sub`, `item_category` FROM `daily_entries`,`revenue_centers`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND YEAR(revenueDate)  = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `item_Sub`");
         }
        rs = stmnt.executeQuery();
         rs_itemsCategories = stmnt_itemsCategories.executeQuery();
@@ -322,18 +336,18 @@ public class MonthlyReportController implements Initializable {
             for (String item : categoriesItem.get(category)) {
                 Map<String, Map<String, Float>> itemMonthSum = new HashMap<>();
                 Map<String, Float> monthSum = new HashMap<>();
-                monthSum.put(january.getText(), jan); monthSum.put(february.getText(), feb); monthSum.put(march.getText(), mar);
-                monthSum.put(april.getText(), apr); monthSum.put(may.getText(), mai); monthSum.put(june.getText(), jun);
-                monthSum.put(july.getText(), jul); monthSum.put(august.getText(), aug); monthSum.put(september.getText(), sep);
-                monthSum.put(october.getText(), oct); monthSum.put(november.getText(), nov); monthSum.put(december.getText(), dec);
+                monthSum.put(january.getText().toUpperCase(), jan); monthSum.put(february.getText().toUpperCase(), feb); monthSum.put(march.getText().toUpperCase(), mar);
+                monthSum.put(april.getText().toUpperCase(), apr); monthSum.put(may.getText().toUpperCase(), mai); monthSum.put(june.getText().toUpperCase(), jun);
+                monthSum.put(july.getText().toUpperCase(), jul); monthSum.put(august.getText().toUpperCase(), aug); monthSum.put(september.getText().toUpperCase(), sep);
+                monthSum.put(october.getText().toUpperCase(), oct); monthSum.put(november.getText().toUpperCase(), nov); monthSum.put(december.getText().toUpperCase(), dec);
                 itemMonthSum.put(item, monthSum);
                 boolean resultSetState = true;
                 while (resultSetState){
                     rs.next();
                     if (item.equals(rs.getString("item_Sub"))){
-                        float amot= itemMonthSum.get(item).get(rs.getString("revenueMonth"));
+                        float amot= itemMonthSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
                         amot += rs.getFloat("revenueAmount");
-                        itemMonthSum.get(item).put(rs.getString("revenueMonth"), amot);
+                        itemMonthSum.get(item).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
                     }
                     if (rs.isLast()){
                         resultSetState = false;
@@ -342,14 +356,14 @@ public class MonthlyReportController implements Initializable {
                 if (rs.isLast()){
                     rs.beforeFirst();
                 }
-                subjan += itemMonthSum.get(item).get(january.getText()); subfeb += itemMonthSum.get(item).get(february.getText()); submar += itemMonthSum.get(item).get(march.getText()); subapr += itemMonthSum.get(item).get(april.getText()); submai += itemMonthSum.get(item).get(may.getText()); subjun += itemMonthSum.get(item).get(june.getText());
-                subjul += itemMonthSum.get(item).get(july.getText()); subaug += itemMonthSum.get(item).get(august.getText()); subsep += itemMonthSum.get(item).get(september.getText()); suboct += itemMonthSum.get(item).get(october.getText()); subnov += itemMonthSum.get(item).get(november.getText()); subdec += itemMonthSum.get(item).get(december.getText());
-                totjan += itemMonthSum.get(item).get(january.getText()); totfeb += itemMonthSum.get(item).get(february.getText()); totmar += itemMonthSum.get(item).get(march.getText()); totapr += itemMonthSum.get(item).get(april.getText()); totmay += itemMonthSum.get(item).get(may.getText()); totjun += itemMonthSum.get(item).get(june.getText());
-                totjul += itemMonthSum.get(item).get(july.getText()); totaug += itemMonthSum.get(item).get(august.getText()); totsep += itemMonthSum.get(item).get(september.getText()); totoct += itemMonthSum.get(item).get(october.getText()); totnov += itemMonthSum.get(item).get(november.getText()); totdec += itemMonthSum.get(item).get(december.getText());
-                Jan = formatter.format(itemMonthSum.get(item).get(january.getText())); Feb = formatter.format(itemMonthSum.get(item).get(february.getText())); Mar = formatter.format(itemMonthSum.get(item).get(march.getText())); Apr = formatter.format(itemMonthSum.get(item).get(april.getText())); May = formatter.format(itemMonthSum.get(item).get(may.getText()));
-                Jun = formatter.format(itemMonthSum.get(item).get(june.getText())); Jul = formatter.format(itemMonthSum.get(item).get(july.getText())); Aug = formatter.format(itemMonthSum.get(item).get(august.getText())); Sep = formatter.format(itemMonthSum.get(item).get(september.getText())); Oct = formatter.format(itemMonthSum.get(item).get(october.getText()));
-                Nov = formatter.format(itemMonthSum.get(item).get(november.getText())); Dec = formatter.format(itemMonthSum.get(item).get(december.getText()));
-                total_amount = itemMonthSum.get(item).get(january.getText()) + itemMonthSum.get(item).get(february.getText()) + itemMonthSum.get(item).get(march.getText()) + itemMonthSum.get(item).get(april.getText()) + itemMonthSum.get(item).get(may.getText()) +itemMonthSum.get(item).get(june.getText()) + itemMonthSum.get(item).get(july.getText()) + itemMonthSum.get(item).get(august.getText()) + itemMonthSum.get(item).get(september.getText()) + itemMonthSum.get(item).get(october.getText()) + itemMonthSum.get(item).get(november.getText()) + itemMonthSum.get(item).get(december.getText()); totMonthsum += total_amount;
+                subjan += itemMonthSum.get(item).get(january.getText().toUpperCase()); subfeb += itemMonthSum.get(item).get(february.getText().toUpperCase()); submar += itemMonthSum.get(item).get(march.getText().toUpperCase()); subapr += itemMonthSum.get(item).get(april.getText().toUpperCase()); submai += itemMonthSum.get(item).get(may.getText().toUpperCase()); subjun += itemMonthSum.get(item).get(june.getText().toUpperCase());
+                subjul += itemMonthSum.get(item).get(july.getText().toUpperCase()); subaug += itemMonthSum.get(item).get(august.getText().toUpperCase()); subsep += itemMonthSum.get(item).get(september.getText().toUpperCase()); suboct += itemMonthSum.get(item).get(october.getText().toUpperCase()); subnov += itemMonthSum.get(item).get(november.getText().toUpperCase()); subdec += itemMonthSum.get(item).get(december.getText().toUpperCase());
+                totjan += itemMonthSum.get(item).get(january.getText().toUpperCase()); totfeb += itemMonthSum.get(item).get(february.getText().toUpperCase()); totmar += itemMonthSum.get(item).get(march.getText().toUpperCase()); totapr += itemMonthSum.get(item).get(april.getText().toUpperCase()); totmay += itemMonthSum.get(item).get(may.getText().toUpperCase()); totjun += itemMonthSum.get(item).get(june.getText().toUpperCase());
+                totjul += itemMonthSum.get(item).get(july.getText().toUpperCase()); totaug += itemMonthSum.get(item).get(august.getText().toUpperCase()); totsep += itemMonthSum.get(item).get(september.getText().toUpperCase()); totoct += itemMonthSum.get(item).get(october.getText().toUpperCase()); totnov += itemMonthSum.get(item).get(november.getText().toUpperCase()); totdec += itemMonthSum.get(item).get(december.getText().toUpperCase());
+                Jan = formatter.format(itemMonthSum.get(item).get(january.getText().toUpperCase())); Feb = formatter.format(itemMonthSum.get(item).get(february.getText().toUpperCase())); Mar = formatter.format(itemMonthSum.get(item).get(march.getText().toUpperCase())); Apr = formatter.format(itemMonthSum.get(item).get(april.getText().toUpperCase())); May = formatter.format(itemMonthSum.get(item).get(may.getText().toUpperCase()));
+                Jun = formatter.format(itemMonthSum.get(item).get(june.getText().toUpperCase())); Jul = formatter.format(itemMonthSum.get(item).get(july.getText().toUpperCase())); Aug = formatter.format(itemMonthSum.get(item).get(august.getText().toUpperCase())); Sep = formatter.format(itemMonthSum.get(item).get(september.getText().toUpperCase())); Oct = formatter.format(itemMonthSum.get(item).get(october.getText().toUpperCase()));
+                Nov = formatter.format(itemMonthSum.get(item).get(november.getText().toUpperCase())); Dec = formatter.format(itemMonthSum.get(item).get(december.getText().toUpperCase()));
+                total_amount = itemMonthSum.get(item).get(january.getText().toUpperCase()) + itemMonthSum.get(item).get(february.getText().toUpperCase()) + itemMonthSum.get(item).get(march.getText().toUpperCase()) + itemMonthSum.get(item).get(april.getText().toUpperCase()) + itemMonthSum.get(item).get(may.getText().toUpperCase()) +itemMonthSum.get(item).get(june.getText().toUpperCase()) + itemMonthSum.get(item).get(july.getText().toUpperCase()) + itemMonthSum.get(item).get(august.getText().toUpperCase()) + itemMonthSum.get(item).get(september.getText().toUpperCase()) + itemMonthSum.get(item).get(october.getText().toUpperCase()) + itemMonthSum.get(item).get(november.getText().toUpperCase()) + itemMonthSum.get(item).get(december.getText().toUpperCase()); totMonthsum += total_amount;
                 totalAmnt = formatter.format(total_amount);
                 getReport = new GetMonthlyReport(item, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, totalAmnt);
                 monthlyTable.getItems().add(getReport);

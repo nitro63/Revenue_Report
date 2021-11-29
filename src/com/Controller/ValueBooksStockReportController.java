@@ -7,6 +7,7 @@ package com.Controller;
 
 import com.Controller.Gets.GetFunctions;
 import com.Controller.Gets.GetValueBooksEntries;
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 
@@ -68,7 +69,7 @@ public class ValueBooksStockReportController implements Initializable {
     @FXML
     private JFXComboBox<String> cmbYear;
     @FXML
-    private JFXComboBox<String> cmbMonth;
+    private JFXComboBox<Months> cmbMonth;
     @FXML
     private JFXButton btnShowReport;
     @FXML
@@ -86,10 +87,11 @@ public class ValueBooksStockReportController implements Initializable {
     private final Connection con;
     private PreparedStatement stmnt;
     ObservableList<String> rowCent = FXCollections.observableArrayList();
-    ObservableList<String> rowMonths =FXCollections.observableArrayList();
+    ObservableList<Months> rowMonths =FXCollections.observableArrayList();
     ObservableList<String> rowYear =FXCollections.observableArrayList();
     Map<String, String> centerID = new HashMap<>();
     boolean subMetroPR, Condition;
+    private String SelectedCenter;
 
     public ValueBooksStockReportController() throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
@@ -113,6 +115,13 @@ public class ValueBooksStockReportController implements Initializable {
             getRevenueCenters();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+        if (LogInController.hasCenter){
+            try {
+                getReportYear();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
@@ -138,17 +147,27 @@ public class ValueBooksStockReportController implements Initializable {
         cmbRevCenter.getItems().clear();
         cmbRevCenter.setItems(rowCent);
         cmbRevCenter.setVisibleRowCount(5);
+        if (LogInController.hasCenter ){
+            cmbRevCenter.getSelectionModel().select(LogInController.loggerCenterName);
+            SelectedCenter = cmbRevCenter.getSelectionModel().getSelectedItem();
+//            cmbRevCenter.setDisable(true);
+        }
     }
 
-    @FXML
-    private void loadYears(ActionEvent event) throws SQLException {
+    private void getReportYear() throws SQLException {
+        SelectedCenter = cmbRevCenter.getSelectionModel().getSelectedItem();
         if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `year` FROM `revenue_centers`,`value_books_stock_record` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `year`");
+            stmnt = con.prepareStatement(" SELECT YEAR(date) AS `year` FROM `revenue_centers`,`value_books_stock_record`" +
+                    " WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` " +
+                    "= 'PROPERTY RATE SECTION' GROUP BY `year`");
         } else if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `year` FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = 'K0204' OR `value_stock_revCenter` = 'K0205' GROUP BY `year`");
+            stmnt = con.prepareStatement(" SELECT YEAR(date) AS `year` FROM `value_books_stock_record`,`revenue_centers`" +
+                    " WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR" +
+                    " `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = " +
+                    "'K0204' OR `value_stock_revCenter` = 'K0205' GROUP BY `year`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `year` FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' GROUP BY `year`");
+            stmnt = con.prepareStatement(" SELECT YEAR(date) AS `year` FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' GROUP BY `year`");
         }
 //        stmnt = con.prepareStatement("SELECT `year` FROM `value_books_stock_record` WHERE `value_stock_revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' GROUP BY `year`");
         ResultSet rs= stmnt.executeQuery();
@@ -161,21 +180,26 @@ public class ValueBooksStockReportController implements Initializable {
     }
 
     @FXML
+    private void loadYears(ActionEvent event) throws SQLException {
+        getReportYear();
+    }
+
+    @FXML
     private void loadMonths(ActionEvent event) throws SQLException {
         if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `month` FROM `revenue_centers`,`value_books_stock_record` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
+            stmnt = con.prepareStatement(" SELECT MONTH(date) AS `month` FROM `revenue_centers`,`value_books_stock_record` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(date) = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
         } else if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `month` FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = 'K0204' OR `value_stock_revCenter` = 'K0205' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
+            stmnt = con.prepareStatement(" SELECT MONTH(date) AS `month` FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = 'K0204' OR `value_stock_revCenter` = 'K0205' AND YEAR(date) = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `month` FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"'AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
+            stmnt = con.prepareStatement(" SELECT MONTH(date) AS `month` FROM `value_books_stock_record`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"'AND YEAR(date) = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
         }
 //        stmnt = con.prepareStatement("SELECT `month` FROM `value_books_stock_record` WHERE `value_stock_revCenter` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"'GROUP BY `month`");
         ResultSet rs= stmnt.executeQuery();
         ResultSetMetaData rm = rs.getMetaData();
 
         while(rs.next()){
-            rowMonths.add(rs.getString("month"));
+            rowMonths.add(Months.get(rs.getInt("month")));
         }
         cmbMonth.getItems().clear();
         cmbMonth.setItems(rowMonths);
@@ -183,7 +207,7 @@ public class ValueBooksStockReportController implements Initializable {
     }
 
     void changeNames(){
-        lblMonth.setText(cmbMonth.getSelectionModel().getSelectedItem());
+        lblMonth.setText(cmbMonth.getSelectionModel().getSelectedItem().toString());
         lblYear.setText(cmbYear.getSelectionModel().getSelectedItem());
         lblRevenueCenter.setText(cmbRevCenter.getSelectionModel().getSelectedItem());
     }
@@ -204,12 +228,12 @@ public class ValueBooksStockReportController implements Initializable {
             float cumuamount = 0;
             String amount;
             if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-                stmnt = con.prepareStatement(" SELECT * FROM `revenue_centers`,`value_books_stock_record`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "' AND `value_book` = `value_book_ID` ORDER BY `date`");
+                stmnt = con.prepareStatement(" SELECT * FROM `revenue_centers`,`value_books_stock_record`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(date) = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND MONTH(date) = '" + cmbMonth.getSelectionModel().getSelectedItem().getValue() + "' AND `value_book` = `value_book_ID` ORDER BY `date`");
             } else if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = 'K0204' OR `value_stock_revCenter` = 'K0205' AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "' AND `value_book` = `value_book_ID` ORDER BY `date`");
+                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `value_stock_revCenter` = 'K0201' OR `value_stock_revCenter` = 'K0202' OR `value_stock_revCenter` = 'K0203' OR `value_stock_revCenter` = 'K0204' OR `value_stock_revCenter` = 'K0205' AND YEAR(date) = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND MONTH(date) = '" + cmbMonth.getSelectionModel().getSelectedItem().getValue() + "' AND `value_book` = `value_book_ID` ORDER BY `date`");
             }
             else {
-                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"'AND `year` = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "' AND `value_book` = `value_book_ID` ORDER BY `date`");
+                stmnt = con.prepareStatement(" SELECT * FROM `value_books_stock_record`,`revenue_centers`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbRevCenter.getSelectionModel().getSelectedItem()+"'AND YEAR(date) = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND MONTH(date) = '" + cmbMonth.getSelectionModel().getSelectedItem().getValue() + "' AND `value_book` = `value_book_ID` ORDER BY `date`");
             }
 //            stmnt = con.prepareStatement("SELECT * FROM `value_books_stock_record`, `revenue_centers` WHERE `year`= '" +cmbYear.getSelectionModel().getSelectedItem() + "' AND `revenue_center`.`revenue_centers` = `value_stock_revCenter` AND `revenue_centers`.`revenue_center` = '" +cmbRevCenter.getSelectionModel().getSelectedItem() + "' AND `month` = '" + cmbMonth.getSelectionModel().getSelectedItem() + "'");
             ResultSet rs = stmnt.executeQuery();
@@ -223,7 +247,7 @@ public class ValueBooksStockReportController implements Initializable {
             colPurAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
             colRemarks.setCellValueFactory(data -> data.getValue().remarksProperty());
             while (rs.next()) {
-                Date = rs.getString("date");
+                Date = getFunctions.convertSqlDate(rs.getString("date"));
                 valBook = rs.getString("value_books");
                 remarks = rs.getString("remarks");
                 firstSerial = rs.getString("first_serial");
@@ -255,7 +279,7 @@ public class ValueBooksStockReportController implements Initializable {
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
             String year = cmbYear.getSelectionModel().getSelectedItem(),
-                    month = cmbMonth.getSelectionModel().getSelectedItem(),
+                    month = cmbMonth.getSelectionModel().getSelectedItem().toString(),
                     center = cmbRevCenter.getSelectionModel().getSelectedItem();
 
             /* Map to hold Jasper report Parameters */

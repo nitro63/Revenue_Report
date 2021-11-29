@@ -323,7 +323,7 @@ public class Revenue_EntriesController implements Initializable {
     }
 
     @FXML
-    void LoadDates(ActionEvent event) throws SQLException {
+    private void LoadDates(ActionEvent event) throws SQLException {
         String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
         if(!cmbUpdateMonth.getSelectionModel().isSelected(0)){
             Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
@@ -386,17 +386,24 @@ public class Revenue_EntriesController implements Initializable {
     }
 
     private void loadRevenueCollectionTable() throws SQLException {
-        String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+        String year = cmbUpdateYear.getSelectionModel().getSelectedItem(),
+                day = cmbUpdateDate.getSelectionModel().getSelectedItem();
         Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
-        if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
+        if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && cmbUpdateDate.getSelectionModel().isSelected(0)) {
             stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
-                            + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year
-                            + "' AND `revenueMonth` = '" + month + "' ");
+                            + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' ");
+        } else if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && !cmbUpdateDate.getSelectionModel().isSelected(0)) {
+            stmnt = con.prepareStatement(
+                    "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                            + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"
+                            + day + "'");
         } else {
             stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
-                            + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND `revenueYear` ='" + year + "'");
+                            + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(revenueDate) ='" + year + "'");
         }
         rs = stmnt.executeQuery();
         revTable.getItems().clear();
@@ -405,7 +412,7 @@ public class Revenue_EntriesController implements Initializable {
         revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
         revDate.setCellValueFactory(data -> data.getValue().DateProperty());
         while (rs.next()) {
-            addEntries = new GetEntries(rs.getString("revenueDate"), rs.getString("item_Sub"),
+            addEntries = new GetEntries(getFunctions.convertSqlDate(rs.getString("revenueDate")), rs.getString("item_Sub"),
                     rs.getString("entries_ID"), getFunctions.getAmount(rs.getString("revenueAmount")));
             revTable.getItems().add(addEntries);
         }
@@ -514,7 +521,7 @@ public class Revenue_EntriesController implements Initializable {
         } else {
             if (entriesID != null) {
                 ArrayList<String> dupItem = new ArrayList<>();
-                String Date = getFunctions.getDate(entDatePck.getValue()),
+                String Date = getFunctions.getSqlDate(entDatePck.getValue()),
                         Year = getFunctions.getYear(entDatePck.getValue()),
                         Qtr = getFunctions.getQuarter(entDatePck.getValue()),
                         Week = getFunctions.getWeek(entDatePck.getValue()),
@@ -567,10 +574,8 @@ public class Revenue_EntriesController implements Initializable {
                             Condition = false;
                         } else {
                             stmnt = con.prepareStatement("UPDATE `daily_entries` SET  " + "`revenueAmount`= '"
-                                    + Float.parseFloat(txtEntAmt.getText()) + "',`revenueYear`= '" + Year + "',"
-                                    + "`revenueDate` = '" + Date + "', `revenueItem` = '" + code + "'"
-                                    + ",`revenueWeek` = '" + Week + "', `revenueMonth` = '" + Month
-                                    + "', `revenueQuarter` = '" + Qtr + "' WHERE   " + "`entries_ID`= '" + entriesID
+                                    + Float.parseFloat(txtEntAmt.getText()) + "',`revenueDate` = '" + Date + "', " +
+                                    "`revenueItem` = '" + code + "', `revenue_week` = '"+Integer.parseInt(Week)+"' WHERE   " + "`entries_ID`= '" + entriesID
                                     + "' AND `daily_revCenter`= '" + RevCent + "'");
                             stmnt.executeUpdate();
                             clear();
@@ -636,7 +641,7 @@ public class Revenue_EntriesController implements Initializable {
                 String amount = getData.getAmount();
                 Matcher m = p.matcher(amount);
                 float acAmount = Float.parseFloat(m.replaceAll(""));
-                int acWeek = Integer.parseInt(getFunctions.getWeek(date));
+                String acWeek = getFunctions.getWeek(date);
                 String acMonth = getFunctions.getMonth(date);
                 int acYear = Integer.parseInt(getFunctions.getYear(date));
                 stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `revenueItem` = '" + acCode + "'"
@@ -654,8 +659,8 @@ public class Revenue_EntriesController implements Initializable {
                 } else {
                     deduction += acAmount;
                     stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, "
-                            + "`revenueItem`, `revenueAmount`, `revenueDate`) VALUES('" + RevCent + "'," + " '" + acItem
-                            + "', '" + acAmount + "',  '" + sqlDate + "')");
+                            + "`revenueItem`, `revenueAmount`, `revenueDate`, `revenue_week`) VALUES('" + RevCent + "'," + " '" + acItem
+                            + "', '" + acAmount + "',  '" + sqlDate + "', '"+acWeek+"')");
                     stmnt.executeUpdate();
                     registerItem.clear();
 

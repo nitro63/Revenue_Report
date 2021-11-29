@@ -6,6 +6,7 @@
 package com.Controller;
 
 import com.Controller.Gets.GetPaymentDetails;
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,7 +61,7 @@ public class Payment_ReportController implements Initializable {
     @FXML
     private ComboBox<String> cmbReportCent;
     @FXML
-    private ComboBox<String> cmbReportYear;
+    private ComboBox<Integer> cmbReportYear;
     @FXML
     private JFXButton btnShowReport;
     @FXML
@@ -89,10 +90,11 @@ public class Payment_ReportController implements Initializable {
     private PreparedStatement stmnt;
     ObservableList<String> rowCent =FXCollections.observableArrayList();
     ObservableList<String> rowMonths =FXCollections.observableArrayList();
-    ObservableList<String> rowYear =FXCollections.observableArrayList();
+    ObservableList<Integer> rowYear =FXCollections.observableArrayList();
     ObservableList<String> rowItems =FXCollections.observableArrayList();
     Map<String, String> centerID = new HashMap<>();
-    String Year, Month, Center, RevCenterID;
+
+    String Year, Month, Center, RevCenterID, SelectedCenter;
     boolean cond = false, subMetroPR, Condition;
 
     
@@ -115,6 +117,13 @@ public class Payment_ReportController implements Initializable {
             getRevCenters();
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(MonthlyReportController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (LogInController.hasCenter){
+            try {
+                getReportYear();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }   
     
@@ -143,24 +152,28 @@ public class Payment_ReportController implements Initializable {
          cmbReportCent.getItems().clear();
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);
-    
-         
+         if (LogInController.hasCenter){
+             cmbReportCent.getSelectionModel().select(LogInController.loggerCenterName);
+             SelectedCenter = cmbReportCent.getSelectionModel().getSelectedItem();
+             cmbReportCent.setDisable(true);
+         }
     }
     
     private void getReportYear() throws SQLException{
+        SelectedCenter = cmbReportCent.getSelectionModel().getSelectedItem();
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
             stmnt = con.prepareStatement(" SELECT `Year` FROM `revenue_centers`,`collection_payment_entries` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `Year`");
         } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
             stmnt = con.prepareStatement(" SELECT `Year` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND `pay_revCenter` = 'K0201' OR `pay_revCenter` = 'K0202' OR `pay_revCenter` = 'K0203' OR `pay_revCenter` = 'K0204' OR `pay_revCenter` = 'K0205' GROUP BY `Year`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `Year` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
+            stmnt = con.prepareStatement(" SELECT `Year` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND`revenue_centers`.`revenue_center` = '"+SelectedCenter+"'  GROUP BY `Year`");
         }
 //        stmnt = con.prepareStatement(" SELECT `Year` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `collection_payment_entries`.`pay_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `Year`");
         ResultSet rs = stmnt.executeQuery();
         rowYear.clear();
         while(rs.next()){
-            rowYear.add(rs.getString("Year"));
+            rowYear.add(rs.getInt("Year"));
         }
         cmbReportYear.getItems().clear();
         cmbReportYear.getItems().setAll(rowYear);
@@ -174,7 +187,7 @@ public class Payment_ReportController implements Initializable {
             stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND `pay_revCenter` = 'K0201' OR `pay_revCenter` = 'K0202' OR `pay_revCenter` = 'K0203' OR `pay_revCenter` = 'K0204' OR `pay_revCenter` = 'K0205' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND`revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
+            stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND`revenue_centers`.`revenue_center` = '"+SelectedCenter+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
         }
 //        stmnt = con.prepareStatement(" SELECT `Month` FROM `collection_payment_entries`,`revenue_centers` WHERE  `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `revenue_centers`.`CenterID` = `collection_payment_entries`.`pay_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' GROUP BY `Month`");
         ResultSet rs = stmnt.executeQuery();
@@ -189,8 +202,8 @@ public class Payment_ReportController implements Initializable {
     
     private void changeNames() {
         lblRevenueCenter.setText(cmbReportCent.getSelectionModel().getSelectedItem());
-        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem());
-        lblMonth.setText(cmbReportMonth.getSelectionModel().getSelectedItem());
+        lblYear.setText(cmbReportYear.getSelectionModel().getSelectedItem().toString());
+        lblMonth.setText(cmbReportMonth.getSelectionModel().getSelectedItem().toString());
     } 
     
     private void setItems() throws SQLException{
@@ -198,12 +211,12 @@ public class Payment_ReportController implements Initializable {
         float amount, cumuAmount = 0;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `revenue_centers`,`collection_payment_entries` WHERE `revenue_centers`.`CenterID` = pay_revCenter AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `Month`= '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `Date`");
+            stmnt = con.prepareStatement(" SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `revenue_centers`,`collection_payment_entries` WHERE `revenue_centers`.`CenterID` = pay_revCenter AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `Month` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `Date`");
         } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = pay_revCenter AND `pay_revCenter` = 'K0201' OR `pay_revCenter` = 'K0202' OR `pay_revCenter` = 'K0203' OR `pay_revCenter` = 'K0204' OR `pay_revCenter` = 'K0205' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `Month`= '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `Date`");
+            stmnt = con.prepareStatement(" SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = pay_revCenter AND `pay_revCenter` = 'K0201' OR `pay_revCenter` = 'K0202' OR `pay_revCenter` = 'K0203' OR `pay_revCenter` = 'K0204' OR `pay_revCenter` = 'K0205' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `Month` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `Date`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `Month`= '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `Date`");
+            stmnt = con.prepareStatement(" SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `collection_payment_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `pay_revCenter` AND `revenue_centers`.`revenue_center` = '"+SelectedCenter+"'AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `Month` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `Date`");
         }
 //        stmnt = con.prepareStatement("SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `collection_payment_entries` WHERE `Month`= '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `pay_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'");
         ResultSet rs = stmnt.executeQuery();
@@ -268,7 +281,7 @@ public class Payment_ReportController implements Initializable {
             URL url = this.getClass().getResource("/com/Assets/kmalogo.png");
 
             JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(items);
-            String year = cmbReportYear.getSelectionModel().getSelectedItem(),
+            String year = cmbReportYear.getSelectionModel().getSelectedItem().toString(),
                     center = cmbReportCent.getSelectionModel().getSelectedItem(),
                     month = cmbReportMonth.getSelectionModel().getSelectedItem();
 
@@ -303,7 +316,7 @@ public class Payment_ReportController implements Initializable {
             event.consume();
         }else {
             if (cond){
-            Year = cmbReportYear.getSelectionModel().getSelectedItem();
+            Year = cmbReportYear.getSelectionModel().getSelectedItem().toString();
             Center = cmbReportCent.getSelectionModel().getSelectedItem();
             Month = cmbReportMonth.getSelectionModel().getSelectedItem();
             RevCenterID = centerID.get(Center);

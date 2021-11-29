@@ -332,7 +332,7 @@ public class valueBooksEntriesController implements Initializable {
             while (rs.next()) {
                 amount += rs.getFloat("amount");
                 cumuAmounts = getDates.getAmount(Float.toString(amount));
-                addEntries = new GetValueBooksEntries(rs.getString("value_record_ID"), rs.getString("date"), rs.getString("value_books"), rs.getString("first_serial"), rs.getString("last_serial"),
+                addEntries = new GetValueBooksEntries(rs.getString("value_record_ID"), getDates.convertSqlDate(rs.getString("date")), rs.getString("value_books"), rs.getString("first_serial"), rs.getString("last_serial"),
                         rs.getString("quantity"), getDates.getAmount(rs.getString("amount")), cumuAmounts, getDates.getAmount(rs.getString("purchase_amount")), rs.getString("remarks"));
                 tblValueBookStocks.getItems().add(addEntries);
 
@@ -479,7 +479,7 @@ public class valueBooksEntriesController implements Initializable {
         while (rs.next()) {
             amount += rs.getFloat("amount");
             cumuAmounts = getDates.getAmount(Float.toString(amount));
-            addEntries = new GetValueBooksEntries(rs.getString("value_record_ID"), rs.getString("date"), rs.getString("value_books"), rs.getString("first_serial"), rs.getString("last_serial"),
+            addEntries = new GetValueBooksEntries(rs.getString("value_record_ID"), getDates.convertSqlDate(rs.getString("date")), rs.getString("value_books"), rs.getString("first_serial"), rs.getString("last_serial"),
                     rs.getString("quantity"), getDates.getAmount(rs.getString("amount")), cumuAmounts, getDates.getAmount(rs.getString("purchase_amount")), rs.getString("remarks"));
             tblValueBookStocks.getItems().add(addEntries);
 
