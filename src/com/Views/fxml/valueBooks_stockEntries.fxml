@@ -121,12 +121,12 @@
          <columns>
             <TableColumn fx:id="colID" editable="false" minWidth="0.0" prefWidth="76.0" sortable="false" text="ID" visible="false" />
             <TableColumn fx:id="colDATE" editable="false" minWidth="0.0" prefWidth="52.0" sortable="false" text="DATE" />
-            <TableColumn fx:id="colTypeVB" editable="false" prefWidth="82.0" sortable="false">
+            <TableColumn fx:id="colTypeVB" editable="false" prefWidth="115.0" sortable="false">
                <graphic>
                   <Label text="TYPE OF VALUE BOOK" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn editable="false" prefWidth="137.0" sortable="false" text="SERIAL NUMBER">
+            <TableColumn editable="false" prefWidth="203.0" sortable="false" text="SERIAL NUMBER">
                <columns>
                   <TableColumn fx:id="colSerialFrom" editable="false" prefWidth="75.0" sortable="false" text="FROM" />
                   <TableColumn fx:id="colSerialTo" editable="false" prefWidth="75.0" sortable="false" text="TO" />
@@ -155,7 +155,7 @@
                   <Label prefHeight="42.0" prefWidth="88.0" text="PURCHASE AMOUNT" textAlignment="CENTER" wrapText="true" />
                </graphic>
             </TableColumn>
-            <TableColumn fx:id="colRemarks" editable="false" maxWidth="145.0" minWidth="80.0" prefWidth="121.0" sortable="false">
+            <TableColumn fx:id="colRemarks" editable="false" maxWidth="145.0" minWidth="80.0" prefWidth="121.0" sortable="false" visible="false">
                <graphic>
                   <Label prefHeight="24.0" prefWidth="78.0" text="REMARKS" textAlignment="CENTER" wrapText="true" />
                </graphic>

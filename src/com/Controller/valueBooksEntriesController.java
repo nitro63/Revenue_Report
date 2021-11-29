@@ -233,6 +233,7 @@ public class valueBooksEntriesController implements Initializable {
               btnDelete.setVisible(false);
               tblValueBookStocks.getItems().clear();
               tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+              regValSerial.clear();
               clear();
 
           }else {
@@ -248,6 +249,7 @@ public class valueBooksEntriesController implements Initializable {
               btnClearEntr.setVisible(true);
               btnSaveEntries.setVisible(true);
               btnDelete.setVisible(true);
+              regValSerial.clear();
               tblValueBookStocks.getItems().clear();
               tblValueBookStocks.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
               clear();
@@ -281,6 +283,7 @@ public class valueBooksEntriesController implements Initializable {
         txtSerialTo.setOnMouseClicked(event -> {
             lblToWarn.setVisible(false);
         });
+
     }
 
   private void GetRevenueYears() throws SQLException {
@@ -309,7 +312,7 @@ public class valueBooksEntriesController implements Initializable {
             String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
             Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
             if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
-                stmnt = con.prepareStatement("SELECT `value_record_ID`, `date`, `value_books`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks` FROM `value_books_stock_record`, `value_books_details` WHERE `value_stock_revCenter` = '" + revCentID + "' AND `value_book_ID` = `value_book` AND YEAR(date) ='" + year + "' AND `month` = '" + month + "' ");
+                stmnt = con.prepareStatement("SELECT `value_record_ID`, `date`, `value_books`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks` FROM `value_books_stock_record`, `value_books_details` WHERE `value_stock_revCenter` = '" + revCentID + "' AND `value_book_ID` = `value_book` AND YEAR(date) ='" + year + "' AND MONTH(date) = '" + month.getValue() + "' ");
             } else {
                 stmnt = con.prepareStatement("SELECT `value_record_ID`, `date`, `value_books`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`, `remarks` FROM `value_books_stock_record`, `value_books_details` WHERE `value_stock_revCenter` = '" + revCentID + "' AND `value_book_ID` = `value_book` AND YEAR(date) ='" + year + "'");
             }
@@ -484,12 +487,14 @@ public class valueBooksEntriesController implements Initializable {
     }
 
 
-    public void saveEntries(ActionEvent actionEvent) throws SQLException {
-        regValSerial.put("", new ArrayList<>());
+    public void saveEntries(ActionEvent actionEvent) throws SQLException {/*
+        regValSerial.put("", new ArrayList<>());*/
+        ArrayList<String> duplicate = new ArrayList<>();
         LocalDate date = entDatePck.getValue();
         typeOfValBk = cmbTypeOfValueBook.getSelectionModel().getSelectedItem();
         String firstSerial = txtSerialFrom.getText();
         String lastSerial = txtSerialTo.getText();
+        int serial1 = Integer.parseInt(firstSerial), serial2 = Integer.parseInt(lastSerial);
         if(entDatePck.getValue() == null){
             lblDateWarn.setVisible(true);
             Condition = false;
@@ -500,8 +505,8 @@ public class valueBooksEntriesController implements Initializable {
             Week = getDates.getWeek(date);*/
             String date1 = getDates.getDate(date);
 //            Year = getDates.getYear(date);
-            while (Condition){
-                    if(regValSerial.containsKey(typeOfValBk) && regValSerial.get(typeOfValBk).contains(firstSerial)){
+            while (Condition){/*
+                    if(regValSerial.containsKey(typeOfValBk) && regValSerial.get(typeOfValBk).contains(ser)){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Warning Dialog");
                         alert.setHeaderText("Serials have already been entered");
@@ -515,7 +520,7 @@ public class valueBooksEntriesController implements Initializable {
                         alert.showAndWait();
                         Condition =false;
                     }
-                else if(cmbTypeOfValueBook.getSelectionModel().isEmpty()){
+                else */if(cmbTypeOfValueBook.getSelectionModel().isEmpty()){
                     lblValueBookWarn.setVisible(true);
                     Condition = false;
                 }
@@ -561,9 +566,7 @@ public class valueBooksEntriesController implements Initializable {
                         String purAmount = getDates.getAmount(Float.toString(puramount));
                         String valAmount = getDates.getAmount(Float.toString((amount)));
                         String cumuAmount = getDates.getAmount(Float.toString((cumuamount)));
-                        int serial1 = Integer.parseInt(firstSerial), serial2 = Integer.parseInt(lastSerial);
-                        ArrayList<String> duplicate = new ArrayList<>();
-                        if(!regValSerial.get(typeOfValBk).isEmpty()){
+                        if(regValSerial.containsKey(typeOfValBk) && !regValSerial.get(typeOfValBk).isEmpty()){
                         regValSerial.get(typeOfValBk).forEach(row->{
                             if(row.contains(serial1)){
                                 duplicate.add(firstSerial);
@@ -665,14 +668,7 @@ public class valueBooksEntriesController implements Initializable {
             txtUnitAmount.setText(Float.toString(price / quantity));
             txtSerialTo.setText(valueBooks.getLastSerial());
             txtSerialFrom.setText(valueBooks.getFirstSerial());
-            if (regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).contains(txtSerialTo.
-                    getText()) || regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).
-                    contains(txtSerialFrom.getText())){
-                regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).remove(txtSerialFrom.
-                        getText());
-                regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).remove(txtSerialTo.
-                        getText());
-            }
+            regValSerial.get(cmbTypeOfValueBook.getSelectionModel().getSelectedItem()).remove(Range.between(Integer.parseInt(txtSerialTo.getText()),Integer.parseInt(txtSerialFrom.getText())));
             ObservableList<GetValueBooksEntries> selectedRows = tblValueBookStocks.getSelectionModel().getSelectedItems();
             ArrayList<GetValueBooksEntries> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblValueBookStocks.getItems().remove(row));
