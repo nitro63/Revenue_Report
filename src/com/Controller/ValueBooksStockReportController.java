@@ -116,7 +116,7 @@ public class ValueBooksStockReportController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        if (LogInController.hasCenter){
+        if (LogInController.hasCenter && !cmbRevCenter.getSelectionModel().isEmpty()){
             try {
                 getReportYear();
             } catch (SQLException throwables) {
@@ -147,10 +147,10 @@ public class ValueBooksStockReportController implements Initializable {
         cmbRevCenter.getItems().clear();
         cmbRevCenter.setItems(rowCent);
         cmbRevCenter.setVisibleRowCount(5);
-        if (LogInController.hasCenter ){
+        if (LogInController.hasCenter && cmbRevCenter.getItems().contains(LogInController.loggerCenterName)){
             cmbRevCenter.getSelectionModel().select(LogInController.loggerCenterName);
             SelectedCenter = cmbRevCenter.getSelectionModel().getSelectedItem();
-//            cmbRevCenter.setDisable(true);
+            cmbRevCenter.setDisable(true);
         }
     }
 
@@ -206,11 +206,11 @@ public class ValueBooksStockReportController implements Initializable {
         cmbMonth.setVisibleRowCount(5);
     }
 
-    void changeNames(){
-        lblMonth.setText(cmbMonth.getSelectionModel().getSelectedItem().toString());
+/*   void changeNames(){
+      lblMonth.setText(cmbMonth.getSelectionModel().getSelectedItem().toString());
         lblYear.setText(cmbYear.getSelectionModel().getSelectedItem());
         lblRevenueCenter.setText(cmbRevCenter.getSelectionModel().getSelectedItem());
-    }
+    }*/
 
     @FXML
     private void showReport(ActionEvent event) throws SQLException {
@@ -221,7 +221,7 @@ public class ValueBooksStockReportController implements Initializable {
         } else if (cmbMonth.getSelectionModel().isEmpty()) {
             lblMonthWarn.setVisible(true);
         } else {
-            changeNames();
+            //changeNames();
             tblValBookStocksRep.getItems().clear();
             String Date, valBook, remarks, firstSerial, lastSerial, quantity, valAmount, cumuAmount, purAmount;
 //        int ;

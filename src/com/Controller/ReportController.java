@@ -485,6 +485,7 @@ public class ReportController implements Initializable {
                  weekSum.put(DAY4.getText(), days4); weekSum.put(DAY5.getText(), days5); weekSum.put(DAY6.getText(), days6);
                  weekSum.put(DAY7.getText(), days7);
                  itemWeekSum.put(items, weekSum);
+                 System.out.println(itemWeekSum);
                  boolean resultSetState = true;
                  while (resultSetState){
                      rs.next();
@@ -492,6 +493,7 @@ public class ReportController implements Initializable {
                          String date = getFunctions.convertSqlDate(rs.getString("revenueDate"));
                          System.out.println(date);
                          float amot= itemWeekSum.get(items).get(date);
+                         System.out.println(amot);
                          amot += rs.getFloat("revenueAmount");
                          itemWeekSum.get(items).put(getFunctions.convertSqlDate(rs.getString("revenueDate")), amot);
                      }
