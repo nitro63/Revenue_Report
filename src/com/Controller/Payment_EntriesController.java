@@ -305,7 +305,7 @@ public class Payment_EntriesController implements Initializable {
             colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
             colPayType.setCellValueFactory(data -> data.getValue().TypeProperty());
             while (rs.next()) {
-                getData = new GetCollectEnt(rs.getString("Amount"), rs.getString("GCR"), rs.getString("Month"), rs.getString("Date"), rs.getString("pay_ID"),
+                getData = new GetCollectEnt(getFunctions.getAmount(rs.getString("Amount")), rs.getString("GCR"), rs.getString("Month"), getFunctions.convertSqlDate(rs.getString("Date")), rs.getString("pay_ID"),
                         rs.getString("payment_type"));
                 tblCollection.getItems().add(getData);
 
@@ -323,6 +323,7 @@ public class Payment_EntriesController implements Initializable {
         entriesID = entries.getYear();
         type = entries.getType();
         entDatePck.setValue(LocalDate.parse(entries.getDate(), format));
+//        entDatePck.setValue(getFunctions.setsSqlDate(entries.getDate()));
         m = p.matcher(entries.getAmount());
         String amount =  m.replaceAll("");
         txtEntAmt.setText(amount);
@@ -349,7 +350,7 @@ public class Payment_EntriesController implements Initializable {
                 s.unregisterSnackbarContainer(anchPane);
             }
             ArrayList<String> dupGCR = new ArrayList<>();
-            String payDate = getFunctions.getDate(entDatePck.getValue()),
+            String payDate = getFunctions.getSqlDate(entDatePck.getValue()),
                     payGCR = txtEntGCR.getText(),
                     payType = cmbPayType.getSelectionModel().getSelectedItem(),
                     payMonth = cmbColMonth.getSelectionModel().getSelectedItem();
@@ -526,7 +527,7 @@ public class Payment_EntriesController implements Initializable {
         colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
         colPayType.setCellValueFactory(data -> data.getValue().TypeProperty());
         while (rs.next()) {
-            getData = new GetCollectEnt(rs.getString("Amount"), rs.getString("GCR"), rs.getString("Month"), rs.getString("Date"), rs.getString("pay_ID"),
+            getData = new GetCollectEnt(getFunctions.getAmount(rs.getString("Amount")), rs.getString("GCR"), rs.getString("Month"), getFunctions.convertSqlDate(rs.getString("Date")), rs.getString("pay_ID"),
                     rs.getString("payment_type"));
             tblCollection.getItems().add(getData);
 
@@ -765,7 +766,7 @@ public class Payment_EntriesController implements Initializable {
             Matcher m = p.matcher(amount);
             amount = m.replaceAll("");
             float acAMOUNT =Float.parseFloat(amount);
-            String acDate =getData.getDate();
+            String acDate = getFunctions.setSqlDate(getData.getDate());
             String acMonth =getData.getMonth();
             String acCENTER =RevCent;
             String acType = getData.getType();
@@ -959,7 +960,7 @@ public class Payment_EntriesController implements Initializable {
             Matcher m = p.matcher(amount);
             amount = m.replaceAll("");
             float acAMOUNT =Float.parseFloat(amount);
-            String acDate =getData.getDate();
+            String acDate =getFunctions.setSqlDate(getData.getDate());
             String acMonth =getData.getMonth();
             String acCENTER =RevCent;
             String acType = getData.getType();

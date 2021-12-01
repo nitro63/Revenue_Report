@@ -489,6 +489,7 @@ public class valueBooksEntriesController implements Initializable {
 
     public void saveEntries(ActionEvent actionEvent) throws SQLException {/*
         regValSerial.put("", new ArrayList<>());*/
+        String unitAmount = txtUnitAmount.getText();
         ArrayList<String> duplicate = new ArrayList<>();
         LocalDate date = entDatePck.getValue();
         typeOfValBk = cmbTypeOfValueBook.getSelectionModel().getSelectedItem();
@@ -524,7 +525,7 @@ public class valueBooksEntriesController implements Initializable {
                     lblValueBookWarn.setVisible(true);
                     Condition = false;
                 }
-                else if(txtUnitAmount.getText().isEmpty()){
+                else if(unitAmount.isEmpty()){
                     lblAmountWarn.setVisible(true);
                     Condition = false;
                 }
@@ -536,7 +537,7 @@ public class valueBooksEntriesController implements Initializable {
                     lblToWarn.setVisible(true);
                     Condition = false;
                 }
-                else if(StringUtils.countMatches(txtUnitAmount.getText(), ".") > 1) {
+                else if(StringUtils.countMatches(unitAmount, ".") > 1) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Warning Dialog");
                     alert.setHeaderText("Please Enter Amount");
@@ -548,7 +549,7 @@ public class valueBooksEntriesController implements Initializable {
                 else {
                     int serialChecker = (Integer.parseInt(lastSerial) - Integer.parseInt(firstSerial))+1 ;
                     int quantity = ((serialChecker)/ 100);
-                    if(/*(serialChecker)<100 ||*/ serialChecker % 100 !=0){
+                    if((serialChecker)<100 || serialChecker % 100 !=0){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Warning Dialog");
                         alert.setHeaderText("Please check Serials");
@@ -580,7 +581,6 @@ public class valueBooksEntriesController implements Initializable {
                             alert.setTitle("Warning Dialog");
                             alert.setHeaderText("Please Amount cannot be '0'");
                             alert.showAndWait();
-                            txtUnitAmount.clear();
                             Condition = false;
 
                         }else if (duplicate.contains(firstSerial))
@@ -694,7 +694,7 @@ public class valueBooksEntriesController implements Initializable {
             String acDate = getDates.setSqlDate(getData.getDate());
             typeOfValBk = getData.getValueBook();
             String acFirstSerial = getData.getFirstSerial(),
-             acLastSerial = getData.getLastSerial();
+             acLastSerial = getData.getLastSerial(),acWeek = getDates.getWeek(getDates.setDate(acDate));
             int acQuantity = Integer.parseInt(getData.getQuantity());
             m = p.matcher(getData.getValAmount());
             float acAmount = Float.parseFloat(m.replaceAll(""));
@@ -729,9 +729,9 @@ public class valueBooksEntriesController implements Initializable {
                 f = tblValueBookStocks.getItems().size() + 1;
             }else {
                 stmnt = con.prepareStatement("INSERT INTO `value_books_stock_record`(`value_stock_revCenter`, " +
-                        "`date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `purchase_amount`," +
+                        "`date`, `value_book`, `first_serial`, `last_serial`, `quantity`, `amount`, `week`, `purchase_amount`," +
                         " `remarks`) VALUES ('" + revCentID + "','" + acDate + "', '" + valueBookID.get(typeOfValBk)+ "', '" +
-                        acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "', '" + acAmount+ "', '" + acPurAmount
+                        acFirstSerial + "','" + acLastSerial + "', '" + acQuantity + "','" + acAmount+ "', '"+acWeek+"', '" + acPurAmount
                         + "','" + remarks + "')");
                 stmnt.executeUpdate();
             }

@@ -147,8 +147,8 @@ public class ValueBooksStockReportController implements Initializable {
         cmbRevCenter.getItems().clear();
         cmbRevCenter.setItems(rowCent);
         cmbRevCenter.setVisibleRowCount(5);
-        if (LogInController.hasCenter && cmbRevCenter.getItems().contains(LogInController.loggerCenterName)){
-            cmbRevCenter.getSelectionModel().select(LogInController.loggerCenterName);
+        if (LogInController.hasCenter && cmbRevCenter.getItems().contains(InitializerController.userCenter)){
+            cmbRevCenter.getSelectionModel().select(InitializerController.userCenter);
             SelectedCenter = cmbRevCenter.getSelectionModel().getSelectedItem();
             cmbRevCenter.setDisable(true);
         }

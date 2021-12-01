@@ -142,7 +142,7 @@ public class LogInController implements Initializable {
         } else if(password.matches("\\s+") || password.isEmpty()) {
             lblWarnPassword.setVisible(true);
         } else {
-                stmnt = con.prepareStatement("SELECT `revenue_center`, `username`, `level`, `center`, `access_level` FROM `revenue_centers`, `user`, `access_levels` WHERE `CenterID` = `center` AND `username` = '"+username+"' AND `password` = '"+password+"' AND `access_ID` = `access_level`");
+                stmnt = con.prepareStatement("SELECT `username`, `level`, `center`, `access_level` FROM `user`, `access_levels` WHERE `access_ID` = `access_level` AND `password` = '"+password+"' AND `username` = '"+username+"' ");
                 ResultSet rs = stmnt.executeQuery();
 
                 if (rs.next()) {
@@ -150,7 +150,6 @@ public class LogInController implements Initializable {
                     loggerUsername = rs.getString("username");
                     loggerAccessLevel = rs.getString("level");
                     loggerCenter = rs.getString("center");
-                    loggerCenterName = rs.getString("revenue_center");
                     accessID = rs.getString("access_level");
 
 

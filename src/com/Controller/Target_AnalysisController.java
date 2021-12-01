@@ -137,7 +137,7 @@ public class Target_AnalysisController implements Initializable {
          cmbReportCent.setItems(rowCent);
          cmbReportCent.setVisibleRowCount(5);
         if (LogInController.hasCenter){
-            cmbReportCent.getSelectionModel().select(LogInController.loggerCenterName);
+            cmbReportCent.getSelectionModel().select(InitializerController.userCenter);
             SelectedCenter = cmbReportCent.getSelectionModel().getSelectedItem();
 //            cmbReportCent.setDisable(true);
         }

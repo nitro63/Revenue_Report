@@ -259,7 +259,9 @@ public class Bank_DetailsEntriesController implements Initializable {
 
             float acAMOUNT = Float.parseFloat(amount), payAmount = Float.parseFloat(colEnt.payChq.get(getData.getGCR()).get("Amount"));
 
-            String payDATE = getFunctions.setSqlDate(colEnt.payChq.get(getData.getGCR()).get("Date")), payType = colEnt.payChq.get(getData.getGCR()).get("Type");
+            String check = colEnt.payChq.get(getData.getGCR()).get("Date");
+
+            String payDATE = colEnt.payChq.get(getData.getGCR()).get("Date"), payType = colEnt.payChq.get(getData.getGCR()).get("Type");
 
             String acChqDate = getFunctions.setSqlDate(getData.getChequeDate());
 

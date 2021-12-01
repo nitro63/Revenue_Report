@@ -57,6 +57,22 @@ public class GetFunctions {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return LocalDate.parse(acDate, dtf);*/
     }
+    public LocalDate setsSqlDate(String acDate){
+        convertSqlDate(acDate);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+       return LocalDate.parse(acDate, dtf);
+        /*
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(acDate, dtf);*/
+    }
+    public LocalDate setDate(String acDate){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(acDate, dtf);
+        /*
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(acDate, dtf);*/
+    }
 
     public String getMonth(LocalDate date){
        int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
