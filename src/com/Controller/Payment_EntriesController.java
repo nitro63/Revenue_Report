@@ -140,7 +140,7 @@ public class Payment_EntriesController implements Initializable {
    public Pattern p = Pattern.compile(regex);
    private byte chk , chkd , chk1 , chkd1 ;
         
-   private     String Date, Item, Code, Month, Amount, Week, Year, RevCent, RevCentID, GCR, Type, type, entriesID;
+   private     String Date, Item, Code, Name, Month, Amount, Week, Year, RevCent, RevCentID, GCR, Type, type, entriesID;
     protected Map<String, ArrayList<String>> regGcr = new HashMap<>();
     protected Map<String, ArrayList<String>> monthGCR = new HashMap<>();
     protected Map<String, Map<String, ArrayList<String>>> dateGCR = new HashMap<>();
@@ -153,6 +153,10 @@ public class Payment_EntriesController implements Initializable {
     private Calendar cal;
     @FXML
     private TextField txtEntGCR;
+    @FXML
+    private TextField txtEntPayer;
+    @FXML
+    private TableColumn<GetCollectEnt, String> colPayer;
     @FXML
     private TableColumn<GetCollectEnt, String> colYEAR;
     @FXML
@@ -567,6 +571,7 @@ public class Payment_EntriesController implements Initializable {
         Date = getFunctions.getDate(date);
         Year = Integer.toString(spnColYear.getValue());
         Month = cmbColMonth.getSelectionModel().getSelectedItem();
+        Name = txtEntPayer.getText();
        while(Condition) {
             String i=txtEntGCR.getText();
             boolean trueChq = true;
@@ -586,7 +591,13 @@ public class Payment_EntriesController implements Initializable {
                 alert.setHeaderText("Please enter Amount");
                 alert.showAndWait();
                 Condition =false;
-            }else if (dateGCR1.containsKey(GCR) && !dateGCR1.get(GCR).equals(Date)){
+            }else if(txtEntPayer.getText().isEmpty()){
+               Alert alert = new Alert(Alert.AlertType.WARNING);
+               alert.setTitle("Warning Dialog");
+               alert.setHeaderText("Please enter Payer's name");
+               alert.showAndWait();
+               Condition =false;
+           }else if (dateGCR1.containsKey(GCR) && !dateGCR1.get(GCR).equals(Date)){
 
                Alert alert = new Alert(Alert.AlertType.WARNING);
                alert.setTitle("Warning Dialog");
@@ -668,8 +679,8 @@ public class Payment_EntriesController implements Initializable {
         colAMOUNT.setCellValueFactory(data -> data.getValue().AmountProperty());
         colDATE.setCellValueFactory(data -> data.getValue().DateProperty());
         colGCR.setCellValueFactory(data -> data.getValue().GCRProperty());
-        colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());/*
-        colID.setCellValueFactory(data -> data.getValue().CenterProperty());*/
+        colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
+        colPayer.setCellValueFactory(data -> data.getValue().CenterProperty());
         colYEAR.setCellValueFactory(data -> data.getValue().YearProperty());
         colPayType.setCellValueFactory(data -> data.getValue().TypeProperty());
         double initeAmount = Double.parseDouble(txtEntAmt.getText());
@@ -683,7 +694,7 @@ public class Payment_EntriesController implements Initializable {
                 Condition =false;
                 
             }else{
-            getReport = new GetCollectEnt(/*RevCent, */Amount, GCR, Month, Date, Year, Type);
+            getReport = new GetCollectEnt(Name, Amount, GCR, Month, Date, Year, Type);
             tblCollection.getItems().add(getReport);
             Condition = false;
             entDatePck.setValue(null);
@@ -961,7 +972,8 @@ public class Payment_EntriesController implements Initializable {
             amount = m.replaceAll("");
             float acAMOUNT =Float.parseFloat(amount);
             String acDate =getFunctions.setSqlDate(getData.getDate());
-            String acMonth =getData.getMonth();
+            String acMonth =getData.getMonth(),
+                    acName = getData.getCenter();
             String acCENTER =RevCent;
             String acType = getData.getType();
             String acYear = getData.getYear(), typeGCR = null;
@@ -1112,9 +1124,9 @@ public class Payment_EntriesController implements Initializable {
                     }
                     if (!acType.equals("Cheque") && !acType.equals("Cheque Deposit Slip")){
                     stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`pay_revCenter`, `GCR`," +
-                            " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `pay_ID`) VALUES ('" + RevCentID + "', '" +
+                            " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `pay_ID`, `payer`) VALUES ('" + RevCentID + "', '" +
                             acGCR + "' ,'" + acAMOUNT + "', '" + acDate + "', '" + acMonth + "', '" + acYEAR + "', '" +
-                            acType + "', '" + fini + "')");
+                            acType + "', '" + fini + "', '" + acName + "')");
                     stmnt.executeUpdate();
                     tblCollection.getItems().remove(h);
                     }else {
@@ -1122,6 +1134,7 @@ public class Payment_EntriesController implements Initializable {
                         payChq.put(typeGCR, new HashMap<>()); payChq.get(typeGCR).put("Center", RevCentID); payChq.get(typeGCR).put("GCR", getData.getGCR());
                         payChq.get(typeGCR).put("Amount", Float.toString(acAMOUNT)); payChq.get(typeGCR).put("Date", acDate); payChq.get(typeGCR).put("Month", acMonth);
                         payChq.get(typeGCR).put("Year", acYear); payChq.get(typeGCR).put("Type", acType); payChq.get(typeGCR).put("PayID", fini);
+                        payChq.get(typeGCR).put("Payer", acName);
                         System.out.println(typeGCR+"\n"+monthGCR+"\n"+dateGCR);
                     }
                 }/*

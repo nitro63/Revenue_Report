@@ -13,13 +13,13 @@ import javafx.beans.property.StringProperty;
  * @author HP
  */
 public class GetCollectEnt {
-    private StringProperty Center, GCR, Year, Amount, Month, Date, Type;
+    private StringProperty Center, GCR, Year, Amount, Month, Date, Type, Name;
     
     public GetCollectEnt(){
         
     }
-    
-    public GetCollectEnt( String Center, String Amount, String GCR, String Month, String Date, String Year, String Type){
+
+    public GetCollectEnt(String Center, String Amount, String GCR, String Month, String Date, String Year, String Type){
         this.Amount = new SimpleStringProperty(Amount);
         this.GCR = new SimpleStringProperty(GCR);
         this.Center = new SimpleStringProperty(Center);
@@ -37,8 +37,17 @@ public class GetCollectEnt {
         this.Year = new SimpleStringProperty(Year);
         this.Type = new SimpleStringProperty(Type);
     }
-    
-     
+
+
+    public String getName() {
+        return nameProperty().get();
+    }
+    public StringProperty nameProperty() {
+        return Name;
+    }
+    public void setName(String name) {
+       nameProperty().set(name);
+    }
     public StringProperty CenterProperty(){
         return Center;
     }
