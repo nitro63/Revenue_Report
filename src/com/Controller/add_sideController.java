@@ -70,6 +70,15 @@ public class add_sideController implements Initializable {
     private Button btnCloseAddUser;
 
     @FXML
+    private HBox containerAddTicketDetails;
+
+    @FXML
+    private JFXButton btnAddTicketDetails;
+
+    @FXML
+    private Button btnCloseAddTicketDetails;
+
+    @FXML
     private VBox paneEntriesArea;
 
     @FXML
@@ -138,6 +147,15 @@ public class add_sideController implements Initializable {
         loadAddUser.setController(new AddUserController());
         paneEntriesArea.getChildren().clear();
         paneEntriesArea.getChildren().add(loadAddUser.load());
+    }
+
+    @FXML
+    private void showTicketDetails(ActionEvent event) throws IOException {
+        FXMLLoader loadTicketDetails = new FXMLLoader();
+        loadTicketDetails.setLocation(getClass().getResource("/com/Views/fxml/addTicketDetails.fxml"));
+        loadTicketDetails.setController(new AddTicketDetailsController());
+        paneEntriesArea.getChildren().clear();
+        paneEntriesArea.getChildren().add(loadTicketDetails.load());
     }
 
     @FXML

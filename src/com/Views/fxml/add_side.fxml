@@ -87,13 +87,23 @@
                               </Button>
                            </children>
                         </HBox>
+                        <HBox fx:id="containerAddTicketDetails" layoutX="693.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="145.0" styleClass="menu-title">
+                           <children>
+                              <JFXButton fx:id="btnAddTicketDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#showTicketDetails" prefHeight="38.0" prefWidth="128.0" styleClass="menu-title-button1" text="TICKET DETAILS" />
+                              <Button fx:id="btnCloseAddTicketDetails" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </children>
             </HBox>
             <VBox fx:id="paneEntriesArea" alignment="TOP_CENTER" prefHeight="479.0" prefWidth="870.0" VBox.vgrow="ALWAYS">
                <children>
-                  <AnchorPane fx:id="noEntriesPane" prefHeight="512.0" prefWidth="843.0" VBox.vgrow="ALWAYS">
+                  <AnchorPane fx:id="noEntriesPane" prefHeight="512.0" prefWidth="829.0" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
