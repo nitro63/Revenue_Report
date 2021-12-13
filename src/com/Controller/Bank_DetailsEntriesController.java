@@ -119,10 +119,10 @@ public class Bank_DetailsEntriesController implements Initializable {
     private JFXButton btnSaveEntries;
     private JFXSnackbar s;
 
-    GetBankDetails getReport, getData;
+    private GetBankDetails getReport, getData;
 
-    Payment_EntriesController colEnt ;
-    GetFunctions getFunctions = new GetFunctions();
+    private Payment_EntriesController colEnt ;
+    private final GetFunctions getFunctions = new GetFunctions();
 
     private  boolean Condition = true;
     private final Connection con;
