@@ -23,6 +23,7 @@ import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
@@ -32,10 +33,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -58,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author NiTrO
  */
-public class Revenue_EntriesController implements Initializable {
+public class Revenue_EntriesController implements Initializable, EventHandler<KeyEvent> {
 
     @FXML
     private AnchorPane DailyEntPane;
@@ -161,10 +164,14 @@ public class Revenue_EntriesController implements Initializable {
     @FXML
     private Button btnClose;
     private int selectedIndex = -1;
+    private Node node;
 
     public Revenue_EntriesController(GetRevCenter GetCenter) throws SQLException, ClassNotFoundException {
         this.con = DBConnection.getConn();
         this.GetCenter = GetCenter;
+    }
+    protected void setParentNode(Node node){
+        this.node = node;
     }
 
     public void setappController(entries_sideController app) {
@@ -236,7 +243,7 @@ public class Revenue_EntriesController implements Initializable {
 
         RevCent = GetCenter.getCenterID();
         String cent = GetCenter.centerIDProperty().getValue();
-        registerItem.put("", new ArrayList<>());
+//        registerItem.put("", new ArrayList<>());
         revTable.setOnMouseClicked(e -> {
             if (!chkUpdate.isSelected()) {
                 lblDeleteWarn.setVisible(false);
@@ -269,6 +276,24 @@ public class Revenue_EntriesController implements Initializable {
             ccCheck = false;
         }
         cmbEntRevItem.setEditable(true);
+    }
+
+
+    private void setGlobalEventHandler(Node root) {
+        root.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+            if (ev.getCode() == KeyCode.ENTER) {
+                btnEnter.fire();
+                ev.consume();
+            }
+        });
+    }
+
+    @FXML
+    void KeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER){
+            btnEnter.fire();
+            event.consume();
+        }
     }
 
     private void GetRevenueYears() throws SQLException {
@@ -757,4 +782,7 @@ public class Revenue_EntriesController implements Initializable {
         stg.show();
     }
 
+    @Override
+    public void handle(KeyEvent event) {
+    }
 }

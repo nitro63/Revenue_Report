@@ -276,7 +276,8 @@ public class UpdateEntriesController implements Initializable {
     GetPaymentDetails getPaymentData, getPaymentReport;
     GetTargetEnt getTargetData, getTargetReport;
     GetFunctions getFunctions = new GetFunctions();
-    Bank_DetailsEntriesController bankControll = new Bank_DetailsEntriesController();
+    private GetRevCenter GetCenter = new GetRevCenter();
+    Bank_DetailsEntriesController bankControll = new Bank_DetailsEntriesController(GetCenter);
     ObservableList<String> paymentType = FXCollections.observableArrayList("Cash", "Cheque",
             "Cash Deposit Slip","Cheque Deposit Slip");
     ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March"
@@ -284,8 +285,8 @@ public class UpdateEntriesController implements Initializable {
     Calendar cal = Calendar.getInstance();
 
     entries_sideController app;
-    GetFunctions getDates = new GetFunctions();
-    private final GetRevCenter GetCenter;
+    GetFunctions getDates = new GetFunctions();/*
+    private final GetRevCenter GetCenter;*/
     private final Connection con;
     private PreparedStatement stmnt;
     boolean targetCondition, collectionCondition, paymentCondition, bankCondition, valueBookCondition, Condition, saved, ccCheck;

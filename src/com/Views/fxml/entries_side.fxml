@@ -5,6 +5,8 @@
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="entriesMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" styleClass="background_color" stylesheets="@../Stylesheets/entries.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -42,9 +44,18 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox fx:id="containerPayment" layoutX="182.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="112.0" styleClass="menu-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="182.0" AnchorPane.topAnchor="0.0">
+                        <HBox fx:id="containerPayment" layoutX="182.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="120.0" styleClass="menu-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="182.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <JFXButton fx:id="btnPaymentEntries" minWidth="-Infinity" onAction="#showPaymentEntries" prefHeight="38.0" prefWidth="96.0" styleClass="menu-title-button1" text="Payment" />
+                              <JFXButton fx:id="btnPayment" alignment="TOP_LEFT" contentDisplay="CENTER" text=" ">
+                                 <graphic>
+                                    <MenuButton fx:id="btnPaymentEntries" mnemonicParsing="false" onAction="#showPaymentEntries" prefHeight="31.0" prefWidth="102.0" style="-fx-background-insets: -4;" styleClass="menu-title-button1" text="Payment">
+                                      <items>
+                                        <MenuItem fx:id="menuPayment" mnemonicParsing="false" onAction="#showPaymentEntries" onMenuValidation="#showPaymentEntries" text="Payment" />
+                                        <MenuItem fx:id="menuBankDetails" mnemonicParsing="false" onAction="#showBankDetails" onMenuValidation="#showBankDetails" text="Cheque Details" />
+                                      </items>
+                                    </MenuButton>
+                                 </graphic>
+                              </JFXButton>
                               <Button fx:id="btnClosePayment" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
                                  <font>
                                     <Font name="System Bold" size="12.0" />

@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuButton;
 import javafx.scene.layout.AnchorPane;
 import com.Controller.Gets.GetRevCenter;
 import javafx.scene.layout.HBox;
@@ -95,8 +96,10 @@ public class entries_sideController extends VBox implements Initializable {
      private final Map<String, String> centerID = new HashMap<>();
      
      appController app;
+     @FXML
+     private JFXButton btnPayment;
     @FXML
-    private JFXButton btnPaymentEntries;
+    private MenuButton btnPaymentEntries;
 
     @FXML
     private VBox paneEntriesArea;
@@ -153,7 +156,7 @@ public class entries_sideController extends VBox implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        menuButtons.addAll(Arrays.asList(btnVLBStcxEntries,btnDailies,btnTargEntries,btnPaymentEntries));
+        menuButtons.addAll(Arrays.asList(btnVLBStcxEntries,btnDailies,btnTargEntries,btnPayment));
         menuContainers.addAll(Arrays.asList(containerStock,containerDailies,containerTarget,containerPayment));
         menuCloseButton.addAll(Arrays.asList(btnCloseValue,btnCloseRevenue,btnClosePayment,btnCloseTarget));
         VBox.setVgrow(entriesMain, Priority.ALWAYS);
@@ -372,6 +375,52 @@ public class entries_sideController extends VBox implements Initializable {
             txtTitle.setVisible(true);
         }            
     }
+
+    @FXML
+    void showBankDetails(ActionEvent event) throws SQLException, ClassNotFoundException, IOException {
+        if(cmbRevCent.getSelectionModel().getSelectedItem() == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Select Revenue Center");
+            alert.showAndWait();
+        }else{
+            FXMLLoader loadEntries = new FXMLLoader();
+            loadEntries.setLocation(getClass().getResource("/com/Views/fxml/Bank_DetailsEntries.fxml"));
+            loadEntries.setController(new Bank_DetailsEntriesController(GetCenter));
+            Bank_DetailsEntriesController revEnt = (Bank_DetailsEntriesController) loadEntries.getController();
+            revEnt.setappController(this);
+            AnchorPane root = loadEntries.load();
+            paneEntriesArea.getChildren().clear();
+            paneEntriesArea.getChildren().add(root);
+            for (JFXButton btn: menuButtons){
+                if (btn.equals(btnPaymentEntries)){
+                    btn.getStyleClass().removeAll("menu-title-button1, focus");
+                }
+            }
+            for (HBox container : menuContainers){
+                if (container.equals(containerPayment)){
+                    container.getStyleClass().removeAll("menu-title, focus");
+                    container.getStyleClass().remove("big");
+                    container.getStyleClass().add("big");
+                }else {
+                    container.getStyleClass().remove("big");
+                }
+            }
+            for (Button close : menuCloseButton){
+                if (!close.equals(btnClosePayment)){
+                    close.setVisible(false);
+                }else {
+                    close.setVisible(true);
+                }
+            }
+            txtEntries.setVisible(true);
+            iconForward.setVisible(true);
+            txtTitle.setText("Cheque Details");
+            txtTitle.setVisible(true);
+        }
+
+    }
+
     @FXML
     void showPaymentDetails(ActionEvent event) {
 

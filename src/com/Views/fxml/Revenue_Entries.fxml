@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="874.0" style="-fx-background-color: transparent;" stylesheets="@../Stylesheets/EntriesStyleCopy.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="874.0" style="-fx-background-color: transparent;" stylesheets="@../Stylesheets/EntriesStyleCopy.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="24.0" layoutY="70.0" prefHeight="307.0" prefWidth="161.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="665.0" AnchorPane.topAnchor="70.0">
          <children>
@@ -27,7 +27,7 @@
                   <DatePicker fx:id="entDatePck" editable="false" layoutX="11.0" layoutY="14.0" prefHeight="26.0" prefWidth="137.0" promptText="Select Date" styleClass="text-font" />
                   <ComboBox fx:id="cmbEntRevItem" layoutX="2.0" layoutY="86.0" prefHeight="27.0" prefWidth="137.0" promptText="REVENUE ITEM" styleClass="text-font" />
                   <TextField fx:id="txtEntAmt" alignment="CENTER" layoutX="1.0" layoutY="157.0" onKeyTyped="#processKeyEvent" prefHeight="26.0" prefWidth="137.0" promptText="AMOUNT" styleClass="text-font" />
-                  <Button fx:id="btnEnter" layoutX="1.0" layoutY="269.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#saveEntries" prefHeight="35.0" prefWidth="68.0" text="ENTER">
+                  <Button fx:id="btnEnter" layoutX="1.0" layoutY="269.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#saveEntries" onKeyPressed="#KeyPressed" prefHeight="35.0" prefWidth="68.0" text="ENTER">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>

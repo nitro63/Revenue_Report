@@ -25,11 +25,11 @@ import java.io.IOException;
  */
 public class Main extends Application {
 
-    public Stage stage;
+    public static Stage stage;
     static final Logger logger = Logger.getLogger(MonthlyReportController.class.getName());
     @Override
     public void start(Stage stage) throws Exception {
-        this.stage = stage;
+        Main.stage = stage;
         Parent root = null;
         PropertyConfigurator.configure(getClass().getResource("log4j.properties"));
         try {

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="523.0" prefWidth="898.0" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Controller.AddTicketDetailsController">
+<AnchorPane prefHeight="523.0" prefWidth="898.0" stylesheets="@../Stylesheets/tableview.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" ><!--fx:controller="com.Controller.AddTicketDetailsController"-->
    <children>
       <SplitPane dividerPositions="0.37583892617449666" layoutX="-2.0" prefHeight="510.0" prefWidth="812.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>

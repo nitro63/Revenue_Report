@@ -149,9 +149,9 @@ public class valueBooksEntriesController implements Initializable {
 
     private entries_sideController app;
     private GetValueBooksEntries addEntries, getData;
-    private final Bank_DetailsEntriesController bnkDtls = new Bank_DetailsEntriesController();
+    private GetRevCenter GetCenter = new GetRevCenter();
+    private final Bank_DetailsEntriesController bnkDtls = new Bank_DetailsEntriesController(GetCenter);
     private final GetFunctions getDates = new GetFunctions();
-    private final GetRevCenter GetCenter;
     private Payment_EntriesController pay ;
     boolean Condition = true;
     private final Connection con;

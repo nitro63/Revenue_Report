@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import com.revenue_report.DBConnection;
+import org.apache.commons.lang3.ObjectUtils;
 
 
 public class AddUserController  implements Initializable {
@@ -344,6 +345,10 @@ public class AddUserController  implements Initializable {
     void addUser(ActionEvent event) throws SQLException{
         if (!user){
             boolean flag = true;
+            txtPasswordShown.setText(txtPass.getText());
+            txtPasswordConfirmShown.setText(txtPassConf.getText());
+            txtPass.setText(txtPasswordShown.getText());
+            txtPassConf.setText(txtPasswordConfirmShown.getText());
 
             if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
                     txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||
@@ -443,7 +448,7 @@ public class AddUserController  implements Initializable {
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
                 s.show("Passwords did not match", 2000);
-            } else if (LogInController.hasCenter && cmbRevenueCenter.getSelectionModel().isEmpty()){
+            } else if (LogInController.hasCenter && cmbRevenueCenter.getSelectionModel().getSelectedItem().equals("None")){
                 flag = false;
                 JFXSnackbar s = new JFXSnackbar(empPane);
                 s.setStyle("-fx-text-fill: red");
@@ -485,7 +490,7 @@ public class AddUserController  implements Initializable {
                     s.setStyle("-fx-text-fill: red");
                     s.show("Username "+txtUsername.getText().trim()+" already exists.", 2000);
                 }else {
-                    if (!cmbRevenueCenter.getSelectionModel().isEmpty()){
+                    if (!cmbRevenueCenter.getSelectionModel().getSelectedItem().equals("None")){
                         String center = centerID.get(cmbRevenueCenter.getSelectionModel().getSelectedItem());
                         stmnt = con.prepareStatement("UPDATE `user` SET `last_name` = '"+lname+"', `first_name` = '"+fname+"', `email` = '"+mail+"', `password` = '"+password+"', `access_level` = '"+levelID+"', `username` = '"+uname+"', `center` = '"+center+"' WHERE `username` =  '"+username+"'");
                 }else {

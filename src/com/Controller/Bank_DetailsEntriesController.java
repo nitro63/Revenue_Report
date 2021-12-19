@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 import com.Controller.Gets.GetBankDetails;
 import com.Controller.Gets.GetFunctions;
+import com.Controller.Gets.GetRevCenter;
 import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -63,6 +64,9 @@ public class Bank_DetailsEntriesController implements Initializable {
     private Label lblChqNmbwarn;
 
     @FXML
+    private JFXTextField txtPayerName;
+
+    @FXML
     private JFXTextField txtChqNmb;
 
     @FXML
@@ -81,16 +85,10 @@ public class Bank_DetailsEntriesController implements Initializable {
     private TableView<GetBankDetails> tblCollectEnt;
 
     @FXML
-    private TableColumn<GetBankDetails, String> colGCR;
+    private TableColumn<GetBankDetails, String> colDateReceived;
 
     @FXML
-    private TableColumn<GetBankDetails, String> colYear;
-
-    @FXML
-    private TableColumn<GetBankDetails, String> colMonth;
-
-    @FXML
-    private TableColumn<GetBankDetails, String> colDate;
+    private TableColumn<GetBankDetails, String> colPayer;
 
     @FXML
     private Label lblChqdatewarn;
@@ -116,6 +114,9 @@ public class Bank_DetailsEntriesController implements Initializable {
     private JFXButton btnDelete;
 
     @FXML
+    private DatePicker dtpckReceivedDate;
+
+    @FXML
     private JFXButton btnSaveEntries;
     private JFXSnackbar s;
 
@@ -127,8 +128,16 @@ public class Bank_DetailsEntriesController implements Initializable {
     private  boolean Condition = true;
     private final Connection con;
     private PreparedStatement stmnt;
-    public Bank_DetailsEntriesController() throws SQLException, ClassNotFoundException {
+
+    private entries_sideController app;
+    public final GetRevCenter GetCenter;
+    public Bank_DetailsEntriesController(GetRevCenter getCenter) throws SQLException, ClassNotFoundException {
+        this.GetCenter = getCenter;
         this.con = DBConnection.getConn();
+    }
+
+    public void setappController(entries_sideController app){
+        this.app = app;
     }
     public TableView<GetBankDetails> getTableView(){
         return tblCollectEnt;
@@ -150,21 +159,23 @@ public class Bank_DetailsEntriesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        /*
         for (Entry<String, ArrayList<String>> gcr: colEnt.regGcr.entrySet()) {
             GCRs.addAll(gcr.getValue());
-        }
-        cmbGCR.getItems().clear();
+        }*/
+        /*cmbGCR.getItems().clear();*/
+        /*
         Collections.sort(GCRs);
-        cmbGCR.setItems(GCRs);
+        cmbGCR.setItems(GCRs);*/
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblCollectEnt.setOnMouseClicked(event -> {
             lblDeleteWarn.setVisible(false);
             lblDup.setVisible(false);
             lblEdit.setVisible(false);
-        });
+        });/*
         cmbGCR.setOnMouseClicked(event -> {
             lblGCRWarn.setVisible(false);
-        });
+        });*/
         txtBankName.setOnMouseClicked(event ->{
             lblBankwarn.setVisible(false);
         });
@@ -442,10 +453,6 @@ public class Bank_DetailsEntriesController implements Initializable {
                     txtAmount.clear();
                     Condition =false;
                 }else{
-                    colGCR.setCellValueFactory(data -> data.getValue().GCRProperty());
-                    colYear.setCellValueFactory(data -> data.getValue().yearProperty());
-                    colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
-                    colDate.setCellValueFactory(data -> data.getValue().dateProperty());
                     colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
                     colChqNmb.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
                     colBank.setCellValueFactory(data -> data.getValue().bankProperty());
