@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchPane" prefHeight="532.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="anchPane" prefHeight="532.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" layoutY="11.0" maxHeight="-Infinity" prefHeight="89.0" prefWidth="972.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -28,7 +28,7 @@
                            </HBox.margin>
                            <children>
                               <DatePicker fx:id="dtpckReceivedDate" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="116.0" promptText="Date Received" styleClass="text-font" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <Label fx:id="lblGCRWarn" layoutX="8.0" layoutY="-8.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false" AnchorPane.topAnchor="-8.0">
+                              <Label fx:id="lblDateReceivedWarn" layoutX="8.0" layoutY="-8.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false" AnchorPane.topAnchor="-8.0">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

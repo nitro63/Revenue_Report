@@ -50,7 +50,7 @@ public class Bank_DetailsEntriesController implements Initializable {
     private JFXButton btnClear;
 
     @FXML
-    private Label lblGCRWarn;
+    private Label lblDateReceivedWarn;
 
     @FXML
     private JFXComboBox<String> cmbGCR;
@@ -62,6 +62,9 @@ public class Bank_DetailsEntriesController implements Initializable {
     private Label lblDup;
     @FXML
     private Label lblChqNmbwarn;
+
+    @FXML
+    private Label lblPayerWarn;
 
     @FXML
     private JFXTextField txtPayerName;
@@ -159,25 +162,17 @@ public class Bank_DetailsEntriesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*
-        for (Entry<String, ArrayList<String>> gcr: colEnt.regGcr.entrySet()) {
-            GCRs.addAll(gcr.getValue());
-        }*/
-        /*cmbGCR.getItems().clear();*/
-        /*
-        Collections.sort(GCRs);
-        cmbGCR.setItems(GCRs);*/
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblCollectEnt.setOnMouseClicked(event -> {
             lblDeleteWarn.setVisible(false);
             lblDup.setVisible(false);
             lblEdit.setVisible(false);
-        });/*
-        cmbGCR.setOnMouseClicked(event -> {
-            lblGCRWarn.setVisible(false);
-        });*/
+        });
         txtBankName.setOnMouseClicked(event ->{
             lblBankwarn.setVisible(false);
+        });
+        txtPayerName.setOnMouseClicked(event ->{
+            lblPayerWarn.setVisible(false);
         });
         txtChqNmb.setOnMouseClicked(event ->{
             lblChqNmbwarn.setVisible(false);
@@ -188,6 +183,10 @@ public class Bank_DetailsEntriesController implements Initializable {
         dtpckChequeDate.setOnMouseClicked(event ->{
             lblChqdatewarn.setVisible(false);
         });
+        dtpckReceivedDate.setOnMouseClicked(event ->{
+            lblDateReceivedWarn.setVisible(false);
+        });
+
     }
 
 
@@ -418,7 +417,7 @@ public class Bank_DetailsEntriesController implements Initializable {
         LocalDate date = dtpckChequeDate.getValue();
 
         if(GCR == null){
-            lblGCRWarn.setVisible(true);
+            lblDateReceivedWarn.setVisible(true);
             Condition =false;
         }else if(!colEnt.typeSerials.get("Cheque Deposit Slip").contains(getGcrID(GCR, colEnt.gcrID)) && date == null){
             lblChqdatewarn.setVisible(true);

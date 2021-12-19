@@ -304,7 +304,7 @@ public class Payment_EntriesController implements Initializable {
    private void fetchEntries(ActionEvent event) throws SQLException {
         if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
             String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
-            if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
+       -     if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
                 stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "' AND `Month` = '" + month + "' ");
             } else {
                 stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "'");
