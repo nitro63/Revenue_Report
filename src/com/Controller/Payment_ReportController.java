@@ -128,8 +128,8 @@ public class Payment_ReportController implements Initializable {
     }   
     
     
-    private void getRevCenters() throws SQLException, ClassNotFoundException{
-        
+    private void getRevCenters() throws SQLException, ClassNotFoundException
+    {
             stmnt = con.prepareStatement("SELECT `pay_revCenter`, `revenue_centers`.`revenue_category`, `revenue_centers`.`revenue_center` FROM `revenue_centers`,`collection_payment_entries` WHERE `revenue_centers`.`CenterID` = `collection_payment_entries`.pay_revCenter GROUP BY `pay_revCenter` ");
          ResultSet rs = stmnt.executeQuery();
          
@@ -261,10 +261,10 @@ public class Payment_ReportController implements Initializable {
             lblYearWarn.setVisible(true);
         }else if (cmbReportMonth.getSelectionModel().isEmpty()){
             lblMonthWarn.setVisible(true);
-        }
+        }else{
         tblPaymentDetails.getItems().clear();
         changeNames();
-        setItems();
+        setItems();}
     }
 
     @FXML
@@ -311,15 +311,15 @@ public class Payment_ReportController implements Initializable {
     }
 
     @FXML
-    void showBankDetails(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+    void showBankDetails(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {/*
         if (tblPaymentDetails.getItems().isEmpty()){
             event.consume();
         }else {
-            if (cond){
+            if (cond){*//*
             Year = cmbReportYear.getSelectionModel().getSelectedItem().toString();
             Center = cmbReportCent.getSelectionModel().getSelectedItem();
             Month = cmbReportMonth.getSelectionModel().getSelectedItem();
-            RevCenterID = centerID.get(Center);
+            RevCenterID = centerID.get(Center);*/
             Main st = new Main();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/com/Views/fxml/BankDetailsReport.fxml"));
@@ -334,14 +334,14 @@ public class Payment_ReportController implements Initializable {
             stg.initOwner(st.stage);
             stg.initStyle(StageStyle.UTILITY);
             stg.setScene(s);
-            stg.show();
+            stg.show();/*
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Notice!");
                 alert.setHeaderText("There is no Bank Details for this record!");
                 alert.showAndWait();
             }
-        }
+        }*/
     }
 
 

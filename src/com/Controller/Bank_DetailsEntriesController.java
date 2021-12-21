@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.Controller.Gets.GetBankDetails;
+import com.Controller.Gets.GetCollectEnt;
 import com.Controller.Gets.GetFunctions;
 import com.Controller.Gets.GetRevCenter;
 import com.jfoenix.controls.*;
@@ -27,10 +28,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.*;
+import org.apache.commons.collections4.Get;
 import org.apache.commons.lang3.StringUtils;
 import com.revenue_report.DBConnection;
 
@@ -123,38 +126,44 @@ public class Bank_DetailsEntriesController implements Initializable {
     private JFXButton btnSaveEntries;
     private JFXSnackbar s;
 
-    private GetBankDetails getReport, getData;
+    private GetBankDetails getData;
 
-    private Payment_EntriesController colEnt ;
+    private AnchorPane colEnt = new AnchorPane();
     private final GetFunctions getFunctions = new GetFunctions();
 
-    private  boolean Condition = true;
+    private boolean Condition = true;
     private final Connection con;
     private PreparedStatement stmnt;
-
     private entries_sideController app;
-    public final GetRevCenter GetCenter;
+    public final GetRevCenter GetCenter, center = new GetRevCenter();
+    private Map<String, ArrayList<String>> registerItem = new HashMap<>();
+    private String RevCentID, RevCent;
+    private final Payment_EntriesController paymentController = new Payment_EntriesController(center);
+
     public Bank_DetailsEntriesController(GetRevCenter getCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getCenter;
         this.con = DBConnection.getConn();
     }
 
-    public void setappController(entries_sideController app){
+    public void setappController(entries_sideController app) {
         this.app = app;
     }
-    public TableView<GetBankDetails> getTableView(){
+
+    public TableView<GetBankDetails> getTableView() {
         return tblCollectEnt;
     }
 
-    public void setAppController(Payment_EntriesController app){
+    public void setAppController(AnchorPane app) {
         this.colEnt = app;
     }
-    Stage stage =  new Stage()/*anchBankDetails.getScene().getWindow()*/;
-    public void setStage(Stage stage){
+
+    Stage stage = new Stage()/*anchBankDetails.getScene().getWindow()*/;
+
+    public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-    String GCR, Date, chqDate, chqNumber, Bank, Amount, Month, Year, ID;
+    String GCR, Date, chqDate, chqNumber, Bank, Amount, Month, Year, Payer, ID;
     ObservableList<String> GCRs = FXCollections.observableArrayList();
 
     /**
@@ -162,28 +171,32 @@ public class Bank_DetailsEntriesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        RevCent = GetCenter.getRevCenter();
+        RevCentID = GetCenter.getCenterID();
         tblCollectEnt.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblCollectEnt.setOnMouseClicked(event -> {
             lblDeleteWarn.setVisible(false);
             lblDup.setVisible(false);
             lblEdit.setVisible(false);
         });
-        txtBankName.setOnMouseClicked(event ->{
+        getFunctions.datePicker(dtpckChequeDate);
+        getFunctions.datePicker(dtpckReceivedDate);
+        txtBankName.setOnMouseClicked(event -> {
             lblBankwarn.setVisible(false);
         });
-        txtPayerName.setOnMouseClicked(event ->{
+        txtPayerName.setOnMouseClicked(event -> {
             lblPayerWarn.setVisible(false);
         });
-        txtChqNmb.setOnMouseClicked(event ->{
+        txtChqNmb.setOnMouseClicked(event -> {
             lblChqNmbwarn.setVisible(false);
         });
-        txtAmount.setOnMouseClicked(event ->{
+        txtAmount.setOnMouseClicked(event -> {
             lblAmountwarn.setVisible(false);
         });
-        dtpckChequeDate.setOnMouseClicked(event ->{
+        dtpckChequeDate.setOnMouseClicked(event -> {
             lblChqdatewarn.setVisible(false);
         });
-        dtpckReceivedDate.setOnMouseClicked(event ->{
+        dtpckReceivedDate.setOnMouseClicked(event -> {
             lblDateReceivedWarn.setVisible(false);
         });
 
@@ -192,6 +205,7 @@ public class Bank_DetailsEntriesController implements Initializable {
 
     @FXML
     void CancelEntries(ActionEvent event) {
+        /*
         Node node =(Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
 
@@ -222,26 +236,24 @@ public class Bank_DetailsEntriesController implements Initializable {
             event.consume();
         }else{
             stage.close();
-            colEnt.regGcr.clear();
-            colEnt.monthGCR.clear();
-            colEnt.dateGCR.clear();
-            colEnt.count = 0;
-        }
-
+        }*/
+        tblCollectEnt.getItems().clear();
     }
-    public String getGcrID(String Gcr, Map<String, String> gcrID){
+
+    public String getGcrID(String Gcr, Map<String, String> gcrID) {
         String id = "";
-        for(Map.Entry<String, String>gCrID :gcrID.entrySet()) {
-            if(gCrID.getKey().equals(Gcr)){
+        for (Map.Entry<String, String> gCrID : gcrID.entrySet()) {
+            if (gCrID.getKey().equals(Gcr)) {
                 id = gCrID.getValue();
             }
         }
         return id;
     }
-    public String getcodeGcr(String Gcr, Map<String, String> codeGCR){
+
+    public String getcodeGcr(String Gcr, Map<String, String> codeGCR) {
         String id = "";
-        for(Map.Entry<String, String>gCrID :codeGCR.entrySet()) {
-            if(gCrID.getKey().equals(Gcr)){
+        for (Map.Entry<String, String> gCrID : codeGCR.entrySet()) {
+            if (gCrID.getKey().equals(Gcr)) {
                 id = gCrID.getValue();
             }
         }
@@ -250,171 +262,169 @@ public class Bank_DetailsEntriesController implements Initializable {
 
 
     @FXML
-    void SaveToDatabase(ActionEvent event) throws SQLException {
-        ArrayList<String> duplicate = new ArrayList<>();
-        Node node =(Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-            if (s != null) {
-                s.unregisterSnackbarContainer(anchBankDetails);
-            }
+    void SaveToDatabase(ActionEvent event) throws SQLException
+    {
         getData = new GetBankDetails();
-        for(int i = 0; i < tblCollectEnt.getItems().size(); i++){
-            getData = tblCollectEnt.getItems().get(i);
-            int payYear = Integer.parseInt(colEnt.payChq.get(getData.getGCR()).get("Year"));
-            String acChqNmb = getData.getChequeNumber(); int payGCR = Integer.parseInt(colEnt.payChq.get(getData.getGCR()).get("GCR"));
-            String payMonth = colEnt.payChq.get(getData.getGCR()).get("Month");
-            String amount = getData.getAmount();
-            Matcher m = colEnt.p.matcher(amount);
-            amount = m.replaceAll("");
-
-            float acAMOUNT = Float.parseFloat(amount), payAmount = Float.parseFloat(colEnt.payChq.get(getData.getGCR()).get("Amount"));
-
-            String check = colEnt.payChq.get(getData.getGCR()).get("Date");
-
-            String payDATE = colEnt.payChq.get(getData.getGCR()).get("Date"), payType = colEnt.payChq.get(getData.getGCR()).get("Type");
-
-            String acChqDate = getFunctions.setSqlDate(getData.getChequeDate());
-
-            String acBank = getData.getBank();
-
-            String payCenter = colEnt.payChq.get(getData.getGCR()).get("Center"), payID = colEnt.payChq.get(getData.getGCR()).get("PayID");
-
-            ID = getGcrID(getData.getGCR(), colEnt.gcrID);
-
-            String fini = "chq"+colEnt.getID(colEnt.GetCenter.getCenterID());
-
-            boolean condition = true;
-
-            ArrayList<String> dup = new ArrayList<>();
-
-            stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE " +
-                    " `cheque_number` = '"+acChqNmb+"' AND `bank` = '"+acBank+"'");
-
+        ArrayList<String> duplicate = new ArrayList<>();
+        String fini;
+//        for ( Iterator<GetBankDetails> iterator = tblCollectEnt.getItems().iterator(); iterator.hasNext();)
+        for(int i = 0; i<tblCollectEnt.getItems().size(); i++)
+        {
+            GetBankDetails item = tblCollectEnt.getItems().get(i);
+            String dateReceived = getFunctions.setSqlDate(item.getDate()),
+                    payer = item.getGCR(),
+                    bank = item.getBank(),
+                    chequeDate = getFunctions.setSqlDate(item.getChequeDate()),
+                    chequeNumber = item.getChequeNumber();
+            float amount = getFunctions.getAmountFloat(item.getAmount());
+            fini = paymentController.getID(RevCentID);
+            stmnt = con.prepareStatement("SELECT `cheque_number` FROM `revenue_centers`,`cheque_details` WHERE `revenue_centers`.`CenterID` = `cheque_details`.`cheque_center` AND `revenue_centers`.`revenue_center`= '" + RevCent + "' AND `bank` = '" + bank + "' AND `cheque_number` = '" + chequeNumber + "'");
             ResultSet res = stmnt.executeQuery();
 
-            while (res.next()){
+            while (res.next()) {
                 duplicate.add(res.getString("cheque_number"));
             }
-            if (duplicate.contains(acChqNmb)){
-                lblDup.setText("Cheque Number "+'"'+acChqNmb+'"'+" for "+'"'+acBank+'"'+" already exist. " +
-                        "Please select row of duplicate data in table to edit or delete.");
+            if (duplicate.contains(chequeNumber)) {
+                lblDup.setText("Cheque Number:"+ '"'+ chequeNumber+ '"' + " from " + '"'+ bank+'"' + " already exist. Please select " +
+                        "row of duplicate data in table to edit or delete.");
                 lblDup.setVisible(true);
-                i=tblCollectEnt.getItems().size();
-            }else {
-                stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`pay_revCenter`, `GCR`," +
-                        " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `pay_ID`) VALUES ('" + payCenter + "', '" +
-                        payGCR + "' ,'" + payAmount + "', '" + payDATE + "', '" + payMonth + "', '" + payYear + "', '" +
-                        payType + "', '" + payID + "')");
-                stmnt.executeUpdate();
-                colEnt.getTableView().getItems().removeIf(item -> item.getGCR().equals(Integer.toString(payGCR)) && item.getType().equals(payType)&&item.getAmount().equals(Float.toString(payAmount)));
-                colEnt.payChq.remove(getData.getGCR());
-                while (condition){
-                    stmnt = con.prepareStatement("SELECT `cheque_ID` FROM `cheque_details` WHERE `cheque_ID` = " +
-                            "'" + fini + "' ");
-                    ResultSet rt = stmnt.executeQuery();
-                    while (rt.next()){
-                        dup.add(rt.getString("cheque_ID"));
-                    }
-                    if (dup.contains(fini)){
-                        fini = "chq"+colEnt.getID(colEnt.GetCenter.getCenterID());
-                    }else {
-                        condition = false;
-                    }
+                break;
+            }
+            else {
+            boolean condition = true;
+            ArrayList<String> dup = new ArrayList<>();
+            while (condition) {
+                stmnt = con.prepareStatement("SELECT `cheque_ID` FROM `cheque_details` WHERE `cheque_ID` = '" + fini + "' ");
+                ResultSet rt = stmnt.executeQuery();
+                while (rt.next()) {
+                    dup.add(rt.getString("pay_ID"));
                 }
+                if (dup.contains(fini)) {
+                    fini = paymentController.getID(RevCentID);
+                }
+                else {
+                    condition = false;
+                }
+            }
                 stmnt = con.prepareStatement("INSERT INTO  `cheque_details`" +
-                        "( `cheque_ID`, `cheque_date`, `cheque_number`, `bank`," +
-                        " `amount`, `payment_ID`) VALUES ('" + fini + "','" + acChqDate + "', " +
-                        "'" + acChqNmb + "', '" + acBank + "', '" + acAMOUNT + "',  '" + ID + "')");
+                        "( `cheque_ID`, `date_received`, `payer`, `cheque_date`, `cheque_number`, `bank`," +
+                        " `amount`, `cheque_center`) VALUES ('" + fini + "','" + dateReceived + "', '" + payer + "', '" + chequeDate +
+                        "', '" + chequeNumber + "', '" + bank + "', '" + amount + "', '" + RevCentID + "')");
                 stmnt.executeUpdate();
-                tblCollectEnt.getItems().remove(i);
-                for (Entry<String, ArrayList<String>> gcr: colEnt.regGcr.entrySet()) {
-                    gcr.getValue().remove(getData.getGCR());
-                }
-                colEnt.monthGCR.get(getData.getMonth()).remove(getData.getGCR());
-                colEnt.dateGCR.get(getData.getDate()).get(getData.getMonth()).remove(getData.getGCR());
-                colEnt.count--;
+                tblCollectEnt.getItems().remove(item);
+                i--;
 
             }
-        }
-            if(tblCollectEnt.getItems().isEmpty()){
-                                s = new JFXSnackbar(anchBankDetails);
-                                s.setStyle("-fx-text-fill: green");
-                                s.show("Cheque Details successfully saved!", 3000);
-        Alert saveConfirmation = new Alert(
-                Alert.AlertType.CONFIRMATION);
-        Button saveButton = (Button) saveConfirmation.getDialogPane().lookupButton(
-                ButtonType.OK
-        ), closeButton = (Button) saveConfirmation.getDialogPane().lookupButton(ButtonType.CANCEL);
-        if (colEnt.count == 0){
-            saveButton.setText("Yes");
-            saveConfirmation.setHeaderText("All related payments Cheque details Successfully saved. ");
-            saveConfirmation.setContentText("Do you want to Close this window?");
-        }else {
-            closeButton.setText("No");
-            closeButton.setDefaultButton(true);
-            saveConfirmation.setHeaderText("\u001B[1m Not All payments' related Cheque details were saved. ");
-            saveConfirmation.setContentText("Do you want to Continue?");
-        }
-        saveConfirmation.initModality(Modality.APPLICATION_MODAL);
-        saveConfirmation.initOwner(stage);
-        saveConfirmation.initStyle(StageStyle.UTILITY);
-        Optional<ButtonType> saveResponse = saveConfirmation.showAndWait();
-        if (!ButtonType.OK.equals(saveResponse.get())) {
-            event.consume();
-        }else{
-                stage.close();
 
-        } }
+        }
     }
 
     @FXML
     void clearEntries(ActionEvent event) {
-        if (tblCollectEnt.getSelectionModel().isEmpty()){
+        if (tblCollectEnt.getSelectionModel().isEmpty()) {
             lblDeleteWarn.setVisible(true);
-        }else{
+        } else {
             String regex = "(?<=[\\d])(,)(?=[\\d])";
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(tblCollectEnt.getSelectionModel().getSelectedItem().getAmount());
-            cmbGCR.getSelectionModel().select(tblCollectEnt.getSelectionModel().getSelectedItem().getGCR());
             dtpckChequeDate.setValue(LocalDate.parse(tblCollectEnt.getSelectionModel().getSelectedItem().getDate(),
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            dtpckReceivedDate.setValue(LocalDate.parse(tblCollectEnt.getSelectionModel().getSelectedItem().getDate(),
                     DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             txtChqNmb.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getChequeNumber());
             txtAmount.setText(m.replaceAll(""));
             txtBankName.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getBank());
+            txtPayerName.setText(tblCollectEnt.getSelectionModel().getSelectedItem().getGCR());
             ObservableList<GetBankDetails> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
             ArrayList<GetBankDetails> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblCollectEnt.getItems().remove(row));
+            registerItem.get(tblCollectEnt.getSelectionModel().getSelectedItem().getBank()).remove(tblCollectEnt.getSelectionModel().getSelectedItem().getChequeNumber());
         }
     }
 
     @FXML
     void saveEntries(ActionEvent event) {
-//        getcodeGcr(cmbGCR.getSelectionModel().getSelectedItem(),colEnt.codeGCR)
-        GCR = cmbGCR.getSelectionModel().getSelectedItem();
+        Payer = txtPayerName.getText();
         Bank = txtBankName.getText();
-        System.out.println(GCR+"\n"+colEnt.monthGCR+"\n"+colEnt.dateGCR);
-        for(Map.Entry<String, ArrayList<String>>GcRdate :colEnt.monthGCR.entrySet()) {
-            if(GcRdate.getValue().contains(GCR)){
-                Month = GcRdate.getKey();
-                System.out.println(Month);
-            }
-        }
         chqNumber = txtChqNmb.getText();
-        for(Map.Entry<String, Map<String, ArrayList<String>>>GCRdate :colEnt.dateGCR.entrySet()){
-                if (GCRdate.getValue().containsKey(Month)) {
-                    Date = GCRdate.getKey();
-                    System.out.println(Date);
+        LocalDate date = dtpckChequeDate.getValue(),
+                receivedDate = dtpckReceivedDate.getValue();
+
+        if (dtpckReceivedDate.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Please Select Date Received");
+            alert.showAndWait();
+            Condition = false;
+        } else if (dtpckChequeDate.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Please Select Cheque Date");
+            alert.showAndWait();
+            Condition = false;
+        } else {
+            Condition = true;
+            while (Condition) {
+                Date = getFunctions.getDate(date);
+                chqDate = getFunctions.getDate(receivedDate);
+                String i = txtBankName.getText(), j = txtChqNmb.getText();
+                if (registerItem.containsKey(i) && registerItem.get(i).contains(j)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Cheque Details already entered");
+                    alert.showAndWait();
+
+                    Condition = false;
+                } else if (txtAmount.getText().isEmpty()) {
+                    lblAmountwarn.setVisible(true);
+                    Condition = false;
+                } else if (StringUtils.countMatches(txtAmount.getText(), ".") > 1) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Please Enter Amount");
+                    alert.setContentText("Please check the number of '.' in the amount");
+                    alert.showAndWait();
+                    txtAmount.clear();
+                    Condition = false;
+                } else if (txtPayerName.getText().isEmpty()) {
+                    lblPayerWarn.setVisible(true);
+                    Condition = false;
+                } else if (txtBankName.getText().isEmpty() || Bank.matches("\\s+")) {
+                    lblBankwarn.setVisible(true);
+                    Condition = false;
+                } else if (txtChqNmb.getText().isEmpty() || chqNumber.matches("\\s+")) {
+                    lblChqNmbwarn.setVisible(true);
+                    Condition = false;
+                } else {
+                    colPayer.setCellValueFactory(data -> data.getValue().GCRProperty());
+                    colDateReceived.setCellValueFactory(data -> data.getValue().dateProperty());
+                    colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
+                    colChqNmb.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
+                    colBank.setCellValueFactory(data -> data.getValue().bankProperty());
+                    colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
+                    Amount = getFunctions.getAmount(txtAmount.getText());
+                    if ("0.00".equals(Amount)) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning Dialog");
+                        alert.setHeaderText("Please Amount cannot be '0'");
+                        alert.showAndWait();
+                        Condition = false;
+                    }
+                    getData = new GetBankDetails(Payer, Date, chqDate, chqNumber, Bank, Amount);
+                    tblCollectEnt.getItems().add(getData);
+                    Condition = false;
+                    clearEnt();
+
+                    if (!registerItem.containsKey(i)) {
+                        registerItem.put(i, new ArrayList<>());
+                        registerItem.get(i).add(j);
+                    } else if (registerItem.containsKey(i) && !registerItem.get(i).contains(j)) {
+                        registerItem.get(i).add(j);
+                    }
                 }
 
-        }
-
-        for(Map.Entry<String, ArrayList<String>>GCRdate :colEnt.regGcr.entrySet()){
-            if (GCRdate.getValue().contains(GCR)) {
-                Year = GCRdate.getKey();
             }
-
-        }
-        LocalDate date = dtpckChequeDate.getValue();
+        }/*
 
         if(GCR == null){
             lblDateReceivedWarn.setVisible(true);
@@ -464,9 +474,9 @@ public class Bank_DetailsEntriesController implements Initializable {
                         alert.showAndWait();
                         txtAmount.clear();
                         Condition =false;
-                    }/*else if (true){
+                    }*//*else if (true){
                         System.out.println("");
-                    }*/else{
+                    }*//*else{
                         String id = colEnt.gcrID.get(GCR);
                         String gcr = cmbGCR.getSelectionModel().getSelectedItem().substring(cmbGCR.getSelectionModel().getSelectedItem().lastIndexOf("-")+1);
                         getReport = new GetBankDetails(GCR, Year, Month, Date, chqDate, chqNumber, Bank, Amount);
@@ -476,42 +486,58 @@ public class Bank_DetailsEntriesController implements Initializable {
                     }
                 }
             }
-        }
+        }*/
     }
-    void clearEnt(){
+
+    void clearEnt()
+    {
         txtAmount.clear();
         txtChqNmb.clear();
         txtBankName.clear();
-        cmbGCR.getSelectionModel().clearSelection();
+        txtPayerName.clear();
+        dtpckReceivedDate.setValue(null);
         dtpckChequeDate.setValue(null);
     }
+
     @FXML
-    public void onlyIntegers(KeyEvent event) {
+    public void onlyIntegers(KeyEvent event)
+    {
         String c = event.getCharacter();
-        if("1234567890.".contains(c)) {}
-        else {
+        if ("1234567890.".contains(c)) {
+        } else {
             event.consume();
         }
     }
 
     @FXML
-    public void onlyNumbers(KeyEvent event) {
+    public void onlyNumbers(KeyEvent event)
+    {
         String c = event.getCharacter();
-        if("1234567890".contains(c)) {}
-        else {
+        if ("1234567890".contains(c)) {
+        } else {
             event.consume();
         }
     }
 
-    public void deleteSelection(ActionEvent actionEvent) {
-        if(tblCollectEnt.getSelectionModel().isEmpty()) {
+    public void deleteSelection(ActionEvent actionEvent)
+    {
+        if (tblCollectEnt.getSelectionModel().isEmpty()) {
             lblDeleteWarn.setVisible(true);
-        }else{
+        } else {
             ObservableList<GetBankDetails> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
             ArrayList<GetBankDetails> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblCollectEnt.getItems().remove(row));
         }
     }
+
+}
+
+
+
+
+
+
+
 
 /**
  *
@@ -581,4 +607,124 @@ public class Bank_DetailsEntriesController implements Initializable {
  }
  }
  */
-}
+/**
+ //        ArrayList<String> duplicate = new ArrayList<>();
+ //        Node node =(Node) event.getSource();
+ //        Stage stage = (Stage) node.getScene().getWindow();
+ //            if (s != null) {
+ //                s.unregisterSnackbarContainer(anchBankDetails);
+ //            }
+ //        getData = new GetBankDetails();
+ //        for(int i = 0; i < tblCollectEnt.getItems().size(); i++){
+ //            getData = tblCollectEnt.getItems().get(i);
+ ////            int payYear = Integer.parseInt(colEnt.payChq.get(getData.getGCR()).get("Year"));
+ //            String acChqNmb = getData.getChequeNumber();
+ //            /*int payGCR = Integer.parseInt(colEnt.payChq.get(getData.getGCR()).get("GCR"));*/
+////            String payMonth = colEnt.payChq.get(getData.getGCR()).get("Month");
+//            String amount = getData.getAmount();
+//            Matcher m = p.matcher(amount);
+//            amount = m.replaceAll("");
+//
+//            float acAMOUNT = Float.parseFloat(amount);
+//            /*, payAmount = Float.parseFloat(colEnt.payChq.get(getData.getGCR()).get("Amount"))*//*
+//
+//            String check = colEnt.payChq.get(getData.getGCR()).get("Date");
+//
+//            String payDATE = colEnt.payChq.get(getData.getGCR()).get("Date"),
+//             payType = colEnt.payChq.get(getData.getGCR()).get("Type");*/
+//
+//            String acChqDate = getFunctions.setSqlDate(getData.getChequeDate());
+//
+//            String acBank = getData.getBank();
+//
+//            /*String payCenter = colEnt.payChq.get(getData.getGCR()).get("Center"),
+//             payID = colEnt.payChq.get(getData.getGCR()).get("PayID");*/
+//
+//            ID = getGcrID(getData.getGCR(), colEnt.gcrID);
+//
+//            String fini = "chq"+colEnt.getID(colEnt.GetCenter.getCenterID());
+//
+//            boolean condition = true;
+//
+//            ArrayList<String> dup = new ArrayList<>();
+//
+//            stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE " +
+//                    " `cheque_number` = '"+acChqNmb+"' AND `bank` = '"+acBank+"'");
+//
+//            ResultSet res = stmnt.executeQuery();
+//
+//            while (res.next()){
+//                duplicate.add(res.getString("cheque_number"));
+//            }
+//            if (duplicate.contains(acChqNmb)){
+//                lblDup.setText("Cheque Number "+'"'+acChqNmb+'"'+" for "+'"'+acBank+'"'+" already exist. " +
+//                        "Please select row of duplicate data in table to edit or delete.");
+//                lblDup.setVisible(true);
+//                i=tblCollectEnt.getItems().size();
+//            }else {
+//               /* stmnt = con.prepareStatement("INSERT INTO `collection_payment_entries`(`pay_revCenter`, `GCR`," +
+//                        " `Amount`, `Date`, `Month`, `Year`, `payment_type`, `pay_ID`) VALUES ('" + payCenter + "', '" +
+//                        payGCR + "' ,'" + payAmount + "', '" + payDATE + "', '" + payMonth + "', '" + payYear + "', '" +
+//                        payType + "', '" + payID + "')");*/
+//                stmnt.executeUpdate();
+////                colEnt.getTableView().getItems().removeIf(item -> item.getGCR().equals(Integer.toString(payGCR)) && item.getType().equals(payType)&&item.getAmount().equals(Float.toString(payAmount)));
+//                colEnt.payChq.remove(getData.getGCR());
+//                while (condition){
+//                    stmnt = con.prepareStatement("SELECT `cheque_ID` FROM `cheque_details` WHERE `cheque_ID` = " +
+//                            "'" + fini + "' ");
+//                    ResultSet rt = stmnt.executeQuery();
+//                    while (rt.next()){
+//                        dup.add(rt.getString("cheque_ID"));
+//                    }
+//                    if (dup.contains(fini)){
+//                        fini = "chq"+colEnt.getID(colEnt.GetCenter.getCenterID());
+//                    }else {
+//                        condition = false;
+//                    }
+//                }
+//                stmnt = con.prepareStatement("INSERT INTO  `cheque_details`" +
+//                        "( `cheque_ID`, `cheque_date`, `cheque_number`, `bank`," +
+//                        " `amount`, `payment_ID`) VALUES ('" + fini + "','" + acChqDate + "', " +
+//                        "'" + acChqNmb + "', '" + acBank + "', '" + acAMOUNT + "',  '" + ID + "')");
+//                stmnt.executeUpdate();
+//                tblCollectEnt.getItems().remove(i);
+//                for (Entry<String, ArrayList<String>> gcr: colEnt.regGcr.entrySet()) {
+//                    gcr.getValue().remove(getData.getGCR());
+//                }
+//                colEnt.monthGCR.get(getData.getMonth()).remove(getData.getGCR());
+//                colEnt.dateGCR.get(getData.getDate()).get(getData.getMonth()).remove(getData.getGCR());
+//                colEnt.count--;
+//
+//            }
+//        }
+//            if(tblCollectEnt.getItems().isEmpty()){
+//                                s = new JFXSnackbar(anchBankDetails);
+//                                s.setStyle("-fx-text-fill: green");
+//                                s.show("Cheque Details successfully saved!", 3000);
+//        Alert saveConfirmation = new Alert(
+//                Alert.AlertType.CONFIRMATION);
+//        Button saveButton = (Button) saveConfirmation.getDialogPane().lookupButton(
+//                ButtonType.OK
+//        ), closeButton = (Button) saveConfirmation.getDialogPane().lookupButton(ButtonType.CANCEL);
+//        if (colEnt.count == 0){
+//            saveButton.setText("Yes");
+//            saveConfirmation.setHeaderText("All related payments Cheque details Successfully saved. ");
+//            saveConfirmation.setContentText("Do you want to Close this window?");
+//        }else {
+//            closeButton.setText("No");
+//            closeButton.setDefaultButton(true);
+//            saveConfirmation.setHeaderText("\u001B[1m Not All payments' related Cheque details were saved. ");
+//            saveConfirmation.setContentText("Do you want to Continue?");
+//        }
+//        saveConfirmation.initModality(Modality.APPLICATION_MODAL);
+//        saveConfirmation.initOwner(stage);
+//        saveConfirmation.initStyle(StageStyle.UTILITY);
+//        Optional<ButtonType> saveResponse = saveConfirmation.showAndWait();
+//        if (!ButtonType.OK.equals(saveResponse.get())) {
+//            event.consume();
+//        }else{
+//                stage.close();
+//
+//        } }
+
+

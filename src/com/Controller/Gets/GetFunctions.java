@@ -10,8 +10,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GetFunctions {
+
+    private final String regex = "(?<=[\\d])(,)(?=[\\d])";
+    public Pattern p = Pattern.compile(regex);
     public GetFunctions(){
     }
     public String getDate(LocalDate date){
@@ -117,6 +122,10 @@ public class GetFunctions {
         String initAmount = formatter.format(initeAmount);
         formatter.setGroupingUsed(true);
         return initAmount;
+    }
+    public float getAmountFloat (String amount){
+        Matcher m = p.matcher(amount);
+        return Float.parseFloat(m.replaceAll(""));
     }
     public DatePicker datePicker(DatePicker dtp)
     {

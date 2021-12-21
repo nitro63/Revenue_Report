@@ -390,6 +390,7 @@ public class entries_sideController extends VBox implements Initializable {
             Bank_DetailsEntriesController revEnt = (Bank_DetailsEntriesController) loadEntries.getController();
             revEnt.setappController(this);
             AnchorPane root = loadEntries.load();
+            revEnt.setAppController(root);
             paneEntriesArea.getChildren().clear();
             paneEntriesArea.getChildren().add(root);
             for (JFXButton btn: menuButtons){

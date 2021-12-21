@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="512.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="512.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="781.0" layoutY="478.0" onAction="#printReport" text="PRINT">
          <effect>
@@ -66,7 +66,7 @@
                </children>
             </HBox>
             <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="50.0" />
-            <JFXButton fx:id="btnBankDetails" buttonType="RAISED" onAction="#showBankDetails" prefHeight="28.0" prefWidth="133.0" text="Bank Details" />
+            <JFXButton fx:id="btnBankDetails" buttonType="RAISED" onAction="#showBankDetails" prefHeight="28.0" prefWidth="133.0" text="Cheque Details" />
          </children>
       </HBox>
       <TableView fx:id="tblPaymentDetails" layoutX="2.0" layoutY="76.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="376.0" prefWidth="843.0">

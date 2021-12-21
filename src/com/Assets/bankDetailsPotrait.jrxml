@@ -68,7 +68,7 @@
 				<text><![CDATA[KUMASI METROPOLITAN ASSEMBLY]]></text>
 			</staticText>
 			<image>
-				<reportElement x="80" y="0" width="30" height="40" uuid="c0cbce31-9234-4944-a22e-5fa381fc14f7"/>
+				<reportElement x="80" y="0" width="400" height="40" uuid="c0cbce31-9234-4944-a22e-5fa381fc14f7"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
@@ -90,7 +90,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="15" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[BANK DETAILS REPORT ]]></text>
+				<text><![CDATA[CHEQUE DETAILS REPORT ]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -182,7 +182,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 								</textElement>
-								<text><![CDATA[GCR NUMBER]]></text>
+								<text><![CDATA[RECEIVED FROM]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">

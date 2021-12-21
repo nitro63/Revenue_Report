@@ -69,6 +69,8 @@ public class LogInController implements Initializable {
     public static String loggerUsername, loggerAccessLevel, loggerCenter, loggerCenterName;
     public static String accessID;
     public static boolean hasCenter, admin, OverAllAdmin, Accountant, clerk, supervisor;
+    protected static
+    Stage stg = new Stage();
 
 
 
@@ -104,7 +106,6 @@ public class LogInController implements Initializable {
         try {
             Parent root = connectConfig.load();
             Scene s = new Scene(root);
-            Stage stg = new Stage();
             stg.setTitle("Connection Configuration");
             stg.initModality(Modality.APPLICATION_MODAL);
             stg.initOwner(current);
