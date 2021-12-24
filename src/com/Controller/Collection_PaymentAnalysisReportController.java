@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -151,12 +152,12 @@ public class Collection_PaymentAnalysisReportController implements Initializable
      
     private void getReportYear() throws SQLException{
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-            stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `revenueYear`");
+            stmnt = con.prepareStatement(" SELECT YEAR(revenueDate) AS `revenueYear` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' GROUP BY `revenueYear`");
         } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-            stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND `daily_revCenter` = 'K0201' OR `daily_revCenter` = 'K0202' OR `daily_revCenter` = 'K0203' OR `daily_revCenter` = 'K0204' OR `daily_revCenter` = 'K0205' GROUP BY `revenueYear`");
+            stmnt = con.prepareStatement(" SELECT YEAR(revenueDate) AS `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND `daily_revCenter` = 'K0201' OR `daily_revCenter` = 'K0202' OR `daily_revCenter` = 'K0203' OR `daily_revCenter` = 'K0204' OR `daily_revCenter` = 'K0205' GROUP BY `revenueYear`");
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
+            stmnt = con.prepareStatement(" SELECT YEAR(revenueDate) AS `revenueYear` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         }
 //        stmnt = con.prepareStatement(" SELECT `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueYear`");
         ResultSet rs = stmnt.executeQuery();
@@ -175,13 +176,15 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     }
     
     private void setItems() throws SQLException{
-        ObservableList<String> collectionMonth = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");  
+        ObservableList<Months> collectionMonth = FXCollections.observableArrayList(Months.values());
         float repMonth, payMonth, diff, totRepMonth = 0, totPayMonth = 0, totDiff;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         String acRepMonth, acPayMonth, acDiff, acTotRepMonth, acTotPayMonth, acTotDiff, rmks="";
-        for(String month : collectionMonth){
-           repMonth = setReptMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
-           payMonth = setPayMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
+        System.out.println(collectionMonth);
+        for(Months month : collectionMonth){
+            String months =month.toString().substring(0,1).toUpperCase()+month.toString().substring(1).toLowerCase();
+           repMonth = setReptMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month.getValue(), cmbReportYear.getSelectionModel().getSelectedItem());
+           payMonth = setPayMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), months, cmbReportYear.getSelectionModel().getSelectedItem());
            diff = repMonth - payMonth ;
            if (diff < 0){
                acDiff = "("+formatter.format(Math.abs(diff))+")";
@@ -209,7 +212,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
            colAmtPayed.setCellValueFactory(data -> data.getValue().AmtPayedProperty());
            colDiff.setCellValueFactory(data -> data.getValue().DiffProperty());
            colMonth.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
-            GetColPay getReport = new GetColPay(month, acRepMonth, acPayMonth, acDiff);
+            GetColPay getReport = new GetColPay(month.toString(), acRepMonth, acPayMonth, acDiff);
            tblColPayAnalysis.getItems().add(getReport);
            lblDifference.setText(acTotDiff);
            lblPaidAmount.setText(acTotPayMonth);
@@ -222,15 +225,15 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     }
     
         
-       public Float setReptMonthSum(String Center, String Month, String Year) throws SQLException{
+       public Float setReptMonthSum(String Center, int Month, String Year) throws SQLException{
         float totalAmunt;
            if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' AND `revenueYear` = '"+Year+"' AND `revenueMonth` = '"+Month+"' ");
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(revenueDate) = '"+Year+"' AND MONTH(revenueDate) = '"+Month+"' ");
            } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
-               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `revenueYear` = '"+Year+"' AND `revenueMonth` = '"+Month+"' AND `CenterID` = `daily_revCenter` AND `daily_revCenter` = 'K0201' OR `daily_revCenter` = 'K0202' OR `daily_revCenter` = 'K0203' OR `daily_revCenter` = 'K0204' OR `daily_revCenter` = 'K0205' ");
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE YEAR(revenueDate) = '"+Year+"' AND MONTH(revenueDate) = '"+Month+"' AND `CenterID` = `daily_revCenter` AND `daily_revCenter` = 'K0201' OR `daily_revCenter` = 'K0202' OR `daily_revCenter` = 'K0203' OR `daily_revCenter` = 'K0204' OR `daily_revCenter` = 'K0205' ");
            }
            else {
-               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND`revenue_center` = '"+Center+"' AND `revenueYear` = '"+Year+"' AND `revenueMonth` = '"+Month+"' ");
+               stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `daily_entries`,`revenue_centers` WHERE `CenterID` = `daily_revCenter` AND`revenue_center` = '"+Center+"' AND YEAR(revenueDate) = '"+Year+"' AND MONTH(revenueDate) = '"+Month+"' ");
            }
 //       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
