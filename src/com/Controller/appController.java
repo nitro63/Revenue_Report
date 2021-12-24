@@ -8,12 +8,16 @@ package com.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -87,6 +91,7 @@ public class appController  implements Initializable{
     private Button btnLogout;
     GetRevCenter GetCenter = new GetRevCenter();
     HamburgerBasicCloseTransition transition;
+    ObservableList<Button> menuButtons = FXCollections.observableArrayList();
     LogInController getLogin ;/*
      InitializerController app;
      public void setappController(InitializerController app){
@@ -103,6 +108,7 @@ public  appController() {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    menuButtons.addAll(Arrays.asList(btnSDHME,btnSDRI,btnSDRR,btnSGRE));
     menuItemViewProfile.setDisable(true);
     transition = new HamburgerBasicCloseTransition(btnBurger);
         border_pane.widthProperty().addListener(((observable, oldValue, newValue) -> {

@@ -396,7 +396,7 @@ public class ReportController implements Initializable {
         Date dte = new Date();
         while(rs.next()){
             rowDate.add(rs.getString("revenueDate"));
-//            System.out.println(rs.getString("revenueDate"));
+          System.out.println(rs.getString("revenueDate"));
            dte = rs.getDate("revenueDate");
         }
         Date mon = new SimpleDateFormat("MMMM").parse(cmbReportMonth.getSelectionModel().getSelectedItem().toString());
@@ -406,6 +406,8 @@ public class ReportController implements Initializable {
         int yearNum = Integer.parseInt(cmbReportYear.getSelectionModel().getSelectedItem());
         int weekNum = Integer.parseInt(cmbReportWeek.getSelectionModel().getSelectedItem());
         Calendar ca = Calendar.getInstance();
+        ca.setFirstDayOfWeek(Calendar.SUNDAY);
+        ca.setMinimalDaysInFirstWeek(1);
         ca.setTime(dte/*new SimpleDateFormat("dd-MM-yyyy").format(dte)*/);
         int week = ca.get(Calendar.WEEK_OF_YEAR);
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -417,9 +419,9 @@ public class ReportController implements Initializable {
             cal.set(Calendar.WEEK_OF_YEAR, week);
             cal.set(Calendar.DAY_OF_WEEK, i+1);
             days[i] = format.format(cal.getTime());
-//            System.out.println(days[i]);
+          System.out.println(days[i]);
         }
-        ca.getTime();/*
+        System.out.println(ca.getTime());/*
         DAY1.setText(getDate(1, monthNum, yearNum, weekNum));
         DAY2.setText(getDate(2, monthNum, yearNum, weekNum));
         DAY3.setText(getDate(3, monthNum, yearNum, weekNum));

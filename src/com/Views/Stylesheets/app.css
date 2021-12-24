@@ -9,35 +9,35 @@ and open the template in the editor.
 */
 
 @font-face{
-    font-family: 'Roboto Italic'
+    font-family: 'Roboto Italic';
     src: url("Roboto-Italic.ttf");
 }
 @font-face{
-    font-family: 'Helvetica'
+    font-family: 'Helvetica';
     src: url("Helvetica.ttf");
 }
 @font-face{
-    font-family: 'Montserrat'
+    font-family: 'Montserrat';
     src: url("Montserrat-SemiBold.ttf");
 }
 @font-face{
-    font-family: 'Roboto Medium'
+    font-family: 'Roboto Medium';
     src: url("Roboto-Medium.ttf");
 }
 @font-face{
-    font-family: 'Helvetica Bold'
+    font-family: 'Helvetica Bold';
     src: url("Helvetica-Oblique.ttf");
 }
 @font-face{
-    font-family: 'Roboto'
+    font-family: 'Roboto';
     src: url("Roboto-Light.ttf");
 }
 @font-face{
-    font-family: 'Roboto BoldItalic'
+    font-family: 'Roboto BoldItalic';
     src: url("Roboto-BoldItalic.ttf");
 }
 @font-face{
-    font-family: 'Roboto Bold'
+    font-family: 'Roboto Bold';
     src: url("Roboto-Bold.ttf");
 }
 
@@ -94,7 +94,7 @@ and open the template in the editor.
 .nav-bar{
     -fx-background-color: #F6FFFF;
 }
-//#17BA4552
+
 .side-bar{
     -fx-background-color: linear-gradient(#18b84252 16%, #ABFF69a1 58%);
 }
@@ -104,3 +104,5 @@ and open the template in the editor.
     -fx-background-radius: 50;
     -fx-border-radius: 50;
     }
+
+/*//#17BA4552*/
