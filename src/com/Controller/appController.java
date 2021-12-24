@@ -167,7 +167,13 @@ public  appController() {
         loadsdhme.setLocation(getClass().getResource( "/com/Views/fxml/home_side.fxml"));
         loadsdhme.setController(new home_sideController());
         home_sideController home = loadsdhme.getController();
-        home.setappController(this);/*
+        home.setappController(this);
+        for (Button button: menuButtons) {
+            if (button.equals(btnSDHME)){
+                btnSDHME.getStyleClass().add("bigs");
+            }else button.getStyleClass().remove("bigs");
+        }
+        /*
         leftPane.getChildren().clear();
         centerPane.getChildren().clear();
         leftPane.getChildren().add(loadsdhme.load());*/
@@ -183,6 +189,11 @@ public  appController() {
         centerPane.getChildren().clear();
         centerPane.getChildren().add(loadsgre.load());
         VBox.setVgrow(loadsgre.getRoot(), Priority.ALWAYS);
+        for (Button button: menuButtons) {
+            if (button.equals(btnSGRE)){
+                btnSGRE.getStyleClass().add("bigs");
+            }else button.getStyleClass().remove("bigs");
+        }
 //        border_pane.setCenter(loadsgre.load());
     }
 
@@ -195,6 +206,11 @@ public  appController() {
         rep.setappController(this);
         centerPane.getChildren().clear();
         centerPane.getChildren().add(load.load());
+        for (Button button: menuButtons) {
+            if (button.equals(btnSDRR)){
+                btnSDRR.getStyleClass().add("bigs");
+            }else button.getStyleClass().remove("bigs");
+        }
     }
 
     @FXML
@@ -206,6 +222,11 @@ public  appController() {
         rep.setappController(this);
         centerPane.getChildren().clear();
         centerPane.getChildren().add(load.load());
+        for (Button button: menuButtons) {
+            if (button.equals(btnSDRI)){
+                btnSDRI.getStyleClass().add("bigs");
+            }else button.getStyleClass().remove("bigs");
+        }
     }
 
     @FXML
