@@ -92,11 +92,12 @@ public class GetFunctions {
        int actMonth = date.getMonthValue() -1,//Converting Datepicker month value from 1-12 format to 0-11 format
         month = date.getMonthValue();
     Calendar cal = Calendar.getInstance();
+        cal.setFirstDayOfWeek(Calendar.SUNDAY);
+        cal.setFirstDayOfWeek(1);
+        cal.setMinimalDaysInFirstWeek(1);//Setting the minimal days to make a week;
         cal.set(date.getYear(), actMonth, date.getDayOfMonth());
         java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use
         cal.setTime(setDate);//Setting time to Calendar variable
-        cal.setFirstDayOfWeek(1);
-        cal.setMinimalDaysInFirstWeek(1);//Setting the minimal days to make a week;
         return Integer.toString(cal.get(Calendar.WEEK_OF_MONTH));
     }
 
