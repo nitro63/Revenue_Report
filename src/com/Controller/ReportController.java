@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -349,15 +350,17 @@ public class ReportController implements Initializable {
     protected String getDate(int day, int month, int year, int week){
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.SUNDAY);
-        calendar.set(Calendar.WEEK_OF_MONTH, week);
-        calendar.set(Calendar.MONTH, month);
+        calendar.setMinimalDaysInFirstWeek(1);
         calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.WEEK_OF_MONTH, week);
+        calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+//        System.out.println(calendar);
         int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
-        calendar.setFirstDayOfWeek(1);
-        calendar.setMinimalDaysInFirstWeek(1);
         calendar.set(Calendar.DAY_OF_WEEK, day);
+//        System.out.println(calendar);
 
         return df.format(calendar.getTime());
     }
@@ -365,6 +368,7 @@ public class ReportController implements Initializable {
     protected String getDay(int day, int month, int year, int week){
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+        calendar.setMinimalDaysInFirstWeek(1);
         calendar.set(Calendar.WEEK_OF_MONTH, week);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.YEAR, year);
@@ -383,22 +387,39 @@ public class ReportController implements Initializable {
         }else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
             stmnt = con.prepareStatement(" SELECT `daily_entries`.`revenueDate` FROM `revenue_centers`,`daily_entries` WHERE YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate) = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' AND  `daily_entries`.`revenue_week` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `daily_entries`.`daily_revCenter` = `revenue_centers`.`CenterID` AND `daily_entries`.`daily_revCenter` = 'K0201' OR `daily_entries`.`daily_revCenter` = 'K0202' OR `daily_entries`.`daily_revCenter` = 'K0203' OR `daily_entries`.`daily_revCenter` = 'K0204' OR `daily_entries`.`daily_revCenter` = 'K0205' GROUP BY `daily_entries`.`revenueDate`");
         }else {
-            stmnt = con.prepareStatement(" SELECT `revenueDate` FROM `daily_entries`,`revenue_centers` WHERE   `revenue_week` = '"+
-                    cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.
-                    getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate) = '"+cmbReportMonth.getSelectionModel().
-                    getSelectedItem().getValue()+"' AND YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueDate`");
+            stmnt = con.prepareStatement(" SELECT `revenueDate` FROM `daily_entries`,`revenue_centers` WHERE YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate) = '"+cmbReportMonth.getSelectionModel().
+                    getSelectedItem().getValue()+"' AND `revenue_week` = '"+cmbReportWeek.getSelectionModel().getSelectedItem()+"' AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.
+                    getSelectionModel().getSelectedItem()+"' GROUP BY `revenueDate`");
         }
         ResultSet rs = stmnt.executeQuery();
         rowDate.clear();
+        Date dte = new Date();
         while(rs.next()){
             rowDate.add(rs.getString("revenueDate"));
+//            System.out.println(rs.getString("revenueDate"));
+           dte = rs.getDate("revenueDate");
         }
         Date mon = new SimpleDateFormat("MMMM").parse(cmbReportMonth.getSelectionModel().getSelectedItem().toString());
         Calendar cal = Calendar.getInstance();
-        cal.setTime(mon);
+//        cal.setTime(mon);
         int monthNum = cal.get(Calendar.MONTH);
         int yearNum = Integer.parseInt(cmbReportYear.getSelectionModel().getSelectedItem());
         int weekNum = Integer.parseInt(cmbReportWeek.getSelectionModel().getSelectedItem());
+        Calendar ca = Calendar.getInstance();
+        ca.setTime(dte/*new SimpleDateFormat("dd-MM-yyyy").format(dte)*/);
+        int week = ca.get(Calendar.WEEK_OF_YEAR);
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        String[] days =new String[7];
+        for(int i = 0; i< days.length; i++ ){
+            cal.setFirstDayOfWeek(Calendar.SUNDAY);
+            cal.setMinimalDaysInFirstWeek(1);
+            cal.set(Calendar.YEAR, yearNum);
+            cal.set(Calendar.WEEK_OF_YEAR, week);
+            cal.set(Calendar.DAY_OF_WEEK, i+1);
+            days[i] = format.format(cal.getTime());
+//            System.out.println(days[i]);
+        }
+        ca.getTime();/*
         DAY1.setText(getDate(1, monthNum, yearNum, weekNum));
         DAY2.setText(getDate(2, monthNum, yearNum, weekNum));
         DAY3.setText(getDate(3, monthNum, yearNum, weekNum));
@@ -412,7 +433,22 @@ public class ReportController implements Initializable {
         lblDay4.setText(getDay(4, monthNum, yearNum, weekNum));
         lblDay5.setText(getDay(5, monthNum, yearNum, weekNum));
         lblDay6.setText(getDay(6, monthNum, yearNum, weekNum));
-        lblDay7.setText(getDay(7, monthNum, yearNum, weekNum));
+        lblDay7.setText(getDay(7, monthNum, yearNum, weekNum));*/
+
+        DAY1.setText(days[0]);
+        DAY2.setText(days[1]);
+        DAY3.setText(days[2]);
+        DAY4.setText(days[3]);
+        DAY5.setText(days[4]);
+        DAY6.setText(days[5]);
+        DAY7.setText(days[6]);
+        lblDay1.setText("Sunday");
+        lblDay2.setText("Monday");
+        lblDay3.setText("Tuesday");
+        lblDay4.setText("Wednesday");
+        lblDay5.setText("Thursday");
+        lblDay6.setText("Friday");
+        lblDay7.setText("Saturday");
         
         
        
@@ -460,7 +496,7 @@ public class ReportController implements Initializable {
                  categoriesItem.get(rs_itemsCategories.getString("item_category")).add(rs_itemsCategories.getString("item_Sub"));
              }
          }
-         System.out.println(itemCode);
+//         System.out.println(itemCode);
         REVENUE_ITEM.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
         DAY1.setCellValueFactory(data -> data.getValue().DAY1Property());
         DAY2.setCellValueFactory(data -> data.getValue().DAY2Property());
@@ -473,7 +509,7 @@ public class ReportController implements Initializable {
         colCode.setCellValueFactory(data -> data.getValue().RevenueCodeProperty());
         Total_amt.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
          for (String category : rowCategories){
-             REVENUE_ITEM.setStyle("-fx-alignment: CENTER;");
+             REVENUE_ITEM.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
              getReport = new GetReport("", category.toUpperCase(), "", "", "", "", "", "", "", "", "A");
              WEEKLY_TABLE.getItems().add(getReport);
              float subDay1 = 0, subDay2 = 0, subDay3 = 0, subDay4 = 0, subDay5 = 0, subDay6 = 0, subDay7 = 0, subTotalAmount;
@@ -485,17 +521,18 @@ public class ReportController implements Initializable {
                  weekSum.put(DAY4.getText(), days4); weekSum.put(DAY5.getText(), days5); weekSum.put(DAY6.getText(), days6);
                  weekSum.put(DAY7.getText(), days7);
                  itemWeekSum.put(items, weekSum);
-                 System.out.println(itemWeekSum);
+//                 System.out.println(itemWeekSum);
                  boolean resultSetState = true;
                  while (resultSetState){
                      rs.next();
-                     if (items.equals(rs.getString("item_Sub"))){
+                     if (items.equals(rs.getString("item_Sub")) /*&& itemWeekSum.get(items).containsKey(date)*/){
                          String date = getFunctions.convertSqlDate(rs.getString("revenueDate"));
-                         System.out.println(date);
+//                         System.out.println(date);
+//                         if(itemWeekSum.get(items).containsKey(date)){
                          float amot= itemWeekSum.get(items).get(date);
-                         System.out.println(amot);
+//                         System.out.println(amot);
                          amot += rs.getFloat("revenueAmount");
-                         itemWeekSum.get(items).put(getFunctions.convertSqlDate(rs.getString("revenueDate")), amot);
+                         itemWeekSum.get(items).put(getFunctions.convertSqlDate(rs.getString("revenueDate")), amot);/*}*/
                      }
                      if (rs.isLast()){
                          resultSetState = false;
@@ -613,7 +650,7 @@ public class ReportController implements Initializable {
 
             /*call jasper engine to display report in jasperviewer window*/
             JasperViewer.viewReport(jasperPrint, false);
-            System.out.println(itemsa);
+//            System.out.println(itemsa);
         }
 
     }

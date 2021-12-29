@@ -15,7 +15,7 @@
 
 <!--fx:controller="com.Controller.ReportController"-->
 
-<AnchorPane prefHeight="512.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="512.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutX="510.0" layoutY="43.0" prefHeight="27.0" prefWidth="221.0" visible="false">
          <children>
@@ -249,15 +249,15 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Label alignment="CENTER" layoutY="372.0" prefHeight="25.0" prefWidth="90.0" text="TOTAL" />
-            <Label fx:id="lblSumDay1" alignment="CENTER" layoutX="96.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
-            <Label fx:id="lblSumDay2" alignment="CENTER" layoutX="192.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
-            <Label fx:id="lblSumDay3" alignment="CENTER" layoutX="286.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
-            <Label fx:id="lblSumDay4" alignment="CENTER" layoutX="378.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
-            <Label fx:id="lblSumDay5" alignment="CENTER" layoutX="468.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
-            <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="758.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
-            <Label fx:id="lblSumDay6" alignment="CENTER" layoutX="568.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
-            <Label fx:id="lblSumDay7" alignment="CENTER" layoutX="661.0" layoutY="372.0" prefHeight="25.0" prefWidth="85.0" />
+            <Label alignment="CENTER" layoutX="60.0" layoutY="372.0" prefHeight="25.0" prefWidth="109.0" text="TOTAL" />
+            <Label fx:id="lblSumDay1" alignment="CENTER" layoutX="167.0" layoutY="372.0" prefHeight="25.0" prefWidth="75.0" />
+            <Label fx:id="lblSumDay2" alignment="CENTER" layoutX="242.0" layoutY="372.0" prefHeight="25.0" prefWidth="75.0" />
+            <Label fx:id="lblSumDay3" alignment="CENTER" layoutX="317.0" layoutY="372.0" prefHeight="25.0" prefWidth="75.0" />
+            <Label fx:id="lblSumDay4" alignment="CENTER" layoutX="392.0" layoutY="372.0" prefHeight="25.0" prefWidth="75.0" />
+            <Label fx:id="lblSumDay5" alignment="CENTER" layoutX="467.0" layoutY="372.0" prefHeight="25.0" prefWidth="75.0" />
+            <Label fx:id="lblSumDay6" alignment="CENTER" layoutX="542.0" layoutY="372.0" prefHeight="25.0" prefWidth="75.0" />
+            <Label fx:id="lblSumDay7" alignment="CENTER" layoutX="617.0" layoutY="372.0" prefHeight="25.0" prefWidth="75.0" />
+            <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="696.0" layoutY="372.0" prefHeight="25.0" prefWidth="143.0" />
          </children>
       </AnchorPane>
    </children>

@@ -46,6 +46,10 @@ and open the template in the editor.
 .combo-box .text-field{
     -fx-prompt-text-fill: rgba(255, 0, 0, 0.5);
 }
+/*.combo-box .text-field*/ .report{
+    -fx-prompt-text-fill: rgba(255, 0, 0, 0.5);
+    -fx-prompt-text-weight: bold;
+}
 
 .combo-box .text-field:focused {
     -fx-prompt-text-fill: transparent;

@@ -191,6 +191,7 @@ public class MasterCentersController implements Initializable {
        november.setCellValueFactory(data -> data.getValue().NovProperty());
        december.setCellValueFactory(data -> data.getValue().DecProperty());
        totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
+       revenueCenter.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
        GetCentersReport getReport;
        for (String category : rowItems){
            revenueCenter.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");

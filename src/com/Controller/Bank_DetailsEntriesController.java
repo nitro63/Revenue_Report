@@ -365,8 +365,8 @@ public class Bank_DetailsEntriesController implements Initializable {
         } else {
             Condition = true;
             while (Condition) {
-                Date = getFunctions.getDate(date);
-                chqDate = getFunctions.getDate(receivedDate);
+                Date = getFunctions.getDate(receivedDate);
+                chqDate = getFunctions.getDate(date);
                 String i = txtBankName.getText(), j = txtChqNmb.getText();
                 if (registerItem.containsKey(i) && registerItem.get(i).contains(j)) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);

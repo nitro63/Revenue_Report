@@ -56,7 +56,7 @@
          <columns>
             <TableColumn fx:id="colID" editable="false" prefWidth="127.0" text="ID" visible="false" />
             <TableColumn fx:id="colGCR" editable="false" prefWidth="119.0" text="GCR NO." />
-            <TableColumn fx:id="colPayer" prefWidth="75.0" text="PAYER" />
+            <TableColumn fx:id="colPayer" prefWidth="75.0" text="PAID BY" />
             <TableColumn fx:id="colAMOUNT" editable="false" prefWidth="119.0" text="AMOUNT" />
             <TableColumn fx:id="colDATE" editable="false" minWidth="0.0" prefWidth="110.0" text="DATE" />
             <TableColumn fx:id="colMonth" editable="false" prefWidth="134.0" text="MONTH" />

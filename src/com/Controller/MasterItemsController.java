@@ -186,6 +186,7 @@ public class MasterItemsController implements Initializable {
        november.setCellValueFactory(data -> data.getValue().NovProperty());
        december.setCellValueFactory(data -> data.getValue().DecProperty());
        totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
+       revenueItem.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
        GetItemsReport getReport;
        for (String category : rowItems){
            revenueItem.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");

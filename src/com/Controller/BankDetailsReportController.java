@@ -89,6 +89,9 @@ public class BankDetailsReportController implements Initializable {
     private ComboBox<Integer> cmbReportYear;
 
     @FXML
+    private Label lblTotalAmount;
+
+    @FXML
     private ComboBox<Months> cmbReportMonth;
     GetBankDetails getReport;
     GetFunctions getFunctions = new GetFunctions();
@@ -309,10 +312,10 @@ public class BankDetailsReportController implements Initializable {
 
     void setTable() throws SQLException {
         String Center = centerID.get(cmbReportCent.getSelectionModel().getSelectedItem()), Date = "", GCR = "", Amount = "",
-                bankName = "", chqNumber = "", chqDate = "";
+                bankName = "", chqNumber = "", chqDate = "", totalAmount="";
+        float totCumAmount = 0;
         Months months = cmbReportMonth.getSelectionModel().getSelectedItem();
         int year = cmbReportYear.getSelectionModel().getSelectedItem();
-
         stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE `cheque_center` = '"+Center
                 +"' AND YEAR(date_received) = '"+year+"' AND MONTH(date_received) = '"+months.getValue()+"'");
         ResultSet rs = stmnt.executeQuery();
@@ -323,16 +326,25 @@ public class BankDetailsReportController implements Initializable {
         colChqNumber.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
         colBank.setCellValueFactory(data -> data.getValue().bankProperty());
         colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
+        colChqDate.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
+        colBank.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
+        colDate.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
+        colReceivedFrom.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
         while(rs.next()){
             Date = getFunctions.convertSqlDate(rs.getString("date_received"));
             GCR = rs.getString("payer");
             Amount = getFunctions.getAmount(rs.getString("amount"));
+            float totAmount = rs.getFloat("amount");
+            totCumAmount += totAmount;
             chqNumber = rs.getString("cheque_number");
             chqDate = getFunctions.convertSqlDate(rs.getString("cheque_date"));
             bankName = rs.getString("bank");
             getReport = new GetBankDetails(GCR, Date, chqDate, chqNumber, bankName, Amount);
             tblBankDetails.getItems().add(getReport);
-        }}
+        }
+        totalAmount = getFunctions.getAmount(Float.toString(totCumAmount));
+        lblTotalAmount.setText(totalAmount);
+    }
 
 
     @FXML

@@ -64,14 +64,14 @@ public class InitializerController implements Initializable {
             }
             loadApplication();
             for (GetUser s : usersList ){
-                System.out.println("Username: "+ s.getUsername()+ " Email: "+ s.getEmail()+" UserCenter: "+ s.getUser_center());
+//                System.out.println("Username: "+ s.getUsername()+ " Email: "+ s.getEmail()+" UserCenter: "+ s.getUser_center());
             }
         });
     }
 
     public static void print(){
         for (int i = 0; i < 2000000000; i++){
-            System.out.println(i);
+//            System.out.println(i);
         }
     }
     public ObservableList<GetUser> getUsersList(){

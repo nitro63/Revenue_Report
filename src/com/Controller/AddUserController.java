@@ -118,9 +118,9 @@ public class AddUserController  implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         for (GetUser s : InitializerController.userList){
-            System.out.println("Username: "+ s.getUsername()+ " Email: "+ s.getEmail()+" UserCenter: "+ s.getUser_center());
+//            System.out.println("Username: "+ s.getUsername()+ " Email: "+ s.getEmail()+" UserCenter: "+ s.getUser_center());
         }
-        System.out.println(InitializerController.userList);
+//        System.out.println(InitializerController.userList);
         txtPasswordConfirmShown.setVisible(false);
         txtPasswordShown.setVisible(false);
         tblAddUser.setOnMouseClicked(e -> {

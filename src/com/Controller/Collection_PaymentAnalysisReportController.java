@@ -208,6 +208,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
            colAmtReptd.setCellValueFactory(data -> data.getValue().AmtReprtdProperty());
            colAmtPayed.setCellValueFactory(data -> data.getValue().AmtPayedProperty());
            colDiff.setCellValueFactory(data -> data.getValue().DiffProperty());
+           colMonth.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
             GetColPay getReport = new GetColPay(month, acRepMonth, acPayMonth, acDiff);
            tblColPayAnalysis.getItems().add(getReport);
            lblDifference.setText(acTotDiff);

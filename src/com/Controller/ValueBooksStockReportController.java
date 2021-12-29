@@ -246,6 +246,12 @@ public class ValueBooksStockReportController implements Initializable {
             colCumuAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
             colPurAmount.setCellValueFactory(data -> data.getValue().purAmountProperty());
             colRemarks.setCellValueFactory(data -> data.getValue().remarksProperty());
+            colDate.setStyle( "-fx-alignment: CENTER-LEFT;");
+            colValueBook.setStyle( "-fx-alignment: CENTER-LEFT;");
+            colFirstSerial.setStyle( "-fx-alignment: CENTER-LEFT;");
+            colLastSerial.setStyle( "-fx-alignment: CENTER-LEFT;");
+            colQuantity.setStyle( "-fx-alignment: CENTER-LEFT;");
+
             while (rs.next()) {
                 Date = getFunctions.convertSqlDate(rs.getString("date"));
                 valBook = rs.getString("value_books");
@@ -256,7 +262,7 @@ public class ValueBooksStockReportController implements Initializable {
                 valAmount = getFunctions.getAmount(rs.getString("amount"));
                 cumuamount += rs.getFloat("amount");
                 cumuAmount = getFunctions.getAmount(Float.toString(cumuamount));
-                purAmount = rs.getString("purchase_amount");
+                purAmount = getFunctions.getAmount(rs.getString("purchase_amount"));
                 getReport = new GetValueBooksEntries(Date, valBook, firstSerial, lastSerial, quantity, valAmount, cumuAmount, purAmount, remarks);
                 tblValBookStocksRep.getItems().add(getReport);
             }

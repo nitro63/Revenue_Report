@@ -89,7 +89,8 @@ public class GetFunctions {
             }
 
     public String getWeek(LocalDate date){
-       int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
+       int actMonth = date.getMonthValue() -1,//Converting Datepicker month value from 1-12 format to 0-11 format
+        month = date.getMonthValue();
     Calendar cal = Calendar.getInstance();
         cal.set(date.getYear(), actMonth, date.getDayOfMonth());
         java.util.Date setDate = cal.getTime();//Variable for converting DatePicker value from Calendar to Date for further use

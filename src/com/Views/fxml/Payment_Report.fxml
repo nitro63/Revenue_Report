@@ -23,7 +23,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <HBox alignment="CENTER" layoutY="-1.0" prefHeight="41.0" prefWidth="843.0">
+      <HBox alignment="CENTER" layoutX="3.0" layoutY="13.0" prefHeight="41.0" prefWidth="843.0">
          <children>
             <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="50.0" />
             <AnchorPane>
@@ -69,7 +69,7 @@
             <JFXButton fx:id="btnBankDetails" buttonType="RAISED" onAction="#showBankDetails" prefHeight="28.0" prefWidth="133.0" text="Cheque Details" />
          </children>
       </HBox>
-      <TableView fx:id="tblPaymentDetails" layoutX="2.0" layoutY="76.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="376.0" prefWidth="843.0">
+      <TableView fx:id="tblPaymentDetails" layoutX="5.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="376.0" prefWidth="843.0">
          <columns>
             <TableColumn fx:id="colGCR" prefWidth="71.0" text="GCR " />
             <TableColumn fx:id="colDate" prefWidth="71.0" text="Date" />
@@ -81,7 +81,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane layoutX="610.0" layoutY="43.0" prefHeight="28.0" prefWidth="230.0">
+      <AnchorPane layoutX="610.0" layoutY="43.0" prefHeight="28.0" prefWidth="230.0" visible="false">
          <children>
             <Label text="MONTH:">
                <font>
@@ -95,7 +95,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="482.0" layoutY="44.0">
+      <AnchorPane layoutX="482.0" layoutY="44.0" visible="false">
          <children>
             <Label layoutY="2.0" text="YEAR:">
                <font>
@@ -109,7 +109,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="36.0" prefHeight="41.0" prefWidth="440.0">
+      <AnchorPane layoutX="10.0" layoutY="36.0" prefHeight="41.0" prefWidth="440.0" visible="false">
          <children>
             <Label layoutY="4.0" text="REVENUE CENTER:">
                <font>
@@ -123,6 +123,16 @@
             </Label>
          </children>
       </AnchorPane>
+      <Label alignment="CENTER" layoutX="336.0" layoutY="453.0" prefWidth="168.0" text="TOTAL" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTotalAmount" alignment="CENTER" layoutX="512.0" layoutY="453.0" prefWidth="168.0" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
    </children>
    <stylesheets>
       <URL value="@../Stylesheets/report.css" />

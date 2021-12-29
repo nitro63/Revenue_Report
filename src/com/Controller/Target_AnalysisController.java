@@ -193,7 +193,7 @@ public class Target_AnalysisController implements Initializable {
        acTargAmount = formatter.format(targAmount);
        targ = acTargAmount;
        txtAnnualTarget.setText(acTargAmount);
-       System.out.println(targAmount);
+//       System.out.println(targAmount);
         ObservableList<Months> collectionMonth = FXCollections.observableArrayList(Months.values());
         float totRevenue, cumuRevenue = 0, outRevenue, cumuPercent, outPercent;
         String actotRevenue, acCumuRevenue = "", acOutRevenue = "", acCumPercent = "", acOutPercent = "";
@@ -228,6 +228,7 @@ public class Target_AnalysisController implements Initializable {
            colPercAchv.setCellValueFactory(data -> data.getValue().achvPercentProperty());
            colAmtOut.setCellValueFactory(data -> data.getValue().outAmtProperty());
            colPercOut.setCellValueFactory(data -> data.getValue().outPercentProperty());
+           colMonth.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
             GetTargAnalReport getReport = new GetTargAnalReport(month.toString(), actotRevenue, acCumuRevenue, acCumPercent, acOutRevenue, acOutPercent);
            tblColPayAnalysis.getItems().add(getReport);
            totRevenue = 0;

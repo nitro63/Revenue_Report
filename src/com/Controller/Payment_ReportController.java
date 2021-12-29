@@ -84,6 +84,8 @@ public class Payment_ReportController implements Initializable {
     private Label lblYear;
     @FXML
     private Label lblRevenueCenter;
+    @FXML
+    private Label lblTotalAmount;
 
 
     private final Connection con;
@@ -207,7 +209,7 @@ public class Payment_ReportController implements Initializable {
     } 
     
     private void setItems() throws SQLException{
-        String Date, GCR, payment_type, acAmount, acCumuAmount;
+        String Date, GCR, payment_type, acAmount, acCumuAmount = "";
         float amount, cumuAmount = 0;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
@@ -226,6 +228,9 @@ public class Payment_ReportController implements Initializable {
         colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
         colPaymentType.setCellValueFactory(data -> data.getValue().paymentTypeProperty());
         colTotalAmount.setCellValueFactory(data -> data.getValue().cumuAmountProperty());
+        colDate.setStyle( "-fx-alignment: CENTER-LEFT;");
+        colGCR.setStyle( "-fx-alignment: CENTER-LEFT;");
+        colPaymentType.setStyle( "-fx-alignment: CENTER-LEFT;");
         while(rs.next()){
             GCR = rs.getString("GCR");
             Date = rs.getString("Date");
@@ -240,6 +245,7 @@ public class Payment_ReportController implements Initializable {
             GetPaymentDetails getReport = new GetPaymentDetails(Date, GCR, payment_type, acAmount, acCumuAmount);
             tblPaymentDetails.getItems().add(getReport);
             }
+        lblTotalAmount.setText(acCumuAmount);
         }
 
 

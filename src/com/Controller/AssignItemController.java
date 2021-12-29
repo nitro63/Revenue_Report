@@ -203,7 +203,7 @@ public class AssignItemController implements Initializable {
              String id;
         for(GetAssignItems I : itemSelected){
             String itemID = itemId.get(I.getSubItem());
-            System.out.println("true");
+//            System.out.println("true");
             if (!dup.contains(itemID)){
                 id = getID();
                 boolean condition = true;
