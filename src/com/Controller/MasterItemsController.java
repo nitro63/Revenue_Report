@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -120,7 +121,7 @@ public class MasterItemsController implements Initializable {
     
     private void getRevenueYears() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revenueYear` FROM `daily_entries` WHERE 1 GROUP BY `revenueYear` ");
+            stmnt = con.prepareStatement("SELECT YEAR(revenueDate) AS `revenueYear` FROM `daily_entries` WHERE 1 GROUP BY `revenueYear` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -150,8 +151,8 @@ public class MasterItemsController implements Initializable {
        NumberFormat formatter = new DecimalFormat("#,##0.00");
        PreparedStatement stmnt_itemsCategories;
        ResultSet rs, rs_itemsCategories;
-       stmnt = con.prepareStatement(" SELECT `revenue_item`, `revenueMonth`, `item_category`, `revenueAmount` FROM `revenue_items`,`daily_entries` WHERE  `revenue_item_ID` = `revenueItem` AND `revenueYear` = '"+cmbMasterItemsYear.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-       stmnt_itemsCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `revenue_items`,`daily_entries` WHERE  `revenue_item_ID` = `revenueItem` AND `revenueYear` = '"+cmbMasterItemsYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+       stmnt = con.prepareStatement(" SELECT `revenue_item`, MONTH(revenueDate) AS `revenueMonth`, `item_category`, `revenueAmount` FROM `revenue_items`,`daily_entries` WHERE  `revenue_item_ID` = `revenueItem` AND YEAR(revenueDate) = '"+cmbMasterItemsYear.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+       stmnt_itemsCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `revenue_items`,`daily_entries` WHERE  `revenue_item_ID` = `revenueItem` AND YEAR(revenueDate) = '"+cmbMasterItemsYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
        rs = stmnt.executeQuery();
        rs_itemsCategories = stmnt_itemsCategories.executeQuery();
        rowItems.clear();
@@ -173,6 +174,9 @@ public class MasterItemsController implements Initializable {
        revenueItem.setSortable(false); march.setSortable(false); april.setSortable(false); may.setSortable(false); june.setSortable(false);
        january.setSortable(false); july.setSortable(false); august.setSortable(false); september.setSortable(false); october.setSortable(false);
        february.setSortable(false); november.setSortable(false); december.setSortable(false); totalAmount.setSortable(false);
+       revenueItem.getText().toUpperCase(); march.setText(Months.MARCH.toString()); april.setText(Months.APRIL.toString()); may.setText(Months.MAY.toString()); june.setText(Months.JUNE.toString());
+       january.setText(Months.JANUARY.toString()); july.setText(Months.JULY.toString()); august.setText(Months.AUGUST.toString()); september.setText(Months.SEPTEMBER.toString()); october.setText(Months.OCTOBER.toString());
+       february.setText(Months.FEBRUARY.toString()); november.setText(Months.NOVEMBER.toString()); december.setText(Months.DECEMBER.toString());
        january.setCellValueFactory(data -> data.getValue().JanProperty());
        february.setCellValueFactory(data -> data.getValue().FebProperty());
        march.setCellValueFactory(data -> data.getValue().MarProperty());
@@ -206,9 +210,9 @@ public class MasterItemsController implements Initializable {
                while (resultSetState){
                    rs.next();
                    if (item.equals(rs.getString("revenue_item"))){
-                       float amot= itemMonthSum.get(item).get(rs.getString("revenueMonth"));
+                       float amot= itemMonthSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
                        amot += rs.getFloat("revenueAmount");
-                       itemMonthSum.get(item).put(rs.getString("revenueMonth"), amot);
+                       itemMonthSum.get(item).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
                    }
                    if (rs.isLast()){
                        resultSetState = false;

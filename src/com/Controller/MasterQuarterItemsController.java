@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.Enums.Months;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -149,7 +150,7 @@ public class MasterQuarterItemsController implements Initializable {
     
     private void getRevenueYears() throws SQLException, ClassNotFoundException{
         
-            stmnt = con.prepareStatement("SELECT `revenueYear` FROM `daily_entries` WHERE 1 GROUP BY `revenueYear` ");
+            stmnt = con.prepareStatement("SELECT YEAR(revenueDate) AS `revenueYear` FROM `daily_entries` WHERE 1 GROUP BY `revenueYear` ");
          ResultSet rs = stmnt.executeQuery();
          ResultSetMetaData metadata = rs.getMetaData();
          int columns = metadata.getColumnCount();
@@ -168,7 +169,7 @@ public class MasterQuarterItemsController implements Initializable {
     }
     
     private void getQuarter() throws SQLException{
-        stmnt = con.prepareStatement(" SELECT `revenueQuarter` FROM `daily_entries` WHERE  `revenueYear` = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueQuarter`");
+        stmnt = con.prepareStatement(" SELECT QUARTER(revenueDate) AS `revenueQuarter` FROM `daily_entries` WHERE  YEAR(revenueDate) = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"'  GROUP BY `revenueQuarter`");
         ResultSet rs = stmnt.executeQuery();
         ResultSetMetaData meta = rs.getMetaData();
         int colum = meta.getColumnCount();
@@ -190,7 +191,7 @@ public class MasterQuarterItemsController implements Initializable {
             singleQuarters = true;
             paneAll.setVisible(false);
             paneSingle.setVisible(true);
-        stmnt = con.prepareStatement(" SELECT `revenueMonth` FROM `daily_entries` WHERE   `revenueYear` = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbMstItemsQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
+        stmnt = con.prepareStatement(" SELECT MONTH(revenueDate) AS `revenueMonth` FROM `daily_entries` WHERE   YEAR(revenueDate) = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' AND QUARTER(revenueDate) = '"+cmbMstItemsQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenueMonth`");
         ResultSet Rs = stmnt.executeQuery();
         rowMonths.clear();
         while(Rs.next()){
@@ -253,8 +254,8 @@ public class MasterQuarterItemsController implements Initializable {
         float Mon1 = 0, Mon2 = 0, Mon3 = 0, Mon4 = 0, total_amount, totMon1 = 0, totMon2 = 0, totMon3 = 0, totMon4 = 0, totQuarterSum = 0;
         GetMstrQuarterItems getReport;
         if (!cmbMstItemsQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
-            stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, `revenueMonth`  FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND `revenueYear` = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbMstItemsQuarter.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            stmnt_itemCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND `revenueYear` = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' AND `revenueQuarter` = '"+cmbMstItemsQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
+            stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, MONTH(revenueDate) AS `revenueMonth`  FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND YEAR(revenueDate) = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' AND QUARTER(revenueDate) = '"+cmbMstItemsQuarter.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND YEAR(revenueDate) = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' AND QUARTER(revenueDate) = '"+cmbMstItemsQuarter.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_item`");
 
             rs = stmnt.executeQuery();
             rs_itemsCategories = stmnt_itemCategories.executeQuery();
@@ -294,9 +295,9 @@ public class MasterQuarterItemsController implements Initializable {
                     while (resultSetState){
                         rs.next();
                         if (item.equals(rs.getString("revenue_item"))){
-                            float amot= itemQuarterSum.get(item).get(rs.getString("revenueMonth").toUpperCase());
+                            float amot= itemQuarterSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
                             amot += rs.getFloat("revenueAmount");
-                            itemQuarterSum.get(item).put(rs.getString("revenueMonth").toUpperCase(), amot);
+                            itemQuarterSum.get(item).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
                         }
                         if (rs.isLast()){
                             resultSetState = false;
@@ -324,8 +325,8 @@ public class MasterQuarterItemsController implements Initializable {
             lblMonth1.setText(totmon1); lblMonth2.setText(totmon2); lblMonth3.setText(totmon3); lblTotalAmount.setText(summation);
         }
         else {
-            stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, `revenueQuarter` FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND `revenueYear` = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            stmnt_itemCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND `revenueYear` = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"'GROUP BY `revenue_item`");
+            stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, QUARTER(revenueDate) AS `revenueQuarter` FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND YEAR(revenueDate) = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmnt_itemCategories = con.prepareStatement(" SELECT `revenue_item`, `item_category` FROM `daily_entries`,`revenue_items` WHERE `revenue_item_ID` = `revenueItem` AND YEAR(revenueDate) = '"+cmMstItemsYear.getSelectionModel().getSelectedItem()+"'GROUP BY `revenue_item`");
 
             rs = stmnt.executeQuery();
             rs_itemsCategories = stmnt_itemCategories.executeQuery();
