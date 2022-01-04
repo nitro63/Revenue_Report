@@ -69,8 +69,7 @@ public class LogInController implements Initializable {
     public static String loggerUsername, loggerAccessLevel, loggerCenter, loggerCenterName;
     public static String accessID;
     public static boolean hasCenter, admin, OverAllAdmin, Accountant, clerk, supervisor;
-    protected static
-    Stage stg = new Stage();
+//    protected static
 
 
 
@@ -78,7 +77,7 @@ public class LogInController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hasCenter = false; admin = false; OverAllAdmin = false; Accountant = false; clerk = false;
                 supervisor = false;
-        Connection con = DBConnection.getConn();
+        /*Connection con = DBConnection.getConn();
         try {
             stmnt = con.prepareStatement("SELECT * FROM `usercredent` WHERE 1");
             ResultSet resultSet = stmnt.executeQuery();
@@ -89,7 +88,7 @@ public class LogInController implements Initializable {
             }
         } catch (SQLException  e) {
             e.printStackTrace();
-        }
+        }*/
         if (warnlabel.isVisible()){
         btnLogIn.setOnMouseClicked(e -> warnlabel.setVisible(false));}
         txtPasswordShown.setVisible(false);
@@ -104,6 +103,7 @@ public class LogInController implements Initializable {
         FXMLLoader connectConfig = new FXMLLoader();
         connectConfig.setLocation(getClass().getResource("/com/Views/fxml/ConnectionConfiguration.fxml"));
         try {
+            Stage stg = new Stage();
             Parent root = connectConfig.load();
             Scene s = new Scene(root);
             stg.setTitle("Connection Configuration");

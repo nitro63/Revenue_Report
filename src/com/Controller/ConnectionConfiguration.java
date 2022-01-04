@@ -69,11 +69,14 @@ public class ConnectionConfiguration implements Initializable {
     private Label lblConnectionStatus;
     private final ObservableList<String> _sslModes = FXCollections.observableArrayList("REQUIRED", "PREFERRED");
     static File jarPath=new File(DBConnection.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-    static String propertiesPath= jarPath.getParentFile().getAbsolutePath();
-    private final String file = propertiesPath+"/connection.properties";
+
+    File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+     String propertiesPath= directory.getParentFile().getPath();
+    private final String file = /*propertiesPath+*/"./connection.properties";
     private final Properties prop = new Properties();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.print(jarPath.getParentFile());
         cmbSSLMode.getItems().addAll(_sslModes);
         paneSSL.setVisible(false);
         paneTimeZone.setVisible(false);
@@ -152,6 +155,7 @@ public class ConnectionConfiguration implements Initializable {
             lblConnectionStatus.setVisible(true);
             lblConnectionStatus.setText("Connection Failed");
             btnSave.setDisable(true);
+            e.printStackTrace();
         }
     }
 }

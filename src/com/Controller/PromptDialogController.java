@@ -93,6 +93,7 @@ public class PromptDialogController {
                         stag.initModality(Modality.APPLICATION_MODAL);
                         stag.initOwner(current);
                         stag.initStyle(StageStyle.UTILITY);
+                        stag.getIcons().add(new Image("/com/Assets/kmalogo.png"));
                         stag.setScene(sw);
                         stag.setResizable(false);
                         stag.show();
