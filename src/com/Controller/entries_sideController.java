@@ -176,6 +176,8 @@ public class entries_sideController extends VBox implements Initializable {
                 SelRev = centerID.get(cmbRevCent.getSelectionModel().getSelectedItem());
                 GetCenter.setRevCenter(SelItem);
                 GetCenter.setCenterID(SelRev);
+                txtEntriesMain.setVisible(false);
+                txtEntriesMainNoPane.setVisible(true);
             cmbRevCent.setDisable(true);
             }
         } catch (SQLException throwables) {

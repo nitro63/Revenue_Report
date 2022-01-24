@@ -345,10 +345,24 @@ public class AddUserController  implements Initializable {
     void addUser(ActionEvent event) throws SQLException{
         if (!user){
             boolean flag = true;
-            txtPasswordShown.setText(txtPass.getText());
-            txtPasswordConfirmShown.setText(txtPassConf.getText());
-            txtPass.setText(txtPasswordShown.getText());
-            txtPassConf.setText(txtPasswordConfirmShown.getText());
+            if(chkPasswordMask.isSelected()) {
+                txtPass.setText(txtPasswordShown.getText());
+                txtPassConf.setText(txtPasswordConfirmShown.getText());
+                /*
+                if (!txtPass.getText().isEmpty()){
+                    txtPasswordShown.setText(txtPass.getText());}
+                if (!txtPassConf.getText().isEmpty()){
+                txtPasswordConfirmShown.setText(txtPassConf.getText());}*/
+            }
+            else{
+                txtPasswordShown.setText(txtPass.getText());
+                txtPasswordConfirmShown.setText(txtPassConf.getText());
+                /*
+                if(!txtPasswordShown.getText().isEmpty()){
+                    txtPass.setText(txtPasswordShown.getText());}
+                if (!txtPasswordConfirmShown.getText().isEmpty()){
+                txtPassConf.setText(txtPasswordConfirmShown.getText());}*/
+            }
 
             if(txtUsername.getText().equals("") || txtUsername.getText().matches("\\s+") ||
                     txtEmail.getText().matches("\\s+") || txtEmail.getText().equals("") ||

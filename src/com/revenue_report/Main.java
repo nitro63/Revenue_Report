@@ -29,7 +29,6 @@ public class Main extends Application {
     static final Logger logger = Logger.getLogger(MonthlyReportController.class.getName());
     @Override
     public void start(Stage stage) throws Exception {
-        Main.stage = stage;
         Parent root = null;
         PropertyConfigurator.configure(getClass().getResource("log4j.properties"));
         try {
@@ -41,6 +40,7 @@ public class Main extends Application {
             stage.getIcons().add(new Image("/com/Assets/kmalogo.png"));
             stage.setScene(scene);
             stage.show();
+            Main.stage = stage;
         } catch (IOException e) {
             logger.error(e);
             new PromptDialogController("Error!", "Error Occured. Failed to initialize system.");

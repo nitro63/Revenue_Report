@@ -20,8 +20,8 @@ import java.util.Properties;
 public class DBConnection {
     private static final String Username = "root";
     private static final String Password = "";
-    static File jarPath=new File(DBConnection.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-    static String propertiesPath= jarPath.getParentFile().getAbsolutePath();
+    static File jarPath=new File(DBConnection.class.getProtectionDomain().getCodeSource().getLocation().getPath()), directory = new File("./");
+    static String propertiesPath= directory.getAbsolutePath();
 
 
     private static Properties propt() throws IOException {

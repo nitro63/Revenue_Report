@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.revenue_report.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,8 +70,7 @@ public class LogInController implements Initializable {
     public static String loggerUsername, loggerAccessLevel, loggerCenter, loggerCenterName;
     public static String accessID;
     public static boolean hasCenter, admin, OverAllAdmin, Accountant, clerk, supervisor;
-    protected static
-    Stage stg = new Stage();
+//    protected static
 
 
 
@@ -78,7 +78,7 @@ public class LogInController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hasCenter = false; admin = false; OverAllAdmin = false; Accountant = false; clerk = false;
                 supervisor = false;
-        Connection con = DBConnection.getConn();
+        /*Connection con = DBConnection.getConn();
         try {
             stmnt = con.prepareStatement("SELECT * FROM `usercredent` WHERE 1");
             ResultSet resultSet = stmnt.executeQuery();
@@ -89,7 +89,7 @@ public class LogInController implements Initializable {
             }
         } catch (SQLException  e) {
             e.printStackTrace();
-        }
+        }*/
         if (warnlabel.isVisible()){
         btnLogIn.setOnMouseClicked(e -> warnlabel.setVisible(false));}
         txtPasswordShown.setVisible(false);
@@ -104,6 +104,7 @@ public class LogInController implements Initializable {
         FXMLLoader connectConfig = new FXMLLoader();
         connectConfig.setLocation(getClass().getResource("/com/Views/fxml/ConnectionConfiguration.fxml"));
         try {
+            Stage stg = new Stage();
             Parent root = connectConfig.load();
             Scene s = new Scene(root);
             stg.setTitle("Connection Configuration");
@@ -118,20 +119,22 @@ public class LogInController implements Initializable {
         }
     }
 
-        void userLogger() throws SQLException, ClassNotFoundException, IOException {
+        void userLogger() throws ClassNotFoundException, IOException {
         //Taking input from the username & password fields
         String username = txtUsername.getText();
         String password;
-        Connection con = DBConnection.getConn();
 
         //Getting input from the field in which
         //user inputted password.
         //Note: We have two password field.
         //One for visible password and another for hidden.
-        if(chkPasswordMask.isSelected()) {
+        if(chkPasswordMask.isSelected()) {/*
+            txtPassword.setText(txtPasswordShown.getText());*/
             password = txtPasswordShown.getText();
         }
-        else{
+        else{/*
+            if(!txtPasswordShown.getText().isEmpty()){
+            txtPassword.setText(txtPasswordShown.getText());}*/
             password = txtPassword.getText();
         }
 
@@ -143,8 +146,11 @@ public class LogInController implements Initializable {
         } else if(password.matches("\\s+") || password.isEmpty()) {
             lblWarnPassword.setVisible(true);
         } else {
-                stmnt = con.prepareStatement("SELECT `username`, `level`, `center`, `access_level` FROM `user`, `access_levels` WHERE `access_ID` = `access_level` AND `password` = '"+password+"' AND `username` = '"+username+"' ");
-                ResultSet rs = stmnt.executeQuery();
+            try {
+                Connection con = DBConnection.getConn();
+                stmnt = con.prepareStatement("SELECT `username`, `level`, `center`, `access_level` FROM `user`, `access_levels` WHERE `access_ID` = `access_level` AND BINARY `password` = '"+password+"' AND BINARY `username` = '"+username+"' ");
+
+            ResultSet rs = stmnt.executeQuery();
 
                 if (rs.next()) {
                     //Setting user credentials for further processing
@@ -187,6 +193,13 @@ public class LogInController implements Initializable {
                         logIn.setTitle("Revenue Monitoring System");
                         logIn.getIcons().add(new Image("/com/Assets/kmalogo.png"));
                         logIn.setScene(s);
+                        if (!chkSaveCredentials.isSelected()){
+                            txtPassword.setText("");
+                            txtPasswordShown.setText("");
+                            txtUsername.setText("");
+                            password = "";
+                            username = "";
+                        }
                         login.close();
                         logIn.show();
                     hasCenter = loggerCenter != null;
@@ -211,6 +224,9 @@ public class LogInController implements Initializable {
                 } else {
                     warnlabel.setVisible(true);
                 }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
         }
     }

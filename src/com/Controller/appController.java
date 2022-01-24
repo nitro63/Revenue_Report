@@ -239,6 +239,7 @@ public  appController() {
     private void Logout(ActionEvent event) {
     Stage current = (Stage)txtUser.getScene().getWindow();
     current.close();
+    Main.stage.show();/*
         try {
             // Setting login window
             Main st = new Main();
@@ -253,7 +254,7 @@ public  appController() {
             stage.show();
         } catch (IOException e) {
             new PromptDialogController("Error!", "Error Occured. Failed to initialize system.");
-        }
+        }*/
     }
 
     void sideBarResize(){
