@@ -503,14 +503,14 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                         revAmount.setCellValueFactory(data -> data.getValue().AmountProperty());
                         revDate.setCellValueFactory(data -> data.getValue().DateProperty());
                         Amount = getFunctions.getAmount(txtEntAmt.getText());
-                        if ("0.00".equals(Amount)) {
+                       /* if ("0.00".equals(Amount)) {
                             Alert alert = new Alert(AlertType.WARNING);
                             alert.setTitle("Warning Dialog");
                             alert.setHeaderText("Please Amount cannot be '0'");
                             alert.showAndWait();
                             txtEntAmt.clear();
                             Condition = false;
-                        } else {
+                        } else {*/
                             Code = RevenueMap.get(cmbEntRevItem.getSelectionModel().getSelectedItem());// Getting the
                                                                                                        // Code of the
                                                                                                        // Revenue Items
@@ -539,7 +539,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                             cmbEntRevItem.getSelectionModel().clearSelection();
                             txtEntAmt.clear();
                             Condition = false;
-                        }
+//                        }
                     }
                 }
             }
