@@ -369,7 +369,7 @@ public class commissionEntriesController implements Initializable {
         closeConfirmation.setTitle("Abort Entries");
         closeConfirmation.setHeaderText("Confirm Exit");
         if(!commTable.getItems().isEmpty()) {
-            closeConfirmation.setContentText("Are you sure you want to exit without saving cheque details? ");
+            closeConfirmation.setContentText("Are you sure you want to exit without saving commission details? ");
         }else{
             closeConfirmation.setContentText("Are you sure you want to Exit");
         }
