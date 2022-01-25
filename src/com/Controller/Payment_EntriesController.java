@@ -367,7 +367,8 @@ public class Payment_EntriesController implements Initializable {
             String payDate = getFunctions.getSqlDate(entDatePck.getValue()),
                     payGCR = txtEntGCR.getText(),
                     payType = cmbPayType.getSelectionModel().getSelectedItem(),
-                    payMonth = cmbColMonth.getSelectionModel().getSelectedItem();
+                    payMonth = cmbColMonth.getSelectionModel().getSelectedItem(),
+                    payer = txtEntPayer.getText();
             int payYear = spnColYear.getValue();
             float payAmount = Float.parseFloat(txtEntAmt.getText());
             stmnt = con.prepareStatement("SELECT `GCR` FROM `collection_payment_entries` WHERE `GCR` = '"+
@@ -443,6 +444,13 @@ public class Payment_EntriesController implements Initializable {
                         alert.setHeaderText("Please Check GCR number");
                         alert.showAndWait();
                         Condition =false;
+                    }else
+                        if (txtEntPayer.getText().isEmpty() ){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Warning Dialog");
+                        alert.setHeaderText("Please enter \"Paid By\"");
+                        alert.showAndWait();
+                        Condition =false;
                     }
                     else{
                         switch (type){
@@ -480,7 +488,7 @@ public class Payment_EntriesController implements Initializable {
                             stmnt = con.prepareStatement("UPDATE `collection_payment_entries` SET  " +
                                     "`Date`= '"+payDate+"',`GCR`= '"+payGCR+"'," +
                                     "`Month` = '"+payMonth+"', `payment_type` = '"+payType+"'" +
-                                    ",`Amount` = '"+payAmount+"', `Year` = '"+payYear+"' WHERE   " +
+                                    ",`Amount` = '"+payAmount+"', `Year` = '"+payYear+"', `payer` = '"+payer+"' WHERE   " +
                                     "`pay_ID`= '"+entriesID+"' AND `pay_revCenter`= '"+RevCentID+"' ");
                             stmnt.executeUpdate();
                                 s = new JFXSnackbar(anchPane);
@@ -540,8 +548,9 @@ public class Payment_EntriesController implements Initializable {
         colAMOUNT.setCellValueFactory(data -> data.getValue().AmountProperty());
         colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
         colPayType.setCellValueFactory(data -> data.getValue().TypeProperty());
+        colPayer.setCellValueFactory(data -> data.getValue().CenterProperty());
         while (rs.next()) {
-            getData = new GetCollectEnt(getFunctions.getAmount(rs.getString("Amount")), rs.getString("GCR"), rs.getString("Month"), getFunctions.convertSqlDate(rs.getString("Date")), rs.getString("pay_ID"),
+            getData = new GetCollectEnt(rs.getString("payer"),getFunctions.getAmount(rs.getString("Amount")), rs.getString("GCR"), rs.getString("Month"), getFunctions.convertSqlDate(rs.getString("Date")), rs.getString("pay_ID"),
                     rs.getString("payment_type"));
             tblCollection.getItems().add(getData);
 
