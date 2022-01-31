@@ -306,9 +306,9 @@ public class Payment_EntriesController implements Initializable {
         if (!cmbUpdateYear.getSelectionModel().isEmpty()) {
             String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
             if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
-                stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "' AND `Month` = '" + month + "' ");
+                stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount`, `payer` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "' AND `Month` = '" + month + "' ");
             } else {
-                stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "'");
+                stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount`, `payer` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "'");
             }
             rs = stmnt.executeQuery();
             tblCollection.getItems().clear();
@@ -319,7 +319,7 @@ public class Payment_EntriesController implements Initializable {
             colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
             colPayType.setCellValueFactory(data -> data.getValue().TypeProperty());
             while (rs.next()) {
-                getData = new GetCollectEnt(getFunctions.getAmount(rs.getString("Amount")), rs.getString("GCR"), rs.getString("Month"), getFunctions.convertSqlDate(rs.getString("Date")), rs.getString("pay_ID"),
+                getData = new GetCollectEnt(rs.getString("payer"), getFunctions.getAmount(rs.getString("Amount")), rs.getString("GCR"), rs.getString("Month"), getFunctions.convertSqlDate(rs.getString("Date")), rs.getString("pay_ID"),
                         rs.getString("payment_type"));
                 tblCollection.getItems().add(getData);
 
@@ -345,6 +345,7 @@ public class Payment_EntriesController implements Initializable {
         cmbColMonth.getSelectionModel().select(entries.getMonth());
         spnColYear.getValueFactory().setValue(Integer.parseInt(cmbUpdateYear.getValue()));/*getSelectionModel().getSelectedItem()));*/
         txtEntGCR.setText(entries.getGCR());
+        txtEntPayer.setText(entries.getCenter());
         switch (type){
             case "Cash":
             case "Cash Deposit Slip":
@@ -388,6 +389,7 @@ public class Payment_EntriesController implements Initializable {
             }else{
                 Condition =true;
                 while(Condition) {
+                    txtEntPayer.getText().trim();
                     String i=txtEntGCR.getText();
                     if(dupGCR.contains(i)){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -445,7 +447,7 @@ public class Payment_EntriesController implements Initializable {
                         alert.showAndWait();
                         Condition =false;
                     }else
-                        if (txtEntPayer.getText().isEmpty() ){
+                        if (txtEntPayer.getText().isEmpty() || txtEntPayer.getText().matches("\\s*") ){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Warning Dialog");
                         alert.setHeaderText("Please enter \"Paid By\"");
@@ -536,9 +538,9 @@ public class Payment_EntriesController implements Initializable {
     private void loadRevenueCollectionTable() throws SQLException {
         String year = cmbUpdateYear.getSelectionModel().getSelectedItem(), month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
         if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
-            stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "' AND `Month` = '" + month + "' ");
+            stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount`, `payer` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "' AND `Month` = '" + month + "' ");
         } else {
-            stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "'");
+            stmnt = con.prepareStatement("SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount`, `payer` FROM `collection_payment_entries` WHERE `pay_revCenter` = '" + RevCentID + "' AND `Year` ='" + year + "'");
         }
         rs = stmnt.executeQuery();
         tblCollection.getItems().clear();
@@ -693,7 +695,14 @@ public class Payment_EntriesController implements Initializable {
                 alert.showAndWait();
                 
                 Condition =false;
-            }
+            }else
+           if (txtEntPayer.getText().isEmpty() || txtEntPayer.getText().matches("\\s*") ){
+               Alert alert = new Alert(Alert.AlertType.WARNING);
+               alert.setTitle("Warning Dialog");
+               alert.setHeaderText("Please enter \"Paid By\"");
+               alert.showAndWait();
+               Condition =false;
+           }
             else{
         colAMOUNT.setCellValueFactory(data -> data.getValue().AmountProperty());
         colDATE.setCellValueFactory(data -> data.getValue().DateProperty());
