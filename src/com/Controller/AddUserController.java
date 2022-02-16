@@ -1,5 +1,5 @@
 package com.Controller;
-import com.Controller.Gets.GetUser;
+import com.Models.GetUser;
 import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +18,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import com.revenue_report.DBConnection;
-import org.apache.commons.lang3.ObjectUtils;
 
 
 public class AddUserController  implements Initializable {

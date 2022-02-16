@@ -1,7 +1,7 @@
 package com.Controller;
-import com.Controller.Gets.GetEntries;
-import com.Controller.Gets.GetFunctions;
-import com.Controller.Gets.GetRevCenter;
+import com.Models.GetEntries;
+import com.Models.GetFunctions;
+import com.Models.GetRevCenter;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

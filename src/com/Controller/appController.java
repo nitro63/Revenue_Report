@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import javafx.collections.FXCollections;
@@ -22,18 +21,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import com.Controller.Gets.GetRevCenter;
+import com.Models.GetRevCenter;
 import javafx.stage.Stage;
 import com.revenue_report.Main;
 
@@ -170,6 +166,7 @@ public  appController() {
         home.setappController(this);
         for (Button button: menuButtons) {
             if (button.equals(btnSDHME)){
+                btnSDHME.getStyleClass().remove("big");
                 btnSDHME.getStyleClass().add("bigs");
             }else button.getStyleClass().remove("bigs");
         }
@@ -191,6 +188,7 @@ public  appController() {
         VBox.setVgrow(loadsgre.getRoot(), Priority.ALWAYS);
         for (Button button: menuButtons) {
             if (button.equals(btnSGRE)){
+                btnSGRE.getStyleClass().remove("bigs");
                 btnSGRE.getStyleClass().add("bigs");
             }else button.getStyleClass().remove("bigs");
         }
@@ -208,6 +206,7 @@ public  appController() {
         centerPane.getChildren().add(load.load());
         for (Button button: menuButtons) {
             if (button.equals(btnSDRR)){
+                btnSDRR.getStyleClass().remove("bigs");
                 btnSDRR.getStyleClass().add("bigs");
             }else button.getStyleClass().remove("bigs");
         }
@@ -224,6 +223,7 @@ public  appController() {
         centerPane.getChildren().add(load.load());
         for (Button button: menuButtons) {
             if (button.equals(btnSDRI)){
+                btnSDRI.getStyleClass().remove("bigs");
                 btnSDRI.getStyleClass().add("bigs");
             }else button.getStyleClass().remove("bigs");
         }

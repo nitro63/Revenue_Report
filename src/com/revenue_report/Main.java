@@ -6,7 +6,7 @@
 package com.revenue_report;
 
 import com.Controller.LogInController;
-import com.Controller.MonthlyReportController;
+import com.Controller.Reports.MonthlyReportController;
 import com.Controller.PromptDialogController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,6 +1,6 @@
 package com.Controller;
 
-import com.Controller.Gets.GetUser;
+import com.Models.GetUser;
 import com.jfoenix.controls.JFXProgressBar;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

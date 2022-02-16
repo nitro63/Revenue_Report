@@ -1,6 +1,6 @@
 package com.Controller;
-import com.Controller.Gets.GetAssignItems;
-import com.Controller.Gets.GetDetails;
+import com.Models.GetAssignItems;
+import com.Models.GetDetails;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;

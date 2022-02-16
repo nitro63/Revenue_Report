@@ -1,7 +1,7 @@
 package com.Controller;
 
-import com.Controller.Gets.GetBankDetails;
-import com.Controller.Gets.GetFunctions;
+import com.Models.GetBankDetails;
+import com.Models.GetFunctions;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
