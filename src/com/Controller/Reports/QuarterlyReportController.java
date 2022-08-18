@@ -168,6 +168,10 @@ public class QuarterlyReportController implements Initializable {
         }
     }
     
+    /**
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     private void getRevCenters() throws SQLException, ClassNotFoundException{
 
 //            stmnt = con.prepareStatement("SELECT `daily_revCenter` FROM `daily_entries` WHERE 1 GROUP BY `daily_revCenter` ");
@@ -311,8 +315,8 @@ public class QuarterlyReportController implements Initializable {
     }
     
     private void setItems() throws SQLException{
-        Map<String, ArrayList<Float>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
-        Map<String, Map<String, ArrayList<Float>>> forEntry = new HashMap<>();//HashMap to store entries for tableview
+        Map<String, ArrayList<Double>> monthAmount = new HashMap<>();//HashMap to store revenue Amounts on their respective weeks
+        Map<String, Map<String, ArrayList<Double>>> forEntry = new HashMap<>();//HashMap to store entries for tableview
         PreparedStatement stmnt_itemCategories;
         ResultSet rs, rs_itemsCategories;
         quarterTable.setFixedCellSize(30.0);
@@ -320,7 +324,7 @@ public class QuarterlyReportController implements Initializable {
         boolean Category = false;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         String mon1 = "0.00", mon2 = "0.00", mon3 = "0.00", mon4 = "0.00", totalAmnt = "0.00", totmon1 = "0.00", totmon2 = "0.00", totmon3 = "0.00", totmon4 = "0.00", summation = "0.00";
-        float Mon1 = 0, Mon2 = 0, Mon3 = 0, Mon4 = 0, total_amount, totMon1 = 0, totMon2 = 0, totMon3 = 0, totMon4 = 0, totQuarterSum = 0;
+        double Mon1 = 0, Mon2 = 0, Mon3 = 0, Mon4 = 0, total_amount, totMon1 = 0, totMon2 = 0, totMon3 = 0, totMon4 = 0, totQuarterSum = 0;
         if (!cmbReportQuarter.getSelectionModel().getSelectedItem().equals("All Quarters")){
             if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
                 stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, MONTH(revenueDate) AS `revenueMonth`  FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_items`.`revenue_item_ID` = `revenueItem` AND `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND QUARTER(revenueDate) = '"+cmbReportQuarter.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -395,18 +399,18 @@ public class QuarterlyReportController implements Initializable {
                 getReport = new GetQuarterReport("", "", "", category.toUpperCase(), "", "A");
                 quarterTable.getItems().add(getReport);
                 String submon1 = "0.00", submon2 = "0.00", submon3 = "0.00", submon4 = "0.00", subtotalAmnt = "0.00";
-                float subMon1 = 0, subMon2 = 0, subMon3 = 0, subMon4 = 0, subtotal_amount;
+                double subMon1 = 0, subMon2 = 0, subMon3 = 0, subMon4 = 0, subtotal_amount;
             for (String item : categoriesItem.get(category)) {
-                Map<String, Map<String, Float>> itemQuarterSum = new HashMap<>();
-                Map<String, Float> quarterSum = new HashMap<>();
+                Map<String, Map<String, Double>> itemQuarterSum = new HashMap<>();
+                Map<String, Double> quarterSum = new HashMap<>();
                 quarterSum.put(month1.getText(), Mon1); quarterSum.put(month2.getText(), Mon2); quarterSum.put(month3.getText(), Mon3);
                 itemQuarterSum.put(item, quarterSum);
                 boolean resultSetState = true;
                 while (resultSetState){
                     rs.next();
                     if (item.equals(rs.getString("revenue_item"))){
-                        float amot= itemQuarterSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
-                        amot += rs.getFloat("revenueAmount");
+                        double amot= itemQuarterSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
+                        amot += rs.getDouble("revenueAmount");
                         itemQuarterSum.get(item).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
                     }
                     if (rs.isLast()){
@@ -508,18 +512,18 @@ public class QuarterlyReportController implements Initializable {
                 getReport = new GetQuarterReport("", "", "", "", category.toUpperCase(), "", "A");
                 quarterTableAll.getItems().add(getReport);
                 String submon1 = "0.00", submon2 = "0.00", submon3 = "0.00", submon4 = "0.00", subtotalAmnt = "0.00";
-                float subMon1 = 0, subMon2 = 0, subMon3 = 0, subMon4 = 0, subtotal_amount;
+                double subMon1 = 0, subMon2 = 0, subMon3 = 0, subMon4 = 0, subtotal_amount;
                 for (String item : categoriesItem.get(category)) {
-                    Map<String, Map<String, Float>> itemQuarterSum = new HashMap<>();
-                    Map<String, Float> quarterSum = new HashMap<>();
+                    Map<String, Map<String, Double>> itemQuarterSum = new HashMap<>();
+                    Map<String, Double> quarterSum = new HashMap<>();
                     quarterSum.put("1", Mon1); quarterSum.put("2", Mon2); quarterSum.put("3", Mon3); quarterSum.put("4", Mon4);
                     itemQuarterSum.put(item, quarterSum);
                     boolean resultSetState = true;
                     while (resultSetState){
                         rs.next();
                         if (item.equals(rs.getString("revenue_item"))){
-                            float amot= itemQuarterSum.get(item).get(rs.getString("revenueQuarter"));
-                            amot += rs.getFloat("revenueAmount");
+                            double amot= itemQuarterSum.get(item).get(rs.getString("revenueQuarter"));
+                            amot += rs.getDouble("revenueAmount");
                             itemQuarterSum.get(item).put(rs.getString("revenueQuarter"), amot);
                         }
                         if (rs.isLast()){

@@ -177,7 +177,7 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     
     private void setItems() throws SQLException{
         ObservableList<Months> collectionMonth = FXCollections.observableArrayList(Months.values());
-        float repMonth, payMonth, diff, totRepMonth = 0, totPayMonth = 0, totDiff;
+        double repMonth, payMonth, diff, totRepMonth = 0, totPayMonth = 0, totDiff;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         String acRepMonth, acPayMonth, acDiff, acTotRepMonth, acTotPayMonth, acTotDiff, rmks="";
         System.out.println(collectionMonth);
@@ -225,8 +225,8 @@ public class Collection_PaymentAnalysisReportController implements Initializable
     }
     
         
-       public Float setReptMonthSum(String Center, int Month, String Year) throws SQLException{
-        float totalAmunt;
+       public Double setReptMonthSum(String Center, int Month, String Year) throws SQLException{
+        double totalAmunt;
            if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
                stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `CenterID` = `daily_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(revenueDate) = '"+Year+"' AND MONTH(revenueDate) = '"+Month+"' ");
            } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
@@ -237,9 +237,9 @@ public class Collection_PaymentAnalysisReportController implements Initializable
            }
 //       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries` WHERE `revenueMonth` = '"+Month+"' AND `daily_revCenter` = '"+Center+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+       ObservableList<Double> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           Amount.add(rs.getFloat("revenueAmount"));
+           Amount.add(rs.getDouble("revenueAmount"));
        }
         totalAmunt = 0;
         if(Amount.isEmpty()){
@@ -252,8 +252,8 @@ public class Collection_PaymentAnalysisReportController implements Initializable
         return totalAmunt;
     }
         
-       public Float setPayMonthSum(String Center, String Month, String Year) throws SQLException{
-        float totalAmunt;
+       public Double setPayMonthSum(String Center, String Month, String Year) throws SQLException{
+        double totalAmunt;
            if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
                stmnt = con.prepareStatement(" SELECT `Amount` FROM `revenue_centers`,`collection_payment_entries` WHERE `CenterID` = `pay_revCenter` AND `revenue_category` = 'PROPERTY RATE SECTION' AND `Year` = '"+Year+"' AND `Month` = '"+Month+"'  ");
            } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
@@ -264,9 +264,9 @@ public class Collection_PaymentAnalysisReportController implements Initializable
            }
 //       stmnt = con.prepareStatement(" SELECT `Amount`   FROM `collection_payment_entries` WHERE  `pay_revCenter` = '"+Center+"' AND `Year` = '"+Year+"' AND `Month` = '"+Month+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+       ObservableList<Double> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           Amount.add(rs.getFloat("Amount"));
+           Amount.add(rs.getDouble("Amount"));
        }
         totalAmunt = 0;
         if(Amount.isEmpty()){

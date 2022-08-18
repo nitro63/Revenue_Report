@@ -211,7 +211,7 @@ public class Payment_ReportController implements Initializable {
     
     private void setItems() throws SQLException{
         String Date, GCR, payment_type, acAmount, acCumuAmount = "";
-        float amount, cumuAmount = 0;
+        double amount, cumuAmount = 0;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
             stmnt = con.prepareStatement(" SELECT `GCR`,`Date`,`payment_type`,`Amount` FROM `revenue_centers`,`collection_payment_entries` WHERE `revenue_centers`.`CenterID` = pay_revCenter AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND `Month` = '"+cmbReportMonth.getSelectionModel().getSelectedItem()+"' ORDER BY `Date`");
@@ -236,8 +236,8 @@ public class Payment_ReportController implements Initializable {
             GCR = rs.getString("GCR");
             Date = rs.getString("Date");
             payment_type = rs.getString("payment_type");
-            amount = rs.getFloat("Amount");
-            acAmount = formatter.format(rs.getFloat("Amount"));
+            amount = rs.getDouble("Amount");
+            acAmount = formatter.format(rs.getDouble("Amount"));
             cumuAmount+= amount;
             acCumuAmount= formatter.format(cumuAmount);
             if (payment_type.equals("Cheque") || payment_type.equals("Cheque Deposit Slip")){

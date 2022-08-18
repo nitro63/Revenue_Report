@@ -273,7 +273,7 @@ public class YearlyReportController implements Initializable {
         ResultSet rs_itemsCategories, rs;
           NumberFormat formatter = new DecimalFormat("#,##0.00");
           String yer1 = "0.00", yer2 = "0.00", yer3 = "0.00", yer4 = "0.00", yer5 = "0.00", totalAmnt = "", totyer1 = "0.00", totyer2 = "0.00", totyer3 = "0.00", totyer4 = "0.00", totyer5 = "0.00", summation ;
-          float yr1 = 0, yr2 = 0, yr3 = 0, yr4 = 0, yr5 = 0, total_amount, totyr1 = 0, totyr2 = 0, totyr3 = 0, totyr4 = 0, totyr5 = 0, totYearAmount = 0;
+          double yr1 = 0, yr2 = 0, yr3 = 0, yr4 = 0, yr5 = 0, total_amount, totyr1 = 0, totyr2 = 0, totyr3 = 0, totyr4 = 0, totyr5 = 0, totYearAmount = 0;
           yearlyTable.getItems().clear();
           if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
               stmnt = con.prepareStatement(" SELECT `revenue_item`, `item_category`, `revenueAmount`, YEAR(revenueDate) AS `revenueYear` FROM `revenue_centers`,`daily_entries`,`revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND `revenue_items`.`revenue_item_ID` = `daily_entries`.`revenueItem` AND YEAR(revenueDate) >= '"+cmbReportYear1.getSelectionModel().getSelectedItem()+"' AND YEAR(revenueDate) <= '"+cmbReportYear2.getSelectionModel().getSelectedItem()+"' ORDER BY `revenue_item` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -316,18 +316,18 @@ public class YearlyReportController implements Initializable {
               getReport = new GetYearlyReport("", "", "", "", "", category, "");
               yearlyTable.getItems().add(getReport);
               String subyer1 = "0.00", subyer2 = "0.00", subyer3 = "0.00", subyer4 = "0.00", subyer5 = "0.00", subtotalAmnt = "0.00";
-              float subyr1 = 0, subyr2 = 0, subyr3 = 0, subyr4 = 0, subyr5 = 0, subtotal_amount;
+              double subyr1 = 0, subyr2 = 0, subyr3 = 0, subyr4 = 0, subyr5 = 0, subtotal_amount;
               for (String item : categoriesItem.get(category)) {
-                  Map<String, Map<String, Float>> itemYearSum = new HashMap<>();
-                  Map<String, Float> yearSum = new HashMap<>();
+                  Map<String, Map<String, Double>> itemYearSum = new HashMap<>();
+                  Map<String, Double> yearSum = new HashMap<>();
                   yearSum.put(year1.getText(), yr1); yearSum.put(year2.getText(), yr2); yearSum.put(year3.getText(), yr3);
                   yearSum.put(year4.getText(), yr4); yearSum.put(year5.getText(), yr5); itemYearSum.put(item, yearSum);
                   boolean resultSetState = true;
                   while (resultSetState){
                       rs.next();
                       if (item.equals(rs.getString("revenue_item"))){
-                          float amot= itemYearSum.get(item).get(rs.getString("revenueYear"));
-                          amot += rs.getFloat("revenueAmount");
+                          double amot= itemYearSum.get(item).get(rs.getString("revenueYear"));
+                          amot += rs.getDouble("revenueAmount");
                           itemYearSum.get(item).put(rs.getString("revenueYear"), amot);
                       }
                       if (rs.isLast()){

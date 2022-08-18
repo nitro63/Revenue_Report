@@ -315,7 +315,7 @@ public class BankDetailsReportController implements Initializable {
     void setTable() throws SQLException {
         String Center = centerID.get(cmbReportCent.getSelectionModel().getSelectedItem()), Date = "", GCR = "", Amount = "",
                 bankName = "", chqNumber = "", chqDate = "", totalAmount="";
-        float totCumAmount = 0;
+        double totCumAmount = 0;
         Months months = cmbReportMonth.getSelectionModel().getSelectedItem();
         int year = cmbReportYear.getSelectionModel().getSelectedItem();
         stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE `cheque_center` = '"+Center
@@ -336,7 +336,7 @@ public class BankDetailsReportController implements Initializable {
             Date = getFunctions.convertSqlDate(rs.getString("date_received"));
             GCR = rs.getString("payer");
             Amount = getFunctions.getAmount(rs.getString("amount"));
-            float totAmount = rs.getFloat("amount");
+            double totAmount = rs.getDouble("amount");
             totCumAmount += totAmount;
             chqNumber = rs.getString("cheque_number");
             chqDate = getFunctions.convertSqlDate(rs.getString("cheque_date"));
@@ -344,7 +344,7 @@ public class BankDetailsReportController implements Initializable {
             getReport = new GetBankDetails(GCR, Date, chqDate, chqNumber, bankName, Amount);
             tblBankDetails.getItems().add(getReport);
         }
-        totalAmount = getFunctions.getAmount(Float.toString(totCumAmount));
+        totalAmount = getFunctions.getAmount(Double.toString(totCumAmount));
         lblTotalAmount.setText(totalAmount);
     }
 

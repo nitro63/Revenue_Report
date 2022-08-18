@@ -183,21 +183,21 @@ public class Target_AnalysisController implements Initializable {
         }
 //        stmnt = con.prepareStatement(" SELECT `Amount`   FROM `target_entries`,`revenue_centers` WHERE  `revenue_centers`.`CenterID` = `target_revCenter` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND `Year` = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'");
        ResultSet rs = stmnt.executeQuery();
-       float targAmount=0 ;
+       double targAmount=0 ;
        String acTargAmount="";
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         NumberFormat percent = new DecimalFormat("0.00%");
 //        NumberFormat percent = NumberFormat.getPercentInstance();
 //        percent.setMinimumFractionDigits(4);
        while(rs.next()){
-                   targAmount = rs.getFloat("Amount");
+                   targAmount = rs.getDouble("Amount");
        }
        acTargAmount = formatter.format(targAmount);
        targ = acTargAmount;
        txtAnnualTarget.setText(acTargAmount);
 //       System.out.println(targAmount);
         ObservableList<Months> collectionMonth = FXCollections.observableArrayList(Months.values());
-        float totRevenue, cumuRevenue = 0, outRevenue, cumuPercent, outPercent;
+        double totRevenue, cumuRevenue = 0, outRevenue, cumuPercent, outPercent;
         String actotRevenue, acCumuRevenue = "", acOutRevenue = "", acCumPercent = "", acOutPercent = "";
         for(Months month : collectionMonth){
            totRevenue = setReptMonthSum(cmbReportCent.getSelectionModel().getSelectedItem(), month, cmbReportYear.getSelectionModel().getSelectedItem());
@@ -238,8 +238,8 @@ public class Target_AnalysisController implements Initializable {
        }
 
          
-       public Float setReptMonthSum(String Center, Months Month, String Year) throws SQLException{
-        float totalAmunt;
+       public Double setReptMonthSum(String Center, Months Month, String Year) throws SQLException{
+        double totalAmunt;
            if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
                stmnt = con.prepareStatement(" SELECT `revenueAmount` FROM `revenue_centers`,`daily_entries` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate) = '"+Month.getValue()+"'");
            } else if (cmbReportCent.getSelectionModel().getSelectedItem().equals("PROPERTY RATE SUB-METROS")){
@@ -250,9 +250,9 @@ public class Target_AnalysisController implements Initializable {
            }
 //       stmnt = con.prepareStatement(" SELECT `revenueAmount`   FROM `daily_entries`,`revenue_centers` WHERE `revenue_centers`.`CenterID` = `daily_revCenter` AND `revenue_centers`.`revenue_center` = '"+Center+"' AND `revenueMonth` = '"+Month+"' AND `revenueYear` = '"+Year+"'  ");
        ResultSet rs = stmnt.executeQuery();
-       ObservableList<Float> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
+       ObservableList<Double> Amount = FXCollections.observableArrayList();//List to Store revenue items which have entries for the specified week
        while(rs.next()){//looping through the retrieved revenueItems result set
-           Amount.add(rs.getFloat("revenueAmount"));//adding revenue items to list
+           Amount.add(rs.getDouble("revenueAmount"));//adding revenue items to list
        }
         totalAmunt = 0;
         if(Amount.isEmpty()){

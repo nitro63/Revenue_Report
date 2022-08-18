@@ -280,7 +280,7 @@ public class MonthlyReportController implements Initializable {
     private void setItems() throws SQLException{
         monthlyTable.getItems().clear();
         String totJan = "0.00", totFeb = "0.00", totMar = "0.00", totApr = "0.00", totMay = "0.00", totJun = "0.00", totJul = "0.00", totAug = "0.00", totSep = "0.00", totOct = "0.00", totNov = "0.00", totDec = "0.00", summation = "0.00", Jan = "0.00", Feb = "0.00", Mar = "0.00", Apr = "0.00", May = "0.00", Jun = "0.00", Jul = "0.00", Aug = "0.00", Sep = "0.00", Oct = "0.00", Nov = "0.00", Dec = "0.00", totalAmnt = "0.00";
-        float  totjan = 0, totfeb = 0,totmar = 0,totapr = 0, totmay = 0, totjun = 0, totjul = 0, totaug = 0,totsep = 0,totoct = 0, totnov = 0, totdec = 0, totMonthsum = 0,  jan = 0, feb = 0, apr = 0, mai = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, mar = 0, nov = 0, dec = 0, total_amount = 0;
+        double  totjan = 0, totfeb = 0,totmar = 0,totapr = 0, totmay = 0, totjun = 0, totjul = 0, totaug = 0,totsep = 0,totoct = 0, totnov = 0, totdec = 0, totMonthsum = 0,  jan = 0, feb = 0, apr = 0, mai = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, mar = 0, nov = 0, dec = 0, total_amount = 0;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
         PreparedStatement stmnt_itemsCategories;
         ResultSet rs, rs_itemsCategories;
@@ -333,11 +333,11 @@ public class MonthlyReportController implements Initializable {
             revenueItem.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");
             getReport = new GetMonthlyReport(category, "", "", "", "", "", "", "", "", "", "", "", "", "");
             monthlyTable.getItems().add(getReport);
-            float subjan = 0, subfeb = 0, subapr = 0, submai = 0, subjun = 0, subjul = 0, subaug = 0, subsep = 0, suboct = 0, submar = 0, subnov = 0, subdec = 0, subtotal_amount;
+            double subjan = 0, subfeb = 0, subapr = 0, submai = 0, subjun = 0, subjul = 0, subaug = 0, subsep = 0, suboct = 0, submar = 0, subnov = 0, subdec = 0, subtotal_amount;
             String subJan = "0.00", subFeb = "0.00", subMar = "0.00", subApr = "0.00", subMay = "0.00", subJun = "0.00", subJul = "0.00", subAug = "0.00", subSep = "0.00", subOct = "0.00", subNov = "0.00", subDec = "0.00", subTotalAmnt = "0.00";
             for (String item : categoriesItem.get(category)) {
-                Map<String, Map<String, Float>> itemMonthSum = new HashMap<>();
-                Map<String, Float> monthSum = new HashMap<>();
+                Map<String, Map<String, Double>> itemMonthSum = new HashMap<>();
+                Map<String, Double> monthSum = new HashMap<>();
                 monthSum.put(january.getText().toUpperCase(), jan); monthSum.put(february.getText().toUpperCase(), feb); monthSum.put(march.getText().toUpperCase(), mar);
                 monthSum.put(april.getText().toUpperCase(), apr); monthSum.put(may.getText().toUpperCase(), mai); monthSum.put(june.getText().toUpperCase(), jun);
                 monthSum.put(july.getText().toUpperCase(), jul); monthSum.put(august.getText().toUpperCase(), aug); monthSum.put(september.getText().toUpperCase(), sep);
@@ -347,8 +347,8 @@ public class MonthlyReportController implements Initializable {
                 while (resultSetState){
                     rs.next();
                     if (item.equals(rs.getString("item_Sub"))){
-                        float amot= itemMonthSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
-                        amot += rs.getFloat("revenueAmount");
+                        double amot= itemMonthSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
+                        amot += rs.getDouble("revenueAmount");
                         itemMonthSum.get(item).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
                     }
                     if (rs.isLast()){

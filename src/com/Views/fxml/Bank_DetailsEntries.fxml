@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.DatePicker?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchPane" prefHeight="532.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="anchPane" prefHeight="532.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" layoutY="11.0" maxHeight="-Infinity" prefHeight="89.0" prefWidth="972.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -127,6 +128,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </JFXButton>
+            <JFXToggleButton text="UPDATE" toggleColor="#2cab1c" toggleLineColor="#17ae42" unToggleColor="#5ba664c3" unToggleLineColor="#c1e1c8" />
          </children>
       </HBox>
       <TableView fx:id="tblCollectEnt" layoutX="123.0" layoutY="105.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="333.0" prefWidth="726.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="141.0">

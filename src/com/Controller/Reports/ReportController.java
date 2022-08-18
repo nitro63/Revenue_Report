@@ -464,7 +464,7 @@ public class ReportController implements Initializable {
           * Put Revenue Items into a list for later use
          ***/
         String totDay1 = "0.00", totDay2 = "0.00", totDay3 = "0.00", totDay4 = "0.00", totDay5 = "0.00", totDay6 = "0.00", totDay7 = "0.00", summation = "0.00", Day1 = "0.00", Day2 = "0.00", Day3 = "0.00", Day4 = "0.00", Day5 = "0.00", Day6 = "0.00", Day7 = "0.00",totalAmnt = "0.00";
-        float  totday1 = 0, totday2 = 0,totday3 = 0,totday4 = 0, totday5 = 0, totday6 = 0, totday7 = 0,totdaysum = 0, days1 = 0, days2 = 0, days3 = 0, days4 = 0, days5 = 0, days6 = 0, days7 = 0, total_amount = 0;
+        double  totday1 = 0, totday2 = 0,totday3 = 0,totday4 = 0, totday5 = 0, totday6 = 0, totday7 = 0,totdaysum = 0, days1 = 0, days2 = 0, days3 = 0, days4 = 0, days5 = 0, days6 = 0, days7 = 0, total_amount = 0;
         NumberFormat formatter = new DecimalFormat("#,##0.00");
          PreparedStatement stmnt_itemsCategories;
          ResultSet rs, rs_itemsCategories;
@@ -519,11 +519,11 @@ public class ReportController implements Initializable {
              REVENUE_ITEM.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
              getReport = new GetReport("", category.toUpperCase(), "", "", "", "", "", "", "", "", "A");
              WEEKLY_TABLE.getItems().add(getReport);
-             float subDay1 = 0, subDay2 = 0, subDay3 = 0, subDay4 = 0, subDay5 = 0, subDay6 = 0, subDay7 = 0, subTotalAmount;
+             double subDay1 = 0, subDay2 = 0, subDay3 = 0, subDay4 = 0, subDay5 = 0, subDay6 = 0, subDay7 = 0, subTotalAmount;
              String subDays1 = "0.00", subDays2 = "0.00", subDays3 = "0.00", subDays4 = "0.00", subDays5 = "0.00", subDays6 = "0.00", subDays7 = "0.00",subTotalAmnt = "0.00";
              for (String items : categoriesItem.get(category)){
-                 Map<String, Map<String, Float>> itemWeekSum = new HashMap<>();
-                 Map<String, Float> weekSum = new HashMap<>();
+                 Map<String, Map<String, Double>> itemWeekSum = new HashMap<>();
+                 Map<String, Double> weekSum = new HashMap<>();
                  weekSum.put(DAY1.getText(), days1); weekSum.put(DAY2.getText(), days2); weekSum.put(DAY3.getText(), days3);
                  weekSum.put(DAY4.getText(), days4); weekSum.put(DAY5.getText(), days5); weekSum.put(DAY6.getText(), days6);
                  weekSum.put(DAY7.getText(), days7);
@@ -536,9 +536,9 @@ public class ReportController implements Initializable {
                          String date = getFunctions.convertSqlDate(rs.getString("revenueDate"));
 //                         System.out.println(date);
 //                         if(itemWeekSum.get(items).containsKey(date)){
-                         float amot= itemWeekSum.get(items).get(date);
+                         double amot= itemWeekSum.get(items).get(date);
 //                         System.out.println(amot);
-                         amot += rs.getFloat("revenueAmount");
+                         amot += rs.getDouble("revenueAmount");
                          itemWeekSum.get(items).put(getFunctions.convertSqlDate(rs.getString("revenueDate")), amot);/*}*/
                      }
                      if (rs.isLast()){

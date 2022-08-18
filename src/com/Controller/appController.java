@@ -195,6 +195,10 @@ public  appController() {
 //        border_pane.setCenter(loadsgre.load());
     }
 
+
+/***
+*This method is the controller for the 
+*/
     @FXML
     private void showSDRR(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader load = new FXMLLoader();

@@ -421,7 +421,7 @@ public class weeklyReportController implements Initializable {
        */
       private void setItems() throws SQLException{
           String totWek1 = "0.00", totWek2 = "0.00", totWek3 = "0.00", totWek4 = "0.00", totWek5 = "0.00", totWek6 = "0.00", summation = "0.00";
-          float  totwek1 = 0, totwek2 = 0,totwek3 = 0,totwek4 = 0, totwek5 = 0,totwek6 = 0,totweksum = 0;
+          double  totwek1 = 0, totwek2 = 0,totwek3 = 0,totwek4 = 0, totwek5 = 0,totwek6 = 0,totweksum = 0;
           NumberFormat formatter = new DecimalFormat("#,##0.00");
           PreparedStatement stmnt_items, stmnt_category, stmnt_week;
           ResultSet rs, rs_items, rs_category, rs_week;
@@ -461,7 +461,7 @@ public class weeklyReportController implements Initializable {
             rowWeek.add(rs_week.getString("revenue_week"));
         }
           String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00";
-          float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, finwk1 = 0, finwk2 = 0, finwk3 = 0, finwk4 = 0, finwk5 = 0, finwk6 = 0, fintotal_amount = 0;
+          double wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, finwk1 = 0, finwk2 = 0, finwk3 = 0, finwk4 = 0, finwk5 = 0, finwk6 = 0, fintotal_amount = 0;
           revenueITEM.setCellValueFactory(data -> data.getValue().RevenueItemProperty());
           week1.setCellValueFactory(data -> data.getValue().week1Property());
           week2.setCellValueFactory(data -> data.getValue().week2Property());
@@ -504,11 +504,11 @@ public class weeklyReportController implements Initializable {
             revenueITEM.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");
             getReport = new GetReportgen(categories, "", "", "", "", "", "", "", "A");
             weekTable.getItems().add(getReport);
-            float subWk1 = 0, subWk2 = 0, subWk3 = 0, subWk4 = 0, subWk5 = 0, subWk6 = 0, subTotalAmount;
+            double subWk1 = 0, subWk2 = 0, subWk3 = 0, subWk4 = 0, subWk5 = 0, subWk6 = 0, subTotalAmount;
             String subWek1 = "0.00", subWek2 = "0.00", subWek3 = "0.00", subWek4 = "0.00", subWek5 = "0.00", subWek6 = "0.00",subTotalAmnt = "0.00";
             for (String items : categoriesItem.get(categories)){
-                Map<String, Map<String, Float>> itemWeekSum = new HashMap<>();
-                Map<String, Float> weekSum = new HashMap<>();
+                Map<String, Map<String, Double>> itemWeekSum = new HashMap<>();
+                Map<String, Double> weekSum = new HashMap<>();
                 weekSum.put("1", wk1); weekSum.put("2", wk2); weekSum.put("3", wk3); weekSum.put("4", wk4);
                 weekSum.put("5", wk5); weekSum.put("6", wk6);
                 itemWeekSum.put(items, weekSum);
@@ -516,8 +516,8 @@ public class weeklyReportController implements Initializable {
                 while (resultSetState){
                     rs.next();
                     if (items.equals(rs.getString("item_Sub"))){
-                        float amot= itemWeekSum.get(items).get(rs.getString("revenue_week"));
-                        amot += rs.getFloat("revenueAmount");
+                        double amot= itemWeekSum.get(items).get(rs.getString("revenue_week"));
+                        amot += rs.getDouble("revenueAmount");
                         itemWeekSum.get(items).put(rs.getString("revenue_week"), amot);
                     }
                     if (rs.isLast()){
@@ -561,9 +561,9 @@ public class weeklyReportController implements Initializable {
         PreparedStatement stmnt_items, stmnt_week, stmnt_commission, stmnt_valuebook;
         ResultSet rs, rs_items, rs_week, rs_category, rs_commission, rs_valuebook;
         String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00";
-        float wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, finwk1 = 0, finwk2 = 0, finwk3 = 0, finwk4 = 0, finwk5 = 0, finwk6 = 0, fintotal_amount = 0;
+        double wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, finwk1 = 0, finwk2 = 0, finwk3 = 0, finwk4 = 0, finwk5 = 0, finwk6 = 0, fintotal_amount = 0;
         String totWek1 = "0.00", totWek2 = "0.00", totWek3 = "0.00", totWek4 = "0.00", totWek5 = "0.00", totWek6 = "0.00", summation = "0.00";
-          float commAmt1 = 0, commAmt2 = 0, commAmt3 = 0, commAmt4 = 0, commAmt5 = 0, commAmt6 = 0, val1 = 0, val2 = 0,
+          double commAmt1 = 0, commAmt2 = 0, commAmt3 = 0, commAmt4 = 0, commAmt5 = 0, commAmt6 = 0, val1 = 0, val2 = 0,
                   val3 = 0, val4 = 0, val5 = 0, val6 = 0, _18_1 = 0, _18_2 = 0, _18_3 = 0, _18_4 = 0, _18_5 = 0,
                   _18_6 = 0, netRev1 = 0, netRev2 = 0, netRev3 = 0, netRev4 = 0, netRev5 = 0, netRev6 = 0, cost1 = 0,
                   cost2 = 0, cost3 = 0, cost4 = 0, cost5 = 0, cost6 = 0, amtDue1 = 0, amtDue2 = 0, amtDue3 = 0, _18Tot = 0,
@@ -640,11 +640,11 @@ public class weeklyReportController implements Initializable {
             getReport = new GetReportgen(categories, "", "", "", "", "", "", "", "A");
             weekTableSub.getItems().add(getReport);
             revenueITEMSub.setStyle("-fx-alignment: CENTER_LEFT; -fx-text-fill: #5a5959;");
-            float subWk1 = 0, subWk2 = 0, subWk3 = 0, subWk4 = 0, subWk5 = 0, subWk6 = 0, subTotalAmount;
+            double subWk1 = 0, subWk2 = 0, subWk3 = 0, subWk4 = 0, subWk5 = 0, subWk6 = 0, subTotalAmount;
             String subWek1 = "0.00", subWek2 = "0.00", subWek3 = "0.00", subWek4 = "0.00", subWek5 = "0.00", subWek6 = "0.00",subTotalAmnt = "0.00";
             for (String items : categoriesItem.get(categories)){
-                Map<String, Map<String, Float>> itemWeekSum = new HashMap<>();
-                Map<String, Float> weekSum = new HashMap<>();
+                Map<String, Map<String, Double>> itemWeekSum = new HashMap<>();
+                Map<String, Double> weekSum = new HashMap<>();
                 weekSum.put("1", wk1); weekSum.put("2", wk2); weekSum.put("3", wk3); weekSum.put("4", wk4);
                 weekSum.put("5", wk5); weekSum.put("6", wk6);
                 itemWeekSum.put(items, weekSum);
@@ -652,8 +652,8 @@ public class weeklyReportController implements Initializable {
                 while (resultSetState){
                     rs.next();
                     if (items.equals(rs.getString("item_Sub"))){
-                        float amot= itemWeekSum.get(items).get(rs.getString("revenue_week"));
-                        amot += rs.getFloat("revenueAmount");
+                        double amot= itemWeekSum.get(items).get(rs.getString("revenue_week"));
+                        amot += rs.getDouble("revenueAmount");
                         itemWeekSum.get(items).put(rs.getString("revenue_week"), amot);
                     }
                     if (rs.isLast()){
@@ -693,44 +693,44 @@ public class weeklyReportController implements Initializable {
                 while (rs_commission.next()){
                     switch (rs_commission.getString("commission_week")){
                         case "1":
-                            commAmt1 += rs_commission.getFloat("commission_amount");
+                            commAmt1 += rs_commission.getDouble("commission_amount");
                             break;
                         case "2":
-                            commAmt2 += rs_commission.getFloat("commission_amount");
+                            commAmt2 += rs_commission.getDouble("commission_amount");
                             break;
                         case "3":
-                            commAmt3 += rs_commission.getFloat("commission_amount");
+                            commAmt3 += rs_commission.getDouble("commission_amount");
                             break;
                         case "4":
-                            commAmt4 += rs_commission.getFloat("commission_amount");
+                            commAmt4 += rs_commission.getDouble("commission_amount");
                             break;
                         case "5":
-                            commAmt5 += rs_commission.getFloat("commission_amount");
+                            commAmt5 += rs_commission.getDouble("commission_amount");
                             break;
                         case "6":
-                            commAmt6 += rs_commission.getFloat("commission_amount");
+                            commAmt6 += rs_commission.getDouble("commission_amount");
                             break;
                     }
                 }
                 while (rs_valuebook.next()){
                     switch (rs_valuebook.getString("week")){
                         case "1":
-                            val1 += rs_valuebook.getFloat("purchase_amount");
+                            val1 += rs_valuebook.getDouble("purchase_amount");
                             break;
                         case "2":
-                            val2 += rs_valuebook.getFloat("purchase_amount");
+                            val2 += rs_valuebook.getDouble("purchase_amount");
                             break;
                         case "3":
-                            val3 += rs_valuebook.getFloat("purchase_amount");
+                            val3 += rs_valuebook.getDouble("purchase_amount");
                             break;
                         case "4":
-                            val4 += rs_valuebook.getFloat("purchase_amount");
+                            val4 += rs_valuebook.getDouble("purchase_amount");
                             break;
                         case "5":
-                            val5 += rs_valuebook.getFloat("purchase_amount");
+                            val5 += rs_valuebook.getDouble("purchase_amount");
                             break;
                         case "6":
-                            val6 += rs_valuebook.getFloat("purchase_amount");
+                            val6 += rs_valuebook.getDouble("purchase_amount");
                             break;
                     }
                 }
@@ -760,31 +760,31 @@ public class weeklyReportController implements Initializable {
         _18Tot = (_18_1+_18_2+_18_3+_18_4+_18_5+_18_6);
         netTot = (netRev1+netRev2+netRev3+netRev4+netRev5+netRev6);
         costTot = (cost1+cost2+cost3+cost4+cost5+cost6);
-        lblAmtDueKMA1.setText(getFunctions.getAmount(Float.toString(amtDue1))); lblAmtDueKMA2.setText(getFunctions.getAmount(Float.toString(amtDue2)));
-        lblAmtDueKMA3.setText(getFunctions.getAmount(Float.toString(amtDue3))); lblAmtDueKMA4.setText(getFunctions.getAmount(Float.toString(amtDue4)));
-        lblAmtDueKMA5.setText(getFunctions.getAmount(Float.toString(amtDue5))); lblAmtDueKMA6.setText(getFunctions.getAmount(Float.toString(amtDue6)));
-        lblAmtDueKMATot.setText(getFunctions.getAmount(Float.toString(amtDTot))); lblAmtDueSub1.setText(getFunctions.getAmount(Float.toString(amtDue1)));
-        lblAmtDueSub2.setText(getFunctions.getAmount(Float.toString(amtDue2))); lblAmtDueSub3.setText(getFunctions.getAmount(Float.toString(amtDue3)));
-        lblAmtDueSub4.setText(getFunctions.getAmount(Float.toString(amtDue4))); lblAmtDueSub5.setText(getFunctions.getAmount(Float.toString(amtDue5)));
-        lblAmtDueSub6.setText(getFunctions.getAmount(Float.toString(amtDue6))); lblAmtDueSubTot.setText(getFunctions.getAmount(Float.toString(amtDTot)));
-        lblCCAmount1.setText(getFunctions.getAmount(Float.toString(commAmt1))); lblCCAmount2.setText(getFunctions.getAmount(Float.toString(commAmt2)));
-        lblCCAmount3.setText(getFunctions.getAmount(Float.toString(commAmt3))); lblCCAmount4.setText(getFunctions.getAmount(Float.toString(commAmt4)));
-        lblCCAmount5.setText(getFunctions.getAmount(Float.toString(commAmt5))); lblCCAmount6.setText(getFunctions.getAmount(Float.toString(commAmt6)));
-        lblCCAmountTot.setText(getFunctions.getAmount(Float.toString(commTot))); lblCostValueBooks1.setText(getFunctions.getAmount(Float.toString(val1)));
-        lblCostValueBooks2.setText(getFunctions.getAmount(Float.toString(val2))); lblCostValueBooks3.setText(getFunctions.getAmount(Float.toString(val3)));
-        lblCostValueBooks4.setText(getFunctions.getAmount(Float.toString(val4))); lblCostValueBooks5.setText(getFunctions.getAmount(Float.toString(val5)));
-        lblCostValueBooks6.setText(getFunctions.getAmount(Float.toString(val6))); lblCostValueBooksTot.setText(getFunctions.getAmount(Float.toString(valTot)));
-        lblCommission1.setText(getFunctions.getAmount(Float.toString(_18_1))); lblCommission2.setText(getFunctions.getAmount(Float.toString(_18_2)));
-        lblCommission3.setText(getFunctions.getAmount(Float.toString(_18_3))); lblCommission4.setText(getFunctions.getAmount(Float.toString(_18_4)));
-        lblCommission5.setText(getFunctions.getAmount(Float.toString(_18_5))); lblCommission6.setText(getFunctions.getAmount(Float.toString(_18_6)));
-        lblCommissionTot.setText(getFunctions.getAmount(Float.toString(_18Tot))); lblDiff1.setText(getFunctions.getAmount(Float.toString(cost1)));
-        lblDiff2.setText(getFunctions.getAmount(Float.toString(cost2))); lblDiff3.setText(getFunctions.getAmount(Float.toString(cost3)));
-        lblDiff4.setText(getFunctions.getAmount(Float.toString(cost4))); lblDiff5.setText(getFunctions.getAmount(Float.toString(cost5)));
-        lblDiff6.setText(getFunctions.getAmount(Float.toString(cost6))); lblDiffTot.setText(getFunctions.getAmount(Float.toString(costTot)));
-        lblNetRevenue1.setText(getFunctions.getAmount(Float.toString(netRev1)));
-        lblNetRevenue2.setText(getFunctions.getAmount(Float.toString(netRev2))); lblNetRevenue3.setText(getFunctions.getAmount(Float.toString(netRev3)));
-        lblNetRevenue4.setText(getFunctions.getAmount(Float.toString(netRev4))); lblNetRevenue5.setText(getFunctions.getAmount(Float.toString(netRev5)));
-        lblNetRevenue6.setText(getFunctions.getAmount(Float.toString(netRev6))); lblNetRevenueTot.setText(getFunctions.getAmount(Float.toString(netTot)));
+        lblAmtDueKMA1.setText(getFunctions.getAmount(Double.toString(amtDue1))); lblAmtDueKMA2.setText(getFunctions.getAmount(Double.toString(amtDue2)));
+        lblAmtDueKMA3.setText(getFunctions.getAmount(Double.toString(amtDue3))); lblAmtDueKMA4.setText(getFunctions.getAmount(Double.toString(amtDue4)));
+        lblAmtDueKMA5.setText(getFunctions.getAmount(Double.toString(amtDue5))); lblAmtDueKMA6.setText(getFunctions.getAmount(Double.toString(amtDue6)));
+        lblAmtDueKMATot.setText(getFunctions.getAmount(Double.toString(amtDTot))); lblAmtDueSub1.setText(getFunctions.getAmount(Double.toString(amtDue1)));
+        lblAmtDueSub2.setText(getFunctions.getAmount(Double.toString(amtDue2))); lblAmtDueSub3.setText(getFunctions.getAmount(Double.toString(amtDue3)));
+        lblAmtDueSub4.setText(getFunctions.getAmount(Double.toString(amtDue4))); lblAmtDueSub5.setText(getFunctions.getAmount(Double.toString(amtDue5)));
+        lblAmtDueSub6.setText(getFunctions.getAmount(Double.toString(amtDue6))); lblAmtDueSubTot.setText(getFunctions.getAmount(Double.toString(amtDTot)));
+        lblCCAmount1.setText(getFunctions.getAmount(Double.toString(commAmt1))); lblCCAmount2.setText(getFunctions.getAmount(Double.toString(commAmt2)));
+        lblCCAmount3.setText(getFunctions.getAmount(Double.toString(commAmt3))); lblCCAmount4.setText(getFunctions.getAmount(Double.toString(commAmt4)));
+        lblCCAmount5.setText(getFunctions.getAmount(Double.toString(commAmt5))); lblCCAmount6.setText(getFunctions.getAmount(Double.toString(commAmt6)));
+        lblCCAmountTot.setText(getFunctions.getAmount(Double.toString(commTot))); lblCostValueBooks1.setText(getFunctions.getAmount(Double.toString(val1)));
+        lblCostValueBooks2.setText(getFunctions.getAmount(Double.toString(val2))); lblCostValueBooks3.setText(getFunctions.getAmount(Double.toString(val3)));
+        lblCostValueBooks4.setText(getFunctions.getAmount(Double.toString(val4))); lblCostValueBooks5.setText(getFunctions.getAmount(Double.toString(val5)));
+        lblCostValueBooks6.setText(getFunctions.getAmount(Double.toString(val6))); lblCostValueBooksTot.setText(getFunctions.getAmount(Double.toString(valTot)));
+        lblCommission1.setText(getFunctions.getAmount(Double.toString(_18_1))); lblCommission2.setText(getFunctions.getAmount(Double.toString(_18_2)));
+        lblCommission3.setText(getFunctions.getAmount(Double.toString(_18_3))); lblCommission4.setText(getFunctions.getAmount(Double.toString(_18_4)));
+        lblCommission5.setText(getFunctions.getAmount(Double.toString(_18_5))); lblCommission6.setText(getFunctions.getAmount(Double.toString(_18_6)));
+        lblCommissionTot.setText(getFunctions.getAmount(Double.toString(_18Tot))); lblDiff1.setText(getFunctions.getAmount(Double.toString(cost1)));
+        lblDiff2.setText(getFunctions.getAmount(Double.toString(cost2))); lblDiff3.setText(getFunctions.getAmount(Double.toString(cost3)));
+        lblDiff4.setText(getFunctions.getAmount(Double.toString(cost4))); lblDiff5.setText(getFunctions.getAmount(Double.toString(cost5)));
+        lblDiff6.setText(getFunctions.getAmount(Double.toString(cost6))); lblDiffTot.setText(getFunctions.getAmount(Double.toString(costTot)));
+        lblNetRevenue1.setText(getFunctions.getAmount(Double.toString(netRev1)));
+        lblNetRevenue2.setText(getFunctions.getAmount(Double.toString(netRev2))); lblNetRevenue3.setText(getFunctions.getAmount(Double.toString(netRev3)));
+        lblNetRevenue4.setText(getFunctions.getAmount(Double.toString(netRev4))); lblNetRevenue5.setText(getFunctions.getAmount(Double.toString(netRev5)));
+        lblNetRevenue6.setText(getFunctions.getAmount(Double.toString(netRev6))); lblNetRevenueTot.setText(getFunctions.getAmount(Double.toString(netTot)));
 
     }
 

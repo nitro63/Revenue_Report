@@ -227,7 +227,7 @@ public class ValueBooksStockReportController implements Initializable {
             tblValBookStocksRep.getItems().clear();
             String Date, valBook, remarks, firstSerial, lastSerial, quantity, valAmount, cumuAmount, purAmount;
 //        int ;
-            float cumuamount = 0;
+            double cumuamount = 0;
             String amount;
             if (cmbRevCenter.getSelectionModel().getSelectedItem().equals("PROPERTY RATE ALL")) {
                 stmnt = con.prepareStatement(" SELECT * FROM `revenue_centers`,`value_books_stock_record`, `value_books_details` WHERE `revenue_centers`.`CenterID` = `value_stock_revCenter` AND `revenue_centers`.`revenue_category` = 'PROPERTY RATE SECTION' AND YEAR(date) = '"+cmbYear.getSelectionModel().getSelectedItem()+"' AND MONTH(date) = '" + cmbMonth.getSelectionModel().getSelectedItem().getValue() + "' AND `value_book` = `value_book_ID` ORDER BY `date`");
@@ -262,8 +262,8 @@ public class ValueBooksStockReportController implements Initializable {
                 lastSerial = rs.getString("last_serial");
                 quantity = rs.getString("quantity");
                 valAmount = getFunctions.getAmount(rs.getString("amount"));
-                cumuamount += rs.getFloat("amount");
-                cumuAmount = getFunctions.getAmount(Float.toString(cumuamount));
+                cumuamount += rs.getDouble("amount");
+                cumuAmount = getFunctions.getAmount(Double.toString(cumuamount));
                 purAmount = getFunctions.getAmount(rs.getString("purchase_amount"));
                 getReport = new GetValueBooksEntries(Date, valBook, firstSerial, lastSerial, quantity, valAmount, cumuAmount, purAmount, remarks);
                 tblValBookStocksRep.getItems().add(getReport);
