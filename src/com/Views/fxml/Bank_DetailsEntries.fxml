@@ -12,13 +12,55 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" fx:id="anchPane" prefHeight="532.0" prefWidth="990.0" stylesheets="@../Stylesheets/EntriesStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" layoutY="11.0" maxHeight="-Infinity" prefHeight="89.0" prefWidth="972.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox fx:id="hBoxUpdatePane" alignment="CENTER" layoutX="65.0" layoutY="-4.0" prefHeight="41.0" prefWidth="871.0" visible="false">
          <children>
+            <Pane prefHeight="98.0" prefWidth="200.0" />
+            <AnchorPane prefHeight="27.0" prefWidth="150.0">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <children>
+                  <DatePicker fx:id="datepickerFrom" editable="false" layoutX="10.0" layoutY="10.0" onAction="#setDatePickerTo" prefHeight="25.0" prefWidth="116.0" promptText="From" styleClass="text-font" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="lblDateFromWarn" layoutX="8.0" layoutY="-8.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false" AnchorPane.topAnchor="-8.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="27.0" prefWidth="145.0">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <children>
+                  <DatePicker fx:id="datepickerTo" editable="false" prefHeight="25.0" prefWidth="116.0" promptText="To" styleClass="text-font" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="lblDateToWarn" layoutY="-8.0" prefHeight="17.0" prefWidth="93.0" text="field is required!" textFill="#ee2222" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefWidth="146.0">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <children>
+                  <JFXButton fx:id="buttonLoad" layoutX="18.0" onAction="#loadBankDetailsforPeriod" prefHeight="30.0" prefWidth="93.0" text="Load" />
+               </children>
+            </AnchorPane>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <HBox fx:id="hBoxChequeFill" alignment="CENTER" layoutY="20.0" maxHeight="-Infinity" prefHeight="91.0" prefWidth="990.0">
+         <children>
+            <Pane prefHeight="91.0" prefWidth="150.0" />
             <VBox alignment="CENTER">
                <children>
                   <HBox alignment="CENTER">
@@ -63,6 +105,9 @@
                            </children>
                         </AnchorPane>
                      </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER">
                      <children>
@@ -120,7 +165,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </JFXButton>
-            <JFXButton fx:id="btnClear" buttonType="RAISED" onAction="#clearEntries" prefHeight="35.0" prefWidth="100.0" ripplerFill="#aea6a6" text="Edit Entries">
+            <JFXButton fx:id="btnClear" buttonType="RAISED" onAction="#clearEntries" prefHeight="35.0" prefWidth="94.0" ripplerFill="#aea6a6" text="Edit Entries">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -128,38 +173,52 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </JFXButton>
-            <JFXToggleButton text="UPDATE" toggleColor="#2cab1c" toggleLineColor="#17ae42" unToggleColor="#5ba664c3" unToggleLineColor="#c1e1c8" />
+            <Pane prefHeight="91.0" prefWidth="168.0" />
          </children>
       </HBox>
-      <TableView fx:id="tblCollectEnt" layoutX="123.0" layoutY="105.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="333.0" prefWidth="726.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="141.0">
-         <columns>
-            <TableColumn fx:id="colDateReceived" editable="false" prefWidth="103.0">
-               <graphic>
-                  <Label prefHeight="35.0" prefWidth="86.0" text="DATE" textAlignment="CENTER" wrapText="true" />
-               </graphic></TableColumn>
-            <TableColumn fx:id="colPayer" editable="false" prefWidth="103.0">
-               <graphic>
-                  <Label text="RECEIVED FROM" textAlignment="CENTER" wrapText="true" />
-               </graphic></TableColumn>
-            <TableColumn fx:id="colBank" editable="false" prefWidth="88.0" text="BANK" />
-            <TableColumn fx:id="colChqDate" editable="false" prefWidth="153.0">
-               <graphic>
-                  <Label prefHeight="35.0" prefWidth="81.0" text="CHEQUE DATE" textAlignment="CENTER" wrapText="true" />
-               </graphic></TableColumn>
-            <TableColumn fx:id="colChqNmb" editable="false" prefWidth="209.0">
-               <graphic>
-                  <Label prefHeight="34.0" prefWidth="86.0" text="CHEQUE NUMBER" textAlignment="CENTER" wrapText="true" />
-               </graphic></TableColumn>
-            <TableColumn fx:id="colAmount" editable="false" prefWidth="209.0" text="AMOUNT" />
-         </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-         <effect>
-            <DropShadow />
-         </effect>
-      </TableView>
-      <AnchorPane layoutX="117.0" layoutY="446.0" minWidth="-Infinity" prefHeight="82.0" prefWidth="579.0">
+      <JFXToggleButton fx:id="buttonToggleUpdate" layoutX="854.0" onAction="#toggleUpdate" text="UPDATE" toggleColor="#2cab1c" toggleLineColor="#17ae42" unToggleColor="#5ba664c3" unToggleLineColor="#c1e1c8" AnchorPane.rightAnchor="22.0" />
+      <HBox layoutX="117.0" layoutY="123.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <TableView fx:id="tblCollectEnt" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="333.0" prefWidth="726.0">
+               <columns>
+                  <TableColumn fx:id="colDateReceived" editable="false" prefWidth="103.0">
+                     <graphic>
+                        <Label prefHeight="35.0" prefWidth="86.0" text="DATE" textAlignment="CENTER" wrapText="true" />
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn fx:id="colPayer" editable="false" prefWidth="103.0">
+                     <graphic>
+                        <Label text="RECEIVED FROM" textAlignment="CENTER" wrapText="true" />
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn fx:id="colBank" editable="false" prefWidth="88.0" text="BANK" />
+                  <TableColumn fx:id="colChqDate" editable="false" prefWidth="153.0">
+                     <graphic>
+                        <Label prefHeight="35.0" prefWidth="81.0" text="CHEQUE DATE" textAlignment="CENTER" wrapText="true" />
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn fx:id="colChqNmb" editable="false" prefWidth="209.0">
+                     <graphic>
+                        <Label prefHeight="34.0" prefWidth="86.0" text="CHEQUE NUMBER" textAlignment="CENTER" wrapText="true" />
+                     </graphic>
+                  </TableColumn>
+                  <TableColumn fx:id="colAmount" editable="false" prefWidth="209.0" text="AMOUNT" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <effect>
+                  <DropShadow />
+               </effect>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TableView>
+            <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <AnchorPane layoutX="26.0" layoutY="449.0" minWidth="-Infinity" prefHeight="82.0" prefWidth="579.0">
          <children>
             <Label fx:id="lblDeleteWarn" layoutX="198.0" layoutY="19.0" prefHeight="17.0" prefWidth="232.0" text="Please select a row in the table to delete" textFill="#ee2222" visible="false">
                <font>
@@ -178,7 +237,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="696.0" layoutY="446.0">
+      <AnchorPane layoutX="640.0" layoutY="465.0">
          <children>
             <JFXButton fx:id="btnDelete" alignment="CENTER" buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#deleteSelection" prefHeight="35.0" prefWidth="66.0" ripplerFill="#aea6a6" text="Delete" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="217.0" AnchorPane.topAnchor="13.0">
                <cursor>

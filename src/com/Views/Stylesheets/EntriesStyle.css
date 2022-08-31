@@ -179,6 +179,22 @@
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
 }
+
+#buttonLoad{
+    -fx-background-color: #007d07;
+    -fx-text-fill:  #F5F6F7;
+    -fx-font-weight: bold;
+}
+#buttonLoad:hover {
+    -fx-background-color:#03531e;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
+#buttonLoad:pressed:hover {
+    -fx-background-color:#0e150c;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+}
 #lblTitle{
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
@@ -229,3 +245,5 @@
     -fx-border-width: 0 0 1 0;
     -fx-border-color: #03a00b;
 }
+.fill{
+    -fx-background: #85f1b1;}

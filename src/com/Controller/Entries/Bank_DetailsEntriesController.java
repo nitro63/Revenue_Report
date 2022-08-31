@@ -29,7 +29,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.*;
+import javafx.util.Callback;
+
 import org.apache.commons.lang3.StringUtils;
 import com.revenue_report.DBConnection;
 
@@ -41,6 +44,30 @@ import com.revenue_report.DBConnection;
 public class Bank_DetailsEntriesController implements Initializable {
     @FXML
     private AnchorPane anchBankDetails;
+
+    @FXML
+    private HBox hBoxUpdatePane;
+
+    @FXML
+    private JFXToggleButton buttonToggleUpdate;
+
+    @FXML
+    private DatePicker datepickerFrom;
+
+    @FXML
+    private Label lblDateFromWarn;
+
+    @FXML
+    private DatePicker datepickerTo;
+
+    @FXML
+    private Label lblDateToWarn;
+
+    @FXML
+    private JFXButton buttonLoad;
+
+    @FXML
+    private HBox hBoxChequeFill;
 
     @FXML
     private JFXButton btnEnter;
@@ -133,8 +160,9 @@ public class Bank_DetailsEntriesController implements Initializable {
     private entries_sideController app;
     public final GetRevCenter GetCenter, center = new GetRevCenter();
     private Map<String, ArrayList<String>> registerItem = new HashMap<>();
-    private String RevCentID, RevCent;
+        private String RevCentID, RevCent, entriesID, oldestDate, latestDate;
     private final Payment_EntriesController paymentController = new Payment_EntriesController(center);
+    private LocalDate dateFrom, dateTo;
 
     public Bank_DetailsEntriesController(GetRevCenter getCenter) throws SQLException, ClassNotFoundException {
         this.GetCenter = getCenter;
@@ -174,9 +202,23 @@ public class Bank_DetailsEntriesController implements Initializable {
             lblDeleteWarn.setVisible(false);
             lblDup.setVisible(false);
             lblEdit.setVisible(false);
+            if (!buttonToggleUpdate.isSelected()) {
+                lblDeleteWarn.setVisible(false);
+                lblDup.setVisible(false);
+                lblEdit.setVisible(false);
+            } else {
+                if (tblCollectEnt.getSelectionModel().getSelectedItem() != null && event.getClickCount() > 1) {
+                    setEntries();
+                    if (lblDeleteWarn.isVisible()) {
+                        lblDeleteWarn.setVisible(false);
+                    }
+                }
+            }
         });
         getFunctions.datePicker(dtpckChequeDate);
         getFunctions.datePicker(dtpckReceivedDate);
+        getFunctions.datePicker(datepickerFrom);
+        getFunctions.datePicker(datepickerTo);
         txtBankName.setOnMouseClicked(event -> {
             lblBankwarn.setVisible(false);
         });
@@ -195,7 +237,10 @@ public class Bank_DetailsEntriesController implements Initializable {
         dtpckReceivedDate.setOnMouseClicked(event -> {
             lblDateReceivedWarn.setVisible(false);
         });
-
+        datepickerFrom.setOnMouseClicked(event -> {
+            lblDateFromWarn.setVisible(false);           
+        });
+        
     }
 
 
@@ -233,8 +278,13 @@ public class Bank_DetailsEntriesController implements Initializable {
         }else{
             stage.close();
         }*/
+        if(buttonToggleUpdate.isSelected()){
+            clear();
+            tblCollectEnt.getItems().clear();            
+        }else{
         tblCollectEnt.getItems().clear();
     }
+}
 
     public String getGcrID(String Gcr, Map<String, String> gcrID) {
         String id = "";
@@ -256,7 +306,7 @@ public class Bank_DetailsEntriesController implements Initializable {
         return id;
     }
 
-
+    
     @FXML
     void SaveToDatabase(ActionEvent event) throws SQLException
     {
@@ -308,18 +358,25 @@ public class Bank_DetailsEntriesController implements Initializable {
                         "', '" + chequeNumber + "', '" + bank + "', '" + amount + "', '" + RevCentID + "')");
                 stmnt.executeUpdate();
                 tblCollectEnt.getItems().remove(item);
+                // getData = new GetBankDetails(fini, Payer, Date, chqDate, chqNumber, Bank, Amount);
+                // tblCollectEnt.getItems().add(i, getData);
+                // ids = i;
+                // System.out.println(tblCollectEnt.getItems().get(ids).getID());
                 i--;
 
             }
 
         }
+        registerItem.clear();
     }
 
     @FXML
     void clearEntries(ActionEvent event) {
         if (tblCollectEnt.getSelectionModel().isEmpty()) {
             lblDeleteWarn.setVisible(true);
-        } else {
+        } else if(buttonToggleUpdate.isSelected()){
+            clear();
+        }else {
             String regex = "(?<=[\\d])(,)(?=[\\d])";
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(tblCollectEnt.getSelectionModel().getSelectedItem().getAmount());
@@ -338,14 +395,25 @@ public class Bank_DetailsEntriesController implements Initializable {
         }
     }
 
+    void clear() {
+        entriesID = null;
+        dtpckReceivedDate.setValue(null);
+        dtpckChequeDate.setValue(null);
+        txtAmount.setText(null);
+        txtBankName.setText(null);
+        txtChqNmb.setText(null);
+        txtPayerName.setText(null);
+        tblCollectEnt.getSelectionModel().clearSelection();
+    }
+    
     @FXML
-    void saveEntries(ActionEvent event) {
+    void saveEntries(ActionEvent event) throws NumberFormatException, SQLException {
         Payer = txtPayerName.getText();
         Bank = txtBankName.getText();
         chqNumber = txtChqNmb.getText();
         LocalDate date = dtpckChequeDate.getValue(),
                 receivedDate = dtpckReceivedDate.getValue();
-
+              
         if (dtpckReceivedDate.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
@@ -406,6 +474,7 @@ public class Bank_DetailsEntriesController implements Initializable {
                         alert.showAndWait();
                         Condition = false;
                     }
+                    if(!buttonToggleUpdate.isSelected()){
                     getData = new GetBankDetails(Payer, Date, chqDate, chqNumber, Bank, Amount);
                     tblCollectEnt.getItems().add(getData);
                     Condition = false;
@@ -417,7 +486,21 @@ public class Bank_DetailsEntriesController implements Initializable {
                     } else if (registerItem.containsKey(i) && !registerItem.get(i).contains(j)) {
                         registerItem.get(i).add(j);
                     }
+                } else{
+                    stmnt = con.prepareStatement("UPDATE `cheque_details` SET `amount`= '"
+                            + getFunctions.getAmountFloat(Amount) + "',`cheque_date` = '" +getFunctions.setSqlDate(chqDate
+                            
+                            ) + "', " +
+                            "`date_received` = '" + getFunctions.setSqlDate(Date) + "', `payer` = '"+Payer+"' , `bank` = '"+Bank+"',`cheque_number` = '" + chqNumber + "' WHERE   "
+                            + "`cheque_ID`= '" + entriesID
+                            + "' AND `cheque_center`= '" + RevCentID + "'");
+                    stmnt.executeUpdate();
+                    clear();
+                    loadBankDetailsTable();
+                    Condition = false;
+                    
                 }
+            }
 
             }
         }/*
@@ -495,7 +578,85 @@ public class Bank_DetailsEntriesController implements Initializable {
         dtpckChequeDate.setValue(null);
     }
 
-    @FXML
+  /*  private void loadBankDetailsTable() throws SQLException {
+        String year = cmbUpdateYear.getSelectionModel().getSelectedItem(),
+                month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+        if (!cmbUpdateMonth.getSelectionModel().isEmpty()) {
+            stmnt = con.prepareStatement(
+                    "SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount`, `payer` FROM `collection_payment_entries` WHERE `pay_revCenter` = '"
+                            + RevCentID + "' AND `Year` ='" + year + "' AND `Month` = '" + month + "' ");
+        } else {
+            stmnt = con.prepareStatement(
+                    "SELECT `pay_ID`, `Date`, `Month`, `GCR`, `payment_type`, `Amount`, `payer` FROM `collection_payment_entries` WHERE `pay_revCenter` = '"
+                            + RevCentID + "' AND `Year` ='" + year + "'");
+        }
+        rs = stmnt.executeQuery();
+        tblCollection.getItems().clear();
+        colID.setCellValueFactory(data -> data.getValue().YearProperty());
+        colDATE.setCellValueFactory(data -> data.getValue().DateProperty());
+        colGCR.setCellValueFactory(data -> data.getValue().GCRProperty());
+        colAMOUNT.setCellValueFactory(data -> data.getValue().AmountProperty());
+        colMonth.setCellValueFactory(data -> data.getValue().MonthProperty());
+        colPayType.setCellValueFactory(data -> data.getValue().TypeProperty());
+        colPayer.setCellValueFactory(data -> data.getValue().CenterProperty());
+        while (rs.next()) {
+            getData = new GetCollectEnt(rs.getString("payer"), getFunctions.getAmount(rs.getString("Amount")),
+                    rs.getString("GCR"), rs.getString("Month"), getFunctions.convertSqlDate(rs.getString("Date")),
+                    rs.getString("pay_ID"),
+                    rs.getString("payment_type"));
+            tblCollection.getItems().add(getData);
+
+        }
+    }
+*/
+
+private void setEntries(){
+    GetBankDetails getData =  tblCollectEnt.getSelectionModel().getSelectedItem();
+    entriesID = getData.getID();
+    String date_Cheque = getFunctions.setSqlDate(getData.getChequeDate());
+    dtpckChequeDate.setValue(LocalDate.parse(date_Cheque));   
+    dtpckReceivedDate.setValue(LocalDate.parse(getFunctions.setSqlDate(getData.getDate())));
+    txtChqNmb.setText(getData.getChequeNumber());
+    txtAmount.setText(Float.toString(getFunctions.getAmountFloat(getData.getAmount())));
+    txtBankName.setText(getData.getBank());
+    txtPayerName.setText(getData.getGCR());     
+}
+   
+  @FXML
+  void loadBankDetailsforPeriod(ActionEvent event) throws SQLException {
+      colPayer.setCellValueFactory(data -> data.getValue().GCRProperty());
+      colDateReceived.setCellValueFactory(data -> data.getValue().dateProperty());
+      colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
+      colChqNmb.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
+      colBank.setCellValueFactory(data -> data.getValue().bankProperty());
+      colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
+   if(datepickerFrom.getValue() == null ){
+    lblDateFromWarn.setVisible(true);
+   }else{
+    if(datepickerTo.getValue() == null){
+    dateTo = getFunctions.setDate(latestDate);
+   } else{
+    dateTo = datepickerTo.getValue();   
+   }
+   dateFrom = datepickerFrom.getValue();
+   stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE `cheque_center` = '"+RevCentID+"' AND `date_received` >= '"+dateFrom+"' AND `date_received` <= '" +
+           dateTo + "' ORDER BY `date_received` ");
+   ResultSet rSet = stmnt.executeQuery();
+   
+  
+   tblCollectEnt.getItems().clear();
+   while(rSet.next()){
+    getData = new GetBankDetails(rSet.getString("cheque_ID"), rSet.getString("payer"), getFunctions.convertSqlDate(rSet.getString("date_received")), 
+    getFunctions.convertSqlDate(rSet.getString("cheque_date")), rSet.getString("cheque_number"), rSet.getString("bank"), rSet.getString("amount"));
+    tblCollectEnt.getItems().add(getData);
+   }
+
+  }
+}
+
+  
+
+@FXML
     public void onlyIntegers(KeyEvent event)
     {
         String c = event.getCharacter();
@@ -515,17 +676,154 @@ public class Bank_DetailsEntriesController implements Initializable {
         }
     }
 
-    public void deleteSelection(ActionEvent actionEvent)
+    public void deleteSelection(ActionEvent actionEvent) throws SQLException    
     {
+        // ObservableList <GetBankDetails> getSelections = tblCollectEnt.getSelectionModel().getSelectedItems();
         if (tblCollectEnt.getSelectionModel().isEmpty()) {
             lblDeleteWarn.setVisible(true);
-        } else {
+        } else if(buttonToggleUpdate.isSelected()){            
+            // if(getSelections.size() == 1){
+            //     entriesID = tblCollectEnt.getSelectionModel().getSelectedItem().getID();
+            // }
+              if (entriesID != null) {
+                stmnt = con.prepareStatement(
+                        "DELETE FROM `cheque_details` WHERE `cheque_center` = '" + RevCentID
+                                + "' AND `cheque_ID` = '" + entriesID + "' ");
+                stmnt.executeUpdate();
+                clear();
+                loadBankDetailsTable();
+            } else {
+                lblDeleteWarn.setVisible(true);
+            }
+            
+        }
+        else {
             ObservableList<GetBankDetails> selectedRows = tblCollectEnt.getSelectionModel().getSelectedItems();
             ArrayList<GetBankDetails> rows = new ArrayList<>(selectedRows);
             rows.forEach(row -> tblCollectEnt.getItems().remove(row));
         }
     }
 
+
+    private void loadBankDetailsTable() throws SQLException {
+        colPayer.setCellValueFactory(data -> data.getValue().GCRProperty());
+        colDateReceived.setCellValueFactory(data -> data.getValue().dateProperty());
+        colChqDate.setCellValueFactory(data -> data.getValue().chequeDateProperty());
+        colChqNmb.setCellValueFactory(data -> data.getValue().chequeNumberProperty());
+        colBank.setCellValueFactory(data -> data.getValue().bankProperty());
+        colAmount.setCellValueFactory(data -> data.getValue().amountProperty());
+        if (datepickerFrom.getValue() == null) {
+            lblDateFromWarn.setVisible(true);
+        } else {
+            if (datepickerTo.getValue() == null) {
+                dateTo = getFunctions.setDate(latestDate);
+            } else {
+                dateTo = datepickerTo.getValue();
+            }
+            dateFrom = datepickerFrom.getValue();
+            stmnt = con.prepareStatement("SELECT * FROM `cheque_details` WHERE `cheque_center` = '" + RevCentID
+                    + "' AND `date_received` >= '" + dateFrom + "' AND `date_received` <= '" +
+                    dateTo + "' ORDER BY `date_received` ");
+            ResultSet rSet = stmnt.executeQuery();
+
+            tblCollectEnt.getItems().clear();
+            while (rSet.next()) {
+                getData = new GetBankDetails(rSet.getString("cheque_ID"), rSet.getString("payer"),
+                        getFunctions.convertSqlDate(rSet.getString("date_received")),
+                        getFunctions.convertSqlDate(rSet.getString("cheque_date")), rSet.getString("cheque_number"), rSet.getString("bank"),
+                        rSet.getString("amount"));
+                tblCollectEnt.getItems().add(getData);
+            }
+
+        }
+    }
+
+    @FXML
+    void toggleUpdate(ActionEvent event) throws SQLException {
+        if (buttonToggleUpdate.isSelected()){
+            clearEnt();
+            registerItem.clear();
+            hBoxChequeFill.setLayoutY(35); 
+            hBoxUpdatePane.setVisible(true); 
+            btnSaveEntries.setDisable(true);
+            btnClear.setText("Clear");
+            btnEnter.setText("Update");
+            datepickerFrom.setShowWeekNumbers(true);
+            stmnt = con.prepareStatement("SELECT min(date_received) AS `oldest` , max(date_received) AS "
+            +"`latest` FROM `revenue_monitoring`.`cheque_details`");
+            ResultSet rs = stmnt.executeQuery();
+            while(rs.next()){
+                oldestDate = rs.getString("oldest");
+                latestDate = rs.getString("latest");
+            }
+            final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+                @Override
+                public DateCell call(final DatePicker datePicker) {
+                    return new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (item.isBefore(
+                                    getFunctions.setDate(oldestDate).plusDays(1))) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #85f1b1;");
+                            }
+                            if(item.isAfter(
+                                getFunctions.setDate(latestDate).plusDays(1)
+                            )){
+                                setDisable(true);
+                                setStyle("-fx-background-color: #85f1b1;");
+                            }
+                        }
+                    };
+                }
+            };
+            
+            datepickerFrom.setDayCellFactory(dayCellFactory);
+            datepickerTo.setDayCellFactory(dayCellFactory);
+            
+            System.out.print(getFunctions.setDate(latestDate) );
+            }
+            else{
+                clear();
+                tblCollectEnt.getItems().clear();
+                hBoxChequeFill.setLayoutY(20);
+                hBoxUpdatePane.setVisible(false);
+                btnSaveEntries.setDisable(false);
+                btnClear.setText("Edit Entries");   
+                btnEnter.setText("Enter");  
+                datepickerFrom.setValue(null);
+                datepickerTo.setValue(null);   
+                }
+        }
+
+        @FXML
+        void setDatePickerTo(ActionEvent event) {
+            
+            final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+                @Override
+                public DateCell call(final DatePicker datePicker) {
+                    return new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (item.isBefore(
+                                    datepickerFrom.getValue())) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #85f1b1;");
+                            }
+                            if (item.isAfter(
+                                    getFunctions.setDate(latestDate).plusDays(1))) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #85f1b1;");
+                            }
+                        }
+                    };
+                }
+            };
+            datepickerTo.setDayCellFactory(dayCellFactory);
+        }
+    
 }
 
 

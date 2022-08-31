@@ -33,7 +33,7 @@ public class GetFunctions {
      *
      * @param date
      * @return Date
-     * The getSqlDate function sets a LocalDate to the sql date format
+     * The getSqlDate function converts a LocalDate to the sql date format
      */
     public String getSqlDate(LocalDate date){
         int actMonth = date.getMonthValue() -1;//Converting Datepicker month value from 1-12 format to 0-11 format
@@ -53,10 +53,23 @@ public class GetFunctions {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return LocalDate.parse(acDate, dtf);*/
     }
-    public String setSqlDate(String acDate){
+
+/**
+ * Formatter for setting Strin Date to LocalDate type for SQL input
+ * <p>
+ * Converts Date in {@code String} datatype to {@link} LocalDate} format of the pattern
+ * {@code yyyy-MM-dd}</p>
+ * 
+ * Example converts 
+ * 
+ * @param Date :
+ * @return
+ */
+    
+    public String setSqlDate(String Date){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(acDate, dtf);
+        LocalDate date = LocalDate.parse(Date, dtf);
         return date.format(dtf2);
         /*
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -129,6 +142,8 @@ public class GetFunctions {
         Matcher m = p.matcher(amount);
         return Float.parseFloat(m.replaceAll(""));
     }
+
+    
     public DatePicker datePicker(DatePicker dtp)
     {
         dtp.setConverter(new StringConverter<LocalDate>() {
