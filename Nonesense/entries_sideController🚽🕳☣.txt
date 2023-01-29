@@ -13,7 +13,7 @@ Crap: AK-763-9907
 //         throw new RuntimeException(exception);
 //     }
 
-
+https://code-with-me.global.jetbrains.com/j92ft24hd7ApcQYTiHoPYA#p=IU&fp=57F5371AE5F4F2D33C13ED2D42061A35217D3C682A115DD0686BDD9750EB28FA
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
           public void handle(WindowEvent we) {
               System.out.println("Stage is closing");
