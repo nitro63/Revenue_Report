@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.util.*;
 
 import com.Controller.Entries.*;
+import com.Models.SubRevenueCenter;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
@@ -22,10 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import com.Models.GetRevCenter;
 import javafx.scene.layout.HBox;
@@ -33,7 +31,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import com.revenue_report.DBConnection;
+import javafx.util.Callback;
 
+import javax.management.remote.SubjectDelegationPermission;
 import java.sql.SQLException;
 
 
@@ -64,6 +64,9 @@ public class entries_sideController extends VBox implements Initializable {
     private JFXComboBox<String> cmbRevGroup;
     @FXML
     private JFXComboBox<String> cmbRevCent;
+
+    @FXML
+    private JFXComboBox<SubRevenueCenter> cmbRevSubCent;
 
     @FXML
     private Button btnCloseTarget;
@@ -118,6 +121,8 @@ public class entries_sideController extends VBox implements Initializable {
     private Text txtEntriesMainNoPane;
     InitializerController init = new InitializerController();
 
+    SubRevenueCenter subcenter = new SubRevenueCenter() ;
+
      /***
       */
      public entries_sideController(/*GetRevCenter GetCenter*/) throws SQLException, ClassNotFoundException {
@@ -161,6 +166,22 @@ public class entries_sideController extends VBox implements Initializable {
         menuContainers.addAll(Arrays.asList(containerStock,containerDailies,containerTarget,containerPayment));
         menuCloseButton.addAll(Arrays.asList(btnCloseValue,btnCloseRevenue,btnClosePayment,btnCloseTarget));
         VBox.setVgrow(entriesMain, Priority.ALWAYS);
+        /*subcenter.setRevenueCenter("Africa");
+        subcenter.setId("a44t");
+        subcenter.setRevenueCenterId("newCenter");
+        subcenter.setSubCenter("good");
+        subcenter.setStatus("fred");*/
+
+        
+
+        ObservableList<SubRevenueCenter> ObservableList = FXCollections.observableArrayList(subcenter);
+        Callback<ListView<SubRevenueCenter>, ListCell<SubRevenueCenter>> subCenterFactory = lv -> new ListCell<SubRevenueCenter>(){
+            @Override
+            protected void updateItem(SubRevenueCenter item, boolean empty){
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getSubCenter());
+            }
+        };
         entriesMain.setFillWidth(true);
         btnCloseRevenue.setVisible(false);
         try {
@@ -366,11 +387,7 @@ public class entries_sideController extends VBox implements Initializable {
                 }
             }
             for (Button close : menuCloseButton){
-                if (!close.equals(btnClosePayment)){
-                    close.setVisible(false);
-                }else {
-                    close.setVisible(true);
-                }
+                close.setVisible(close.equals(btnClosePayment));
             }
             txtEntries.setVisible(true);
             iconForward.setVisible(true);
@@ -411,11 +428,7 @@ public class entries_sideController extends VBox implements Initializable {
                 }
             }
             for (Button close : menuCloseButton){
-                if (!close.equals(btnClosePayment)){
-                    close.setVisible(false);
-                }else {
-                    close.setVisible(true);
-                }
+                close.setVisible(close.equals(btnClosePayment));
             }
             txtEntries.setVisible(true);
             iconForward.setVisible(true);
@@ -461,11 +474,7 @@ public class entries_sideController extends VBox implements Initializable {
                 }
             }
             for (Button close : menuCloseButton){
-                if (!close.equals(btnCloseTarget)){
-                    close.setVisible(false);
-                }else {
-                    close.setVisible(true);
-                }
+                close.setVisible(close.equals(btnCloseTarget));
             }
             txtEntries.setVisible(true);
             iconForward.setVisible(true);

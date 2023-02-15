@@ -60,7 +60,7 @@ public class DBConnection {
                     userT = propt().getProperty("useTimeZone"), servTZ = propt().getProperty("serverTimeZone"), autoRect = propt().getProperty("autoReconnect"),
                     vSC = propt().getProperty("VerifyServerCertificate"), uSSl= propt().getProperty("UseSSL"), rSSL = propt().getProperty("RequireSSL"),
                     pass = propt().getProperty("Password"), sslMode = propt().getProperty("sslMode");
-            final String URL = "jdbc:mysql://"+iP+":"+port+"/revenue_monitoring?useTimezone="+userT+"&serverTimezone="+servTZ+"&autoReconnect="+autoRect+"&sslmode= "+sslMode+"&useSSL="+uSSl+"&verifyServerCertificate="+vSC+"&requireSSL="+rSSL;
+            final String URL = "jdbc:mysql://"+iP+":"+port+"/revenue_monitorings?useTimezone="+userT+"&serverTimezone="+servTZ+"&autoReconnect="+autoRect+"&sslmode= "+sslMode+"&useSSL="+uSSl+"&verifyServerCertificate="+vSC+"&requireSSL="+rSSL;
             con = DriverManager.getConnection(URL, User, pass);
         }catch (Exception e) {
             e.printStackTrace();

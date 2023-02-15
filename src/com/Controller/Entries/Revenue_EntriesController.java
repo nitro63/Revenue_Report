@@ -54,6 +54,8 @@ import com.revenue_report.Main;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.Enums.Rates.COMMISSION;
+
 /**
  * FXML com.Controller class
  *
@@ -182,6 +184,11 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+//        try {
+//            btnEnter.setText(Double.toString( COMMISSION.getActiveRate()));
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
         try {
             GetRevenueYears();
         } catch (SQLException throwables) {

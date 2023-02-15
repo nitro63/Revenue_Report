@@ -15,17 +15,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="entriesMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" styleClass="background_color" stylesheets="@../Stylesheets/entries.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="40.0" prefWidth="850.0">
                <children>
-                  <AnchorPane minHeight="-Infinity" prefHeight="27.0" prefWidth="472.0" HBox.hgrow="ALWAYS" />
+                  <AnchorPane minHeight="-Infinity" prefHeight="31.0" prefWidth="440.0" HBox.hgrow="ALWAYS" />
                   <AnchorPane prefHeight="35.0" prefWidth="378.0">
                      <children>
-                        <JFXComboBox fx:id="cmbRevGroup" layoutX="4.0" layoutY="4.0" onAction="#setCenters" prefHeight="25.0" prefWidth="160.0" promptText="Select Center Category" styleClass="combo-box1" AnchorPane.rightAnchor="218.0" AnchorPane.topAnchor="4.0" />
-                        <JFXComboBox fx:id="cmbRevCent" layoutX="178.0" layoutY="3.0" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="160.0" promptText="Select Revenue Center" styleClass="combo-box1" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="3.0" />
+                        <JFXComboBox fx:id="cmbRevGroup" layoutX="-1.0" layoutY="4.0" onAction="#setCenters" prefHeight="25.0" prefWidth="160.0" promptText="Select Center Category" styleClass="combo-box1" AnchorPane.rightAnchor="218.0" AnchorPane.topAnchor="4.0" />
+                        <JFXComboBox fx:id="cmbRevCent" layoutX="278.0" layoutY="5.0" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="160.0" promptText="Select Revenue Center" styleClass="combo-box1" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
+                        <JFXComboBox fx:id="cmbRevSubCent" layoutX="166.0" layoutY="4.0" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="160.0" promptText="Select Sub Center" styleClass="combo-box1" visible="false" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
                      </children>
                   </AnchorPane>
                </children>

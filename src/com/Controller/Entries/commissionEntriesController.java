@@ -453,7 +453,7 @@ public class commissionEntriesController implements Initializable {
                     }
                     deduction += ccAmount;
                     stmnt = con.prepareStatement("INSERT INTO `commission_details`(`commission_ID`, " +
-                            "`commission_center`, `commission_amount`, `commission_date`, `commission_week`) VALUES ('"+fini+"', '"+RevCent+"', '"+ccAmount
+                            "`commission_center`, `commission_amount`, `commission_date`, `commission_week`, `commission_rate`) VALUES ('"+fini+"', '"+RevCent+"', '"+ccAmount
                             +"', '"+acDate+"', '"+week+"')");
                     stmnt.executeUpdate();
             }

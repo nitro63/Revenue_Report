@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -272,6 +273,10 @@ public class weeklyReportController implements Initializable {
     @FXML
     private Label lblWk6SumSub;
 
+    @FXML
+    private Text txtCommissionRate;
+
+
     report_sideController app;
     private final Connection con;
     private PreparedStatement stmnt;
@@ -413,9 +418,9 @@ public class weeklyReportController implements Initializable {
       /***
        * have to create to calculate the methods externally and inherit them 
        * In weekly class method
-       * select revenue items base on daily- so it will all revolve the result from the dailies
+       * select revenue items base on daily-so it will all revolve the result from the dailies
        * then get the total for the week and return that in the weekly method 
-       * the required fields will be centre, revenueItem, month, week, year
+       * the required fields will be centred, revenueItem, month, week, year
        * then we get de revenue Items per day 
        * 
        */
@@ -558,7 +563,7 @@ public class weeklyReportController implements Initializable {
 
 
     private void setItemsSub() throws SQLException{
-        PreparedStatement stmnt_items, stmnt_week, stmnt_commission, stmnt_valuebook;
+        PreparedStatement stmnt_items, stmnt_week, stmnt_commission, stmntCommissionRate, stmnt_valuebook;
         ResultSet rs, rs_items, rs_week, rs_category, rs_commission, rs_valuebook;
         String wek1 = "0.00", wek2 = "0.00", wek3 = "0.00", wek4 = "0.00", wek5 = "0.00", wek6 = "0.00",totalAmnt = "0.00";
         double wk1 = 0, wk2 = 0, wk3 = 0, wk4 = 0, wk5 = 0, wk6 = 0, total_amount, finwk1 = 0, finwk2 = 0, finwk3 = 0, finwk4 = 0, finwk5 = 0, finwk6 = 0, fintotal_amount = 0;
@@ -575,6 +580,7 @@ public class weeklyReportController implements Initializable {
         stmnt_week = con.prepareStatement(" SELECT `revenue_week` FROM `daily_entries`,`revenue_centers`, `revenue_items` WHERE `revenue_centers`.`CenterID` = `daily_entries`.`daily_revCenter` AND `revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND YEAR(revenueDate) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND MONTH(revenueDate)  = '"+cmbReportMonth.getSelectionModel().getSelectedItem().getValue()+"'");
         stmnt_commission = con.prepareStatement(" SELECT `commission_week`, `commission_amount` FROM `commission_details`,`revenue_centers` WHERE   MONTH(commission_date) = '"+cmbReportMonth.getSelectionModel().getSelectedItem().getValue()+"' AND `revenue_centers`.`CenterID` = `commission_details`.`commission_center` AND `revenue_centers`.`revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND YEAR(commission_date) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"'");
         stmnt_valuebook = con.prepareStatement(" SELECT `week`, `purchase_amount` FROM `value_books_stock_record`,`revenue_centers` WHERE `CenterID` =`value_stock_revCenter` AND `revenue_center` = '"+cmbReportCent.getSelectionModel().getSelectedItem()+"' AND  YEAR(date) = '"+cmbReportYear.getSelectionModel().getSelectedItem()+"' AND  MONTH(date) = '"+cmbReportMonth.getSelectionModel().getSelectedItem().getValue()+"'");
+        stmntCommissionRate = con.prepareStatement("SELECT `week`");
         rs_items = stmnt_items.executeQuery();
         rs_week = stmnt_week.executeQuery();
         rs_commission = stmnt_commission.executeQuery();
