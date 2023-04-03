@@ -144,7 +144,8 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
     private boolean Condition = true, ccCheck;
     private float totAmount = 0;
 
-    private String Date, Item, Code, Month, Amount, CCAmount, Week, Year, RevCent, entriesID, Qtr, totalAmount;
+    private String Date, Item, Code, Month, Amount, RevSubCent, Week, Year, RevCent, entriesID, Qtr, totalAmount;
+    //
     // private static final int JANUARY = 1, FEBRUARY = 2;
 
     @FXML
@@ -189,6 +190,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
 //        } catch (SQLException e) {
 //            throw new RuntimeException(e);
 //        }
+        System.out.println(GetCenter.getSubCenterId());
         try {
             GetRevenueYears();
         } catch (SQLException throwables) {
@@ -247,6 +249,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
         });
 
         RevCent = GetCenter.getCenterID();
+        RevSubCent = GetCenter.getSubCenterId();
         String cent = GetCenter.centerIDProperty().getValue();
 //        registerItem.put("", new ArrayList<>());
         revTable.setOnMouseClicked(e -> {
@@ -302,9 +305,16 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
     }
 
     private void GetRevenueYears() throws SQLException {
-        stmnt = con.prepareStatement(
-                "SELECT YEAR(`revenueDate`) AS `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
-                        + "' GROUP BY `revenueYear`");
+        if (RevSubCent == null) {
+            stmnt = con.prepareStatement(
+                    "SELECT YEAR(`revenueDate`) AS `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
+                            + "' AND `daily_entries`.`status` = TRUE GROUP BY `revenueYear`");
+        }
+        else {
+            stmnt = con.prepareStatement(
+                    "SELECT YEAR(`revenueDate`) AS `revenueYear` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
+                            + "' AND `sub_center_ID` = '"+RevSubCent+"' AND `daily_entries`.`status` = TRUE GROUP BY `revenueYear`");
+        }
         rs = stmnt.executeQuery();
         cmbUpdateYear.getItems().clear();
         while (rs.next()) {
@@ -314,8 +324,8 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
 
     private void GetRevenueItems() throws SQLException {
         stmnt = con.prepareStatement(
-                "SELECT `item_Sub`, `assign_item`, `item_category` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"
-                        + RevCent + "' AND `revenue_item_ID` = `assign_item`");
+                    "SELECT `item_Sub`, `assign_item`, `item_category` FROM `center_items`, `revenue_items` WHERE `assign_center` = '"
+                            + RevCent + "' AND `revenue_item_ID` = `assign_item`");
         rs = stmnt.executeQuery();
         while (rs.next()) {
             RevenueItems.add(rs.getString("item_Sub"));
@@ -340,9 +350,16 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
     @FXML
     private void selectedYear(ActionEvent event) throws SQLException {
         String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
+        if (RevSubCent == null ){
         stmnt = con.prepareStatement(
                 "SELECT MONTH(`revenueDate`) AS `revenueMonth` FROM `daily_entries` WHERE `daily_revCenter` = '"
-                        + RevCent + "' AND YEAR(`revenueDate`) ='" + year + "' GROUP BY `revenueMonth`");
+                        + RevCent + "' AND YEAR(`revenueDate`) ='" + year + "' AND `daily_entries`.`status` = True GROUP BY `revenueMonth`");
+        }else{
+            stmnt = con.prepareStatement(
+                    "SELECT MONTH(`revenueDate`) AS `revenueMonth` FROM `daily_entries` WHERE `daily_revCenter` = '"
+                            + RevCent + "' AND `sub_center_ID` = '"+RevSubCent+"' AND YEAR(`revenueDate`) ='" + year +
+                            "' AND `daily_entries`.`status` = TRUE GROUP BY `revenueMonth`");
+        }
         rs = stmnt.executeQuery();
         cmbUpdateMonth.getItems().clear();
         cmbUpdateMonth.getItems().add(null);
@@ -357,10 +374,17 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
         String year = cmbUpdateYear.getSelectionModel().getSelectedItem();
         if(!cmbUpdateMonth.getSelectionModel().isSelected(0)){
             Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
+            if (RevSubCent == null){
         stmnt = con.prepareStatement(
                 "SELECT DAY(`revenueDate`) AS `revenueDay` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
                         + "' AND YEAR(`revenueDate`) ='" + year + "' AND MONTH(`revenueDate`) = '" + month.getValue()
-                        + "' GROUP BY `revenueDay`");
+                        + "' AND `daily_entries`.`status` = TRUE GROUP BY `revenueDay`");
+            }else{
+                stmnt = con.prepareStatement(
+                        "SELECT DAY(`revenueDate`) AS `revenueDay` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
+                                + "' AND YEAR(`revenueDate`) ='" + year + "' AND MONTH(`revenueDate`) = '" + month.getValue()
+                                + "'AND `sub_center_ID` = '"+RevSubCent+"' AND `daily_entries`.`status` = TRUE GROUP BY `revenueDay`");
+            }
         rs = stmnt.executeQuery();
         cmbUpdateDate.getItems().clear();
         cmbUpdateDate.getItems().add(null);
@@ -378,21 +402,44 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                     day = cmbUpdateDate.getSelectionModel().getSelectedItem();
             Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
             if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && cmbUpdateDate.getSelectionModel().isSelected(0)) {
+                if (RevSubCent == null){
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                 + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' ");
+                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+                }else {
+                    stmnt = con.prepareStatement(
+                            "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                                    + RevCent + "' AND `sub_center_ID` = '"+RevSubCent+"' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                                    + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE ");
+                }
             } else if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && !cmbUpdateDate.getSelectionModel().isSelected(0)) {
-                stmnt = con.prepareStatement(
-                        "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
-                                + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"
-                                + day + "'");
+                if(RevSubCent ==  null) {
+                    stmnt = con.prepareStatement(
+                            "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                                    + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                                    + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"
+                                    + day + "' AND `daily_entries`.`status` = TRUE ");
+                }else{
+                    stmnt = con.prepareStatement(
+                            "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                                    + RevCent + "' AND `sub_center_ID` = '"+RevSubCent+"' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                                    + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"
+                                    + day +"' AND `daily_entries`.`status` = TRUE");
+                }
             } else {
+                if (RevSubCent == null){
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                 + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                                + "'");
+                                + "' AND `daily_entries`.`status` = TRUE");
+                }else {
+                    stmnt = con.prepareStatement(
+                            "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                                    + RevCent + "' AND `sub_center_ID` = '"+RevSubCent+"' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                                    + "' AND `daily_entries`.`status` = TRUE");
+
+                }
             }
             rs = stmnt.executeQuery();
             revTable.getItems().clear();
@@ -420,20 +467,41 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                 day = cmbUpdateDate.getSelectionModel().getSelectedItem();
         Months month = cmbUpdateMonth.getSelectionModel().getSelectedItem();
         if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && cmbUpdateDate.getSelectionModel().isSelected(0)) {
+            if (RevSubCent == null){
+                stmnt = con.prepareStatement(
+                        "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                                + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+            }else{
+
             stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
-                            + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' ");
+                            + RevCent + "'  AND `sub_center_ID` = '"+RevSubCent+"' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+            }
         } else if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && !cmbUpdateDate.getSelectionModel().isSelected(0)) {
-            stmnt = con.prepareStatement(
+            if (RevSubCent == null){
+                stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                             + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"
-                            + day + "'");
-        } else {
+                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+            }else{
             stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
-                            + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(revenueDate) ='" + year + "'");
+                            + RevCent + "'  AND `sub_center_ID` = '"+RevSubCent+"' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
+                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"
+                            + day + "' AND`daily_entries`.`status` = TRUE ");
+            }
+        } else {
+            if (RevSubCent == null){
+                stmnt = con.prepareStatement(
+                        "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                                + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(revenueDate) ='" + year + "' AND`daily_entries`.`status` = TRUE");
+            }else{
+            stmnt = con.prepareStatement(
+                    "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
+                            + RevCent + "'  AND `sub_center_ID` = '"+RevSubCent+"' AND `revenueItem` = `revenue_item_ID` AND YEAR(revenueDate) ='" + year + "' AND `daily_entries`.`status` = TRUE");
+            }
         }
         rs = stmnt.executeQuery();
         revTable.getItems().clear();
@@ -557,9 +625,15 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                         Week = getFunctions.getWeek(entDatePck.getValue()),
                         Month = getFunctions.getMonth(entDatePck.getValue());
                 String code = RevenueMap.get(cmbEntRevItem.getSelectionModel().getSelectedItem());
-                stmnt = con.prepareStatement("SELECT `revenueItem` FROM `daily_entries` WHERE  `daily_revCenter` = '"
-                        + RevCent + "' AND `entries_ID` != '" + entriesID + "' AND `revenueItem` = '" + code
-                        + "' AND `revenueDate` = '" + Date + "' ");/* AND `entries_ID` != '"+entriesID+"' */
+                if (RevSubCent == null){
+                    stmnt = con.prepareStatement("SELECT `revenueItem` FROM `daily_entries` WHERE  `daily_revCenter` = '"
+                            + RevCent + "' AND `entries_ID` != '" + entriesID + "' AND `revenueItem` = '" + code
+                            + "' AND `revenueDate` = '" + Date + "' ");
+                }else {
+                    stmnt = con.prepareStatement("SELECT `revenueItem` FROM `daily_entries` WHERE  `daily_revCenter` = '"
+                            + RevCent + "'  AND `sub_center_ID` = '"+RevSubCent+"' AND `entries_ID` != '" + entriesID + "' AND `revenueItem` = '" + code
+                            + "' AND `revenueDate` = '" + Date + "' ");
+                }/* AND `entries_ID` != '"+entriesID+"' */
                 ResultSet rt = stmnt.executeQuery();
                 while (rt.next()) {
                     dupItem.add(rt.getString("revenueItem"));
@@ -603,10 +677,17 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                             alert.showAndWait();
                             Condition = false;
                         } else {
+                            if (RevSubCent == null){
+                                stmnt = con.prepareStatement("UPDATE `daily_entries` SET  " + "`revenueAmount`= '"
+                                        + Float.parseFloat(txtEntAmt.getText()) + "',`revenueDate` = '" + Date + "', " +
+                                        "`revenueItem` = '" + code + "', `revenue_week` = '"+Integer.parseInt(Week)+"' WHERE   " + "`entries_ID`= '" + entriesID
+                                        + "' AND `daily_revCenter`= '" + RevCent + "' AND `daily_entries`.`status` = TRUE");
+                            }else {
                             stmnt = con.prepareStatement("UPDATE `daily_entries` SET  " + "`revenueAmount`= '"
                                     + Float.parseFloat(txtEntAmt.getText()) + "',`revenueDate` = '" + Date + "', " +
                                     "`revenueItem` = '" + code + "', `revenue_week` = '"+Integer.parseInt(Week)+"' WHERE   " + "`entries_ID`= '" + entriesID
-                                    + "' AND `daily_revCenter`= '" + RevCent + "'");
+                                    + "' AND `daily_revCenter`= '" + RevCent + "'  AND `sub_center_ID` = '"+RevSubCent+"'AND `daily_entries`.`status` = TRUE");
+                            }
                             stmnt.executeUpdate();
                             clear();
                             loadRevenueCollectionTable();
@@ -674,8 +755,15 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                 String acWeek = getFunctions.getWeek(date);
                 String acMonth = getFunctions.getMonth(date);
                 int acYear = Integer.parseInt(getFunctions.getYear(date));
+
+                if (RevSubCent == null){
+                    stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `revenueItem` = '" + acCode + "'"
+                            + " AND `revenueDate` = '" + sqlDate + "' AND `daily_revCenter` = '" + RevCent + "' AND `daily_entries`.`status` = TRUE ");
+                }else{
                 stmnt = con.prepareStatement("SELECT * FROM `daily_entries` WHERE `revenueItem` = '" + acCode + "'"
-                        + " AND `revenueDate` = '" + sqlDate + "' AND `daily_revCenter` = '" + RevCent + "' ");
+                        + " AND `revenueDate` = '" + sqlDate + "' AND `daily_revCenter` = '" + RevCent + "'  AND `sub_center_ID` = '"+RevSubCent+"'" +
+                        " AND `daily_entries`.`status` = TRUE");
+                }
                 rs = stmnt.executeQuery();
                 while (rs.next()) {
                     String dup = rs.getString("revenueItem");
@@ -688,9 +776,17 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                     i = revTable.getItems().size() + 1;
                 } else {
                     deduction += acAmount;
+                if (RevSubCent == null){
                     stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, "
-                            + "`revenueItem`, `revenueAmount`, `revenueDate`, `revenue_week`) VALUES('" + RevCent + "'," + " '" + acItem
-                            + "', '" + acAmount + "',  '" + sqlDate + "', '"+acWeek+"')");
+                            + "`revenueItem`, `revenueAmount`, `revenueDate`, `revenue_week`, `status`) VALUES('" + RevCent +
+                            "', '" + acItem
+                            + "', '" + acAmount + "',  '" + sqlDate + "', '"+acWeek+"', TRUE)");
+                }else {
+                    stmnt = con.prepareStatement("INSERT INTO `daily_entries`(`daily_revCenter`, `sub_center_ID`," +
+                            " `revenueItem`, `revenueAmount`, `revenueDate`, `revenue_week`, `status`) VALUES('" + RevCent + "','"
+                            + RevSubCent+"', '" + acItem
+                            + "', '" + acAmount + "',  '" + sqlDate + "', '" + acWeek + "', TRUE)");
+                }
                     stmnt.executeUpdate();
                     registerItem.clear();
 
@@ -718,7 +814,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
             revTable.getItems().clear();
         } else {
             if (entriesID != null) {
-                stmnt = con.prepareStatement("DELETE FROM `daily_entries` WHERE `entries_ID` = '" + entriesID + "'");
+                stmnt = con.prepareStatement("UPDATE  `daily_entries` SET `status` = FALSE WHERE `entries_ID` = '" + entriesID + "'");
                 stmnt.executeUpdate();
                 clear();
                 loadRevenueCollectionTable();

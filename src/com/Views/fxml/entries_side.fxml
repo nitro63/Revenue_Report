@@ -22,11 +22,11 @@
             <HBox prefHeight="40.0" prefWidth="850.0">
                <children>
                   <AnchorPane minHeight="-Infinity" prefHeight="31.0" prefWidth="440.0" HBox.hgrow="ALWAYS" />
-                  <AnchorPane prefHeight="35.0" prefWidth="378.0">
+                  <AnchorPane fx:id="revenuePane" prefHeight="35.0" prefWidth="378.0">
                      <children>
                         <JFXComboBox fx:id="cmbRevGroup" layoutX="-1.0" layoutY="4.0" onAction="#setCenters" prefHeight="25.0" prefWidth="160.0" promptText="Select Center Category" styleClass="combo-box1" AnchorPane.rightAnchor="218.0" AnchorPane.topAnchor="4.0" />
-                        <JFXComboBox fx:id="cmbRevCent" layoutX="278.0" layoutY="5.0" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="160.0" promptText="Select Revenue Center" styleClass="combo-box1" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
-                        <JFXComboBox fx:id="cmbRevSubCent" layoutX="166.0" layoutY="4.0" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="160.0" promptText="Select Sub Center" styleClass="combo-box1" visible="false" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
+                        <JFXComboBox fx:id="cmbRevCent" layoutX="278.0" layoutY="4.0" onAction="#SelectedCenter" prefHeight="25.0" prefWidth="160.0" promptText="Select Revenue Center" styleClass="combo-box1" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
+                        <JFXComboBox fx:id="cmbRevSubCent" layoutX="166.0" layoutY="4.0" onAction="#selectedSubCenter" prefHeight="25.0" prefWidth="160.0" styleClass="combo-box1" visible="false" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="4.0" />
                      </children>
                   </AnchorPane>
                </children>

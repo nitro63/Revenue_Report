@@ -1,11 +1,16 @@
 package com.Models;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class SubRevenueCenter {
-    private StringProperty id, revenueCenterId, revenueCenter, subCenter, status;
+    private StringProperty id = new SimpleStringProperty(), revenueCenterId = new SimpleStringProperty()
+            , revenueCenter = new SimpleStringProperty(), subCenter = new SimpleStringProperty()
+            , status = new SimpleStringProperty();
 
-    public SubRevenueCenter() {
+    public SubRevenueCenter(String id, String subCenter) {
+        setSubCenter(subCenter);
+        setId(id);
     }
 
     public String getId() {

@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class GetUser {
-    StringProperty username, firstName, lastName, email, password, level, user_center;
+    StringProperty username , firstName, lastName, email, password, level, user_center;
 
     public GetUser(){}
     public GetUser(String username, String firstName, String lastName, String email, String password, String level, String user_center){

@@ -66,6 +66,8 @@ public class entries_sideController extends VBox implements Initializable {
     private JFXComboBox<String> cmbRevCent;
 
     @FXML
+    private AnchorPane revenuePane;
+    @FXML
     private JFXComboBox<SubRevenueCenter> cmbRevSubCent;
 
     @FXML
@@ -95,7 +97,7 @@ public class entries_sideController extends VBox implements Initializable {
     public  ObservableList<String> RevenueCenters = FXCollections.observableArrayList("KMA MAIN","OUTSOURCED","SUB-METROS","OTHER REVENUES");
     private final Connection con;
     private PreparedStatement stmnt;
-      String SelItem, SelRev ;
+      String SelItem, SelRev, SelSub, SelSubId;
      GetRevCenter u = new GetRevCenter();
      private final Map<String, String> centerID = new HashMap<>();
      
@@ -120,8 +122,9 @@ public class entries_sideController extends VBox implements Initializable {
     @FXML
     private Text txtEntriesMainNoPane;
     InitializerController init = new InitializerController();
+    private boolean subCenterSet;
 
-    SubRevenueCenter subcenter = new SubRevenueCenter() ;
+    // SubRevenueCenter subcenter = new SubRevenueCenter() ;
 
      /***
       */
@@ -146,13 +149,18 @@ public class entries_sideController extends VBox implements Initializable {
     public VBox getEntryMain(){
         return entriesMain;
     }
-     
+    boolean stopSelection = true;
      public ComboBox <String> getRevCent(){
          return cmbRevCent;
      }
     ObservableList<JFXButton> menuButtons = FXCollections.observableArrayList();
     ObservableList <HBox> menuContainers = FXCollections.observableArrayList();
     ObservableList <Button> menuCloseButton = FXCollections.observableArrayList();
+    double cmbGroupCent, cmbGroupCategory;
+
+
+
+
 
 
     /**
@@ -172,16 +180,37 @@ public class entries_sideController extends VBox implements Initializable {
         subcenter.setSubCenter("good");
         subcenter.setStatus("fred");*/
 
-        
+        //cmbRevSubCent.setVisible(true);
+        /*
+        double cmbGroup = revenuePane.getRightAnchor(cmbRevGroup),
+                cmbCent = revenuePane.getRightAnchor(cmbRevCent);
+        revenuePane.setRightAnchor(cmbRevGroup, cmbRevGroup.getPrefWidth()+18+cmbGroup);
+        revenuePane.setRightAnchor(cmbRevCent, cmbRevCent.getPrefWidth()+18+cmbCent);
+       *//* ObservableList<SubRevenueCenter> subRevenueCenters;
+        subRevenueCenters = FXCollections.observableArrayList();
+        subRevenueCenters.add(new SubRevenueCenter("id", "sub_center"));*//*
+        cmbRevSubCent.getItems().add(new SubRevenueCenter("id", "sub_center"));*/
 
-        ObservableList<SubRevenueCenter> ObservableList = FXCollections.observableArrayList(subcenter);
+        cmbRevSubCent.setButtonCell(new SubRevenueCentersListCell());
+        cmbRevSubCent.setCellFactory(param -> new SubRevenueCentersListCell());
+        //cmbRevSubCent.setPromptText("Select Sub Center");
+
+       // ObservableList<SubRevenueCenter> ObservableList = FXCollections.observableArrayList(subcenter);
+        cmbGroupCent = revenuePane.getRightAnchor(cmbRevGroup) ;
+                cmbGroupCategory = revenuePane.getRightAnchor(cmbRevCent);
         Callback<ListView<SubRevenueCenter>, ListCell<SubRevenueCenter>> subCenterFactory = lv -> new ListCell<SubRevenueCenter>(){
             @Override
             protected void updateItem(SubRevenueCenter item, boolean empty){
                 super.updateItem(item, empty);
-                setText(empty ? "" : item.getSubCenter());
+                if (empty){
+                    setText(null);
+                }else{
+                setText(item.getSubCenter());
+                }
             }
+
         };
+        cmbRevSubCent.setPromptText("Select Sub Center");
         entriesMain.setFillWidth(true);
         btnCloseRevenue.setVisible(false);
         try {
@@ -204,7 +233,8 @@ public class entries_sideController extends VBox implements Initializable {
             }
         } catch (SQLException throwables) {
                 throwables.printStackTrace();
-        }/*
+        }
+        /*
         if (LogInController.OverAllAdmin || LogInController.Accountant){
             btnEntriesUpdate.setVisible(true);
         }else {
@@ -214,10 +244,24 @@ public class entries_sideController extends VBox implements Initializable {
         iconForward.setVisible(false);
         txtTitle.setText(null);
         containerPayment.setVisible(LogInController.Accountant || LogInController.OverAllAdmin);
-        if (!containerPayment.isVisible()){containerStock.setLayoutX(306) ;containerTarget.setLayoutX(182);}
+        if (!containerPayment.isVisible()){containerStock.setLayoutX(306) ;containerTarget.setLayoutX(182);
+        }
+
+        cmbRevCent.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            try {
+                if(!hasSubcenters(GetCenter.getCenterID())){
+                    revenuePane.setRightAnchor(cmbRevGroup,  cmbGroupCent );
+                    revenuePane.setRightAnchor(cmbRevCent, cmbGroupCategory);
+                    cmbRevSubCent.setVisible(false);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
-    
-    
+
+
+    //region Revenue Center Settings
     public void SetRevenueCenters() throws SQLException {
         stmnt = con.prepareStatement("SELECT `revenue_category` FROM `revenue_centers` WHERE 1 GROUP BY `revenue_category`");
         ResultSet rt = stmnt.executeQuery();
@@ -276,9 +320,58 @@ public class entries_sideController extends VBox implements Initializable {
 //    }
     }
 
-   
+    private void loadSubCenters() throws SQLException {
+        int widthIncrement;
+        if (hasSubcenters(GetCenter.getCenterID())){
+            cmbRevSubCent.setVisible(true);
+            double cmbCent = revenuePane.getRightAnchor(cmbRevCent), cmbGroup = revenuePane.getRightAnchor(cmbRevGroup);
+            revenuePane.setRightAnchor(cmbRevGroup, cmbRevGroup.getPrefWidth()+18+cmbGroup);
+            revenuePane.setRightAnchor(cmbRevCent, cmbRevCent.getPrefWidth()+18+cmbCent);
+            cmbRevSubCent.getItems().addAll(getSubCenters(GetCenter.getCenterID()));
+            cmbRevSubCent.getItems().add(0, new SubRevenueCenter(null, "None"));
+            cmbRevSubCent.getSelectionModel().select(0);
+        }
+
+    }
+
+    class SubRevenueCentersListCell extends ListCell<SubRevenueCenter>{
+        @Override
+        protected void updateItem(SubRevenueCenter item, boolean empty) {
+            super.updateItem(item, empty);
+            if (!empty && item != null){
+                setText(item.getSubCenter());
+            }else {
+                setText(null);
+            }
+        }
+    }
+
+    private ObservableList<SubRevenueCenter> getSubCenters(String RevCent) throws SQLException {
+        ObservableList<SubRevenueCenter> subRevenueCenters = FXCollections.observableArrayList();
+
+        PreparedStatement prepStmnt = con.prepareStatement("SELECT `id`, `sub_center`, `revenue_center_id` FROM `revenue_sub_centers` WHERE `revenue_center_id` = '"+RevCent+"' AND `status`  = TRUE");
+        ResultSet rs = prepStmnt.executeQuery();
+
+        while (rs.next())
+        {
+            subRevenueCenters.add(new SubRevenueCenter(rs.getString("id"), rs.getString("sub_center")));
+        }
+        return subRevenueCenters;
+    }
+
+    private boolean hasSubcenters(String RevCenter) throws SQLException
+    {
+        PreparedStatement prepStmnt = con.prepareStatement("SELECT `id`, `sub_center`, `revenue_center_id` FROM `revenue_sub_centers` WHERE `revenue_center_id` = '"+RevCenter+"' AND `status`  = TRUE");
+        ResultSet resultSet = prepStmnt.executeQuery();
+        return resultSet.next();
+    }
+    //endregion
+
+
+    //region FXML ON-ACTION CONTROLS
     @FXML
-    private void ShowRevenue_Entries(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+    private void ShowRevenue_Entries(ActionEvent event) throws IOException, SQLException, ClassNotFoundException
+    {
         if(cmbRevCent.getSelectionModel().getSelectedItem() == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
@@ -329,32 +422,100 @@ public class entries_sideController extends VBox implements Initializable {
         }
     
     @FXML
-    private void SelectedCenter(ActionEvent event) {
-           if(paneEntriesArea.getChildren() != null){
-               paneEntriesArea.getChildren().clear();
-               paneEntriesArea.getChildren().add(noEntriesPane);
-               txtEntriesMain.setVisible(false);
-               txtEntriesMainNoPane.setVisible(true);
-               txtEntries.setVisible(false);
-               iconForward.setVisible(false);
-               txtTitle.setText(null);
-               for (Button close : menuCloseButton){
-                   if (close.isVisible()){
-                       close.setVisible(false);
-                   }
-               }
-               txtEntries.setVisible(false);
-               iconForward.setVisible(false);
-               txtTitle.setText(null);
-               txtTitle.setVisible(false);
-               for (HBox container : menuContainers){
-                   container.getStyleClass().remove("big");}
-           }
+    private void SelectedCenter(ActionEvent event) throws SQLException {
+        if(paneEntriesArea.getChildren() != null){
+            paneEntriesArea.getChildren().clear();
+            paneEntriesArea.getChildren().add(noEntriesPane);
+            txtEntriesMain.setVisible(false);
+            txtEntriesMainNoPane.setVisible(true);
+            txtEntries.setVisible(false);
+            iconForward.setVisible(false);
+            txtTitle.setText(null);
+            for (Button close : menuCloseButton){
+                if (close.isVisible()){
+                    close.setVisible(false);
+                }
+            }
+            txtEntries.setVisible(false);
+            iconForward.setVisible(false);
+            txtTitle.setText(null);
+            txtTitle.setVisible(false);
+            for (HBox container : menuContainers){
+                container.getStyleClass().remove("big");}
+        }
         SelItem = cmbRevCent.getSelectionModel().getSelectedItem();
            SelRev = centerID.get(cmbRevCent.getSelectionModel().getSelectedItem());
         GetCenter.setRevCenter(SelItem);
         GetCenter.setCenterID(SelRev);
+        if (!cmbRevSubCent.getItems().isEmpty()){
+            cmbRevSubCent.getSelectionModel().clearSelection();
+            cmbRevSubCent.getItems().clear();
+        }
+        loadSubCenters();
     }
+
+
+    @FXML
+    void selectedSubCenter(ActionEvent event) {
+/*
+        if (cmbRevSubCent.getValue() == null || cmbRevSubCent.getSelectionModel().isEmpty()) {
+            cmbRevSubCent.setValue(null);
+        } else {*/
+            if (cmbRevSubCent.getValue() != null) {
+                if (paneEntriesArea.getChildren() != null) {
+                    paneEntriesArea.getChildren().clear();
+                    paneEntriesArea.getChildren().add(noEntriesPane);
+                    txtEntriesMain.setVisible(false);
+                    txtEntriesMainNoPane.setVisible(true);
+                    txtEntries.setVisible(false);
+                    iconForward.setVisible(false);
+                    txtTitle.setText(null);
+                    for (Button close : menuCloseButton) {
+                        if (close.isVisible()) {
+                            close.setVisible(false);
+                        }
+                    }
+                    txtEntries.setVisible(false);
+                    iconForward.setVisible(false);
+                    txtTitle.setText(null);
+                    txtTitle.setVisible(false);
+                    for (HBox container : menuContainers) {
+                        container.getStyleClass().remove("big");
+                    }
+                }
+                GetCenter.setSubCenterId(cmbRevSubCent.getSelectionModel().getSelectedItem().getId());
+                GetCenter.setSubCenter(cmbRevSubCent.getSelectionModel().getSelectedItem().getSubCenter());
+                SelSub = GetCenter.getSubCenter();
+                SelSubId = GetCenter.getSubCenterId();
+            } else {
+                if (paneEntriesArea.getChildren() != null) {
+                    paneEntriesArea.getChildren().clear();
+                    paneEntriesArea.getChildren().add(noEntriesPane);
+                    txtEntriesMain.setVisible(false);
+                    txtEntriesMainNoPane.setVisible(true);
+                    txtEntries.setVisible(false);
+                    iconForward.setVisible(false);
+                    txtTitle.setText(null);
+                    for (Button close : menuCloseButton) {
+                        if (close.isVisible()) {
+                            close.setVisible(false);
+                        }
+                    }
+                    txtEntries.setVisible(false);
+                    iconForward.setVisible(false);
+                    txtTitle.setText(null);
+                    txtTitle.setVisible(false);
+                    for (HBox container : menuContainers) {
+                        container.getStyleClass().remove("big");
+                    }
+                }
+
+
+
+            }
+        }
+
+
 
     @FXML
     private void showPaymentEntries(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
@@ -564,6 +725,7 @@ public class entries_sideController extends VBox implements Initializable {
         for (HBox container : menuContainers){
                 container.getStyleClass().remove("big");}
     }
+    //endregion
 
    
     
