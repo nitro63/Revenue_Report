@@ -381,7 +381,7 @@ public class entries_sideController extends VBox implements Initializable {
         FXMLLoader loadEntries = new FXMLLoader();
         loadEntries.setLocation(getClass().getResource("/com/Views/fxml/Revenue_Entries.fxml"));
        loadEntries.setController(new Revenue_EntriesController(GetCenter));
-       Revenue_EntriesController revEnt = (Revenue_EntriesController)loadEntries.getController();
+       Revenue_EntriesController revEnt = loadEntries.getController();
        revEnt.setappController(this);
        for (JFXButton btn: menuButtons){
            if (btn.equals(btnDailies)){

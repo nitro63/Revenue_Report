@@ -3,9 +3,12 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,73 +16,88 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <!--fx:controller="com.Controller.appController"-->
 
-<BorderPane fx:id="border_pane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1038.0" styleClass="background-color" stylesheets="@../Stylesheets/app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="border_pane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1318.0" styleClass="background-color" stylesheets="@../Stylesheets/app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="69.0" prefWidth="1038.0" styleClass="nav-bar" BorderPane.alignment="CENTER">
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" prefWidth="1318.0" styleClass="nav-bar" BorderPane.alignment="CENTER">
          <children>
-            <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="242.0" styleClass="nav-brand" HBox.hgrow="ALWAYS">
+            <Pane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="239.0" style="-fx-border-radius: 0;" styleClass="nav-brand" HBox.hgrow="ALWAYS">
                <children>
-                  <Line endY="55.60984802246094" fill="BLACK" layoutX="58.0" layoutY="3.0" />
-                  <Text layoutX="70.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-brand-text" text="KUMASI METROPOLITAN ASSEMBLY" wrappingWidth="176.87">
+                  <ImageView fitHeight="41.0" fitWidth="44.0" layoutX="14.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../Assets/kmalogo.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </ImageView>
+                  <Text fill="#e5ece7" layoutX="52.0" layoutY="19.0" stroke="#fbfffc" strokeLineJoin="BEVEL" strokeType="INSIDE" strokeWidth="5.0" styleClass="nav-brand-text" text="KUMASI METROPOLITAN ASSEMBLY" textAlignment="CENTER" wrappingWidth="131.87">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Text>
-                  <ImageView fitHeight="59.0" fitWidth="56.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../Assets/kmalogo.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Pane>
-            <AnchorPane prefHeight="65.0" prefWidth="857.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER" fillHeight="false" spacing="40.0" HBox.hgrow="ALWAYS">
                <children>
-                  <AnchorPane layoutX="200.0" layoutY="5.0" prefHeight="57.0" prefWidth="275.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="5.0">
+                  <AnchorPane prefHeight="57.0" prefWidth="275.0">
                      <children>
-                        <Text layoutX="7.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-bar-text-bold" text="F I N A N C E  D E P A R T M E N T " textAlignment="CENTER" wrappingWidth="295.0">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Text>
-                        <Text layoutX="26.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-bar-text" text="R E V E N U E  U N I T " textAlignment="CENTER" wrappingWidth="260.0">
+                        <Text fill="#e5ece7" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-bar-text-bold" text="F I N A N C E  D E P A R T M E N T : R E V E N U E  U N I T " textAlignment="CENTER" wrappingWidth="497.0">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Text>
                      </children>
+                     <HBox.margin>
+                        <Insets right="163.0" />
+                     </HBox.margin>
                   </AnchorPane>
-                  <ImageView fx:id="imgUser" fitHeight="50.0" fitWidth="57.0" layoutX="728.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="16.674495697021484" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="16.0">
+               </children>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label fx:id="txtUser" alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="89.0" styleClass="username" text="User Name" textFill="#e5ece7" wrapText="true" />
+                  <ImageView fx:id="imgUser" fitHeight="50.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../Assets/download-removebg-preview.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="txtUser" alignment="CENTER_RIGHT" layoutX="678.0" layoutY="17.0" prefHeight="35.0" prefWidth="89.0" styleClass="username" text="User Name" wrapText="true" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="101.0" AnchorPane.topAnchor="17.0" />
-                  <MenuButton fx:id="btnUserMenu" layoutX="808.0" layoutY="22.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="23.0" styleClass="profile-menulist" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="22.0">
+                  <MenuButton fx:id="btnUserMenu" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="23.0" styleClass="profile-menulist">
                     <items>
                       <MenuItem fx:id="menuItemViewProfile" mnemonicParsing="false" onAction="#viewProfile" text="View Profile" />
                       <MenuItem fx:id="menuItemLogout" mnemonicParsing="false" onAction="#Logout" text="Logout" />
                     </items>
+                     <HBox.margin>
+                        <Insets right="14.0" />
+                     </HBox.margin>
                   </MenuButton>
                </children>
-            </AnchorPane>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </HBox>
          </children>
+         <effect>
+            <DropShadow color="#064d0f" height="18.04" radius="11.4225" spread="0.59" width="29.65" />
+         </effect>
       </HBox>
    </top>
    <left>
-      <VBox fx:id="leftPane" prefHeight="638.0" prefWidth="164.0" styleClass="side-bar" BorderPane.alignment="CENTER">
+      <VBox fx:id="leftPane" prefHeight="638.0" prefWidth="164.0" style="-fx-background-color: rgba(1, 45, 18, 0.89);" styleClass="side-bar" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane>
                <children>
                   <JFXHamburger fx:id="btnBurger" layoutX="8.0" layoutY="59.0" prefHeight="17.0" prefWidth="26.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="59.0" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="562.0" prefWidth="167.0" VBox.vgrow="ALWAYS">
+            <AnchorPane prefHeight="673.0" prefWidth="144.0" VBox.vgrow="ALWAYS">
                <children>
                   <Label fx:id="lblDashboard" layoutX="67.0" layoutY="62.0" text="Dashboard">
                      <font>
@@ -102,9 +120,9 @@
                         <Font size="13.0" />
                      </font>
                   </JFXButton>
-                  <Label fx:id="lblEntries" layoutX="69.0" layoutY="161.0" text="Entries">
+                  <Label fx:id="lblEntries" layoutX="69.0" layoutY="161.0" text="Entries" textFill="#f6ffff">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="14.0" name="System Bold" />
                      </font>
                   </Label>
                   <JFXButton fx:id="btnSGRE" graphicTextGap="120.0" layoutX="1.0" layoutY="150.0" minWidth="-Infinity" onAction="#showSGRE" prefHeight="45.0" prefWidth="162.0">
@@ -120,29 +138,33 @@
                         </AnchorPane>
                      </graphic>
                   </JFXButton>
-                  <Label fx:id="lblReports" layoutX="67.0" layoutY="260.0" text="Reports">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="btnSDRR" graphicTextGap="120.0" layoutX="1.0" layoutY="245.0" minWidth="-Infinity" onAction="#showSDRR" prefHeight="48.0" prefWidth="162.0" text=" ">
+                  <JFXButton fx:id="btnSDRR" graphicTextGap="120.0" layoutX="1.0" layoutY="245.0" minWidth="-Infinity" onAction="#showSDRR" prefHeight="48.0" prefWidth="162.0" text=" " textFill="#f6ffff">
                      <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../Assets/report_icon-removebg-preview.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></JFXButton>
-                  <Label fx:id="lblAdministrative" layoutX="61.0" layoutY="349.0" text="Administrative">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="btnSDRI" graphicTextGap="118.0" layoutX="-1.0" layoutY="331.0" onAction="#showSDRI" prefHeight="45.0" prefWidth="168.0">
-                     <graphic>
-                        <AnchorPane prefHeight="45.0" prefWidth="32.0">
+                        <AnchorPane prefHeight="38.0" prefWidth="140.0">
                            <children>
-                              <MaterialDesignIconView glyphName="SHIELD_OUTLINE" layoutY="34.0" size="30" wrappingWidth="25.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="6.0" />
+                              <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="2.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../Assets/report_icon-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="lblReports" layoutX="44.0" layoutY="10.0" text="Reports" textFill="#f6ffff">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="btnSDRI" graphicTextGap="118.0" layoutX="-1.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#showSDRI" prefHeight="48.0" prefWidth="162.0" text=" " textFill="#f6ffff">
+                     <graphic>
+                        <AnchorPane prefHeight="24.0" prefWidth="146.0">
+                           <children>
+                              <MaterialDesignIconView fill="#616864" glyphName="SHIELD_OUTLINE" layoutX="2.0" layoutY="35.25" size="30" wrappingWidth="25.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="9.0" />
+                              <Label fx:id="lblAdministrative" layoutX="47.0" layoutY="15.0" text="Administrative" textFill="#f6ffff">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                      </graphic></JFXButton>
@@ -152,6 +174,9 @@
       </VBox>
    </left>
    <center>
-      <VBox fx:id="centerPane" alignment="TOP_CENTER" prefHeight="638.0" prefWidth="791.0" style="-fx-background-color: transparent;" BorderPane.alignment="TOP_CENTER" />
+      <VBox fx:id="centerPane" alignment="TOP_CENTER" prefHeight="749.0" prefWidth="1172.0" style="-fx-background-color: rgba(1, 33, 11, 0.85);">
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" color="#076807" height="0.0" radius="7.664999999999999" spread="0.33" width="32.66" />
+         </effect></VBox>
    </center>
 </BorderPane>

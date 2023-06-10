@@ -90,7 +90,7 @@ public class MasterCentersController implements Initializable {
     @FXML
     private Label lblYearWarn;
     
-    private GetCentersReport getReport;
+    private GetCentersReport  getReport;
     
 
     /**
@@ -161,14 +161,15 @@ public class MasterCentersController implements Initializable {
         PreparedStatement stmnt_itemsCategories;
         ResultSet rs, rs_itemsCategories;
 
-        stmnt = con.prepareStatement("SELECT `revenue_center`, `daily_revCenter`, revenue_sub_centers.sub_center, MONTH(revenueDate) AS `revenueMonth`, `revenue_category`, SUM(`revenueAmount`) FROM `revenue_centers`,`daily_entries`, `revenue_sub_centers` WHERE  `CenterID` = `daily_revCenter` AND `revenue_sub_centers`.id = daily_entries.sub_center_ID  or `revenue_sub_centers`.id != daily_entries.sub_center_ID/*AND `daily_revCenter` = 'K0403' */AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY  `revenue_category`, `revenue_center`, revenue_sub_centers.sub_center, `revenueMonth` ORDER BY `revenue_category`, `revenue_center`, revenue_sub_centers.sub_center, `revenueMonth`", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-        stmnt_itemsCategories = con.prepareStatement(" SELECT `revenue_center`, `revenue_category` FROM `revenue_centers`,`daily_entries` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_center`");
+        stmnt = con.prepareStatement("SELECT `revenue_center`, `daily_revCenter`, `revenue_sub_centers`.`sub_center`, MONTH(revenueDate) AS `revenueMonth`, `revenue_category`, SUM(`revenueAmount`) as `revenueAmount` FROM `revenue_centers`,`daily_entries` left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = `revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY  `revenue_category`, `revenue_center`, `revenue_sub_centers`.`sub_center`, `revenueMonth` ORDER BY `revenue_category`, `revenue_center`, `revenue_sub_centers`.`sub_center`, `revenueMonth` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        stmnt_itemsCategories = con.prepareStatement(" SELECT `revenue_center`, `revenue_category`, `revenue_sub_centers`.`sub_center` /*IF(`daily_entries`.`sub_center_ID` is null, 'null', `revenue_sub_centers`.`sub_center`)*/ FROM `revenue_centers`,`daily_entries`  left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = `revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY `revenue_center`");
         rs = stmnt.executeQuery();
         rs_itemsCategories = stmnt_itemsCategories.executeQuery();
-        
+
         rowItems.clear();
 
         Map<String, ArrayList<String>> categoriesItem = new HashMap<>();
+        Map<String, String> categoryItem = new HashMap<>();
         categoriesItem.put("", new ArrayList<>());
 
         while(rs_itemsCategories.next()){
@@ -181,6 +182,15 @@ public class MasterCentersController implements Initializable {
             }else if (categoriesItem.containsKey(rs_itemsCategories.getString("revenue_category")) && !categoriesItem.get(rs_itemsCategories.getString("revenue_category")).contains(rs_itemsCategories.getString("revenue_center"))){
                 categoriesItem.get(rs_itemsCategories.getString("revenue_category")).add(rs_itemsCategories.getString("revenue_center"));
             }
+            /*
+            if (rs_itemsCategories.getString("sub_center")!= null) {
+                if (!categoriesItem.containsKey(rs_itemsCategories.getString("revenue_category"))) {
+                    categoriesItem.put(rs_itemsCategories.getString("revenue_category"), new ArrayList<>());
+                    categoriesItem.get(rs_itemsCategories.getString("revenue_category")).add(rs_itemsCategories.getString("sub_center"));
+                } else if (categoriesItem.containsKey(rs_itemsCategories.getString("revenue_category")) && !categoriesItem.get(rs_itemsCategories.getString("revenue_category")).contains(rs_itemsCategories.getString("sub_center"))) {
+                    categoriesItem.get(rs_itemsCategories.getString("revenue_category")).add(rs_itemsCategories.getString("sub_center"));
+                }
+            }*/
         }
 
         revenueCenter.setCellValueFactory(data -> data.getValue().RevenueCenterProperty());
@@ -205,7 +215,7 @@ public class MasterCentersController implements Initializable {
         totalAmount.setCellValueFactory(data -> data.getValue().Total_AmountProperty());
         revenueCenter.setStyle("-fx-alignment: CENTER;-fx-wrap-text: TRUE;");
         GetCentersReport getReport;
-        for (String category : rowItems){
+        /*for (String category : rowItems){
             revenueCenter.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");
             getReport = new GetCentersReport(category, "", "", "", "", "", "", "", "", "", "", "", "", "");
             revenueCentersTable.getItems().add(getReport);
@@ -224,7 +234,12 @@ public class MasterCentersController implements Initializable {
                     rs.next();
                     if (item.equals(rs.getString("revenue_center"))){
                         double amot= itemMonthSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
-                        amot += rs.getDouble("revenueAmount");
+                        amot = rs.getDouble("revenueAmount");
+                        itemMonthSum.get(item).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
+                    }
+                    if (item.equals(rs.getString("sub_center"))){
+                        double amot= itemMonthSum.get(item).get(Months.get(rs.getInt("revenueMonth")).toString());
+                        amot = rs.getDouble("revenueAmount");
                         itemMonthSum.get(item).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
                     }
                     if (rs.isLast()){
@@ -253,21 +268,176 @@ public class MasterCentersController implements Initializable {
             subOct = formatter.format(suboct); subNov = formatter.format(subnov); subDec = formatter.format(subdec); subTotalAmnt = formatter.format(subtotal_amount);
             getReport = new GetCentersReport("SUB-TOTAL", subJan, subFeb, subMar, subApr, subMay, subJun, subJul,subAug,subSep,subOct,subNov,subDec, subTotalAmnt);
             revenueCentersTable.getItems().add(getReport);
+        }*/
+        //PreparedStatement statement = con.prepareStatement("SELECT `revenue_center`,  FROM(SELECT `revenue_center`, `daily_revCenter`, `revenue_sub_centers`.`sub_center`, MONTH(revenueDate) AS `revenueMonth`, `revenue_category`, SUM(`revenueAmount`) as `revenueAmount` FROM `revenue_centers`,`daily_entries` left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = `revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' GROUP BY  `revenue_category`, `revenue_center`, `revenue_sub_centers`.`sub_center`, `revenueMonth` ORDER BY `revenue_category`, `revenue_center`, `revenue_sub_centers`.`sub_center`, `revenueMonth` ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        for (String category : rowItems){
+            revenueCenter.setStyle("-fx-alignment: CENTER; -fx-text-fill: #5a5959;");
+            getReport = new GetCentersReport(category, "", "", "", "", "", "", "", "", "", "", "", "", "");
+            revenueCentersTable.getItems().add(getReport);
+            double subjan = 0, subfeb = 0, subapr = 0, submai = 0, subjun = 0, subjul = 0, subaug = 0, subsep = 0, suboct = 0, submar = 0, subnov = 0, subdec = 0, subtotal_amount;
+            String subJan = "0.00", subFeb = "0.00", subMar = "0.00", subApr = "0.00", subMay = "0.00", subJun = "0.00", subJul = "0.00", subAug = "0.00", subSep = "0.00", subOct = "0.00", subNov = "0.00", subDec = "0.00", subTotalAmnt = "0.00";
+            for (String center : categoriesItem.get(category)) {
+                getReport = new GetCentersReport(center.toUpperCase(), formatter.format(sumAmountIsNull(category, center, "1")),
+                        formatter.format(sumAmountIsNull(category, center, "2")), formatter.format(sumAmountIsNull(category, center, "3")),
+                        formatter.format(sumAmountIsNull(category, center, "4")), formatter.format(sumAmountIsNull(category, center, "5")),
+                        formatter.format(sumAmountIsNull(category, center, "6")), formatter.format(sumAmountIsNull(category, center, "7")),
+                        formatter.format(sumAmountIsNull(category, center, "8")), formatter.format(sumAmountIsNull(category, center, "9")),
+                        formatter.format(sumAmountIsNull(category, center, "10")), formatter.format(sumAmountIsNull(category, center, "11")),
+                        formatter.format(sumAmountIsNull(category, center, "12")), formatter.format(totalAmountIsNull(category, center)));
+                revenueCentersTable.getItems().add(getReport);
+                PreparedStatement stmntHasSub, stmntJstCent;
+                ResultSet rsHasSub, rsJstCent;
+                if (subCenterChck(cmbMasterCentersYear.getValue(), center)){
+                    ObservableList<String> subCenters =FXCollections.observableArrayList();
+                    stmntHasSub = con.prepareStatement("SELECT `revenue_sub_centers`.`sub_center` AS `sub` FROM `revenue_centers`," +
+                            "`daily_entries` left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = " +
+                            "`revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"
+                            +cmbMasterCentersYear.getSelectionModel().getSelectedItem()+"' AND `revenue_center` = '"
+                            +center+"' AND `revenue_category` = '"+category+"' AND `sub_center_ID` IS NOT NULL  GROUP BY   " +
+                            "`revenue_sub_centers`.`sub_center`");
+                    rsHasSub = stmntHasSub.executeQuery();
+                    while (rsHasSub.next()){
+                        subCenters.add(rsHasSub.getString("sub"));
+                    }
+                    for (String sub:subCenters) {
+                        getReport = new GetCentersReport(sub.toLowerCase(), formatter.format(sumAmount(category, center, sub,"1")),
+                                formatter.format(sumAmount(category, center, sub,"2")), formatter.format(sumAmount(category, center, sub,"3")),
+                                formatter.format(sumAmount(category, center, sub,"4")), formatter.format(sumAmount(category, center, sub,"5")),
+                                formatter.format(sumAmount(category, center, sub,"6")), formatter.format(sumAmount(category, center, sub,"7")),
+                                formatter.format(sumAmount(category, center, sub,"8")), formatter.format(sumAmount(category, center, sub,"9")),
+                                formatter.format(sumAmount(category, center, sub,"10")), formatter.format(sumAmount(category, center, sub,"11")),
+                                formatter.format(sumAmount(category, center, sub,"12")), formatter.format(totalAmount(category, center, sub)));
+                        revenueCentersTable.getItems().add(getReport);
+                    }
+
+                }
+
+                boolean resultSetState = true;
+              /*  while (resultSetState){
+                    rs.next();
+                    if (center.equals(rs.getString("revenue_center"))){
+                        double amot= itemMonthSum.get(center).get(Months.get(rs.getInt("revenueMonth")).toString());
+                        amot = rs.getDouble("revenueAmount");
+                        itemMonthSum.get(center).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
+                    }
+                    if (center.equals(rs.getString("sub_center"))){
+                        double amot= itemMonthSum.get(center).get(Months.get(rs.getInt("revenueMonth")).toString());
+                        amot = rs.getDouble("revenueAmount");
+                        itemMonthSum.get(center).put(Months.get(rs.getInt("revenueMonth")).toString(), amot);
+                    }
+                    if (rs.isLast()){
+                        resultSetState = false;
+                    }
+                }*/
+               /* if (rs.isLast()){
+                    rs.beforeFirst();
+                }*/
+               /* subjan += itemMonthSum.get(item).get(january.getText()); subfeb += itemMonthSum.get(item).get(february.getText()); submar += itemMonthSum.get(item).get(march.getText()); subapr += itemMonthSum.get(item).get(april.getText()); submai += itemMonthSum.get(item).get(may.getText()); subjun += itemMonthSum.get(item).get(june.getText());
+                subjul += itemMonthSum.get(item).get(july.getText()); subaug += itemMonthSum.get(item).get(august.getText()); subsep += itemMonthSum.get(item).get(september.getText()); suboct += itemMonthSum.get(item).get(october.getText()); subnov += itemMonthSum.get(item).get(november.getText()); subdec += itemMonthSum.get(item).get(december.getText());
+                totjan += itemMonthSum.get(item).get(january.getText()); totfeb += itemMonthSum.get(item).get(february.getText()); totmar += itemMonthSum.get(item).get(march.getText()); totapr += itemMonthSum.get(item).get(april.getText()); totmay += itemMonthSum.get(item).get(may.getText()); totjun += itemMonthSum.get(item).get(june.getText());
+                totjul += itemMonthSum.get(item).get(july.getText()); totaug += itemMonthSum.get(item).get(august.getText()); totsep += itemMonthSum.get(item).get(september.getText()); totoct += itemMonthSum.get(item).get(october.getText()); totnov += itemMonthSum.get(item).get(november.getText()); totdec += itemMonthSum.get(item).get(december.getText());
+                Jan = formatter.format(itemMonthSum.get(item).get(january.getText())); Feb = formatter.format(itemMonthSum.get(item).get(february.getText())); Mar = formatter.format(itemMonthSum.get(item).get(march.getText())); Apr = formatter.format(itemMonthSum.get(item).get(april.getText())); May = formatter.format(itemMonthSum.get(item).get(may.getText()));
+                Jun = formatter.format(itemMonthSum.get(item).get(june.getText())); Jul = formatter.format(itemMonthSum.get(item).get(july.getText())); Aug = formatter.format(itemMonthSum.get(item).get(august.getText())); Sep = formatter.format(itemMonthSum.get(item).get(september.getText())); Oct = formatter.format(itemMonthSum.get(item).get(october.getText()));
+                Nov = formatter.format(itemMonthSum.get(item).get(november.getText())); Dec = formatter.format(itemMonthSum.get(item).get(december.getText()));
+                total_amount = itemMonthSum.get(item).get(january.getText()) + itemMonthSum.get(item).get(february.getText()) + itemMonthSum.get(item).get(march.getText()) + itemMonthSum.get(item).get(april.getText()) + itemMonthSum.get(item).get(may.getText()) +itemMonthSum.get(item).get(june.getText()) + itemMonthSum.get(item).get(july.getText()) + itemMonthSum.get(item).get(august.getText()) + itemMonthSum.get(item).get(september.getText()) + itemMonthSum.get(item).get(october.getText()) + itemMonthSum.get(item).get(november.getText()) + itemMonthSum.get(item).get(december.getText()); totMonthsum += total_amount;
+                totalAmnt = formatter.format(total_amount);
+                getReport = new GetCentersReport(item, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, totalAmnt);
+                revenueCentersTable.getItems().add(getReport);
+                jan = 0; feb = 0; apr = 0; mai = 0; jun = 0; jul = 0; aug = 0; sep = 0; oct = 0; mar = 0; nov = 0; dec = 0;*/
+            }
+            subJan = formatter.format(sumAmountSubT(category,"1")); subFeb = formatter.format(sumAmountSubT(category,"2")); subMar = formatter.format(sumAmountSubT(category,"3")); subApr = formatter.format(sumAmountSubT(category,"4"));
+            subMay = formatter.format(sumAmountSubT(category,"5"));subJun = formatter.format(sumAmountSubT(category,"6")); subJul = formatter.format(sumAmountSubT(category,"7")); subAug = formatter.format(sumAmountSubT(category,"8")); subSep = formatter.format(sumAmountSubT(category,"9"));
+            subOct = formatter.format(sumAmountSubT(category,"10")); subNov = formatter.format(sumAmountSubT(category,"11")); subDec = formatter.format(sumAmountSubT(category,"12")); subTotalAmnt = formatter.format(totalAmountSubT(category));
+            getReport = new GetCentersReport("SUB-TOTAL", subJan, subFeb, subMar, subApr, subMay, subJun, subJul,subAug,subSep,subOct,subNov,subDec, subTotalAmnt);
+            revenueCentersTable.getItems().add(getReport);
         }
-        totJan = formatter.format(totjan); totFeb = formatter.format(totfeb); totMar = formatter.format(totmar); totApr = formatter.format(totapr);
-        totMay = formatter.format(totmay); totJun = formatter.format(totjun); totJul = formatter.format(totjul); totAug = formatter.format(totaug); totSep = formatter.format(totsep);
-        totOct = formatter.format(totoct); totNov = formatter.format(totnov); totDec = formatter.format(totdec); summation = formatter.format(totMonthsum);
+        totJan = formatter.format(sumAmountTotal("1")); totFeb = formatter.format(sumAmountTotal("2")); totMar = formatter.format(sumAmountTotal("3")); totApr = formatter.format(sumAmountTotal("4"));
+        totMay = formatter.format(sumAmountTotal("5")); totJun = formatter.format(sumAmountTotal("6")); totJul = formatter.format(sumAmountTotal("7")); totAug = formatter.format(sumAmountTotal("8")); totSep = formatter.format(sumAmountTotal("9"));
+        totOct = formatter.format(sumAmountTotal("10")); totNov = formatter.format(sumAmountTotal("11")); totDec = formatter.format(sumAmountTotal("12")); summation = formatter.format(totalAmountTotal());
         getReport = new GetCentersReport("TOTAL", totJan, totFeb, totMar, totApr, totMay, totJun, totJul, totAug, totSep, totOct, totNov, totDec, summation);
         revenueCentersTable.getItems().add(getReport);
+    }
 
-        rs.beforeFirst();
+    private boolean subCenterChck(String Year, String Center) throws SQLException {
 
+        PreparedStatement statement = con.prepareStatement("SELECT `revenue_center`, `revenue_sub_centers`." +
+                "`sub_center` FROM   `revenue_centers`as  rc, `revenue_sub_centers` right join`daily_entries` as de  on" +
+                " `revenue_sub_centers`.`id` = de.`sub_center_ID` WHERE de.`daily_revCenter` = rc.`CenterID` AND `revenue_center` = '"+Center+"' and YEAR(`revenueDate`) = '"+Year+"' AND `sub_center_ID` IS NOT NULL");
+        ResultSet rs = statement.executeQuery();
+        boolean hasRow = false;
+        while(rs.next()){
+            hasRow = true;
+        }
+        return hasRow;
     }
 
 
+    private double sumAmount (String category, String center, String subCenter, String month) throws SQLException {
+       PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `revenue_centers`,`daily_entries` left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = `revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"' AND `revenue_sub_centers`.sub_center = '"+subCenter+"' AND `revenue_center` = '"+center+"' AND MONTH(revenueDate) = '"+month+"' AND `revenue_category` = '"+category+"'");
+       ResultSet rs = stmnt.executeQuery();
+       double amt= 0.0;
+       while (rs.next())
+           amt = rs.getDouble("Amount");
+        return amt;
+    }
+    private double totalAmount (String category, String center, String subCenter) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `revenue_centers`,`daily_entries` left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = `revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"' AND `revenue_sub_centers`.sub_center = '"+subCenter+"' AND `revenue_center` = '"+center+"' AND `revenue_category` = '"+category+"'");
+        ResultSet rs = stmnt.executeQuery();
+        double amt= 0.0;
+        while (rs.next())
+            amt = rs.getDouble("Amount");
+        return amt;
+    }
 
+    private double sumAmountIsNull (String category, String center, String month) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `revenue_centers`,`daily_entries` left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = `revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"' AND `sub_center_ID` is null AND `revenue_center` = '"+center+"' AND MONTH(revenueDate) = '"+month+"' AND `revenue_category` = '"+category+"'");
+        ResultSet rs = stmnt.executeQuery();
+        double amt= 0.0;
+        while (rs.next())
+            amt = rs.getDouble("Amount");
+        return amt;
+    }
+    private double totalAmountIsNull (String category, String center) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `revenue_centers`,`daily_entries` left join `revenue_sub_centers`  on  `daily_entries`.`sub_center_ID` = `revenue_sub_centers`.`id` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"' AND `revenue_sub_centers`.sub_center is null AND `revenue_center` = '"+center+"' AND `revenue_category` = '"+category+"'");
+        ResultSet rs = stmnt.executeQuery();
+        double amt= 0.0;
+        while (rs.next())
+            amt = rs.getDouble("Amount");
+        return amt;
+    }
+    private double sumAmountSubT (String category, String month) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `revenue_centers`,`daily_entries` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"'  AND  MONTH(revenueDate) = '"+month+"' AND `revenue_category` = '"+category+"'");
+        ResultSet rs = stmnt.executeQuery();
+        double amt= 0.0;
+        while (rs.next())
+            amt = rs.getDouble("Amount");
+        return amt;
+    }
+    private double totalAmountSubT (String category) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `revenue_centers`,`daily_entries` WHERE  `CenterID` = `daily_revCenter` AND YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"' AND `revenue_category` = '"+category+"'");
+        ResultSet rs = stmnt.executeQuery();
+        double amt= 0.0;
+        while (rs.next())
+            amt = rs.getDouble("Amount");
+        return amt;
+    }
 
-
+    private double sumAmountTotal ( String month) throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `daily_entries` WHERE  YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"'  AND  MONTH(revenueDate) = '"+month+"'");
+        ResultSet rs = stmnt.executeQuery();
+        double amt= 0.0;
+        while (rs.next())
+            amt = rs.getDouble("Amount");
+        return amt;
+    }
+    private double totalAmountTotal () throws SQLException {
+        PreparedStatement stmnt = con.prepareStatement(" SELECT SUM(revenueAmount)as `Amount` FROM `daily_entries` WHERE  YEAR(revenueDate) = '"+cmbMasterCentersYear.getValue()+"'");
+        ResultSet rs = stmnt.executeQuery();
+        double amt= 0.0;
+        while (rs.next())
+            amt = rs.getDouble("Amount");
+        return amt;
+    }
 
 
 
@@ -387,7 +557,7 @@ public class MasterCentersController implements Initializable {
         }else {
         revenueCentersTable.getItems().clear();
         changeNames();
-        setItems();
+        setItem();
         }
     }
 

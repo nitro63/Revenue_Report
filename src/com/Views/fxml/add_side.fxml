@@ -4,6 +4,7 @@
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -14,9 +15,9 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox fx:id="administrativeMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" styleClass="background_color" stylesheets="@../Stylesheets/entries.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="administrativeMain" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" styleClass="background_color" stylesheets="@../Stylesheets/entries.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="46.0" prefWidth="850.0">
+            <HBox prefHeight="29.0" prefWidth="850.0" style="-fx-border-radius: 50;">
                <children>
                   <AnchorPane prefHeight="46.0" prefWidth="248.0">
                      <children>
@@ -43,63 +44,65 @@
                   <Insets top="9.0" />
                </VBox.margin>
             </HBox>
-            <HBox prefHeight="25.0" prefWidth="850.0">
+            <HBox alignment="TOP_CENTER" fillHeight="false" maxWidth="-Infinity" prefHeight="14.0" prefWidth="850.0" spacing="30.0" style="-FX-BORDER-radius: 10  10 10; -fx-border-width: 0.5; -fx-border-color: #D1DCD4; -fx-background-color: transparent;" VBox.vgrow="NEVER">
                <children>
-                  <AnchorPane prefHeight="26.0" prefWidth="850.0">
+                  <HBox fx:id="containerAddItem" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="110.0" styleClass="menu-title">
                      <children>
-                        <HBox fx:id="containerAddItem" layoutX="65.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="110.0" styleClass="menu-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="65.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <JFXButton fx:id="btnAddItem" alignment="CENTER" minWidth="-Infinity" onAction="#ShowAddItem" prefHeight="38.0" prefWidth="93.0" styleClass="menu-title-button1" text="ADD ITEM" />
-                              <Button fx:id="btnCloseAddItem" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox fx:id="containerAssignItem" layoutX="225.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="120.0" styleClass="menu-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <JFXButton fx:id="btnAssignItem" minWidth="-Infinity" onAction="#showAssignItem" prefHeight="38.0" prefWidth="110.0" styleClass="menu-title-button1" text="ASSIGN ITEM" />
-                              <Button fx:id="btnCloseAssignItem" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox fx:id="containerAddCenter" layoutX="386.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="120.0" styleClass="menu-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="386.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <JFXButton fx:id="btnAddCenter" minWidth="-Infinity" onAction="#showAddCenter" prefHeight="38.0" prefWidth="107.0" styleClass="menu-title-button1" text="ADD CENTER" />
-                              <Button fx:id="btnCloseCenter" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox fx:id="containerAddUser" layoutX="568.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="110.0" styleClass="menu-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="568.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <JFXButton fx:id="btnAddUser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#showAddUser" prefHeight="38.0" prefWidth="90.0" styleClass="menu-title-button1" text="ADD USER" />
-                              <Button fx:id="btnCloseAddUser" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox fx:id="containerAddTicketDetails" layoutX="693.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="145.0" styleClass="menu-title">
-                           <children>
-                              <JFXButton fx:id="btnAddTicketDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#showTicketDetails" prefHeight="38.0" prefWidth="128.0" styleClass="menu-title-button1" text="TICKET DETAILS" />
-                              <Button fx:id="btnCloseAddTicketDetails" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
+                        <JFXButton fx:id="btnAddItem" alignment="CENTER" minWidth="-Infinity" onAction="#ShowAddItem" prefHeight="38.0" prefWidth="93.0" styleClass="menu-title-button1" text="ADD ITEM" />
+                        <Button fx:id="btnCloseAddItem" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
                      </children>
-                  </AnchorPane>
+                  </HBox>
+                  <HBox fx:id="containerAssignItem" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="120.0" styleClass="menu-title">
+                     <children>
+                        <JFXButton fx:id="btnAssignItem" minWidth="-Infinity" onAction="#showAssignItem" prefHeight="38.0" prefWidth="110.0" styleClass="menu-title-button1" text="ASSIGN ITEM" />
+                        <Button fx:id="btnCloseAssignItem" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="containerAddCenter" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="120.0" styleClass="menu-title">
+                     <children>
+                        <JFXButton fx:id="btnAddCenter" minWidth="-Infinity" onAction="#showAddCenter" prefHeight="38.0" prefWidth="107.0" styleClass="menu-title-button1" text="ADD CENTER" />
+                        <Button fx:id="btnCloseCenter" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="containerAddUser" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="110.0" styleClass="menu-title">
+                     <children>
+                        <JFXButton fx:id="btnAddUser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#showAddUser" prefHeight="38.0" prefWidth="90.0" styleClass="menu-title-button1" text="ADD USER" />
+                        <Button fx:id="btnCloseAddUser" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="containerAddTicketDetails" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="145.0" styleClass="menu-title">
+                     <children>
+                        <JFXButton fx:id="btnAddTicketDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#showTicketDetails" prefHeight="38.0" prefWidth="128.0" styleClass="menu-title-button1" text="TICKET DETAILS" />
+                        <Button fx:id="btnCloseAddTicketDetails" mnemonicParsing="false" onAction="#showClose" prefHeight="13.0" prefWidth="17.0" styleClass="menu-title-button" text="X" visible="false">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+               <effect>
+                  <DropShadow blurType="ONE_PASS_BOX" color="#f5efef" />
+               </effect>
             </HBox>
             <VBox fx:id="paneEntriesArea" alignment="TOP_CENTER" prefHeight="479.0" prefWidth="870.0" VBox.vgrow="ALWAYS">
                <children>
@@ -114,6 +117,9 @@
                </padding>
             </VBox>
          </children>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
       </VBox>
    </children>
 </AnchorPane>

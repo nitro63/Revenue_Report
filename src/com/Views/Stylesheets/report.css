@@ -35,7 +35,7 @@
 }
 
 .combo-box-base .text{
-    -fx-fill: #480113;
+    -fx-fill: #f6ffff;
     -fx-font-weight: bold;
 
     -fx-background-color: #ffffff;
@@ -47,7 +47,7 @@
     -fx-padding: 0 0 1 0;
 }
 .combo-box-base .text-field{
-    -fx-prompt-text-fill: #057c0a;
+    -fx-prompt-text-fill: #f6ffff;
     -fx-background: #fff;
     -fx-prompt-text-weight: bold;
     -fx-border-width: 0 0 1 0;
@@ -81,6 +81,7 @@
 }
 .table-view .column-header-background .label{
     -fx-font-family: 'Yikes';
+    -fx-text-fill: #f6ffff ;
 }
 .text-font{
     -fx-font-family: 'Yikes';
@@ -94,6 +95,7 @@
 
 .table-view .column-header{
     -fx-background-color: #f4fff7;
+    -fx-text-fill: #f6ffff;
 }
 .table-row-cell{
     -fx-background-color: #fdfffe;

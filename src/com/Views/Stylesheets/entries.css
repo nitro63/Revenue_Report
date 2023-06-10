@@ -17,7 +17,7 @@
 }
 
 .title{
-    -fx-fill:
+    -fx-fill: #f6ffff
     linear-gradient(reflect, #196372ad , #004902bf),
     linear-gradient(reflect, #0a090945, #1F1A1A61),
     linear-gradient(reflect, #5b835596 0%, #11464694 75%);
@@ -28,7 +28,7 @@
 
 .sub-title{
 -fx-fill:
-linear-gradient(#0CBAE0AD, #00A707BF);
+linear-gradient(#cfe4e8, rgba(183, 234, 185, 0.75));
     -fx-font-family: 'Roboto';
     -fx-font-size: 23;
     -fx-font-weight: bold;
@@ -53,7 +53,8 @@ linear-gradient(#0CBAE0AD, #00A707BF);
     -fx-padding: 0 0 1 0;
 }
 .menu-button >.label{
-    -fx-text-fill: linear-gradient( #196372ad, #004902bf);
+    -fx-text-fill: #f6ffff
+            linear-gradient( #196372ad, #004902bf);
     -fx-font-family: 'Montserrat-Bold';
     -fx-font-size: 14;
     -fx-font-weight: bold;
@@ -64,7 +65,8 @@ linear-gradient(#0CBAE0AD, #00A707BF);
     -fx-background-radius: 5;
 }
 .menu-title-button1{
-    -fx-text-fill: linear-gradient( #196372ad, #004902bf);
+    -fx-text-fill: #f6ffff
+            linear-gradient( #196372ad, #004902bf);
     -fx-font-family: 'Montserrat-Bold';
     -fx-font-size: 14;
     -fx-font-weight: bold;
@@ -93,10 +95,11 @@ linear-gradient(#0CBAE0AD, #00A707BF);
 .menu-title:pressed{
                -fx-background-color: transparent;
                -fx-border-width: 0px;
+    -fx-text-fill: #0b5d26;
            }
 .menu-title-button1:pressed{
                -fx-background-color: linear-gradient(#e8efeaf2, #edfff2);
-               -fx-text-fill: #0eae49;
+               -fx-text-fill: #0b5d26;
                -fx-border-color: linear-gradient(#073f16eb, #07575bf7);
                -fx-border-width: 0px 0px 3.5px 0px;
                -fx-border-radius: 5 5 0 0;
@@ -104,7 +107,7 @@ linear-gradient(#0CBAE0AD, #00A707BF);
            }
 .big{
                -fx-background-color: linear-gradient(#e8efeaf2, #edfff2);
-               -fx-text-fill: #0b5d26;
+               -fx-text-fill: #f6ffff;
                -fx-border-color: linear-gradient(#073f16eb, #07575bf7);
                -fx-border-width: 0px 0px 3px 0px;
 }
@@ -113,5 +116,5 @@ linear-gradient(#0CBAE0AD, #00A707BF);
     -fx-font-family:'Yikes';
     -fx-font-size: 35;
     -fx-font-weight: Bold;
-    -fx-fill:#03571463;
+    -fx-fill:#f6ffff;
 }

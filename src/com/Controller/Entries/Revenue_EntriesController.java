@@ -353,7 +353,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
         if (RevSubCent == null ){
         stmnt = con.prepareStatement(
                 "SELECT MONTH(`revenueDate`) AS `revenueMonth` FROM `daily_entries` WHERE `daily_revCenter` = '"
-                        + RevCent + "' AND YEAR(`revenueDate`) ='" + year + "' AND `daily_entries`.`status` = True GROUP BY `revenueMonth`");
+                        + RevCent + "' AND YEAR(`revenueDate`) ='" + year + "' AND `daily_entries`.`status` = True AND `sub_center_ID` IS NOT NULL GROUP BY `revenueMonth`");
         }else{
             stmnt = con.prepareStatement(
                     "SELECT MONTH(`revenueDate`) AS `revenueMonth` FROM `daily_entries` WHERE `daily_revCenter` = '"
@@ -378,7 +378,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
         stmnt = con.prepareStatement(
                 "SELECT DAY(`revenueDate`) AS `revenueDay` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
                         + "' AND YEAR(`revenueDate`) ='" + year + "' AND MONTH(`revenueDate`) = '" + month.getValue()
-                        + "' AND `daily_entries`.`status` = TRUE GROUP BY `revenueDay`");
+                        + "' AND `daily_entries`.`status` = TRUE AND `sub_center_ID` IS NOT NULL GROUP BY `revenueDay`");
             }else{
                 stmnt = con.prepareStatement(
                         "SELECT DAY(`revenueDate`) AS `revenueDay` FROM `daily_entries` WHERE `daily_revCenter` = '" + RevCent
@@ -406,7 +406,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                 + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE AND `sub_center_ID` IS NULL");
                 }else {
                     stmnt = con.prepareStatement(
                             "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
@@ -419,7 +419,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                             "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                     + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
                                     + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND DAY(`revenueDate`) = '"
-                                    + day + "' AND `daily_entries`.`status` = TRUE ");
+                                    + day + "' AND `daily_entries`.`status` = TRUE AND `sub_center_ID` IS NULL");
                 }else{
                     stmnt = con.prepareStatement(
                             "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
@@ -432,7 +432,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                 + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                                + "' AND `daily_entries`.`status` = TRUE");
+                                + "' AND `daily_entries`.`status` = TRUE AND `sub_center_ID` IS  NULL");
                 }else {
                     stmnt = con.prepareStatement(
                             "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
@@ -471,20 +471,20 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                                 + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+                                + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE  AND `sub_center_ID` IS NULL");
             }else{
 
             stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                             + RevCent + "'  AND `sub_center_ID` = '"+RevSubCent+"' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE ");
             }
         } else if (!cmbUpdateMonth.getSelectionModel().isSelected(0) && !cmbUpdateDate.getSelectionModel().isSelected(0)) {
             if (RevSubCent == null){
                 stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
                             + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(`revenueDate`) ='" + year
-                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE");
+                            + "' AND MONTH(`revenueDate`) = '" + month.getValue() + "' AND `daily_entries`.`status` = TRUE  AND `sub_center_ID` IS NULL");
             }else{
             stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
@@ -496,7 +496,7 @@ public class Revenue_EntriesController implements Initializable, EventHandler<Ke
             if (RevSubCent == null){
                 stmnt = con.prepareStatement(
                         "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
-                                + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(revenueDate) ='" + year + "' AND`daily_entries`.`status` = TRUE");
+                                + RevCent + "' AND `revenueItem` = `revenue_item_ID` AND YEAR(revenueDate) ='" + year + "' AND`daily_entries`.`status` = TRUE  AND `sub_center_ID` IS NULL");
             }else{
             stmnt = con.prepareStatement(
                     "SELECT `entries_ID`, `item_Sub`, `revenueDate`, `revenueAmount` FROM `daily_entries`, `revenue_items` WHERE `daily_revCenter` = '"
