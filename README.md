@@ -1,2 +1,2 @@
 # Revenue_Report
- Project for them not your business please
+ This is a desktop application designed with Java and JavaFx
